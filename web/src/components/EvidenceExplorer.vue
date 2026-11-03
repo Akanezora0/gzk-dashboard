@@ -47,8 +47,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
 </script>
 <template>
   <section class="rs-page" ref="root" @keydown.esc="drawer=''">
-    <header class="rs-head"><span class="rs-no">05</span><h3>接续证据</h3><span class="rs-sub">机构 → 负责人 → 项目 → 论文，每条关系可查来源</span>
-      <div class="rs-tools"><button class="rs-btn" @click="toggleFullscreen(root)">全屏 / 退出</button></div></header>
+    <header class="rs-head"><span class="rs-no">05</span><h3>接续证据</h3></header>
     <div v-if="!projects.length" class="rs-empty">机构项目与论文关系暂未读取。</div>
     <template v-else>
     <div class="rs-ev-bar">
@@ -82,8 +81,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
         <template v-if="!selected">
           <h4>关系证据</h4><p class="k">点击负责人、项目或论文查看依据</p>
           <div class="rs-ev-stat"><b>{{stats.projects}}</b> 个项目 · <b>{{fmt(stats.papers)}}</b> 篇论文</div>
-          <p class="k">{{fmt(stats.edges)}} 条项目—论文关系（2017—2025 年有发表年份的论文）</p>
-          <p class="k">负责人与项目：NSFC 项目负责人字段；跨项目的同一人仅依据官方身份核验的接续记录。</p>
+          <p class="k">{{fmt(stats.edges)}} 条项目—论文关系</p>
         </template>
         <template v-else-if="selected.kind==='project'">
           <span class="tag">项目</span><h4>{{selected.title}}</h4>
@@ -113,7 +111,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
           </svg>
           <div class="goals"><div v-for="p in drawerCase.projects" :key="p.grant_no"><b>{{typeGroup(p.project_type)==='青年'?'青年项目':'面上项目'}}目标（据项目摘要）</b><ul><li v-for="(m,i) in (p.planned_methods||[]).slice(0,4)" :key="i">{{m}}</li></ul></div></div>
           <div class="cards"><article v-for="pp in drawerCase.papers" :key="pp.paper_id"><p class="y">{{pp.publication_year}} <small>{{venueOf(pp.paper_id)}}</small></p><h5>{{pp.short_title}}</h5><p>{{pp.summary_sentence}}</p><span>{{pp.research_branch}}</span><a v-if="pp.primary_url" :href="pp.primary_url" target="_blank" rel="noopener">原文依据 ↗</a></article></div>
-          <p class="k">两期项目共登记关联论文 {{drawerPapers.length}} 篇；卡片为经原文核验的代表成果。论文之间不表示逐篇技术继承。</p>
+          <p class="k">两期项目共登记关联论文 {{drawerPapers.length}} 篇，上为代表成果。</p>
         </template>
         <template v-else>
           <div class="plist"><article v-for="p in drawerPerson.projects" :key="pid(p)"><b>{{p.approval_year}} · {{TYPE_NAME[typeGroup(p.project_type)]}}</b><span>{{p.title}}</span><small>{{p.grant_no}} · 执行 {{String(p.start_date).slice(0,4)}}—{{String(p.end_date).slice(0,4)}}</small></article></div>

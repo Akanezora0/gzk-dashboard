@@ -1,9 +1,11 @@
 <script setup>
-import {computed,ref} from 'vue'
+import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
 import {useTip,fmt,emph,typeGroup,TYPE_NAME,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const emit=defineEmits(['explore'])
 const {tip,show,move,hide}=useTip()
+const onKey=e=>{if(e.key==='Escape')picked.value=null}
+onMounted(()=>window.addEventListener('keydown',onKey));onBeforeUnmount(()=>window.removeEventListener('keydown',onKey))
 const root=ref(null),picked=ref(null)
 const records=computed(()=>Array.isArray(props.dataset?.continuity)?props.dataset.continuity:[])
 const ORDER=['青年','地区','面上','重点等']
@@ -41,7 +43,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 </script>
 <template>
   <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3><span class="rs-sub">{{records.length}} 条经官方身份核验的前后项目接续（{{people}} 人），不代表整体获批率或师承关系</span></header>
+    <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3></header>
     <div v-if="!records.length" class="rs-empty">接续记录暂未读取。</div>
     <div v-else class="rs-succ">
       <div class="rs-succ-left">
@@ -81,15 +83,16 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
             </span>
           </button>
         </div>
-        <div v-if="picked" class="rs-case-detail">
-          <p class="k">{{picked.person}} · {{picked.org}}</p>
-          <ol><li v-for="(s,i) in picked.steps" :key="i"><b>{{s.y}} 批准 · {{TYPE_NAME[s.t]}}</b><span>{{s.title}}</span><small>批准号 {{s.grant}}</small></li></ol>
-          <p class="k">依据：前后项目的 NSFC 官方负责人身份一致；研究主题据项目题名概括。</p>
-          <button v-if="picked.person==='李晓旭'" class="rs-btn on" @click="emit('explore','李晓旭')">查看项目与论文证据 →</button>
-        </div>
       </div>
     </div>
     <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
+    <Teleport to="body"><div v-if="picked" class="rs-modal-mask" @click.self="picked=null">
+      <div class="rs-modal" role="dialog" :aria-label="`${picked.person}的接续项目`">
+        <button class="rs-modal-x" aria-label="关闭" @click="picked=null">×</button>
+        <p class="rs-modal-who"><b>{{picked.person}}</b><span>{{picked.org}}</span></p>
+        <ol class="rs-modal-steps"><li v-for="(s,i) in picked.steps" :key="i"><em :style="{background:TYPE_COLOR[s.t],color:s.t==='青年'?'#7a0a1c':'#fff'}">{{s.y}} · {{TYPE_NAME[s.t]}}</em><b>{{s.title}}</b><small>批准号 {{s.grant}}</small></li></ol>
+        <button v-if="picked.person==='李晓旭'" class="rs-btn on" @click="picked=null;emit('explore','李晓旭')">查看项目与论文证据 →</button>
+      </div></div></Teleport>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
 </template>
@@ -121,4 +124,12 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 .rs-keys small{display:block;font-size:13px;color:var(--rs-muted);font-weight:400}
 @media(max-width:1100px){.rs-succ{grid-template-columns:1fr}.rs-succ-right{border-left:0;padding-left:0}}
 @media(max-width:700px){.rs-case{grid-template-columns:1fr}}
+.rs-modal-mask{position:fixed;inset:0;z-index:80;background:rgba(40,30,28,.32);display:grid;place-items:center;padding:16px}
+.rs-modal{position:relative;width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(40,20,20,.25);padding:28px 30px 26px}
+.rs-modal-x{position:absolute;right:14px;top:12px;width:34px;height:34px;border-radius:50%;border:0;background:#f5f3f0;font-size:20px;cursor:pointer;color:#57534e}
+.rs-modal-who{margin:0 0 16px;display:flex;align-items:baseline;gap:12px}.rs-modal-who b{font-size:24px}.rs-modal-who span{color:#78716c;font-size:15px}
+.rs-modal-steps{list-style:none;margin:0 0 18px;padding:0 0 0 18px;border-left:2px solid #f0b7bf;display:grid;gap:16px}
+.rs-modal-steps li{position:relative}.rs-modal-steps li::before{content:"";position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:#ae0d28;border:2px solid #fff}
+.rs-modal-steps em{display:inline-block;font-style:normal;font-size:13px;font-weight:700;border-radius:12px;padding:2px 10px;margin-bottom:6px}
+.rs-modal-steps b{display:block;font-size:16px;line-height:1.5;color:#2a2a2a}.rs-modal-steps small{color:#78716c;font-size:13px}
 </style>

@@ -35,12 +35,11 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
 </script>
 <template>
   <section class="rs-page" ref="root" @keydown.esc="picked=null">
-    <header class="rs-head"><span class="rs-no">03</span><h3>研究力量版图</h3><span class="rs-sub">2017—2026 年中外主要 AI 机构、里程碑成果与人才流动</span>
+    <header class="rs-head"><span class="rs-no">03</span><h3>研究力量版图</h3>
       <div class="rs-tools">
         <div class="rs-seg" role="group" aria-label="机构范围"><button :class="{on:region==='all'}" @click="region='all'">全部</button><button :class="{on:region==='cn'}" @click="region='cn'">中国</button><button :class="{on:region==='intl'}" @click="region='intl'">国际</button></div>
         <button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button>
-        <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026" v-model.number="year" aria-label="显示到年份"></label>
-        <button class="rs-btn" @click="toggleFullscreen(root)">全屏 / 退出</button></div></header>
+        <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026" v-model.number="year" aria-label="显示到年份"></label></div></header>
     <div v-if="!L.groups" class="rs-empty">版图数据为旧格式，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <template v-else>
     <div class="rs-legend">
@@ -102,7 +101,6 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
       <a v-if="picked.url" :href="picked.url" target="_blank" rel="noopener">查看来源 ↗</a>
     </aside>
     <div class="rs-take"><span class="rs-take-tag">结论</span><p>前沿成果的产出从企业研究院与高校并行，转向少数企业实验室主导，人才外溢催生了 Anthropic、Mistral 等新力量；中国以清华等高校和国家实验室为源头，经衍生企业与开源模型在 2023 年后快速跟进。</p></div>
-    <p class="rs-foot">“NSFC”标注为该机构在本项目数据中 2017—2021 年承担的 AI 项目数。版图中的成果和时间来自公开资料（核对日期 {{L.checkedAt}}）；开源与否按发布时的公开情况标注。</p>
     </template>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>

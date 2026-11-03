@@ -27,7 +27,7 @@ function off(){active.value='';hide()}
 </script>
 <template>
   <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3><span class="rs-sub">以基金项目为枢纽的多源关联</span></header>
+    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3></header>
     <div v-if="!S.metrics" class="rs-empty">关系指标尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <template v-else>
     <div class="rs-scroll"><svg class="rs-svg" viewBox="0 125 1440 370" role="img" aria-label="基金、人员、机构、论文、专利之间的关联关系与条数">
