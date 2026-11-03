@@ -14,7 +14,7 @@ npm run dev
 
 打开 `http://localhost:5184/chain?domain=ai&module=strength`。
 
-默认 `demo` 模式提供合成样例和公开技术节点，用于排版、交互和截图，不包含业务数据库或真实关联明细。右下角有设计预览标识。示例不是研究结果；部分历史组件仍包含原有展示文案，不能从演示数字推导新结论。数据总览、领域数据与综述在演示模式下仅提供空结构；完整数据通过下面的只读后端接入。
+默认 `demo` 模式提供合成样例和公开技术节点，用于排版、交互和截图，不包含业务数据库或真实关联明细。示例不是研究结果；部分历史组件仍包含原有展示文案，不能从演示数字推导新结论。数据总览、领域数据与综述在演示模式下仅提供空结构；完整数据通过下面的只读后端接入。
 
 ## 接入服务器数据
 
@@ -41,7 +41,7 @@ DASHBOARD_ARTIFACTS=/absolute/path/to/private/dashboard-assets
 | 技术树与综述 | `web/src/components/EvolutionHub.vue`等 |
 | 低空嵌入页 | `lowalt/src/`与`legacy/src/` |
 
-入口参数：`/chain?domain=ai` 原始页；`module=investment` 投入产出；`module=strength` 研究版图；再加 `view=continuity` 查看基金接续。
+入口参数：`/chain?domain=ai` 原始页；`module=investment` 投入产出；`module=strength` 研究力量（总体格局）；再加 `view=continuity` 查看接续与证据。
 
 `demo/` 是设计样例；`scripts/build_ai_chain.py` 是服务器端展示数据生产器源码，依赖完整项目和本地数据，在本仓库中不用运行。`SOURCE_MAP.json` 记录服务器源文件对应及交接时SHA，便于回合并核对。
 

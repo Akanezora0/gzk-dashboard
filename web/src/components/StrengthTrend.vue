@@ -47,30 +47,30 @@ function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b
       <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button><button class="rs-btn" @click="toggleFullscreen(root)">全屏 / 退出</button></div></header>
     <div v-if="!split.length" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <div v-else class="rs-trend">
-      <div class="rs-scroll"><svg class="rs-svg" viewBox="0 0 1100 660" role="img" aria-label="既有机构与新进入机构的机构数和项目数">
+      <div class="rs-scroll rs-fit"><svg class="rs-svg" viewBox="0 0 1100 660" role="img" aria-label="既有机构与新进入机构的机构数和项目数">
         <defs><clipPath id="rs-trend-clip"><rect x="0" y="0" :width="clipW" height="660"/></clipPath></defs>
-        <text x="0" :y="AX-140" font-size="22" font-weight="700" fill="#2a2a2a">机构</text>
-        <text x="0" :y="AX-114" font-size="14" fill="#78716c">每年承担项目的机构数</text>
-        <text x="0" :y="AX+120" font-size="22" font-weight="700" fill="#2a2a2a">项目</text>
-        <text x="0" :y="AX+146" font-size="14" fill="#78716c">每年批准的项目数</text>
+        <text x="0" :y="AX-140" font-size="26" font-weight="700" fill="#2a2a2a">机构</text>
+        <text x="0" :y="AX-114" font-size="15" fill="#78716c">每年承担项目</text><text x="0" :y="AX-95" font-size="15" fill="#78716c">的机构数</text>
+        <text x="0" :y="AX+120" font-size="26" font-weight="700" fill="#2a2a2a">项目</text>
+        <text x="0" :y="AX+146" font-size="15" fill="#78716c">每年批准的</text><text x="0" :y="AX+165" font-size="15" fill="#78716c">项目数</text>
         <g clip-path="url(#rs-trend-clip)">
           <path :d="paths.b1" fill="#ae0d28"/><path :d="paths.b2" fill="#f0b7bf"/>
           <path :d="paths.b3" fill="#ae0d28"/><path :d="paths.b4" fill="#f0b7bf"/>
-          <text :x="X(2017)" :y="AX-oOld[0]-G-14" font-size="22" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(first)}} 家</text>
-          <text :x="X(2017)" :y="AX+pOld[0]+G+32" font-size="22" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(first))}} 项</text>
+          <text :x="X(2017)" :y="AX-oOld[0]-G-14" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(first)}} 家</text>
+          <text :x="X(2017)" :y="AX+pOld[0]+G+32" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(first))}} 项</text>
         </g>
         <template v-if="shown>=2021">
-          <text :x="X(2021)" :y="AX-oOld[lastI]-oNew[lastI]-G-14" font-size="22" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(last)}} 家</text>
-          <text :x="X(2021)" :y="AX+pOld[lastI]+pNew[lastI]+G+32" font-size="22" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(last))}} 项</text>
-          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]/2+6" font-size="16" font-weight="700" fill="#ae0d28">既有机构 {{last.retained_institutions}} 家</text>
-          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]-oNew[lastI]/2+6" font-size="16" font-weight="700" fill="#d9737f">新进入 {{last.entered_institutions}} 家</text>
-          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+6" font-size="16" font-weight="700" fill="#ae0d28">既有机构 {{fmt(last.retained_projects)}} 项</text>
-          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]+pNew[lastI]/2+6" font-size="16" font-weight="700" fill="#d9737f">新进入 {{last.entered_projects}} 项</text>
-          <text v-if="fundShare" :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+30" font-size="14" fill="#57534e">经费占 {{fundShare}}%</text>
+          <text :x="X(2021)" :y="AX-oOld[lastI]-oNew[lastI]-G-14" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(last)}} 家</text>
+          <text :x="X(2021)" :y="AX+pOld[lastI]+pNew[lastI]+G+32" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(last))}} 项</text>
+          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]/2+6" font-size="19" font-weight="700" fill="#ae0d28">既有机构 {{last.retained_institutions}} 家</text>
+          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]-oNew[lastI]/2+6" font-size="19" font-weight="700" fill="#d9737f">新进入 {{last.entered_institutions}} 家</text>
+          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+6" font-size="19" font-weight="700" fill="#ae0d28">既有机构 {{fmt(last.retained_projects)}} 项</text>
+          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]+pNew[lastI]/2+6" font-size="19" font-weight="700" fill="#d9737f">新进入 {{last.entered_projects}} 项</text>
+          <text v-if="fundShare" :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+30" font-size="18" fill="#57534e">经费占 {{fundShare}}%</text>
         </template>
-        <text v-for="r in split" :key="'y'+r.year" :x="X(r.year)" :y="AX+6" font-size="15" font-weight="700" text-anchor="middle" :fill="r.year<=shown?'#57534e':'#d6d0c9'">{{r.year}}</text>
-        <text x="0" y="640" font-size="14" fill="#78716c">年度批准经费</text>
-        <text v-for="a in annual" :key="'a'+a.year" :x="X(a.year)" y="640" font-size="17" font-weight="700" text-anchor="middle" :fill="a.year<=shown?'#57534e':'#d6d0c9'">{{a.amount_yi.toFixed(2)}} 亿</text>
+        <text v-for="r in split" :key="'y'+r.year" :x="X(r.year)" :y="AX+6" font-size="17" font-weight="700" text-anchor="middle" :fill="r.year<=shown?'#57534e':'#d6d0c9'">{{r.year}}</text>
+        <text x="0" y="640" font-size="18" fill="#78716c">年度批准经费</text>
+        <text v-for="a in annual" :key="'a'+a.year" :x="X(a.year)" y="640" font-size="20" font-weight="700" text-anchor="middle" :fill="a.year<=shown?'#57534e':'#d6d0c9'">{{a.amount_yi.toFixed(2)}} 亿</text>
         <rect v-for="(r,i) in split" :key="'h'+r.year" class="rs-hit" :x="X(r.year)-80" y="20" width="160" height="600" fill="transparent" @mouseenter="yearTip($event,r,i)" @mousemove="move" @mouseleave="hide"/>
       </svg></div>
       <aside class="rs-stay">
@@ -88,7 +88,8 @@ function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b
   </section>
 </template>
 <style scoped>
-.rs-trend{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:34px;align-items:start}
+.rs-fit>.rs-svg{min-width:560px}
+.rs-trend{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:34px;align-items:start}
 .rs-stay{border-left:1px solid var(--rs-line);padding-left:30px;padding-top:6px}
 .rs-stay h4{font-size:21px;margin:0 0 4px;font-weight:700}
 .rs-stay>p{font-size:14px;color:var(--rs-muted);margin:0 0 26px}

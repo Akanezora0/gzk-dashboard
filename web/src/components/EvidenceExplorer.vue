@@ -23,7 +23,7 @@ const people=computed(()=>{const g=new Map();for(const p of projects.value.filte
   const q=query.value.trim()
   return [...g.values()].map(x=>({...x,projects:x.projects.sort((a,b)=>a.approval_year-b.approval_year)}))
     .filter(x=>!q||x.name.includes(q)).sort((a,b)=>(b.verified-a.verified)||(b.projects.length-a.projects.length)||a.name.localeCompare(b.name,'zh-CN'))})
-const X=y=>470+(y-2017)*70,ROW=58,R0=80
+const X=y=>360+(y-2017)*62,ROW=56,R0=70
 const layout=computed(()=>{const out=[],mids=new Map();let i=0;for(const person of people.value){const start=i;for(const p of person.projects){out.push({p,person,y:R0+i*ROW});i++}mids.set(person.id,R0+((start+i-1)/2)*ROW)}return {rows:out,mids}})
 const rows=computed(()=>layout.value.rows)
 const mid=p=>layout.value.mids.get(p.id)??R0
@@ -31,7 +31,7 @@ const H=computed(()=>R0+Math.max(rows.value.length,1)*ROW+10)
 const instY=computed(()=>people.value.length?(mid(people.value[0])+mid(people.value.at(-1)))/2:R0)
 const showTree=computed(()=>people.value.length<=16)
 const dots=r=>{const byYear=new Map();for(const e of edgesByProject.value.get(pid(r.p))||[]){const q=papers.value.get(e.paper_id);if(!q)continue;if(!byYear.has(q.publication_year))byYear.set(q.publication_year,[]);byYear.get(q.publication_year).push({q,e})}
-  const out=[];for(const [yr,list] of byYear){list.forEach((it,k)=>{const per=4,col=k%per,row=Math.floor(k/per);out.push({...it,cx:X(yr)+(Number(yr)===Number(r.p.approval_year)?30:14)+col*11,cy:r.y-14+row*10+(list.length<=per?14:0)})})}return out}
+  const out=[];for(const [yr,list] of byYear){list.forEach((it,k)=>{const per=4,col=k%per,row=Math.floor(k/per);out.push({...it,cx:X(yr)+(Number(yr)===Number(r.p.approval_year)?28:12)+col*10,cy:r.y-14+row*10+(list.length<=per?14:0)})})}return out}
 const arcs=computed(()=>{const pos=new Map(rows.value.map(r=>[pid(r.p),r]));return pairs.value.filter(([a,b])=>pos.has(a)&&pos.has(b)).map(([a,b,rec])=>{const A=pos.get(a),B=pos.get(b);return {d:`M${X(A.p.approval_year)+8},${A.y+10} C${X(A.p.approval_year)+8},${B.y} ${X(B.p.approval_year)-60},${B.y} ${X(B.p.approval_year)-2},${B.y}`,rec,lx:(X(A.p.approval_year)+X(B.p.approval_year))/2,ly:B.y-8}})})
 const hlPerson=computed(()=>drawer.value||(selected.value?.person)||'')
 const stats=computed(()=>{const ps=projects.value.filter(p=>p.institution===org.value);const es=ps.flatMap(p=>edgesByProject.value.get(pid(p))||[]);return {projects:ps.length,papers:new Set(es.map(e=>e.paper_id)).size,edges:es.length}})
@@ -57,24 +57,24 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
     </div>
     <div class="rs-ev" :style="{minHeight:drawerPerson?(drawerCase?'860px':'720px'):null}">
       <div class="rs-ev-graph">
-        <div class="rs-ev-axis"><svg class="rs-svg" viewBox="0 0 1110 40"><text x="40" y="26" font-size="14" fill="#78716c">机构</text><text x="190" y="26" font-size="14" fill="#78716c">负责人</text>
-          <text v-for="y in 9" :key="y" :x="X(2016+y)+35" y="26" font-size="14" fill="#78716c" text-anchor="middle">{{2016+y}}</text></svg></div>
+        <div class="rs-ev-axis"><svg class="rs-svg" viewBox="0 0 940 40"><text x="40" y="26" font-size="15" fill="#78716c">机构</text><text x="168" y="26" font-size="15" fill="#78716c">负责人</text>
+          <text v-for="y in 9" :key="y" :x="X(2016+y)+31" y="26" font-size="15" fill="#78716c" text-anchor="middle">{{2016+y}}</text></svg></div>
         <div class="rs-ev-rows">
-        <svg class="rs-svg" :viewBox="`0 0 1110 ${H}`" role="img" :aria-label="`${org}的项目与论文时间线`">
+        <svg class="rs-svg" :viewBox="`0 0 940 ${H}`" role="img" :aria-label="`${org}的项目与论文时间线`">
           <line v-for="y in 10" :key="'g'+y" :x1="X(2016+y)" :x2="X(2016+y)" y1="40" :y2="H" stroke="#efebe6"/>
-          <template v-if="showTree"><path v-for="p in people" :key="'t'+p.id" :d="`M90,${instY} C140,${instY} 140,${mid(p)} 180,${mid(p)}`" fill="none" :stroke="p.name===hlPerson?'#ae0d28':'#d6d0c9'" :stroke-width="p.name===hlPerson?2.5:1.2"/>
-            <circle cx="70" :cy="instY" r="20" fill="#2a2a2a"/><text x="70" :y="instY+44" font-size="13" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{org.length>6?org.slice(0,6)+'…':org}}</text></template>
+          <template v-if="showTree"><path v-for="p in people" :key="'t'+p.id" :d="`M80,${instY} C120,${instY} 120,${mid(p)} 156,${mid(p)}`" fill="none" :stroke="p.name===hlPerson?'#ae0d28':'#d6d0c9'" :stroke-width="p.name===hlPerson?2.5:1.2"/>
+            <circle cx="60" :cy="instY" r="20" fill="#2a2a2a"/><text x="60" :y="instY+44" font-size="14" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{org.length>6?org.slice(0,6)+'…':org}}</text></template>
           <g v-for="r in rows" :key="pid(r.p)">
-            <path :d="`M262,${mid(r.person)} C310,${mid(r.person)} 310,${r.y} ${X(r.p.approval_year)-2},${r.y}`" fill="none" :stroke="r.person.name===hlPerson?'#ae0d28':'#d6d0c9'" :stroke-width="r.person.name===hlPerson?2.2:1.1"/>
+            <path :d="`M250,${mid(r.person)} C290,${mid(r.person)} 290,${r.y} ${X(r.p.approval_year)-2},${r.y}`" fill="none" :stroke="r.person.name===hlPerson?'#ae0d28':'#d6d0c9'" :stroke-width="r.person.name===hlPerson?2.2:1.1"/>
             <rect :x="X(yearsOf(r.p.start_date)||r.p.approval_year+1)" :y="r.y-4" :width="Math.max(10,X((yearsOf(r.p.end_date)||r.p.approval_year+3)+1)-X(yearsOf(r.p.start_date)||r.p.approval_year+1))" height="8" rx="4" :fill="r.person.name===hlPerson?'#f0b7bf':'#ece7e2'"/>
             <path class="rs-hit" :d="`M${X(r.p.approval_year)+8},${r.y-10} l10,10 l-10,10 l-10,-10 Z`" :fill="r.person.name===hlPerson?'#ae0d28':'#d9737f'" @mouseenter="show($event,`<b>${r.p.title}</b><br>${r.p.grant_no} · ${TYPE_NAME[typeGroup(r.p.project_type)]} · ${r.p.approval_year} 批准`)" @mousemove="move" @mouseleave="hide" @click="pick('project',r.p,r.person.name)"/>
             <circle v-for="(d,k) in dots(r)" :key="k" class="rs-hit" :cx="d.cx" :cy="d.cy" r="4.6" :fill="r.person.name===hlPerson?'#2f5f7a':'#9dbdd0'" @mouseenter="show($event,`<b>${d.q.title}</b><br>${d.q.publication_year}${d.q.venue?' · '+d.q.venue:''}`)" @mousemove="move" @mouseleave="hide" @click="pick('paper',{...d.q,bases:d.e.bases,project:r.p},r.person.name)"/>
           </g>
           <g v-for="(a,i) in arcs" :key="'a'+i"><path :d="a.d" fill="none" stroke="#ae0d28" stroke-width="2" stroke-dasharray="5 4"/><text :x="a.lx" :y="a.ly" font-size="12.5" font-weight="700" fill="#ae0d28" text-anchor="middle">负责人接续</text></g>
           <g v-for="p in people" :key="'n'+p.id" class="rs-hit" @click="openDrawer(p.name)" @mouseenter="show($event,`<b>${p.name}</b> · ${p.projects.length} 个项目<br>${p.verified?'官方负责人身份核验':'按项目负责人字段列示'}<br>点击查看项目与论文`)" @mousemove="move" @mouseleave="hide">
-            <rect x="170" :y="mid(p)-16" width="96" height="32" fill="transparent"/>
-            <circle cx="186" :cy="mid(p)" r="7" :fill="p.name===hlPerson?'#ae0d28':(p.verified?'#2a2a2a':'#fff')" :stroke="p.name===hlPerson?'#ae0d28':'#57534e'" stroke-width="2"/>
-            <text x="200" :y="mid(p)+5" font-size="15" :font-weight="p.name===hlPerson||p.verified?700:400" :fill="p.name===hlPerson?'#ae0d28':'#2a2a2a'">{{p.name}}</text></g>
+            <rect x="150" :y="mid(p)-16" width="100" height="32" fill="transparent"/>
+            <circle cx="162" :cy="mid(p)" r="7" :fill="p.name===hlPerson?'#ae0d28':(p.verified?'#2a2a2a':'#fff')" :stroke="p.name===hlPerson?'#ae0d28':'#57534e'" stroke-width="2"/>
+            <text x="176" :y="mid(p)+6" font-size="17" :font-weight="p.name===hlPerson||p.verified?700:400" :fill="p.name===hlPerson?'#ae0d28':'#2a2a2a'">{{p.name}}</text></g>
         </svg></div>
         <div class="rs-ev-legend"><span><i class="dm"></i>项目批准</span><span><i class="bar"></i>执行期</span><span><i class="pd"></i>关联论文（按发表年）</span><span><i class="dash"></i>同一负责人接续</span><span><i class="pv"></i>官方身份核验的负责人</span></div>
       </div>
@@ -132,7 +132,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
 .rs-chip{border:1px solid var(--rs-line);background:#fff;border-radius:18px;padding:6px 16px;font-size:14px;color:var(--rs-ink-2);cursor:pointer;font-family:inherit}
 .rs-chip.on{background:var(--rs-ink);color:#fff;border-color:var(--rs-ink)}
 .rs-ev-search{border:1px solid var(--rs-line);border-radius:18px;padding:7px 14px;font-size:14px;width:200px;font-family:inherit}
-.rs-ev{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;position:relative}
+.rs-ev{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;position:relative}
 .rs-ev-graph{border:1px solid var(--rs-line);border-radius:12px;background:#fbfaf8;padding:6px 10px 10px;min-width:0}
 .rs-ev-rows{max-height:600px;overflow-y:auto}
 .rs-ev-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--rs-ink-2);padding:8px 6px 0}

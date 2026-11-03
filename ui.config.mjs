@@ -35,6 +35,6 @@ export function previewBoundary(){
   res.setHeader('Content-Type',type[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res)
  })}
  return {name:'portable-preview',configureServer:install,configurePreviewServer:install,transformIndexHtml(html){
-  return demo?html.replace('<body>','<body><div style="position:fixed;bottom:8px;right:12px;z-index:99999;padding:7px 12px;background:#312d2b;color:white;border-radius:6px;font:12px sans-serif;pointer-events:none">本地设计预览 · 合成样例，非研究结论</div>'):html
+  return html
  }}
 }

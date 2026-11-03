@@ -16,7 +16,7 @@ const overlapPct=t=>{const rs=records.value.filter(r=>typeGroup(r.earlier_projec
 const sameInst=computed(()=>records.value.length?Math.round(records.value.filter(r=>r.same_institution_name===true||String(r.same_institution_name)==='true').length/records.value.length*100):0)
 const people=computed(()=>new Set(records.value.map(r=>r.person_id)).size)
 // Sankey geometry
-const LX=150,RX=440,TOP=30,K=1.6,GAP=14,NW=14
+const LX=128,RX=372,TOP=20,K=1.6,GAP=14,NW=14
 const sankey=computed(()=>{const posL={},posR={};let yl=TOP,yr=TOP
   for(const t of ORDER){const o=out(t),i=inn(t);if(o){posL[t]={y:yl,h:o*K};yl+=o*K+GAP}if(i){posR[t]={y:yr,h:i*K};yr+=i*K+GAP}}
   const ol={},or={};ORDER.forEach(t=>{ol[t]=0;or[t]=0})
@@ -47,13 +47,13 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
       <div class="rs-succ-left">
         <h4>接到什么项目</h4>
         <p class="rs-lead">青年 → 面上是主通道；面上项目有三分之一转向联合、重大等</p>
-        <svg class="rs-svg" :viewBox="`0 0 610 ${sankey.height}`" role="img" aria-label="前后项目类型流向">
+        <svg class="rs-svg" :viewBox="`0 0 520 ${sankey.height}`" role="img" aria-label="前后项目类型流向">
           <g v-for="l in sankey.links" :key="l.a+l.b" class="rs-hit" @mouseenter="flowTip($event,l)" @mousemove="move" @mouseleave="hide"><path :d="l.d" :fill="l.fill" :opacity="l.op"/></g>
           <template v-for="t in ORDER" :key="t">
             <g v-if="sankey.posL[t]"><rect :x="LX" :y="sankey.posL[t].y" :width="NW" :height="sankey.posL[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
-              <text v-if="sankey.posL[t].h>10" :x="LX-16" :y="sankey.posL[t].y+sankey.posL[t].h/2+6" font-size="17" font-weight="500" text-anchor="end" fill="#2a2a2a">{{t==='重点等'?'联合等':TYPE_NAME[t]}}</text></g>
+              <text v-if="sankey.posL[t].h>10" :x="LX-16" :y="sankey.posL[t].y+sankey.posL[t].h/2+6" font-size="16" font-weight="500" text-anchor="end" fill="#2a2a2a">{{t==='重点等'?'联合等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
             <g v-if="sankey.posR[t]"><rect :x="RX" :y="sankey.posR[t].y" :width="NW" :height="sankey.posR[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
-              <text v-if="sankey.posR[t].h>10" :x="RX+NW+16" :y="sankey.posR[t].y+sankey.posR[t].h/2+6" font-size="17" font-weight="500" fill="#2a2a2a">{{t==='重点等'?'联合·重大等':TYPE_NAME[t]}}</text></g>
+              <text v-if="sankey.posR[t].h>10" :x="RX+NW+16" :y="sankey.posR[t].y+sankey.posR[t].h/2+6" font-size="16" font-weight="500" fill="#2a2a2a">{{t==='重点等'?'联合·重大等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
           </template>
           <g v-if="link('青年','面上')" pointer-events="none"><text :x="link('青年','面上').mx" :y="(link('青年','面上').y0+link('青年','面上').y1)/2+link('青年','面上').h/2+4" font-size="28" font-weight="700" text-anchor="middle" fill="#7a0a1c">{{pct('青年','面上')}}%</text>
             <text :x="link('青年','面上').mx" :y="(link('青年','面上').y0+link('青年','面上').y1)/2+link('青年','面上').h/2+26" font-size="14" text-anchor="middle" fill="#7a0a1c">{{flowN('青年','面上')}} / {{out('青年')}} 位青年项目负责人</text></g>
@@ -95,21 +95,21 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
   </section>
 </template>
 <style scoped>
-.rs-succ{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:36px}
+.rs-succ{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px}
 .rs-succ h4{font-size:22px;margin:0;font-weight:700}
 .rs-lead{font-size:16px;color:var(--rs-red);font-weight:500;margin:6px 0 16px}
 .rs-succ-right{border-left:1px solid var(--rs-line);padding-left:36px}
 .rs-case-gname{font-size:14px;font-weight:700;color:var(--rs-muted);letter-spacing:1px;margin:14px 0 6px}
-.rs-case{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:8px 8px;cursor:pointer;font-family:inherit}
+.rs-case{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:8px 8px;cursor:pointer;font-family:inherit}
 .rs-case:hover,.rs-case.on{background:#f7f5f2}
 .who b{display:block;font-size:17px;color:var(--rs-ink)}.who b.hl{color:var(--rs-red)}
 .who small{font-size:12.5px;color:var(--rs-muted)}
-.steps{display:flex;align-items:center;flex-wrap:wrap;row-gap:6px;min-width:0}
-.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--rs-line);background:#fff;border-radius:20px;padding:4px 14px 4px 4px;font-size:15px;color:var(--rs-ink);white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.steps{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--rs-line);background:#fff;border-radius:20px;padding:4px 14px 4px 4px;font-size:15px;color:var(--rs-ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .pill em{font-style:normal;font-size:13px;font-weight:700;border-radius:14px;padding:4px 10px;flex:none}
-.steps.three .pill{font-size:14px;padding-right:10px}
-.rib{flex:0 0 26px;height:12px;opacity:.55;clip-path:polygon(0 0,100% 20%,100% 80%,0 100%)}
-.steps.three .rib{flex-basis:12px}
+
+.rib{display:block;width:3px;height:10px;margin-left:34px;opacity:.6}
+
 .rs-case-detail{margin-top:12px;background:#f7f5f2;border-radius:12px;padding:16px 18px}
 .rs-case-detail ol{margin:6px 0 8px;padding-left:20px}
 .rs-case-detail li{margin:6px 0;font-size:14.5px}
