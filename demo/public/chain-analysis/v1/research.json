@@ -1,703 +1,1584 @@
 {
-  "version": "synthetic-design-preview",
-  "landscape": {
-    "range": [
-      2017,
-      2025
-    ],
-    "checkedAt": "2026-11-03",
-    "organizations": [
-      {
-        "id": "tsinghua",
-        "name": "清华大学",
-        "subtitle": "中国 · 高校",
-        "region": "cn",
-        "group": "高校与科研机构"
-      },
-      {
-        "id": "zhipu",
-        "name": "智谱 AI",
-        "subtitle": "中国 · 企业",
-        "region": "cn",
-        "group": "高校与科研机构"
-      },
-      {
-        "id": "shlab",
-        "name": "上海人工智能实验室",
-        "subtitle": "中国 · 科研机构",
-        "region": "cn",
-        "group": "高校与科研机构"
-      },
-      {
-        "id": "qwen",
-        "name": "阿里巴巴 · 通义",
-        "subtitle": "中国 · 企业",
-        "region": "cn",
-        "group": "模型研发企业"
-      },
-      {
-        "id": "deepseek",
-        "name": "DeepSeek",
-        "subtitle": "中国 · 企业",
-        "region": "cn",
-        "group": "模型研发企业"
-      },
-      {
-        "id": "brain",
-        "name": "Google Brain",
-        "subtitle": "国际 · Google Research",
-        "region": "intl",
-        "group": "国际研究机构"
-      },
-      {
-        "id": "deepmind",
-        "name": "Google DeepMind",
-        "subtitle": "国际 · 企业研究",
-        "region": "intl",
-        "group": "国际研究机构"
-      },
-      {
-        "id": "openai",
-        "name": "OpenAI",
-        "subtitle": "国际 · 企业研究",
-        "region": "intl",
-        "group": "国际研究机构"
-      },
-      {
-        "id": "anthropic",
-        "name": "Anthropic",
-        "subtitle": "国际 · 企业研究",
-        "region": "intl",
-        "group": "国际研究机构"
-      },
-      {
-        "id": "meta",
-        "name": "Meta AI",
-        "subtitle": "国际 · 企业研究",
-        "region": "intl",
-        "group": "国际研究机构"
-      },
-      {
-        "id": "stanford",
-        "name": "斯坦福大学等",
-        "subtitle": "国际 · 高校合作",
-        "region": "intl",
-        "group": "高校系统研究"
-      },
-      {
-        "id": "berkeley",
-        "name": "加州大学伯克利分校等",
-        "subtitle": "国际 · 高校合作",
-        "region": "intl",
-        "group": "高校系统研究"
-      }
-    ],
-    "events": [
-      {
-        "id": "event-0",
-        "org": "tsinghua",
-        "year": 2021,
-        "label": "GLM",
-        "description": "自回归空白填充预训练，连接语言理解与生成任务。",
-        "url": "https://arxiv.org/abs/2103.10360",
-        "topic": "预训练方法"
-      },
-      {
-        "id": "event-1",
-        "org": "tsinghua",
-        "year": 2022,
-        "label": "GLM-130B",
-        "description": "清华与智谱共同研究的双语预训练模型，公开大规模训练的设计与工程经验。",
-        "url": "https://arxiv.org/abs/2210.02414",
-        "topic": "联合研究"
-      },
-      {
-        "id": "event-2",
-        "org": "zhipu",
-        "year": 2023,
-        "label": "ChatGLM",
-        "description": "沿 GLM 模型系列推进双语对话模型及开放实践。",
-        "url": "https://github.com/THUDM/ChatGLM-6B",
-        "topic": "对话模型"
-      },
-      {
-        "id": "event-3",
-        "org": "zhipu",
-        "year": 2024,
-        "label": "GLM-4",
-        "description": "模型系列进一步扩展到工具使用和多类任务。",
-        "url": "https://arxiv.org/abs/2406.12793",
-        "topic": "模型系列"
-      },
-      {
-        "id": "event-4",
-        "org": "shlab",
-        "year": 2023,
-        "label": "书生·浦语",
-        "description": "上海 AI 实验室、商汤及多所高校联合发布大语言模型。",
-        "url": "https://www.shlab.org.cn/news/5443407",
-        "topic": "联合研究"
-      },
-      {
-        "id": "event-5",
-        "org": "qwen",
-        "year": 2023,
-        "label": "Qwen-VL",
-        "description": "将视觉理解、文字识别与定位能力纳入视觉语言模型。",
-        "url": "https://arxiv.org/abs/2308.12966",
-        "topic": "多模态"
-      },
-      {
-        "id": "event-6",
-        "org": "qwen",
-        "year": 2025,
-        "label": "Qwen3",
-        "description": "模型系列推进推理与非推理模式的统一。",
-        "url": "https://arxiv.org/abs/2505.09388",
-        "topic": "推理模型"
-      },
-      {
-        "id": "event-7",
-        "org": "deepseek",
-        "year": 2024,
-        "label": "DeepSeek-V2",
-        "description": "以混合专家和多头潜在注意力探索更高效的模型训练与推理。",
-        "url": "https://arxiv.org/abs/2405.04434",
-        "topic": "架构与效率"
-      },
-      {
-        "id": "event-8",
-        "org": "deepseek",
-        "year": 2025,
-        "label": "DeepSeek-R1",
-        "description": "通过强化学习推进大语言模型的推理能力。",
-        "url": "https://arxiv.org/abs/2501.12948",
-        "topic": "推理模型"
-      },
-      {
-        "id": "event-9",
-        "org": "brain",
-        "year": 2017,
-        "label": "Transformer",
-        "description": "以注意力机制构建序列转换架构，成为后续预训练模型的重要基础。",
-        "url": "https://arxiv.org/abs/1706.03762",
-        "topic": "基础架构"
-      },
-      {
-        "id": "event-10",
-        "org": "brain",
-        "year": 2018,
-        "label": "BERT",
-        "description": "双向预训练与任务微调结合，推进通用语言表示。",
-        "url": "https://arxiv.org/abs/1810.04805",
-        "topic": "预训练方法"
-      },
-      {
-        "id": "event-11",
-        "org": "deepmind",
-        "year": 2023,
-        "label": "Gemini",
-        "description": "原生多模态模型系列，整合文本、图像等能力。",
-        "url": "https://arxiv.org/abs/2312.11805",
-        "topic": "多模态"
-      },
-      {
-        "id": "event-12",
-        "org": "deepmind",
-        "year": 2024,
-        "label": "Gemini 1.5",
-        "description": "扩展长上下文能力，支持多模态信息理解。",
-        "url": "https://arxiv.org/abs/2403.05530",
-        "topic": "长上下文"
-      },
-      {
-        "id": "event-13",
-        "org": "openai",
-        "year": 2018,
-        "label": "GPT",
-        "description": "将生成式预训练与监督微调结合，用于多类语言任务。",
-        "url": "https://openai.com/index/language-unsupervised/",
-        "topic": "预训练方法"
-      },
-      {
-        "id": "event-14",
-        "org": "openai",
-        "year": 2022,
-        "label": "ChatGPT",
-        "description": "通过对话交互和人类反馈训练，推动大语言模型进入广泛使用。",
-        "url": "https://openai.com/index/chatgpt/",
-        "topic": "对话应用"
-      },
-      {
-        "id": "event-15",
-        "org": "openai",
-        "year": 2023,
-        "label": "GPT-4",
-        "description": "扩展多模态输入与复杂任务能力。",
-        "url": "https://openai.com/index/gpt-4-research/",
-        "topic": "多模态"
-      },
-      {
-        "id": "event-16",
-        "org": "anthropic",
-        "year": 2023,
-        "label": "Claude",
-        "description": "围绕有用、诚实和无害的目标推进对话模型。",
-        "url": "https://www.anthropic.com/news/introducing-claude",
-        "topic": "对齐与应用"
-      },
-      {
-        "id": "event-17",
-        "org": "anthropic",
-        "year": 2024,
-        "label": "Claude 3",
-        "description": "推出不同能力与成本取向的模型系列。",
-        "url": "https://www.anthropic.com/news/claude-3-family",
-        "topic": "模型系列"
-      },
-      {
-        "id": "event-18",
-        "org": "meta",
-        "year": 2023,
-        "label": "LLaMA",
-        "description": "探索更高效的基础语言模型训练，扩大研究模型的可用性。",
-        "url": "https://arxiv.org/abs/2302.13971",
-        "topic": "基础模型"
-      },
-      {
-        "id": "event-19",
-        "org": "stanford",
-        "year": 2022,
-        "label": "FlashAttention",
-        "description": "围绕显存读写重新组织注意力计算，提升系统执行效率。",
-        "url": "https://arxiv.org/abs/2205.14135",
-        "topic": "系统优化"
-      },
-      {
-        "id": "event-20",
-        "org": "berkeley",
-        "year": 2023,
-        "label": "vLLM",
-        "description": "用 PagedAttention 改进大语言模型服务中的显存管理。",
-        "url": "https://arxiv.org/abs/2309.06180",
-        "topic": "推理服务"
-      }
-    ],
-    "connections": [
-      {
-        "id": "tsinghua-zhipu",
-        "source": "tsinghua",
-        "target": "zhipu",
-        "year": 2019,
-        "label": "实验室成果转化",
-        "description": "清华大学计算机系公开材料记载：知识工程实验室于 2019 年转化了智谱 AI。GLM 系列体现了后续校企联合研究。",
-        "url": "https://www.cs.tsinghua.edu.cn/info/1088/4451.htm"
-      },
-      {
-        "id": "brain-deepmind",
-        "source": "brain",
-        "target": "deepmind",
-        "year": 2023,
-        "label": "研究团队合并",
-        "description": "Google 于 2023 年宣布将 DeepMind 与 Google Research 的 Brain 团队合并为 Google DeepMind。",
-        "url": "https://deepmind.google/blog/announcing-google-deepmind/"
-      }
-    ]
-  },
-  "graph": {
-    "project_nodes": [
-      {
-        "project_id": "NSFC:DEMO-1",
-        "grant_no": "DEMO-1",
-        "title": "演示：少样本识别研究",
-        "approval_year": 2019,
-        "project_type": "青年科学基金项目",
-        "institution": "兰州理工大学",
-        "principal_investigator": "演示研究者",
-        "start_date": "2020-01-01",
-        "end_date": "2022-12-31",
-        "amount_raw": 20,
-        "amount_unit": "万元",
-        "abstract_zh": "用于布局测试的合成研究摘要。",
-        "keywords_zh": [
-          "示例技术"
-        ],
-        "short_title": "合成项目 1",
-        "research_question": "如何表达研究的持续积累？",
-        "planned_methods": [
-          "展示项目、论文与时间关系"
-        ],
-        "summary_sentence": "合成样例，供界面排版。"
-      },
-      {
-        "project_id": "NSFC:DEMO-2",
-        "grant_no": "DEMO-2",
-        "title": "演示：迁移与度量学习",
-        "approval_year": 2021,
-        "project_type": "面上项目",
-        "institution": "兰州理工大学",
-        "principal_investigator": "演示研究者",
-        "start_date": "2022-01-01",
-        "end_date": "2024-12-31",
-        "amount_raw": 50,
-        "amount_unit": "万元",
-        "abstract_zh": "用于布局测试的合成研究摘要。",
-        "keywords_zh": [
-          "示例技术"
-        ],
-        "short_title": "合成项目 2",
-        "research_question": "如何表达研究的持续积累？",
-        "planned_methods": [
-          "展示项目、论文与时间关系"
-        ],
-        "summary_sentence": "合成样例，供界面排版。"
-      }
-    ],
-    "paper_nodes": [
-      {
-        "paper_id": "DEMO-PAPER-0-0",
-        "project_id": "NSFC:DEMO-1",
-        "title": "合成论文 1-1",
-        "publication_year": 2020,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 1",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-0-1",
-        "project_id": "NSFC:DEMO-1",
-        "title": "合成论文 1-2",
-        "publication_year": 2021,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 2",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-1-0",
-        "project_id": "NSFC:DEMO-2",
-        "title": "合成论文 2-1",
-        "publication_year": 2022,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 1",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-1-1",
-        "project_id": "NSFC:DEMO-2",
-        "title": "合成论文 2-2",
-        "publication_year": 2023,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 2",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      }
-    ],
-    "project_paper_edges": [
-      {
-        "project_id": "NSFC:DEMO-1",
-        "paper_id": "DEMO-PAPER-0-0",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "evidence_count": 1
-      },
-      {
-        "project_id": "NSFC:DEMO-1",
-        "paper_id": "DEMO-PAPER-0-1",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "evidence_count": 1
-      },
-      {
-        "project_id": "NSFC:DEMO-2",
-        "paper_id": "DEMO-PAPER-1-0",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "evidence_count": 1
-      },
-      {
-        "project_id": "NSFC:DEMO-2",
-        "paper_id": "DEMO-PAPER-1-1",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "evidence_count": 1
-      }
-    ],
-    "coverage_by_institution": []
-  },
-  "continuity": [
-    {
-      "person_id": "DEMO-PERSON",
-      "earlier_project_id": "NSFC:DEMO-1",
-      "later_project_id": "NSFC:DEMO-2",
-      "earlier_project_type": "青年科学基金项目",
-      "later_project_type": "面上项目",
-      "shared_official_source_person_ids": [
-        "DEMO"
-      ]
-    }
+ "version": "synthetic-design-preview",
+ "landscape": {
+  "range": [
+   2017,
+   2026
   ],
-  "focus": {
-    "year_summary": [
-      {
-        "year": 2017,
-        "total": 10
-      },
-      {
-        "year": 2018,
-        "total": 13
-      },
-      {
-        "year": 2019,
-        "total": 16
-      },
-      {
-        "year": 2020,
-        "total": 19
-      },
-      {
-        "year": 2021,
-        "total": 22
-      }
-    ],
-    "org_years": [],
-    "cohort_institutions": {
-      "0": {
-        "years": {
-          "2022": 1
-        }
-      },
-      "1": {
-        "years": {
-          "2022": 1,
-          "2023": 1
-        }
-      },
-      "2": {
-        "years": {
-          "2022": 1,
-          "2023": 1,
-          "2024": 1
-        }
-      },
-      "3": {
-        "years": {
-          "2022": 1,
-          "2023": 1,
-          "2024": 1,
-          "2025": 1
-        }
-      },
-      "4": {
-        "years": {
-          "2022": 1
-        }
-      },
-      "5": {
-        "years": {
-          "2022": 1,
-          "2023": 1
-        }
-      },
-      "6": {
-        "years": {
-          "2022": 1,
-          "2023": 1,
-          "2024": 1
-        }
-      },
-      "7": {
-        "years": {
-          "2022": 1,
-          "2023": 1,
-          "2024": 1,
-          "2025": 1
-        }
-      }
-    }
-  },
-  "branches": {},
-  "caseDetail": {
-    "case": {},
-    "projects": [
-      {
-        "project_id": "NSFC:DEMO-1",
-        "grant_no": "DEMO-1",
-        "title": "演示：少样本识别研究",
-        "approval_year": 2019,
-        "project_type": "青年科学基金项目",
-        "institution": "兰州理工大学",
-        "principal_investigator": "演示研究者",
-        "start_date": "2020-01-01",
-        "end_date": "2022-12-31",
-        "amount_raw": 20,
-        "amount_unit": "万元",
-        "abstract_zh": "用于布局测试的合成研究摘要。",
-        "keywords_zh": [
-          "示例技术"
-        ],
-        "short_title": "合成项目 1",
-        "research_question": "如何表达研究的持续积累？",
-        "planned_methods": [
-          "展示项目、论文与时间关系"
-        ],
-        "summary_sentence": "合成样例，供界面排版。"
-      },
-      {
-        "project_id": "NSFC:DEMO-2",
-        "grant_no": "DEMO-2",
-        "title": "演示：迁移与度量学习",
-        "approval_year": 2021,
-        "project_type": "面上项目",
-        "institution": "兰州理工大学",
-        "principal_investigator": "演示研究者",
-        "start_date": "2022-01-01",
-        "end_date": "2024-12-31",
-        "amount_raw": 50,
-        "amount_unit": "万元",
-        "abstract_zh": "用于布局测试的合成研究摘要。",
-        "keywords_zh": [
-          "示例技术"
-        ],
-        "short_title": "合成项目 2",
-        "research_question": "如何表达研究的持续积累？",
-        "planned_methods": [
-          "展示项目、论文与时间关系"
-        ],
-        "summary_sentence": "合成样例，供界面排版。"
-      }
-    ],
-    "papers": [
-      {
-        "paper_id": "DEMO-PAPER-0-0",
-        "project_id": "NSFC:DEMO-1",
-        "title": "合成论文 1-1",
-        "publication_year": 2020,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 1",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-0-1",
-        "project_id": "NSFC:DEMO-1",
-        "title": "合成论文 1-2",
-        "publication_year": 2021,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 2",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-1-0",
-        "project_id": "NSFC:DEMO-2",
-        "title": "合成论文 2-1",
-        "publication_year": 2022,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 1",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      },
-      {
-        "paper_id": "DEMO-PAPER-1-1",
-        "project_id": "NSFC:DEMO-2",
-        "title": "合成论文 2-2",
-        "publication_year": 2023,
-        "doi": "",
-        "bases": [
-          "fund_registered_outcome"
-        ],
-        "primary_url": "https://example.org",
-        "short_title": "示例方法 2",
-        "problem": "用于设计测试的研究问题",
-        "method": "用于设计测试的方法说明",
-        "summary_sentence": "合成内容用于呈现卡片与关系。",
-        "contribution_type": "方法研究",
-        "research_branch": "合成示例",
-        "relationship_evidence": "合成关系，不对应真实项目",
-        "evidence_location": "演示样例"
-      }
+  "checkedAt": "2026-11-03",
+  "scope": "公开资料整理的代表性里程碑，不属于 NSFC 数据库统计；“NSFC 数据内”项目数为 2017—2021 年 AI 项目承担数。",
+  "groups": [
+   {
+    "id": "cn-inst",
+    "label": "中国 · 科研机构与高校",
+    "region": "cn",
+    "lanes": [
+     {
+      "id": "casia",
+      "name": "中科院自动化所",
+      "note": "科研机构",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "pcl",
+      "name": "鹏城实验室",
+      "note": "国家实验室",
+      "start": 2018.3,
+      "end": null
+     },
+     {
+      "id": "baai",
+      "name": "智源 · 上海 AI 实验室",
+      "note": "新型研发机构",
+      "start": 2018.8,
+      "end": null
+     },
+     {
+      "id": "tsinghua",
+      "name": "清华大学",
+      "note": "高校",
+      "start": 2017,
+      "end": null
+     }
     ]
+   },
+   {
+    "id": "cn-firm",
+    "label": "中国 · 企业",
+    "region": "cn",
+    "lanes": [
+     {
+      "id": "zhipu",
+      "name": "智谱 AI",
+      "note": "2019 年成立 · 清华衍生",
+      "start": 2019.5,
+      "end": null
+     },
+     {
+      "id": "modelbest",
+      "name": "面壁智能",
+      "note": "2022 年成立 · 清华衍生",
+      "start": 2022.6,
+      "end": null
+     },
+     {
+      "id": "moonshot",
+      "name": "月之暗面",
+      "note": "2023 年成立",
+      "start": 2023.3,
+      "end": null
+     },
+     {
+      "id": "qwen",
+      "name": "阿里巴巴",
+      "note": "达摩院 · 通义实验室",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "baidu",
+      "name": "百度",
+      "note": "文心大模型",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "bytedance",
+      "name": "字节跳动",
+      "note": "Seed 团队",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "note": "2023 年成立 · 源自幻方量化",
+      "start": 2023.5,
+      "end": null
+     }
+    ]
+   },
+   {
+    "id": "intl-firm",
+    "label": "国际 · 企业",
+    "region": "intl",
+    "lanes": [
+     {
+      "id": "brain",
+      "name": "Google Brain",
+      "note": "2023 年并入 Google DeepMind",
+      "start": 2017,
+      "end": 2023.25
+     },
+     {
+      "id": "deepmind",
+      "name": "Google DeepMind",
+      "note": "原 DeepMind",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "openai",
+      "name": "OpenAI",
+      "note": "2015 年成立",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "note": "2021 年成立",
+      "start": 2021.3,
+      "end": null
+     },
+     {
+      "id": "meta",
+      "name": "Meta AI",
+      "note": "FAIR · 超级智能实验室",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "msr",
+      "name": "微软研究院",
+      "note": "含微软亚洲研究院",
+      "start": 2017,
+      "end": null
+     },
+     {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "note": "2023 年成立 · 法国",
+      "start": 2023.3,
+      "end": null
+     }
+    ]
+   },
+   {
+    "id": "intl-univ",
+    "label": "国际 · 高校",
+    "region": "intl",
+    "lanes": [
+     {
+      "id": "univ",
+      "name": "斯坦福 · 伯克利",
+      "note": "高校",
+      "start": 2017,
+      "end": null
+     }
+    ]
+   }
+  ],
+  "eras": [
+   {
+    "start": 2017,
+    "end": 2020,
+    "label": "架构与预训练",
+    "description": "Transformer 统一架构，预训练成为范式"
+   },
+   {
+    "start": 2020,
+    "end": 2023,
+    "label": "规模化与对齐",
+    "description": "参数规模跃升，人类反馈进入训练"
+   },
+   {
+    "start": 2023,
+    "end": 2025,
+    "label": "产品化与开源",
+    "description": "对话产品普及，开放权重模型全面跟进"
+   },
+   {
+    "start": 2025,
+    "end": 2027,
+    "label": "推理与开放竞争",
+    "description": "推理模型兴起，中外开放模型同台竞争"
+   }
+  ],
+  "events": [
+   {
+    "id": "event-0",
+    "org": "casia",
+    "year": 2021,
+    "month": 7,
+    "label": "紫东太初",
+    "description": "图文音三模态预训练大模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-1",
+    "org": "pcl",
+    "year": 2021,
+    "month": 4,
+    "label": "鹏程·盘古α",
+    "description": "与华为等联合发布的 2000 亿参数中文预训练模型，开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2104.12369"
+   },
+   {
+    "id": "event-2",
+    "org": "pcl",
+    "year": 2021,
+    "month": 12,
+    "label": "文心·鹏城",
+    "description": "与百度联合发布 ERNIE 3.0 Titan，2600 亿参数。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2112.12731"
+   },
+   {
+    "id": "event-3",
+    "org": "baai",
+    "year": 2021,
+    "month": 6,
+    "label": "悟道 2.0",
+    "description": "智源研究院发布的 1.75 万亿参数模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-4",
+    "org": "baai",
+    "year": 2023,
+    "month": 6,
+    "label": "书生·浦语",
+    "description": "上海 AI 实验室、商汤及多所高校联合发布大语言模型，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://www.shlab.org.cn/news/5443407"
+   },
+   {
+    "id": "event-5",
+    "org": "baai",
+    "year": 2024,
+    "month": 10,
+    "label": "Emu3",
+    "description": "智源研究院原生多模态模型，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2409.18869"
+   },
+   {
+    "id": "event-6",
+    "org": "tsinghua",
+    "year": 2021,
+    "month": 3,
+    "label": "GLM",
+    "description": "自回归空白填充预训练，连接语言理解与生成任务。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2103.10360"
+   },
+   {
+    "id": "event-7",
+    "org": "tsinghua",
+    "year": 2022,
+    "month": 8,
+    "label": "GLM-130B",
+    "description": "清华与智谱共同研究的千亿参数双语预训练模型，开源。",
+    "open": true,
+    "key": true,
+    "url": "https://arxiv.org/abs/2210.02414"
+   },
+   {
+    "id": "event-8",
+    "org": "zhipu",
+    "year": 2023,
+    "month": 3,
+    "label": "ChatGLM",
+    "description": "沿 GLM 模型系列推进双语对话模型，ChatGLM-6B 开源。",
+    "open": true,
+    "key": false,
+    "url": "https://github.com/THUDM/ChatGLM-6B"
+   },
+   {
+    "id": "event-9",
+    "org": "zhipu",
+    "year": 2024,
+    "month": 1,
+    "label": "GLM-4",
+    "description": "模型系列扩展到工具使用和多类任务。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2406.12793"
+   },
+   {
+    "id": "event-10",
+    "org": "zhipu",
+    "year": 2025,
+    "month": 7,
+    "label": "GLM-4.5",
+    "description": "GLM-4.5 系列开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2508.06471"
+   },
+   {
+    "id": "event-11",
+    "org": "modelbest",
+    "year": 2024,
+    "month": 2,
+    "label": "MiniCPM",
+    "description": "端侧小规模语言模型，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2404.06395"
+   },
+   {
+    "id": "event-12",
+    "org": "moonshot",
+    "year": 2023,
+    "month": 10,
+    "label": "Kimi",
+    "description": "长上下文对话助手。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-13",
+    "org": "moonshot",
+    "year": 2025,
+    "month": 1,
+    "label": "Kimi k1.5",
+    "description": "多模态推理模型。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2501.12599"
+   },
+   {
+    "id": "event-14",
+    "org": "moonshot",
+    "year": 2025,
+    "month": 7,
+    "label": "Kimi K2",
+    "description": "万亿参数混合专家模型，开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2507.20534"
+   },
+   {
+    "id": "event-15",
+    "org": "qwen",
+    "year": 2021,
+    "month": 3,
+    "label": "M6",
+    "description": "达摩院多模态预训练模型。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2103.00823"
+   },
+   {
+    "id": "event-16",
+    "org": "qwen",
+    "year": 2023,
+    "month": 4,
+    "label": "通义千问",
+    "description": "2023 年 4 月发布，8 月起开源 Qwen 系列。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-17",
+    "org": "qwen",
+    "year": 2024,
+    "month": 9,
+    "label": "Qwen2.5",
+    "description": "Qwen2.5 系列开源。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-18",
+    "org": "qwen",
+    "year": 2025,
+    "month": 4,
+    "label": "Qwen3",
+    "description": "模型系列推进推理与非推理模式的统一，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2505.09388"
+   },
+   {
+    "id": "event-19",
+    "org": "qwen",
+    "year": 2026,
+    "month": 2,
+    "label": "Qwen3.5",
+    "description": "Qwen3.5 开放权重。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-20",
+    "org": "baidu",
+    "year": 2019,
+    "month": 3,
+    "label": "ERNIE",
+    "description": "知识增强预训练模型，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/1904.09223"
+   },
+   {
+    "id": "event-21",
+    "org": "baidu",
+    "year": 2023,
+    "month": 3,
+    "label": "文心一言",
+    "description": "对话式大模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-22",
+    "org": "baidu",
+    "year": 2025,
+    "month": 6,
+    "label": "文心 4.5",
+    "description": "文心 4.5 系列开放权重。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-23",
+    "org": "bytedance",
+    "year": 2024,
+    "month": 5,
+    "label": "豆包",
+    "description": "豆包大模型发布。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-24",
+    "org": "bytedance",
+    "year": 2025,
+    "month": 1,
+    "label": "豆包 1.5",
+    "description": "豆包 1.5 Pro 发布。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-25",
+    "org": "deepseek",
+    "year": 2023,
+    "month": 11,
+    "label": "DeepSeek LLM",
+    "description": "首个开源大语言模型。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2401.02954"
+   },
+   {
+    "id": "event-26",
+    "org": "deepseek",
+    "year": 2024,
+    "month": 5,
+    "label": "DeepSeek-V2",
+    "description": "以混合专家和多头潜在注意力探索更高效的训练与推理，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2405.04434"
+   },
+   {
+    "id": "event-27",
+    "org": "deepseek",
+    "year": 2025,
+    "month": 1,
+    "label": "DeepSeek-R1",
+    "description": "通过强化学习推进推理能力，开源（基于 2024 年 12 月发布的 V3）。",
+    "open": true,
+    "key": true,
+    "url": "https://arxiv.org/abs/2501.12948"
+   },
+   {
+    "id": "event-28",
+    "org": "deepseek",
+    "year": 2026,
+    "month": 4,
+    "label": "DeepSeek-V4",
+    "description": "V4 开放权重，支持百万级上下文。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-29",
+    "org": "brain",
+    "year": 2017,
+    "month": 6,
+    "label": "Transformer",
+    "description": "以注意力机制构建序列转换架构，成为后续预训练模型的通用基础。",
+    "open": true,
+    "key": true,
+    "url": "https://arxiv.org/abs/1706.03762"
+   },
+   {
+    "id": "event-30",
+    "org": "brain",
+    "year": 2018,
+    "month": 10,
+    "label": "BERT",
+    "description": "双向预训练与任务微调结合，推进通用语言表示，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/1810.04805"
+   },
+   {
+    "id": "event-31",
+    "org": "brain",
+    "year": 2019,
+    "month": 10,
+    "label": "T5",
+    "description": "统一的“文本到文本”预训练框架，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/1910.10683"
+   },
+   {
+    "id": "event-32",
+    "org": "brain",
+    "year": 2022,
+    "month": 4,
+    "label": "PaLM",
+    "description": "5400 亿参数语言模型。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2204.02311"
+   },
+   {
+    "id": "event-33",
+    "org": "deepmind",
+    "year": 2017,
+    "month": 10,
+    "label": "AlphaGo Zero",
+    "description": "无需人类棋谱，仅靠自我对弈达到超人水平。",
+    "open": false,
+    "key": false,
+    "url": "https://doi.org/10.1038/nature24270"
+   },
+   {
+    "id": "event-34",
+    "org": "deepmind",
+    "year": 2018,
+    "month": 12,
+    "label": "AlphaFold",
+    "description": "蛋白质结构预测（CASP13）。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-35",
+    "org": "deepmind",
+    "year": 2020,
+    "month": 11,
+    "label": "AlphaFold 2",
+    "description": "蛋白质结构预测接近实验精度，2021 年开源。",
+    "open": true,
+    "key": true,
+    "url": "https://doi.org/10.1038/s41586-021-03819-2"
+   },
+   {
+    "id": "event-36",
+    "org": "deepmind",
+    "year": 2023,
+    "month": 12,
+    "label": "Gemini",
+    "description": "原生多模态模型系列。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2312.11805"
+   },
+   {
+    "id": "event-37",
+    "org": "deepmind",
+    "year": 2024,
+    "month": 10,
+    "label": "诺贝尔化学奖",
+    "description": "AlphaFold 相关工作获 2024 年诺贝尔化学奖；同年发布 AlphaFold 3。",
+    "open": false,
+    "key": true,
+    "url": "https://www.nobelprize.org/prizes/chemistry/2024/summary/"
+   },
+   {
+    "id": "event-38",
+    "org": "deepmind",
+    "year": 2025,
+    "month": 11,
+    "label": "Gemini 3",
+    "description": "Gemini 3 系列发布。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-39",
+    "org": "deepmind",
+    "year": 2026,
+    "month": 5,
+    "label": "Gemini 3.5",
+    "description": "Gemini 3.5 Flash 发布。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-40",
+    "org": "openai",
+    "year": 2018,
+    "month": 6,
+    "label": "GPT",
+    "description": "生成式预训练与监督微调结合，开源代码。",
+    "open": true,
+    "key": false,
+    "url": "https://openai.com/index/language-unsupervised/"
+   },
+   {
+    "id": "event-41",
+    "org": "openai",
+    "year": 2019,
+    "month": 2,
+    "label": "GPT-2",
+    "description": "15 亿参数语言模型，2019 年 11 月完整开放。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-42",
+    "org": "openai",
+    "year": 2020,
+    "month": 5,
+    "label": "GPT-3",
+    "description": "1750 亿参数，少样本学习。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2005.14165"
+   },
+   {
+    "id": "event-43",
+    "org": "openai",
+    "year": 2021,
+    "month": 1,
+    "label": "CLIP",
+    "description": "图文对比预训练，开放权重；同期发布 DALL·E。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2103.00020"
+   },
+   {
+    "id": "event-44",
+    "org": "openai",
+    "year": 2022,
+    "month": 11,
+    "label": "ChatGPT",
+    "description": "通过对话交互和人类反馈训练，推动大语言模型进入广泛使用。",
+    "open": false,
+    "key": true,
+    "url": "https://openai.com/index/chatgpt/"
+   },
+   {
+    "id": "event-45",
+    "org": "openai",
+    "year": 2023,
+    "month": 3,
+    "label": "GPT-4",
+    "description": "扩展多模态输入与复杂任务能力。",
+    "open": false,
+    "key": false,
+    "url": "https://openai.com/index/gpt-4-research/"
+   },
+   {
+    "id": "event-46",
+    "org": "openai",
+    "year": 2024,
+    "month": 9,
+    "label": "o1",
+    "description": "推理模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-47",
+    "org": "openai",
+    "year": 2025,
+    "month": 8,
+    "label": "GPT-5",
+    "description": "GPT-5 发布；同月发布开放权重模型 gpt-oss。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-48",
+    "org": "openai",
+    "year": 2026,
+    "month": 4,
+    "label": "GPT-5.5",
+    "description": "GPT-5.5 发布。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-49",
+    "org": "anthropic",
+    "year": 2022,
+    "month": 12,
+    "label": "宪法 AI",
+    "description": "以一组原则约束模型的 AI 反馈对齐方法。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2212.08073"
+   },
+   {
+    "id": "event-50",
+    "org": "anthropic",
+    "year": 2023,
+    "month": 3,
+    "label": "Claude",
+    "description": "围绕有用、诚实和无害的目标推进对话模型。",
+    "open": false,
+    "key": false,
+    "url": "https://www.anthropic.com/news/introducing-claude"
+   },
+   {
+    "id": "event-51",
+    "org": "anthropic",
+    "year": 2024,
+    "month": 3,
+    "label": "Claude 3",
+    "description": "推出不同能力与成本取向的模型系列。",
+    "open": false,
+    "key": false,
+    "url": "https://www.anthropic.com/news/claude-3-family"
+   },
+   {
+    "id": "event-52",
+    "org": "anthropic",
+    "year": 2025,
+    "month": 5,
+    "label": "Claude 4",
+    "description": "Claude 4 系列。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-53",
+    "org": "anthropic",
+    "year": 2026,
+    "month": 7,
+    "label": "Claude 5",
+    "description": "Claude 5 系列。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-54",
+    "org": "meta",
+    "year": 2018,
+    "month": 12,
+    "label": "PyTorch 1.0",
+    "description": "深度学习框架正式版，开源。",
+    "open": true,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-55",
+    "org": "meta",
+    "year": 2023,
+    "month": 2,
+    "label": "LLaMA",
+    "description": "开放权重基础语言模型，带动开源生态。",
+    "open": true,
+    "key": true,
+    "url": "https://arxiv.org/abs/2302.13971"
+   },
+   {
+    "id": "event-56",
+    "org": "meta",
+    "year": 2024,
+    "month": 4,
+    "label": "Llama 3",
+    "description": "Llama 3 系列，开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2407.21783"
+   },
+   {
+    "id": "event-57",
+    "org": "meta",
+    "year": 2025,
+    "month": 6,
+    "label": "超级智能实验室",
+    "description": "组建超级智能实验室，大规模引进人才。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-58",
+    "org": "msr",
+    "year": 2020,
+    "month": 2,
+    "label": "Turing-NLG",
+    "description": "170 亿参数语言模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-59",
+    "org": "msr",
+    "year": 2021,
+    "month": 3,
+    "label": "Swin Transformer",
+    "description": "微软亚洲研究院视觉 Transformer，获 ICCV 2021 最佳论文。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2103.14030"
+   },
+   {
+    "id": "event-60",
+    "org": "msr",
+    "year": 2024,
+    "month": 4,
+    "label": "Phi-3",
+    "description": "小规模高性能语言模型，开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2404.14219"
+   },
+   {
+    "id": "event-61",
+    "org": "mistral",
+    "year": 2023,
+    "month": 10,
+    "label": "Mistral 7B",
+    "description": "Mistral 7B（2023.9）与 Mixtral 8×7B 混合专家模型（2023.12），开放权重。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2310.06825"
+   },
+   {
+    "id": "event-62",
+    "org": "mistral",
+    "year": 2024,
+    "month": 2,
+    "label": "Mistral Large",
+    "description": "闭源旗舰模型。",
+    "open": false,
+    "key": false,
+    "url": ""
+   },
+   {
+    "id": "event-63",
+    "org": "univ",
+    "year": 2020,
+    "month": 3,
+    "label": "NeRF",
+    "description": "伯克利等提出神经辐射场，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2003.08934"
+   },
+   {
+    "id": "event-64",
+    "org": "univ",
+    "year": 2021,
+    "month": 8,
+    "label": "基础模型报告",
+    "description": "斯坦福提出“基础模型”概念。",
+    "open": false,
+    "key": false,
+    "url": "https://arxiv.org/abs/2108.07258"
+   },
+   {
+    "id": "event-65",
+    "org": "univ",
+    "year": 2022,
+    "month": 5,
+    "label": "FlashAttention",
+    "description": "围绕显存读写重新组织注意力计算，提升执行效率，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2205.14135"
+   },
+   {
+    "id": "event-66",
+    "org": "univ",
+    "year": 2023,
+    "month": 6,
+    "label": "vLLM",
+    "description": "用 PagedAttention 改进大语言模型服务中的显存管理，开源。",
+    "open": true,
+    "key": false,
+    "url": "https://arxiv.org/abs/2309.06180"
+   }
+  ],
+  "connections": [
+   {
+    "id": "tsinghua-zhipu",
+    "source": "tsinghua",
+    "target": "zhipu",
+    "year": 2019.5,
+    "label": "清华 KEG 实验室成果转化",
+    "kind": "spin",
+    "description": "清华大学计算机系公开材料记载：知识工程实验室于 2019 年转化了智谱 AI。",
+    "url": "https://www.cs.tsinghua.edu.cn/info/1088/4451.htm"
+   },
+   {
+    "id": "tsinghua-modelbest",
+    "source": "tsinghua",
+    "target": "modelbest",
+    "year": 2022.6,
+    "label": "清华 NLP 实验室衍生",
+    "kind": "spin",
+    "description": "面壁智能由清华大学自然语言处理实验室团队创立。",
+    "url": ""
+   },
+   {
+    "id": "tsinghua-moonshot",
+    "source": "tsinghua",
+    "target": "moonshot",
+    "year": 2023.3,
+    "label": "清华校友创立",
+    "kind": "spin",
+    "description": "月之暗面由清华大学校友创立。",
+    "url": ""
+   },
+   {
+    "id": "brain-deepmind",
+    "source": "brain",
+    "target": "deepmind",
+    "year": 2023.3,
+    "label": "并入",
+    "kind": "merge",
+    "description": "Google 于 2023 年宣布将 DeepMind 与 Google Research 的 Brain 团队合并为 Google DeepMind。",
+    "url": "https://deepmind.google/blog/announcing-google-deepmind/"
+   },
+   {
+    "id": "openai-anthropic",
+    "source": "openai",
+    "target": "anthropic",
+    "year": 2021.3,
+    "label": "前 OpenAI 成员创立",
+    "kind": "spin",
+    "description": "Anthropic 由前 OpenAI 成员于 2021 年创立。",
+    "url": ""
+   }
+  ],
+  "notes": [
+   {
+    "org": "brain",
+    "year": 2023.75,
+    "text": "OpenAI 人才外溢：Anthropic · SSI · Thinking Machines"
+   },
+   {
+    "org": "mistral",
+    "year": 2023.3,
+    "text": "前 DeepMind、Meta 研究者创立"
+   },
+   {
+    "org": "deepseek",
+    "year": 2023.5,
+    "text": "源自幻方量化"
+   }
+  ]
+ },
+ "graph": {
+  "project_nodes": [
+   {
+    "project_id": "NSFC:DEMO-1",
+    "grant_no": "DEMO-1",
+    "title": "演示：少样本识别研究",
+    "approval_year": 2019,
+    "project_type": "青年科学基金项目",
+    "institution": "兰州理工大学",
+    "principal_investigator": "演示研究者",
+    "start_date": "2020-01-01",
+    "end_date": "2022-12-31",
+    "amount_raw": 20,
+    "amount_unit": "万元",
+    "abstract_zh": "用于布局测试的合成研究摘要。",
+    "keywords_zh": [
+     "示例技术"
+    ],
+    "short_title": "合成项目 1",
+    "research_question": "如何表达研究的持续积累？",
+    "planned_methods": [
+     "展示项目、论文与时间关系"
+    ],
+    "summary_sentence": "合成样例，供界面排版。"
+   },
+   {
+    "project_id": "NSFC:DEMO-2",
+    "grant_no": "DEMO-2",
+    "title": "演示：迁移与度量学习",
+    "approval_year": 2021,
+    "project_type": "面上项目",
+    "institution": "兰州理工大学",
+    "principal_investigator": "演示研究者",
+    "start_date": "2022-01-01",
+    "end_date": "2024-12-31",
+    "amount_raw": 50,
+    "amount_unit": "万元",
+    "abstract_zh": "用于布局测试的合成研究摘要。",
+    "keywords_zh": [
+     "示例技术"
+    ],
+    "short_title": "合成项目 2",
+    "research_question": "如何表达研究的持续积累？",
+    "planned_methods": [
+     "展示项目、论文与时间关系"
+    ],
+    "summary_sentence": "合成样例，供界面排版。"
+   }
+  ],
+  "paper_nodes": [
+   {
+    "paper_id": "DEMO-PAPER-0-0",
+    "project_id": "NSFC:DEMO-1",
+    "title": "合成论文 1-1",
+    "publication_year": 2020,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 1",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-0-1",
+    "project_id": "NSFC:DEMO-1",
+    "title": "合成论文 1-2",
+    "publication_year": 2021,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 2",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-1-0",
+    "project_id": "NSFC:DEMO-2",
+    "title": "合成论文 2-1",
+    "publication_year": 2022,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 1",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-1-1",
+    "project_id": "NSFC:DEMO-2",
+    "title": "合成论文 2-2",
+    "publication_year": 2023,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 2",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   }
+  ],
+  "project_paper_edges": [
+   {
+    "project_id": "NSFC:DEMO-1",
+    "paper_id": "DEMO-PAPER-0-0",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "evidence_count": 1
+   },
+   {
+    "project_id": "NSFC:DEMO-1",
+    "paper_id": "DEMO-PAPER-0-1",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "evidence_count": 1
+   },
+   {
+    "project_id": "NSFC:DEMO-2",
+    "paper_id": "DEMO-PAPER-1-0",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "evidence_count": 1
+   },
+   {
+    "project_id": "NSFC:DEMO-2",
+    "paper_id": "DEMO-PAPER-1-1",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "evidence_count": 1
+   }
+  ],
+  "coverage_by_institution": []
+ },
+ "continuity": [
+  {
+   "person_id": "DEMO-PERSON",
+   "earlier_project_id": "NSFC:DEMO-1",
+   "later_project_id": "NSFC:DEMO-2",
+   "earlier_project_type": "青年科学基金项目",
+   "later_project_type": "面上项目",
+   "shared_official_source_person_ids": [
+    "DEMO"
+   ]
+  }
+ ],
+ "focus": {
+  "year_summary": [
+   {
+    "year": 2017,
+    "total": 10
+   },
+   {
+    "year": 2018,
+    "total": 13
+   },
+   {
+    "year": 2019,
+    "total": 16
+   },
+   {
+    "year": 2020,
+    "total": 19
+   },
+   {
+    "year": 2021,
+    "total": 22
+   }
+  ],
+  "org_years": [],
+  "cohort_institutions": {
+   "0": {
+    "years": {
+     "2022": 1
+    }
+   },
+   "1": {
+    "years": {
+     "2022": 1,
+     "2023": 1
+    }
+   },
+   "2": {
+    "years": {
+     "2022": 1,
+     "2023": 1,
+     "2024": 1
+    }
+   },
+   "3": {
+    "years": {
+     "2022": 1,
+     "2023": 1,
+     "2024": 1,
+     "2025": 1
+    }
+   },
+   "4": {
+    "years": {
+     "2022": 1
+    }
+   },
+   "5": {
+    "years": {
+     "2022": 1,
+     "2023": 1
+    }
+   },
+   "6": {
+    "years": {
+     "2022": 1,
+     "2023": 1,
+     "2024": 1
+    }
+   },
+   "7": {
+    "years": {
+     "2022": 1,
+     "2023": 1,
+     "2024": 1,
+     "2025": 1
+    }
+   }
+  }
+ },
+ "branches": {},
+ "caseDetail": {
+  "case": {},
+  "projects": [
+   {
+    "project_id": "NSFC:DEMO-1",
+    "grant_no": "DEMO-1",
+    "title": "演示：少样本识别研究",
+    "approval_year": 2019,
+    "project_type": "青年科学基金项目",
+    "institution": "兰州理工大学",
+    "principal_investigator": "演示研究者",
+    "start_date": "2020-01-01",
+    "end_date": "2022-12-31",
+    "amount_raw": 20,
+    "amount_unit": "万元",
+    "abstract_zh": "用于布局测试的合成研究摘要。",
+    "keywords_zh": [
+     "示例技术"
+    ],
+    "short_title": "合成项目 1",
+    "research_question": "如何表达研究的持续积累？",
+    "planned_methods": [
+     "展示项目、论文与时间关系"
+    ],
+    "summary_sentence": "合成样例，供界面排版。"
+   },
+   {
+    "project_id": "NSFC:DEMO-2",
+    "grant_no": "DEMO-2",
+    "title": "演示：迁移与度量学习",
+    "approval_year": 2021,
+    "project_type": "面上项目",
+    "institution": "兰州理工大学",
+    "principal_investigator": "演示研究者",
+    "start_date": "2022-01-01",
+    "end_date": "2024-12-31",
+    "amount_raw": 50,
+    "amount_unit": "万元",
+    "abstract_zh": "用于布局测试的合成研究摘要。",
+    "keywords_zh": [
+     "示例技术"
+    ],
+    "short_title": "合成项目 2",
+    "research_question": "如何表达研究的持续积累？",
+    "planned_methods": [
+     "展示项目、论文与时间关系"
+    ],
+    "summary_sentence": "合成样例，供界面排版。"
+   }
+  ],
+  "papers": [
+   {
+    "paper_id": "DEMO-PAPER-0-0",
+    "project_id": "NSFC:DEMO-1",
+    "title": "合成论文 1-1",
+    "publication_year": 2020,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 1",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-0-1",
+    "project_id": "NSFC:DEMO-1",
+    "title": "合成论文 1-2",
+    "publication_year": 2021,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 2",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-1-0",
+    "project_id": "NSFC:DEMO-2",
+    "title": "合成论文 2-1",
+    "publication_year": 2022,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 1",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   },
+   {
+    "paper_id": "DEMO-PAPER-1-1",
+    "project_id": "NSFC:DEMO-2",
+    "title": "合成论文 2-2",
+    "publication_year": 2023,
+    "doi": "",
+    "bases": [
+     "fund_registered_outcome"
+    ],
+    "primary_url": "https://example.org",
+    "short_title": "示例方法 2",
+    "problem": "用于设计测试的研究问题",
+    "method": "用于设计测试的方法说明",
+    "summary_sentence": "合成内容用于呈现卡片与关系。",
+    "contribution_type": "方法研究",
+    "research_branch": "合成示例",
+    "relationship_evidence": "合成关系，不对应真实项目",
+    "evidence_location": "演示样例"
+   }
+  ]
+ },
+ "institutionSummary": [
+  {
+   "present_2017": true,
+   "amount_yi": 0.8,
+   "projects": 12
   },
-  "institutionSummary": [
+  {
+   "present_2017": false,
+   "amount_yi": 0.2,
+   "projects": 5
+  }
+ ],
+ "strength": {
+  "synthetic": true,
+  "metrics": [
+   {
+    "label": "AI基金项目",
+    "value": 10000,
+    "unit": "个",
+    "scope": "合成样例"
+   },
+   {
+    "label": "AI基金登记成果关系",
+    "value": 100000,
+    "unit": "条",
+    "scope": "合成样例"
+   },
+   {
+    "label": "基金—论文关系",
+    "value": 1000000,
+    "unit": "对",
+    "scope": "合成样例"
+   },
+   {
+    "label": "基金—人员来源记录",
+    "value": 100000,
+    "unit": "条",
+    "scope": "合成样例"
+   },
+   {
+    "label": "人员—机构观察",
+    "value": 1000000,
+    "unit": "条",
+    "scope": "合成样例"
+   },
+   {
+    "label": "论文引用关系",
+    "value": 10000000,
+    "unit": "对",
+    "scope": "合成样例"
+   },
+   {
+    "label": "已接通专利—论文关系",
+    "value": 10000,
+    "unit": "对",
+    "scope": "合成样例"
+   }
+  ],
+  "annual": [
+   {
+    "year": 2017,
+    "projects": 100,
+    "amount_yi": 1.0,
+    "institutions": 50,
+    "top10_amount_pct": 20.0
+   },
+   {
+    "year": 2018,
+    "projects": 120,
+    "amount_yi": 1.5,
+    "institutions": 60,
+    "top10_amount_pct": 20.0
+   },
+   {
+    "year": 2019,
+    "projects": 140,
+    "amount_yi": 2.0,
+    "institutions": 70,
+    "top10_amount_pct": 20.0
+   },
+   {
+    "year": 2020,
+    "projects": 160,
+    "amount_yi": 2.5,
+    "institutions": 80,
+    "top10_amount_pct": 20.0
+   },
+   {
+    "year": 2021,
+    "projects": 180,
+    "amount_yi": 3.0,
+    "institutions": 90,
+    "top10_amount_pct": 20.0
+   }
+  ],
+  "split": [
+   {
+    "year": 2017,
+    "retained_institutions": 50,
+    "entered_institutions": 0,
+    "retained_projects": 100,
+    "entered_projects": 0
+   },
+   {
+    "year": 2018,
+    "retained_institutions": 40,
+    "entered_institutions": 20,
+    "retained_projects": 115,
+    "entered_projects": 10
+   },
+   {
+    "year": 2019,
+    "retained_institutions": 40,
+    "entered_institutions": 30,
+    "retained_projects": 130,
+    "entered_projects": 15
+   },
+   {
+    "year": 2020,
+    "retained_institutions": 40,
+    "entered_institutions": 40,
+    "retained_projects": 145,
+    "entered_projects": 20
+   },
+   {
+    "year": 2021,
+    "retained_institutions": 40,
+    "entered_institutions": 50,
+    "retained_projects": 160,
+    "entered_projects": 25
+   }
+  ],
+  "cohort": {
+   "institutions": 40,
+   "with_any": 30,
+   "at_least_two": 20,
+   "all_four": 10,
+   "year_count_distribution": [
     {
-      "present_2017": true,
-      "amount_yi": 0.8,
-      "projects": 12
+     "years": 0,
+     "institutions": 10
     },
     {
-      "present_2017": false,
-      "amount_yi": 0.2,
-      "projects": 5
+     "years": 1,
+     "institutions": 10
+    },
+    {
+     "years": 2,
+     "institutions": 5
+    },
+    {
+     "years": 3,
+     "institutions": 5
+    },
+    {
+     "years": 4,
+     "institutions": 10
     }
-  ]
+   ],
+   "window": [
+    2022,
+    2025
+   ],
+   "entry_years": [
+    2018,
+    2021
+   ]
+  },
+  "scope": {
+   "projects": 800,
+   "institutions": 120,
+   "years": [
+    2017,
+    2021
+   ]
+  },
+  "retained_2021": [
+   {
+    "present_2017": true,
+    "institutions": 40,
+    "projects": 160,
+    "amount_yi": 2.4
+   },
+   {
+    "present_2017": false,
+    "institutions": 50,
+    "projects": 25,
+    "amount_yi": 0.6
+   }
+  ],
+  "cases": []
+ }
 }

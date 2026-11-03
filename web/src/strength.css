@@ -1,0 +1,28 @@
+/* 研究力量模块：素色卡片、人大红点缀；与 Dashboard 现有背景一致，不使用渐变。 */
+.rs-page{--rs-red:#ae0d28;--rs-red-deep:#7a0a1c;--rs-red-mid:#d9737f;--rs-red-soft:#f0b7bf;--rs-red-wash:#fbeef0;--rs-blue:#2f5f7a;--rs-blue-2:#5b8aa5;--rs-blue-3:#9dbdd0;--rs-blue-4:#d3e2ec;--rs-ink:#2a2a2a;--rs-ink-2:#57534e;--rs-muted:#78716c;--rs-faint:#a8a29e;--rs-line:#e8e4df;--rs-grid:#efebe6;--rs-paper:#fff;--rs-bg:#f7f5f2;
+  background:var(--rs-paper);border:1px solid var(--rs-line);border-radius:16px;padding:30px 34px 28px;color:var(--rs-ink);position:relative}
+.rs-page:fullscreen{overflow:auto;border-radius:0;padding:36px 48px}
+.rs-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:18px}
+.rs-head .rs-no{font-size:38px;font-weight:300;color:var(--rs-red);line-height:1;padding-right:18px;border-right:2px solid var(--rs-line)}
+.rs-head h3{font-size:32px;font-weight:750;line-height:1.1;margin:0;color:var(--rs-ink)}
+.rs-head .rs-sub{font-size:16px;color:var(--rs-muted);padding-bottom:3px}
+.rs-tools{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rs-btn{border:1px solid var(--rs-line);background:var(--rs-paper);color:var(--rs-ink-2);border-radius:20px;padding:7px 15px;font-size:14px;cursor:pointer;line-height:1.3;font-family:inherit}
+.rs-btn:hover{border-color:#bfb6ae}
+.rs-btn.on{background:var(--rs-red);border-color:var(--rs-red);color:#fff}
+.rs-seg{display:inline-flex;border:1px solid var(--rs-line);border-radius:20px;overflow:hidden}
+.rs-seg button{border:0;background:var(--rs-paper);padding:7px 15px;font-size:14px;color:var(--rs-ink-2);cursor:pointer;font-family:inherit}
+.rs-seg button.on{background:var(--rs-ink);color:#fff}
+.rs-svg{display:block;width:100%;height:auto}
+.rs-svg text{font-family:inherit}
+.rs-scroll{overflow-x:auto}
+.rs-scroll>.rs-svg{min-width:900px}
+.rs-take{display:flex;gap:14px;margin-top:22px;padding-top:4px}
+.rs-take::before{content:"";flex:0 0 5px;border-radius:2px;background:var(--rs-red)}
+.rs-take p{font-size:20px;font-weight:700;line-height:1.6;color:var(--rs-ink);margin:0}
+.rs-foot{font-size:13px;color:var(--rs-faint);margin-top:10px;line-height:1.7}
+.rs-tip{position:fixed;z-index:60;pointer-events:none;background:#fff;border:1px solid var(--rs-line,#e8e4df);box-shadow:0 8px 26px rgba(40,20,20,.13);border-radius:9px;padding:10px 13px;font-size:13px;line-height:1.6;max-width:320px;color:#2a2a2a}
+.rs-tip b{color:#ae0d28}
+.rs-hit{cursor:pointer}
+.rs-empty{padding:60px 20px;text-align:center;color:var(--rs-muted);background:var(--rs-bg);border-radius:12px}
+@media(max-width:700px){.rs-page{padding:20px 16px}.rs-head h3{font-size:25px}.rs-head .rs-no{font-size:28px}.rs-take p{font-size:16px}}
