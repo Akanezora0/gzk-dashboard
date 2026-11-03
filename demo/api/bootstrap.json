@@ -1,0 +1,230 @@
+{
+  "updated_at": "2025-01-01",
+  "release": "synthetic-design-preview",
+  "overview": {
+    "datasets": [],
+    "headline": [],
+    "dataset_count": 0,
+    "type_count": 0,
+    "source_date": "2025-01-01",
+    "scope_note": ""
+  },
+  "inventory": {
+    "schema_version": 0,
+    "current_release": "",
+    "current_observed_at": "",
+    "previous_release": "",
+    "previous_observed_at": "",
+    "comparison_label": "合成样例",
+    "datasets": [],
+    "changed_sources": 0,
+    "comparable_sources": 0,
+    "new_sources": 0,
+    "removed_sources": []
+  },
+  "domain": {
+    "metrics": [],
+    "years": [],
+    "topic_counts": [],
+    "funnel": {
+      "ai": {
+        "direct_edges": 0,
+        "papers_with_direct_project_key": 0,
+        "linked_projects": 0
+      },
+      "llm": {
+        "direct_edges": 0,
+        "papers_with_direct_project_key": 0,
+        "linked_projects": 0
+      },
+      "llm_explicit": {
+        "direct_edges": 0,
+        "papers_with_direct_project_key": 0,
+        "linked_projects": 0
+      }
+    },
+    "version": "",
+    "source_date": "",
+    "note": ""
+  },
+  "tree": {
+    "schema_version": "",
+    "keyword_version": "",
+    "keyword_sha256": "",
+    "source_workbook_sha256": "",
+    "nodes": [],
+    "counts": {
+      "categories": 0,
+      "groups": 0,
+      "topics": 0
+    },
+    "relationship_policy": ""
+  },
+  "survey": {
+    "entries": [],
+    "batch_id": "",
+    "updated_at": "",
+    "run_status": "",
+    "run_note": "",
+    "counts": {
+      "total": 0,
+      "ready": 0,
+      "coverage": 0,
+      "pending": 0,
+      "failed": 0,
+      "by_status": {
+        "automatic_completed": 0,
+        "coverage_pending": 0,
+        "failed": 0,
+        "accepted_legacy_demo": 0,
+        "draft_completed": 0
+      }
+    },
+    "expert_reviewed": false
+  },
+  "milestones": [],
+  "study": {
+    "schema_version": "",
+    "created_at": "",
+    "keyword_sha256": "",
+    "domain_keyword_sha256": "",
+    "milestones": [],
+    "mixed_graph": {
+      "nodes": [],
+      "edges": [],
+      "meta": {
+        "nodes": 0,
+        "edges": 0,
+        "sample_records": 0,
+        "scope_label": "",
+        "sample_selection": ""
+      }
+    },
+    "graphs": {
+      "fund_paper": {
+        "nodes": [],
+        "edges": [],
+        "meta": {
+          "nodes": 0,
+          "edges": 0,
+          "sample_records": 0,
+          "scope_label": "",
+          "sample_selection": ""
+        }
+      },
+      "patent_tech": {
+        "nodes": [],
+        "edges": [],
+        "meta": {
+          "nodes": 0,
+          "edges": 0,
+          "sample_records": 0,
+          "scope_label": "",
+          "sample_selection": ""
+        }
+      },
+      "paper_tech": {
+        "nodes": [],
+        "edges": [],
+        "meta": {
+          "nodes": 0,
+          "edges": 0,
+          "sample_records": 0,
+          "scope_label": "",
+          "sample_selection": ""
+        }
+      }
+    },
+    "contribution": {
+      "source_metrics": {
+        "fund_paper_edges": 0,
+        "fund_papers": 0,
+        "fund_projects": 0,
+        "fund_paper_tech_triples": 0,
+        "paper_tech_edges": 0,
+        "patent_tech_edges": 0
+      },
+      "years": [],
+      "reviewed_sample": {
+        "papers": 0,
+        "projects": 0,
+        "topics": 0,
+        "categories": 0,
+        "triples": 0
+      },
+      "by_topic": [],
+      "examples": [],
+      "scope": "",
+      "definitions": {
+        "fund_papers": "",
+        "fund_projects": "",
+        "reviewed_sample": "",
+        "patent_intersection": ""
+      },
+      "pending_metrics": []
+    },
+    "input_sha256": {
+      "research_views": "",
+      "milestones": "",
+      "tree": "",
+      "review": ""
+    },
+    "review_summary": {
+      "fund_edges_reviewed": 0,
+      "fund_edges_accepted": 0,
+      "fund_edges_rejected": 0,
+      "patent_samples": 0
+    }
+  },
+  "chronology": {
+    "schema_version": "",
+    "created_at": "",
+    "keyword_sha256": "",
+    "topic_count": 0,
+    "work_count": 0,
+    "events": [],
+    "edges": [],
+    "year_semantics": "",
+    "relationship_semantics": "",
+    "input_sha256": {
+      "tree": "",
+      "study_views": "",
+      "review": ""
+    }
+  },
+  "domain_tree": {
+    "schema_version": "",
+    "keyword_version": "",
+    "working_baseline_accepted_by_user": "",
+    "expert_review_complete": false,
+    "technology_count": 0,
+    "bridge_count": 0,
+    "nodes": [],
+    "bridge_nodes": [],
+    "bridge_terms": [],
+    "relationship_semantics": "",
+    "survey_artifacts": "",
+    "keyword_sha256": ""
+  },
+  "milestone_scope": "",
+  "policy": {
+    "central_count": 0,
+    "local_unique_count": 0,
+    "region_count": 0,
+    "region_records": 0,
+    "by_region": [],
+    "by_year": [],
+    "note": ""
+  },
+  "provenance": {
+    "snapshot": "",
+    "keyword_version": "",
+    "keyword_sha256": "",
+    "counts_checked_at": "",
+    "survey_refresh_seconds": 0,
+    "milestone_version": "",
+    "domain_keyword_sha256": "",
+    "publication": "",
+    "expert_reviewed": false
+  }
+}

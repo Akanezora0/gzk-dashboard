@@ -1,0 +1,555 @@
+{
+  "baseline": "dashboard-5184-20261103",
+  "files": [
+    {
+      "file": "build.mjs",
+      "server_source": "dashboard/cursor_ui/build.mjs",
+      "sha256": "f12731cb9ca3d6a00ebe12dbe218c4eab596e272fc10c14d842eb0c0d1fe46b8"
+    },
+    {
+      "file": "ui.config.mjs",
+      "server_source": "dashboard/cursor_ui/ui.config.mjs",
+      "sha256": "39a5a0a392bc48d84c18516ce0236b44f723248fc50df5310ef2d191c1ce5df8"
+    },
+    {
+      "file": "package.json",
+      "server_source": "dashboard/cursor_ui/package.json",
+      "sha256": "d8f105bfdf982cf5e1bf03ca1e8f64087e902382c52b7eb0752fa752925f699a"
+    },
+    {
+      "file": "scripts/build_ai_chain.py",
+      "server_source": "dashboard/cursor_ui/scripts/build_ai_chain.py",
+      "sha256": "5b48d9cf2ca3fd3254506ce5fa332d2a45e188191980ef22d665be5621797fd9"
+    },
+    {
+      "file": "web/vite.config.js",
+      "server_source": "dashboard/cursor_ui/web/vite.config.js",
+      "sha256": "f00a69cb091ed8c5ec42f26f600cda0573d21bc19b94ca2c47cde444da96496b"
+    },
+    {
+      "file": "web/package-lock.json",
+      "server_source": "dashboard/cursor_ui/web/package-lock.json",
+      "sha256": "d476978a6f433ea7d7d5440e3ad4a748196e76014a371173b3cef644e745a1da"
+    },
+    {
+      "file": "web/package.json",
+      "server_source": "dashboard/cursor_ui/web/package.json",
+      "sha256": "15df70bc1fece122a2da58e14a82c67bf5f160f3326416fbe1ae4bba141532f4"
+    },
+    {
+      "file": "web/index.html",
+      "server_source": "dashboard/cursor_ui/web/index.html",
+      "sha256": "b845c08e3a5491277053f044de87045bd24d004de93d27b72174938f28691864"
+    },
+    {
+      "file": "lowalt/vite.config.js",
+      "server_source": "dashboard/cursor_ui/lowalt/vite.config.js",
+      "sha256": "f50d3749079eb0c186efcd00d399ff127b8bb7d7f687e38ec79533806083813f"
+    },
+    {
+      "file": "lowalt/package.json",
+      "server_source": "dashboard/cursor_ui/lowalt/package.json",
+      "sha256": "f3b610f8e567c2099b8a7d8662dbffe2190ab5d4c58450a1166d48133636a450"
+    },
+    {
+      "file": "lowalt/index.html",
+      "server_source": "dashboard/cursor_ui/lowalt/index.html",
+      "sha256": "5ed2c7d644c1e0a9b02fdf040fc16f3078280d0822369ab551c73fc4fc7750e9"
+    },
+    {
+      "file": "lowalt/src/displayCopy.js",
+      "server_source": "dashboard/cursor_ui/lowalt/src/displayCopy.js",
+      "sha256": "28e381ed07cf2d24ecdb354668808edb242c2351d2009274a818ca9db395fa8b"
+    },
+    {
+      "file": "lowalt/src/embed.css",
+      "server_source": "dashboard/cursor_ui/lowalt/src/embed.css",
+      "sha256": "e3d914e892c864dfc36b6a0fa1f15c6f4a6d7e59bfb6b92974eea80005e15cd7"
+    },
+    {
+      "file": "lowalt/src/api.js",
+      "server_source": "dashboard/cursor_ui/lowalt/src/api.js",
+      "sha256": "253caf1589f4335b210e69b8d4b062653f82d0f78b72b52371ea4830dc13a2e2"
+    },
+    {
+      "file": "lowalt/src/App.vue",
+      "server_source": "dashboard/cursor_ui/lowalt/src/App.vue",
+      "sha256": "237724b4f7e2c1cf3634bd9173517cf491aa84a2556be663ad068536a3d1b0a6"
+    },
+    {
+      "file": "lowalt/src/main.js",
+      "server_source": "dashboard/cursor_ui/lowalt/src/main.js",
+      "sha256": "9925c5c469d167d2a76fa67ae85e05da80a52045b94c01de7104d7c153a9a415"
+    },
+    {
+      "file": "web/src/evolution-tree.css",
+      "server_source": "dashboard/cursor_ui/web/src/evolution-tree.css",
+      "sha256": "deff9e14b260d63590b2a6e625f3614bdcfb9049d2ecd6caf4bad470952a082d"
+    },
+    {
+      "file": "web/src/domain.css",
+      "server_source": "dashboard/cursor_ui/web/src/domain.css",
+      "sha256": "df8b193646237bbca39e6997ed73d286b33d698e74899407d6b5fcde4ae9a91c"
+    },
+    {
+      "file": "web/src/refinement.css",
+      "server_source": "dashboard/cursor_ui/web/src/refinement.css",
+      "sha256": "08f2e481229a34eddbae587e8b0c2912eb5de19e7a6ce7db9fb7369ee9429fc6"
+    },
+    {
+      "file": "web/src/domain_delta.css",
+      "server_source": "dashboard/cursor_ui/web/src/domain_delta.css",
+      "sha256": "ba6704e3f59d0662b60d8b396d21932492d1e7b2771a1b010f23e19e3ae531c2"
+    },
+    {
+      "file": "web/src/study.css",
+      "server_source": "dashboard/cursor_ui/web/src/study.css",
+      "sha256": "232cd03b1232c8b64c3f1d2954a6e6da84222f1f6fd51d781c55a4c558f7bff8"
+    },
+    {
+      "file": "web/src/overview.css",
+      "server_source": "dashboard/cursor_ui/web/src/overview.css",
+      "sha256": "dc053a8e7d0e616374f74a768b6c1fbaf0426a157792c9de2d009da2622de307"
+    },
+    {
+      "file": "web/src/style.css",
+      "server_source": "dashboard/cursor_ui/web/src/style.css",
+      "sha256": "a4e5eb1ec4a5722ce9abd5799fc74681f80f4fa76c9c1f08bca7024605413688"
+    },
+    {
+      "file": "web/src/technologyTreeLayout.js",
+      "server_source": "dashboard/cursor_ui/web/src/technologyTreeLayout.js",
+      "sha256": "e7619d7d8769e900895e9aae9929fe9da47833e49de69b376d097ef9d6980195"
+    },
+    {
+      "file": "web/src/presentation.css",
+      "server_source": "dashboard/cursor_ui/web/src/presentation.css",
+      "sha256": "8f11f8c7291338178fa9243b654bc7d4cfda0afcebff5a05290fcb7e47692174"
+    },
+    {
+      "file": "web/src/catalog.css",
+      "server_source": "dashboard/cursor_ui/web/src/catalog.css",
+      "sha256": "d1f20adacc42d9257ad4c73cc26771892c52f9baf13525dd63703f9318ac73ec"
+    },
+    {
+      "file": "web/src/inventory.css",
+      "server_source": "dashboard/cursor_ui/web/src/inventory.css",
+      "sha256": "97e792f79efafc006beeca9dc3c0f50207881d24b2e4f7e8e9f7ede0636b6928"
+    },
+    {
+      "file": "web/src/App.vue",
+      "server_source": "dashboard/cursor_ui/web/src/App.vue",
+      "sha256": "7b62aba2e85b36d8f82aa6333fe7d57a64bc9cb4ec2d834cd56e71ae10c83bdd"
+    },
+    {
+      "file": "web/src/main.js",
+      "server_source": "dashboard/cursor_ui/web/src/main.js",
+      "sha256": "14ee68489f2e372883292e605c6053452cf75ac81e80bd9551b90c16d89a294f"
+    },
+    {
+      "file": "web/src/shared.js",
+      "server_source": "dashboard/cursor_ui/web/src/shared.js",
+      "sha256": "caaafc7e7b9de253da7a459a9c77531fe2e2ea634a93056277dc6be89f40678f"
+    },
+    {
+      "file": "web/src/shell.css",
+      "server_source": "dashboard/cursor_ui/web/src/shell.css",
+      "sha256": "478bcfe6710336c42c045394853c7ec100dc47797255c43e6786c0a166601363"
+    },
+    {
+      "file": "web/src/components/TechnologyEvolutionTree.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/TechnologyEvolutionTree.vue",
+      "sha256": "ab6ccba8bacc92503cabe5dd46b463abd9e65ce3ce79659f101f586ec7818504"
+    },
+    {
+      "file": "web/src/components/AiChainWorkspace.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/AiChainWorkspace.vue",
+      "sha256": "075b73ff21f60e6237f2b0515297160cd05cd5d58e56b0d55511ba86a31ed534"
+    },
+    {
+      "file": "web/src/components/ResearchNetwork.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ResearchNetwork.vue",
+      "sha256": "c760655944c306242b20b4ec43e9966e4e71dac9ce9baa32f7ed3040c5c08536"
+    },
+    {
+      "file": "web/src/components/ConceptChain.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ConceptChain.vue",
+      "sha256": "d6b1061d3b984a3fd613a1bab8149aa42ceca5366a86791819642157247154cd"
+    },
+    {
+      "file": "web/src/components/CountValue.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/CountValue.vue",
+      "sha256": "5b34383ab1d9302645e12c526eccb96aaccf0270c2cb78b3c57c0fb77f7f3b66"
+    },
+    {
+      "file": "web/src/components/DataWorkspace.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/DataWorkspace.vue",
+      "sha256": "c982df0a8624bfd055355ff3122e49791a286e0d1657149ff07d95d9b63fe2fe"
+    },
+    {
+      "file": "web/src/components/InvestmentOutcomes.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/InvestmentOutcomes.vue",
+      "sha256": "222bc503a9b8ce1430595028b442623fa573eff00741adf13a7c520892b7d94d"
+    },
+    {
+      "file": "web/src/components/ResearchContinuity.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ResearchContinuity.vue",
+      "sha256": "cb00d96991d1638db900ad86eac02e8fbfccb3a0c67b4c551e4784f7808e5779"
+    },
+    {
+      "file": "web/src/components/OverviewHub.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/OverviewHub.vue",
+      "sha256": "431f8284d10cc1012c6ef0c99e8bd6c97e18e89b7f11821db38cd053d23a2c4a"
+    },
+    {
+      "file": "web/src/components/LowAltitudeEmbed.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/LowAltitudeEmbed.vue",
+      "sha256": "45b48037b70ee3bbf043da2a1d1ce6e02237c33c0387a066731cda628a92131e"
+    },
+    {
+      "file": "web/src/components/Chart.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/Chart.vue",
+      "sha256": "91f090a0a63e5c930f204b337f6bdbabb4dd3d1a27e23358380c71ebd390113b"
+    },
+    {
+      "file": "web/src/components/FeaturedTechnologyTimeline.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/FeaturedTechnologyTimeline.vue",
+      "sha256": "78d8daf2a66aa37197767361596eb990f06c40a2d6455c326c94464b1e298e0b"
+    },
+    {
+      "file": "web/src/components/TechnologyAtlas.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/TechnologyAtlas.vue",
+      "sha256": "321323c53d39b0ad4761fac7bff69232fe0b1c6c8e512a8d9faab36b52c4a759"
+    },
+    {
+      "file": "web/src/components/ResearchLandscape.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ResearchLandscape.vue",
+      "sha256": "e3874aa44e34dd288bfab90ac7ceb4479d4261d48ac8bfee81109b6ba85e5b21"
+    },
+    {
+      "file": "web/src/components/FundContribution.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/FundContribution.vue",
+      "sha256": "de92894f057d90a45a917dd9f9afca2d0e846421b92e31979bb3f1df6ccffa7a"
+    },
+    {
+      "file": "web/src/components/DatasetCatalog.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/DatasetCatalog.vue",
+      "sha256": "7d029dedc7703f5400908ca07f00a6896fa74f70532d8a0612aa64901b7a024c"
+    },
+    {
+      "file": "web/src/components/EvidenceHub.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/EvidenceHub.vue",
+      "sha256": "76c426dd5147286093e321c93c9d4725f3ea3aae71356c53c74dc121446ea60e"
+    },
+    {
+      "file": "web/src/components/CatalogPulse.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/CatalogPulse.vue",
+      "sha256": "d2e5e28bc1394683172d3f97503c54d4d51dc3c53b34bfc330bc066cb084209c"
+    },
+    {
+      "file": "web/src/components/DomainHub.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/DomainHub.vue",
+      "sha256": "b454495aa28a6c0d8462742bef7337a0ed43510fba2f0e97519bc4ec0096294a"
+    },
+    {
+      "file": "web/src/components/TechnologyChronology.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/TechnologyChronology.vue",
+      "sha256": "e05540a6929fe446fa67bf83a88466fd3fbbaefcbade33002cb6224794f1e61b"
+    },
+    {
+      "file": "web/src/components/EvolutionHub.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/EvolutionHub.vue",
+      "sha256": "b49be449d14303c1e2fe7b389f0bf8caa0cc907cb4160f007bd438cc6b4cc8b2"
+    },
+    {
+      "file": "web/src/helpers/foundationSources.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/foundationSources.js",
+      "sha256": "882e0871dc89b80533bfb3a68b4f97055cfd7ee436a205d4a006ca5228f29b13"
+    },
+    {
+      "file": "web/src/helpers/catalogActivity.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/catalogActivity.js",
+      "sha256": "14a1689d227a87b8518b3b9fdda6001429548b8694464e2571324d466f01b25d"
+    },
+    {
+      "file": "web/src/helpers/aiYearBuckets.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/aiYearBuckets.js",
+      "sha256": "57e1009471851a5db5365df5ae390512a3fa84cd9a1ff605eb8eda8dc429d8fb"
+    },
+    {
+      "file": "web/src/helpers/catalogCoverage.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/catalogCoverage.js",
+      "sha256": "8df64ca4d37cd46fc20865eb8ee4a40228cca9abb35103e01f17af4c4a93ff53"
+    },
+    {
+      "file": "legacy/src/style.css",
+      "server_source": "dashboard/cursor_ui/legacy/src/style.css",
+      "sha256": "5ec45168127a4b9229c69b55d25b3c5c6d3fcf284e0cf2bf24533285f7f89208"
+    },
+    {
+      "file": "legacy/src/App.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/App.vue",
+      "sha256": "c7360ccc1d4b7bf35ab56fee3131da1c20a3cd4852bd58cf5c700e75b4f5ff4b"
+    },
+    {
+      "file": "legacy/src/main.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/main.js",
+      "sha256": "d3a5e30a1f95cfca1a2aa0299efd503391e551b36d4c02c02b548495b98cbbdd"
+    },
+    {
+      "file": "legacy/src/composables/useApi.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/composables/useApi.js",
+      "sha256": "ebf917b006c78b2440d354a26704ddd85c2a72e082929bc08350f5e527c50c08"
+    },
+    {
+      "file": "legacy/src/views/DataEaseEmbed.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/DataEaseEmbed.vue",
+      "sha256": "fb2b266221c104bc6cfa22a5ee49b8c8eedb3001dcbb2310ece47a70ed67b8ad"
+    },
+    {
+      "file": "legacy/src/views/DataHub.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/DataHub.vue",
+      "sha256": "713eefc86661b8e0334b461648a9b5f3d4b388ba44bf7bea8f5e06e2162454f4"
+    },
+    {
+      "file": "legacy/src/views/Contribution.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/Contribution.vue",
+      "sha256": "ab1dbdc7371a7349dc4e68a1a1fe6e68304fd0531f5d03cc27dcbbeec706a19f"
+    },
+    {
+      "file": "legacy/src/views/CaseLowAltitude.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/CaseLowAltitude.vue",
+      "sha256": "4e986d3a4aad6debc6c3b5cad73df78232a81104fc1ad6f7502971c8786937bd"
+    },
+    {
+      "file": "legacy/src/views/ChainGraph.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/ChainGraph.vue",
+      "sha256": "5af5a2e38adf95aa27c49f1943b000e12f2c3dd22a270bffd1d1b2929c75f40c"
+    },
+    {
+      "file": "legacy/src/views/CasePlaceholder.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/CasePlaceholder.vue",
+      "sha256": "870db10515ca443c22f5e1990a82132019d3b12dfe0e785d96ab163b5ee930cb"
+    },
+    {
+      "file": "legacy/src/views/OverviewScreen.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/OverviewScreen.vue",
+      "sha256": "b09bec8203764d01201506f284b5e8a95b0724f3e99b15da13e613174d98e3d6"
+    },
+    {
+      "file": "legacy/src/views/ChainHub.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/ChainHub.vue",
+      "sha256": "320c62289c604d4a39f394eacde8507659261f5c8c13c9e7d14f0d6d770bba1f"
+    },
+    {
+      "file": "legacy/src/views/QualityMonitor.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/views/QualityMonitor.vue",
+      "sha256": "09906ffd5aac46a623bc0c3bcaa688f5d77ab329c5b56c32e40c6b3ed87798d3"
+    },
+    {
+      "file": "legacy/src/styles/screen-theme.scss",
+      "server_source": "dashboard/cursor_ui/legacy/src/styles/screen-theme.scss",
+      "sha256": "36732d8882f5b5e782cf3fa90632861f3462779f270c3bf3cf9ebacca7321f93"
+    },
+    {
+      "file": "legacy/src/components/HelloWorld.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/HelloWorld.vue",
+      "sha256": "75a435f439608c7590a3ec78279db7cf9872680c9603c3aff92a1e0e333d4bc9"
+    },
+    {
+      "file": "legacy/src/components/NavBar.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/NavBar.vue",
+      "sha256": "6d40063e738269e570c8c8ef2dc7958bea23b21dfe9852f7e37b2e56a7b2345f"
+    },
+    {
+      "file": "legacy/src/assets/vite.svg",
+      "server_source": "dashboard/cursor_ui/legacy/src/assets/vite.svg",
+      "sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f"
+    },
+    {
+      "file": "legacy/src/assets/vue.svg",
+      "server_source": "dashboard/cursor_ui/legacy/src/assets/vue.svg",
+      "sha256": "5532db34f1c52841881bab8aeca6c3e8d092bd21a689a65f4d8f8cf8041eef9d"
+    },
+    {
+      "file": "legacy/src/constants/chartTheme.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/chartTheme.js",
+      "sha256": "b72ac629e0e321b0c50d0e283821ba8f2fa07d425de6246b5e30aa64960c6541"
+    },
+    {
+      "file": "legacy/src/constants/chainHubContent.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/chainHubContent.js",
+      "sha256": "bd8f929fd5b06fe298d83fba83a4a54ecf80f4d89b0ef848eb357419a5d70e6a"
+    },
+    {
+      "file": "legacy/src/constants/techTree.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/techTree.js",
+      "sha256": "54dd799260c1747af39ff5f32a9fd1fb458a6d8533a89365598ed31a5314d677"
+    },
+    {
+      "file": "legacy/src/constants/dataCatalog.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/dataCatalog.js",
+      "sha256": "6018f409d098464c51beab1d21129cf35ddad042baafaa4ec983a0940d4a761e"
+    },
+    {
+      "file": "legacy/src/constants/productCases.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/productCases.js",
+      "sha256": "1875e2ebdabccc4963d1d79ed784a174170b9746408659e1408d24ec388c2506"
+    },
+    {
+      "file": "legacy/src/constants/chainHubProfiles.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/chainHubProfiles.js",
+      "sha256": "2e15a15097b5d2371567d753f05f06d1ad055cae99a2e98c9db009e23c028915"
+    },
+    {
+      "file": "legacy/src/constants/surveyLines.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/surveyLines.js",
+      "sha256": "bd5bd2ca302b2affa51fbca318dcf4daf83036fee85691dfb2fafd151d315311"
+    },
+    {
+      "file": "legacy/src/constants/dataHubProfiles.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/dataHubProfiles.js",
+      "sha256": "6c10ea69ddcfdd9e906346b842bd311c7dbf047d30af5ee32ab1f990e3d6610b"
+    },
+    {
+      "file": "legacy/src/constants/site.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/constants/site.js",
+      "sha256": "18dfc3f4bef4a33b00576a0ac4ab26b6bd8b05116f68e5ef55c1977403a97043"
+    },
+    {
+      "file": "legacy/src/router/index.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/router/index.js",
+      "sha256": "1f1895a35756bf08525754b30c2b0f1f2b53a7e16e05a7c1432a0de77eb65914"
+    },
+    {
+      "file": "legacy/src/utils/roundHex.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/utils/roundHex.js",
+      "sha256": "942a172d31f39d17168fb0b0aa13cd976f7e6f13be63eae52421b048d153b2b5"
+    },
+    {
+      "file": "legacy/src/utils/organicLeaf.js",
+      "server_source": "dashboard/cursor_ui/legacy/src/utils/organicLeaf.js",
+      "sha256": "1316ae24a15f30506cd4bb84141a9bbd60cc07707f9989c55ded77cc75b2707e"
+    },
+    {
+      "file": "legacy/src/components/case/LayerBranchTree.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/LayerBranchTree.vue",
+      "sha256": "a9e5fec6e6e6d32f541cbf491aa813198c1171ae92406d15161762ab8dc6ed9a"
+    },
+    {
+      "file": "legacy/src/components/case/LayerTimeline.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/LayerTimeline.vue",
+      "sha256": "06edc787812b4fcc104896e3c490856c8a1a3b68c912395a833f914180de8441"
+    },
+    {
+      "file": "legacy/src/components/case/TechTreePanel.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/TechTreePanel.vue",
+      "sha256": "1ba4b2a88f5e7288f8484959ca9dcabb123d45ac969f0a6bbc9e17d3d7d01db4"
+    },
+    {
+      "file": "legacy/src/components/case/ProductShowcase.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/ProductShowcase.vue",
+      "sha256": "75373baf1eeeed1e926d8cd55b69d69df909cfdfcb30e51f47dc5fe2dc12634c"
+    },
+    {
+      "file": "legacy/src/components/case/SurveyReaderPanel.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/SurveyReaderPanel.vue",
+      "sha256": "9275308a64720abd0dd3fffbd7b1603f331ea4e48fe4834ec0d051579a93f46d"
+    },
+    {
+      "file": "legacy/src/components/case/EvolutionTree.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/case/EvolutionTree.vue",
+      "sha256": "c283db8de4b4191605159d26b9f9c68a96044176489fcab7a2d03d15d8b3edb6"
+    },
+    {
+      "file": "legacy/src/components/overview/ChainFlowVisual.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/ChainFlowVisual.vue",
+      "sha256": "8a08483578cb516d1f5e19c75572e5f6e41a5a68def45ec76014ba37b08a3342"
+    },
+    {
+      "file": "legacy/src/components/overview/ChainEvidenceBlock.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/ChainEvidenceBlock.vue",
+      "sha256": "0f7a679456ad47bd618dcbc27946f642ffb5ac15d256134147909fae9f4b6fa1"
+    },
+    {
+      "file": "legacy/src/components/overview/WorkflowHighlights.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/WorkflowHighlights.vue",
+      "sha256": "f86cf8a7cd29a2b6767e34121ceb07975b5755d629bb61f18189d3089cdf532f"
+    },
+    {
+      "file": "legacy/src/components/overview/DataCompositionChart.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/DataCompositionChart.vue",
+      "sha256": "b939cf8025c04ff0b9545bddee955d1bc47b80aab4c134da6791e8fcc8a79ea9"
+    },
+    {
+      "file": "legacy/src/components/overview/DataVolumeBars.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/DataVolumeBars.vue",
+      "sha256": "93d31067de2c1e7edcb0f245f85c7156d1b9ffdb6474943c083b3703d5ef40f6"
+    },
+    {
+      "file": "legacy/src/components/overview/DataFoundationBlock.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/overview/DataFoundationBlock.vue",
+      "sha256": "a2ff226cb44b3c5797bf0d850738be30882a4c40567ad393d98ac2975a6afe94"
+    },
+    {
+      "file": "legacy/src/components/chain/ChainLinkCards.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/ChainLinkCards.vue",
+      "sha256": "48e6903ff0b30be7cd40ec425867b089f87e8b6e94e4b464a87d666d9c83697c"
+    },
+    {
+      "file": "legacy/src/components/chain/EvidenceChainOverview.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/EvidenceChainOverview.vue",
+      "sha256": "b58808248c7f0800a7f35538364d939c18bef793af0cad7be0817147efbb0844"
+    },
+    {
+      "file": "legacy/src/components/chain/ContributionPanel.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/ContributionPanel.vue",
+      "sha256": "40d74a74ae7d368018141313b2f609d63a982c933138873c97148148c07a8d6f"
+    },
+    {
+      "file": "legacy/src/components/chain/ChainEvidenceExplorer.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/ChainEvidenceExplorer.vue",
+      "sha256": "dd96f53b95936b4349dbaa5fe394cf33cd541c1368ff5347dfbcc2d4a9be520a"
+    },
+    {
+      "file": "legacy/src/components/chain/ChainPipeline.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/ChainPipeline.vue",
+      "sha256": "215c2e24b856150e2a45a7a7e5b7bfa300ea71595b80f8ea0e941a58fcbbc31f"
+    },
+    {
+      "file": "legacy/src/components/chain/ChainFlowSummary.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/ChainFlowSummary.vue",
+      "sha256": "41c078bd2df06d04e30f1b5e31d55edf0cb7d4abecfc6130a3966ca2fe1e5eda"
+    },
+    {
+      "file": "legacy/src/components/chain/AggregateChainGraph.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/chain/AggregateChainGraph.vue",
+      "sha256": "5cfdeffe80146401c045eb162d5d7b6d8961c66bdfec38fbd469c6841e66649c"
+    },
+    {
+      "file": "legacy/src/components/layout/Breadcrumb.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/layout/Breadcrumb.vue",
+      "sha256": "a753b50031ef8e7ae3109dc0a8c0d8e708a122f7ee0d3c16dbf9be8d057f9541"
+    },
+    {
+      "file": "legacy/src/components/layout/SectionBlock.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/layout/SectionBlock.vue",
+      "sha256": "bf818a57d15d9aa67482986e46b96d4288d1325f6d8b28bc4448bd00d69fedc1"
+    },
+    {
+      "file": "legacy/src/components/layout/PageShell.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/layout/PageShell.vue",
+      "sha256": "38bb367b90d26927c53305ec47c987fef637cfb5b1fa256b3c88b14bccd6ee1f"
+    },
+    {
+      "file": "legacy/src/components/screen/MetricFlop.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/screen/MetricFlop.vue",
+      "sha256": "de6346d6078c7b0bbbacef8a6ed99e4eab01d736e1db51750ea448954c78b389"
+    },
+    {
+      "file": "legacy/src/components/screen/ScreenPanel.vue",
+      "server_source": "dashboard/cursor_ui/legacy/src/components/screen/ScreenPanel.vue",
+      "sha256": "38a5dcf6d0e232f8f0f07a4ba909443e999cc982c34e9a5febcede628ab57798"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+.data-workspace .source-catalog-toolbar{margin-top:18px}
+.data-workspace .compact-page-heading{margin:19px 0 17px;padding-bottom:13px;gap:16px;align-items:center}
+.data-workspace .compact-page-heading h2{font-size:25px;line-height:1.45;letter-spacing:.2px}
+.data-workspace .compact-page-heading>span{font-size:14px;color:#727480}
+.data-workspace .type-tabs{display:flex;flex-wrap:nowrap;gap:9px;margin:0 0 18px;padding:0 0 9px;border:0;overflow:auto;scrollbar-width:thin}
+.data-workspace .type-tabs button{display:block;flex:0 0 auto;min-width:76px;padding:8px 19px;border-radius:24px;font-size:15px;font-weight:650;border:1px solid #e6dade;background:#fff;color:#665761;white-space:nowrap;transition:background .2s,box-shadow .2s,transform .2s}
+.data-workspace .type-tabs button.active{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 3px 10px #ae0d281f}
+.data-workspace .type-tabs button:hover{transform:translateY(-1px);box-shadow:0 4px 12px #8d152415}
+.data-workspace .domain-controls{margin:0 0 14px;padding:11px 18px;border-top-width:1px;border-radius:10px;box-shadow:none;background:#fcfafb}
+.data-workspace .domain-controls .source-switch{flex:1;gap:12px;font-size:14px}
+.data-workspace .domain-controls .source-switch select{max-width:360px;width:100%;padding:6px 10px;font-size:14px}
+.domain-page .kpi-grid{gap:14px;margin:15px 0}
+.domain-page .kpi{padding:14px 18px;border-radius:10px;border-top-width:3px}
+.domain-page .kpi>span{font-size:15px;min-height:0}
+.domain-page .kpi strong{font-size:31px;margin:5px 0 3px;line-height:1.3}
+.domain-page .kpi strong.smaller{font-size:23px;margin:10px 0 6px}
+.domain-page .kpi strong small{font-size:13px}
+.domain-page .kpi p{font-size:13px;line-height:1.6}
+.domain-page .panel{padding:18px 20px;margin:17px 0;border-radius:12px}
+.domain-page .charts-grid{gap:16px;margin:17px 0}
+.domain-page .charts-grid>.panel{margin:0}
+.domain-page .panel-heading{margin-bottom:12px;padding-bottom:11px;gap:12px}
+.domain-page .panel-heading h3{font-size:20px;border-left-width:3px;padding-left:10px}
+.domain-page .panel-heading>span{font-size:13px}
+.domain-page .chart-note{font-size:13px;margin-top:8px}
+.domain-page .empty-chart{min-height:270px;font-size:14px}
+.count-value{font:inherit;color:inherit;letter-spacing:inherit;font-variant-numeric:tabular-nums}
+.domain-main-charts{align-items:start}.chart-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.chart-controls .compact-tabs{margin:0;gap:0;padding:2px;background:#f5f0f1;border-radius:6px}
+.chart-controls .compact-tabs button{padding:2px 8px;font-size:12px;border:0;background:transparent}
+.chart-controls .compact-tabs button.active{background:#fff;color:var(--red);box-shadow:0 1px 5px #56344016}
+.chart-controls select,.chart-expand{font-size:12px;padding:4px 8px}
+.domain-main-charts.has-expanded .chart-expanded{grid-column:1/-1;order:-1}
+.domain-main-charts.has-expanded>section:not(.chart-expanded){grid-column:1/-1}
+.domain-page .field-list{gap:13px;margin:13px 0}
+.field-row>div>i{transition:width .65s cubic-bezier(.2,.7,.3,1)}.field-row:hover{background:#f9f7f7;border-radius:5px}.field-row b{font-variant-numeric:tabular-nums}
+.domain-page .ranking-list li{padding:7px 0;transition:background .18s,transform .18s}
+.ranking-list li:hover{background:#faf3f4;transform:translateX(3px)}
+.policy-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}.policy-chart-grid>div{min-width:0}.policy-chart-grid h4{font-size:17px;color:#48566a}
+@media(max-width:900px){.domain-main-charts .panel-heading{align-items:flex-start;flex-wrap:wrap}.data-workspace .type-tabs{gap:7px}.data-workspace .type-tabs button{min-width:65px;padding:7px 16px}}
+@media(max-width:600px){.data-workspace .compact-page-heading{margin:16px 0 14px;flex-wrap:wrap;gap:6px}.data-workspace .compact-page-heading h2{font-size:23px}.data-workspace .compact-page-heading>span{font-size:13px}.domain-page .kpi-grid{gap:10px}.domain-page .kpi{padding:12px}.domain-page .kpi strong{font-size:27px}.domain-page .kpi strong.smaller{font-size:20px}.domain-page .panel{padding:16px 13px}.domain-page .panel-heading h3{font-size:19px}.domain-page .domain-controls{padding:10px 14px}.data-workspace .domain-controls .source-switch{flex-wrap:nowrap;width:100%}.data-workspace .domain-controls .source-switch select{min-width:0;max-width:none}.policy-chart-grid{grid-template-columns:1fr;gap:12px}.chart-controls{gap:5px}}
+@media(prefers-reduced-motion:reduce){.type-tabs button,.field-row>div>i,.ranking-list li{transition:none}.type-tabs button:hover,.ranking-list li:hover{transform:none}}

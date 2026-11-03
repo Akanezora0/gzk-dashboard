@@ -1,0 +1,8 @@
+html, body, #app { margin: 0; padding: 0; min-height: 0; height: auto; background: transparent; }
+.lowalt-embed { width: 100%; min-width: 0; padding-bottom: 12px; }
+/* The outer LLM application owns its heading and navigation. */
+.lowalt-embed > .page-shell > .breadcrumb,
+.lowalt-embed > .page-shell > .page-head { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

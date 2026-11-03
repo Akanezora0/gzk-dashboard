@@ -1,0 +1,19 @@
+{
+  "name": "gzk-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "web",
+    "lowalt"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "npm --workspace web run dev",
+    "build": "node build.mjs",
+    "build:lowalt": "node build.mjs --lowalt",
+    "preview": "npm --workspace web run preview"
+  }
+}
