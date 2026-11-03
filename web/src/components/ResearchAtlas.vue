@@ -1,6 +1,6 @@
 <script setup>
 import {computed,ref,onBeforeUnmount,nextTick} from 'vue'
-import {useTip,fmt,textWidth,toggleFullscreen} from '../helpers/strengthTip.js'
+import {useTip,fmt,textWidth,toggleFullscreen,emph} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const {tip,show,move,hide}=useTip()
 const root=ref(null),closeBtn=ref(null)
@@ -101,7 +101,7 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
       <p v-if="!picked.flow" class="k">{{picked.open?'开源 / 开放权重':'闭源 / 论文 / 事件'}}</p>
       <a v-if="picked.url" :href="picked.url" target="_blank" rel="noopener">查看来源 ↗</a>
     </aside>
-    <div class="rs-take"><p>前沿成果的产出从企业研究院与高校并行，转向少数企业实验室主导，人才外溢催生了 Anthropic、Mistral 等新力量；中国以清华等高校和国家实验室为源头，经衍生企业与开源模型在 2023 年后快速跟进。</p></div>
+    <div class="rs-take"><span class="rs-take-tag">结论</span><p>前沿成果的产出从企业研究院与高校并行，转向少数企业实验室主导，人才外溢催生了 Anthropic、Mistral 等新力量；中国以清华等高校和国家实验室为源头，经衍生企业与开源模型在 2023 年后快速跟进。</p></div>
     <p class="rs-foot">“NSFC”标注为该机构在本项目数据中 2017—2021 年承担的 AI 项目数。版图中的成果和时间来自公开资料（核对日期 {{L.checkedAt}}）；开源与否按发布时的公开情况标注。</p>
     </template>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>

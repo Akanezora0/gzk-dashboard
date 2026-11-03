@@ -1,6 +1,6 @@
 <script setup>
 import {computed,ref} from 'vue'
-import {useTip,fmt,toggleFullscreen,typeGroup,TYPE_NAME,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
+import {useTip,fmt,emph,typeGroup,TYPE_NAME,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const emit=defineEmits(['explore'])
 const {tip,show,move,hide}=useTip()
@@ -35,13 +35,13 @@ const cases=computed(()=>{const list=props.dataset?.strength?.cases||[];const gr
     if(!row.steps.length)row.steps.push({t:typeGroup(r.earlier_project_type),y:r.earlier_approval_year,topic:c.earlier_topic,title:r.earlier_project_title,grant:r.earlier_grant_no})
     row.steps.push({t:typeGroup(r.later_project_type),y:r.later_approval_year,topic:c.later_topic,title:r.later_project_title,grant:r.later_grant_no});row.records.push(r)}
   return groups})
+const takeText=computed(()=>`青年项目负责人 ${pct('青年','面上')}% 接到面上项目，面上项目 ${pct('面上','重点等')}% 转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，${sameInst.value}% 的接续发生在原机构，研究力量沿“人—机构”稳定延续。`)
 function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_project_type)===l.a&&typeGroup(r.later_project_type)===l.b).slice(0,4).map(r=>r.person_name).join('、')
-  show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条接续（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>`)}
+  show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条接续（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>${l.a==='重点等'||l.b==='重点等'?'<br><span style="color:#78716c">联合·重大等含联合基金、重大研究计划、重点项目与数学天元基金</span>':''}`)}
 </script>
 <template>
   <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3><span class="rs-sub">{{records.length}} 条经官方身份核验的前后项目接续（{{people}} 人）</span>
-      <div class="rs-tools"><button class="rs-btn" @click="toggleFullscreen(root)">全屏 / 退出</button></div></header>
+    <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3><span class="rs-sub">{{records.length}} 条经官方身份核验的前后项目接续（{{people}} 人），不代表整体获批率或师承关系</span></header>
     <div v-if="!records.length" class="rs-empty">接续记录暂未读取。</div>
     <div v-else class="rs-succ">
       <div class="rs-succ-left">
@@ -61,6 +61,12 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
           <g v-if="link('面上','重点等')" pointer-events="none"><text :x="link('面上','重点等').mx" :y="(link('面上','重点等').y0+link('面上','重点等').y1)/2+link('面上','重点等').h/2" font-size="28" font-weight="700" text-anchor="middle" fill="#fff">{{pct('面上','重点等')}}%</text>
             <text :x="link('面上','重点等').mx" :y="(link('面上','重点等').y0+link('面上','重点等').y1)/2+link('面上','重点等').h/2+22" font-size="14" text-anchor="middle" fill="#fff">{{flowN('面上','重点等')}} / {{out('面上')}}</text></g>
         </svg>
+        <div class="rs-keys">
+          <div><strong>{{pct('青年','面上')}}%</strong><span>青年项目接续到面上项目<small>{{flowN('青年','面上')}} / {{out('青年')}}</small></span></div>
+          <div><strong>{{overlapPct('青年')}}%</strong><span>青年项目与下一项执行期重叠<small>面上项目为 {{overlapPct('面上')}}%</small></span></div>
+          <div><strong>{{pct('面上','重点等')}}%</strong><span>面上项目接续到联合、重大等<small>{{flowN('面上','重点等')}} / {{out('面上')}}</small></span></div>
+          <div><strong>{{sameInst}}%</strong><span>在同一机构内接续<small>同名依托单位</small></span></div>
+        </div>
       </div>
       <div class="rs-succ-right">
         <h4>代表案例</h4>
@@ -83,14 +89,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
         </div>
       </div>
     </div>
-    <div class="rs-keys" v-if="records.length">
-      <div><strong>{{pct('青年','面上')}}%</strong><span>青年项目接续到面上项目<small>{{flowN('青年','面上')}} / {{out('青年')}}</small></span></div>
-      <div><strong>{{overlapPct('青年')}}%</strong><span>青年项目与下一项执行期重叠<small>面上项目为 {{overlapPct('面上')}}%</small></span></div>
-      <div><strong>{{pct('面上','重点等')}}%</strong><span>面上项目接续到联合、重大等<small>{{flowN('面上','重点等')}} / {{out('面上')}}</small></span></div>
-      <div><strong>{{sameInst}}%</strong><span>在同一机构内接续<small>同名依托单位</small></span></div>
-    </div>
-    <div class="rs-take"><p>青年项目负责人九成接到面上项目，面上项目三分之一转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，{{sameInst}}% 的接续发生在原机构，研究力量沿“人—机构”稳定延续。</p></div>
-    <p class="rs-foot">接续依据为前后项目的官方负责人身份，不代表整体获批率或师承关系；“联合·重大等”含联合基金、重大研究计划、重点项目与数学天元基金。</p>
+    <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
 </template>
@@ -98,7 +97,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 .rs-succ{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px}
 .rs-succ h4{font-size:22px;margin:0;font-weight:700}
 .rs-lead{font-size:16px;color:var(--rs-red);font-weight:500;margin:6px 0 16px}
-.rs-succ-right{border-left:1px solid var(--rs-line);padding-left:36px}
+.rs-succ-right{border-left:1px solid var(--rs-line);padding-left:36px;display:flex;flex-direction:column}
 .rs-case-gname{font-size:14px;font-weight:700;color:var(--rs-muted);letter-spacing:1px;margin:14px 0 6px}
 .rs-case{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:8px 8px;cursor:pointer;font-family:inherit}
 .rs-case:hover,.rs-case.on{background:#f7f5f2}
@@ -115,11 +114,11 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 .rs-case-detail li{margin:6px 0;font-size:14.5px}
 .rs-case-detail li b{display:block}.rs-case-detail li span{display:block;color:var(--rs-ink-2)}.rs-case-detail li small{color:var(--rs-muted)}
 .rs-case-detail .k{font-size:13px;color:var(--rs-muted);margin:0 0 4px}
-.rs-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;border-top:1px solid var(--rs-line);margin-top:24px;padding-top:22px}
-.rs-keys div{display:flex;align-items:center;gap:12px}
-.rs-keys strong{font-size:40px;font-weight:750;color:var(--rs-red);line-height:1}
-.rs-keys span{font-size:15px;font-weight:500;color:var(--rs-ink);line-height:1.4}
-.rs-keys small{display:block;font-size:14px;color:var(--rs-muted);font-weight:400}
-@media(max-width:1200px){.rs-succ{grid-template-columns:1fr}.rs-succ-right{border-left:0;padding-left:0}.rs-keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.rs-keys{grid-template-columns:1fr}.rs-keys strong{font-size:32px;min-width:84px}.rs-case{grid-template-columns:1fr}}
+.rs-keys{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.rs-keys>div{background:#faf7f5;border:1px solid #efe8e4;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.rs-keys strong{font-size:34px;font-weight:750;color:var(--rs-red);line-height:1.1;font-variant-numeric:tabular-nums}
+.rs-keys span{font-size:15px;font-weight:600;color:var(--rs-ink);line-height:1.45}
+.rs-keys small{display:block;font-size:13px;color:var(--rs-muted);font-weight:400}
+@media(max-width:1100px){.rs-succ{grid-template-columns:1fr}.rs-succ-right{border-left:0;padding-left:0}}
+@media(max-width:700px){.rs-case{grid-template-columns:1fr}}
 </style>

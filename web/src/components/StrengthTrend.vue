@@ -1,6 +1,6 @@
 <script setup>
 import {computed,ref,onBeforeUnmount} from 'vue'
-import {useTip,fmt,toggleFullscreen} from '../helpers/strengthTip.js'
+import {useTip,fmt,emph} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const {tip,show,move,hide}=useTip()
 const root=ref(null)
@@ -39,12 +39,13 @@ const projShare=computed(()=>totP(last.value)?Math.round(last.value.retained_pro
 const growth=computed(()=>tot(first.value)?Math.round((tot(last.value)/tot(first.value)-1)*100):null)
 const C=computed(()=>S.value.cohort||{})
 const steps=computed(()=>[[C.value.institutions,'首次进入的机构'],[C.value.with_any,'后续有相关论文'],[C.value.at_least_two,'至少两年有论文'],[C.value.all_four,'四年都有论文']])
+const takeText=computed(()=>`资助呈现“稳定主体＋持续扩面”：参与机构增加 ${growth.value!==null?growth.value+'%':'六成'}，${last.value.year} 年 ${projShare.value}% 的项目、${fundShare.value}% 的经费仍由既有机构承担；首次进入的 ${C.value.institutions} 家机构中，${C.value.at_least_two} 家在后续至少两年持续产出论文。`)
 function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b>${r.year} 年</b><br>机构 ${fmt(tot(r))} 家（既有 ${r.retained_institutions} · 新进入 ${r.entered_institutions}）<br>项目 ${fmt(totP(r))} 项（既有 ${fmt(r.retained_projects)} · 新进入 ${r.entered_projects}）${a?`<br>批准经费 ${a.amount_yi.toFixed(2)} 亿元 · 前十机构份额 ${a.top10_amount_pct}%`:''}`)}
 </script>
 <template>
   <section class="rs-page" ref="root">
     <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3><span class="rs-sub">AI 基金项目，2017—2021 年批准</span>
-      <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button><button class="rs-btn" @click="toggleFullscreen(root)">全屏 / 退出</button></div></header>
+      <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button></div></header>
     <div v-if="!split.length" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <div v-else class="rs-trend">
       <div class="rs-scroll rs-fit"><svg class="rs-svg" viewBox="0 0 1100 660" role="img" aria-label="既有机构与新进入机构的机构数和项目数">
@@ -74,31 +75,32 @@ function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b
         <rect v-for="(r,i) in split" :key="'h'+r.year" class="rs-hit" :x="X(r.year)-80" y="20" width="160" height="600" fill="transparent" @mouseenter="yearTip($event,r,i)" @mousemove="move" @mouseleave="hide"/>
       </svg></div>
       <aside class="rs-stay">
-        <h4>新进入的机构，留下来了吗？</h4>
-        <p>{{C.entry_years?.[0]}}—{{C.entry_years?.[1]}} 年首次进入的机构，此后 4 年的论文</p>
+        <h4 title="“首次进入”按全部历史 AI 项目确定；左图“既有”指 2017 年已有 AI 项目的机构，两种口径不同。">新进入的机构留下来了吗</h4>
+        <p>{{C.entry_years?.[0]}}—{{C.entry_years?.[1]}} 年首次进入的 {{C.institutions}} 家机构，{{C.window?.[0]}}—{{C.window?.[1]}} 年的相关论文</p>
         <div v-for="(s,i) in steps" :key="i" class="rs-stay-row">
           <div class="rs-stay-bar"><i :style="{width:(s[0]/(C.institutions||1)*100)+'%',background:i===0?'#d3e2ec':i===2?'#2f5f7a':'#5b8aa5'}"></i><em v-if="i>0">{{Math.round(s[0]/(C.institutions||1)*100)}}%</em></div>
           <div class="rs-stay-num"><strong :class="{first:i===0}">{{s[0]}}</strong><span>家</span><b>{{s[1]}}</b></div>
         </div>
       </aside>
     </div>
-    <div class="rs-take"><p>资助呈现“稳定主体＋持续扩面”：参与机构增加 {{growth!==null?`${growth}%`:'六成'}}，{{last.year}} 年 {{projShare}}% 的项目、{{fundShare}}% 的经费仍由既有机构承担；首次进入的 {{C.institutions}} 家机构中，{{C.at_least_two}} 家在后续至少两年持续产出论文。</p></div>
-    <p class="rs-foot">既有：2017 年已有 AI 项目的机构；新进入：2017 年无 AI 项目的机构。右侧“首次进入”按全部历史 AI 项目确定，两种口径不同。近期立项仍在补录，图中只画到 2021 年。</p>
+    <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
 </template>
 <style scoped>
 .rs-fit>.rs-svg{min-width:560px}
-.rs-trend{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:34px;align-items:start}
-.rs-stay{border-left:1px solid var(--rs-line);padding-left:30px;padding-top:6px}
-.rs-stay h4{font-size:21px;margin:0 0 4px;font-weight:700}
-.rs-stay>p{font-size:14px;color:var(--rs-muted);margin:0 0 26px}
-.rs-stay-row{margin-bottom:26px}
-.rs-stay-bar{display:flex;align-items:center;gap:10px;height:30px}
-.rs-stay-bar i{display:block;height:30px;border-radius:5px}
-.rs-stay-bar em{font-style:normal;font-weight:700;font-size:17px;color:var(--rs-blue)}
+.rs-fit>.rs-svg{min-width:560px}
+.rs-trend{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:stretch}
+.rs-stay{display:flex;flex-direction:column;background:#f7f9fb;border:1px solid #e3ebf0;border-radius:14px;padding:22px 24px}
+.rs-stay h4{font-size:19px;margin:0 0 6px;font-weight:700;white-space:nowrap;color:var(--rs-ink)}
+.rs-stay>p{font-size:13.5px;color:var(--rs-muted);margin:0 0 10px;line-height:1.6}
+.rs-stay-row{flex:1;display:flex;flex-direction:column;justify-content:center;border-top:1px dashed #dce5ec;padding:8px 0}
+.rs-stay-row:first-of-type{border-top:0}
+.rs-stay-bar{display:flex;align-items:center;gap:10px;height:14px}
+.rs-stay-bar i{display:block;height:12px;border-radius:6px}
+.rs-stay-bar em{font-style:normal;font-weight:700;font-size:16px;color:var(--rs-blue)}
 .rs-stay-num{margin-top:6px;display:flex;align-items:baseline;gap:6px}
-.rs-stay-num strong{font-size:34px;font-weight:750;color:var(--rs-blue);line-height:1.1}
+.rs-stay-num strong{font-size:34px;font-weight:750;color:var(--rs-blue);line-height:1.1;font-variant-numeric:tabular-nums}
 .rs-stay-num strong.first{color:var(--rs-ink)}
 .rs-stay-num span{font-size:15px;color:var(--rs-muted)}
 .rs-stay-num b{font-size:16px;font-weight:500;color:var(--rs-ink-2);margin-left:6px}

@@ -23,3 +23,6 @@ export const TYPE_NAME={'青年':'青年科学基金','地区':'地区科学基�
 export const TYPE_SHORT={'青年':'青年','地区':'地区','面上':'面上','重点等':'联合等'}
 export const TYPE_COLOR={'青年':'#f0b7bf','地区':'#bdb5ad','面上':'#ae0d28','重点等':'#7a0a1c'}
 export const BASIS={explicit_nsfc_award:'论文明确标注基金批准号',fund_registered_outcome:'基金项目成果登记',nsfc_recent_registered:'NSFC 近期成果登记'}
+
+/** Emphasise figures inside a conclusion sentence. Text is our own copy, so v-html is safe. */
+export const emph=t=>String(t).replace(/(\d[\d,.]*\s*%|\d[\d,.]*\s*(?:家|项|条|人))/g,'<b>$1</b>')
