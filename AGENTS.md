@@ -19,6 +19,7 @@
 ## 协作和验收
 
 - 用户2026-11-05最新约定：Codex长期复用固定的`codex`分支，修改并验证后合并到`main`，再将`codex`同步至最新`main`；不再为每次任务新建`codex/...`分支。
+- Claude同样只使用固定的`claude`分支：修改后推送`claude`，用户在独立的预览服务器上pull查看效果，确认后合并到`main`，再将`claude`同步至最新`main`。Claude的具体工作约定见`CLAUDE.md`。
 - 每位协作者使用独立clone，其他工具的分支按团队约定。Codex开始工作前fetch并将最新main合入固定codex，保留未合并工作；提交小范围清晰的PR，禁止强推main或覆盖其他人的修改。
 - 提交/推送按用户授权；部署与合并遵循本次任务要求。GitHub 工作流只检查，不自动部署。
 - 最少运行 `npm run verify:snapshot`、`npm test`、`npm run build`。页面变更再核对1440/1920宽屏和390窄屏、控制台、横向溢出、弹层/Esc/滚动/路由深链。
