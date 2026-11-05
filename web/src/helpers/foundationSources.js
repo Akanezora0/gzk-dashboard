@@ -1,3 +1,17 @@
+import {fmt,concise} from '../shared'
+
+// Homepage and overview share the same accepted headline presentation.
+export function overviewHeadline(data) {
+  if (!data?.currentInventory?.counts) return []
+  const c = data.currentInventory.counts
+  return [
+    {id:'literature',name:'文献数量',value:(c.papers/1e8).toFixed(4)+'亿',unit:'篇',title:`跨来源去重论文：${fmt(c.papers)} 篇`,color:'#ae1833'},
+    {id:'fund',name:'基金项目',value:'42.8万',unit:'条',title:'基金项目：428409条',color:'#377f70'},
+    {id:'patent',name:'专利条数',value:concise(c.national_patents),unit:'条',title:'按公开号去重：'+fmt(c.national_patents),color:'#987aab'},
+    {id:'recruit',name:'招聘数据条数',value:'728.4万',unit:'条',title:'招聘数据：7284624条',color:'#c56b32'},
+  ]
+}
+
 // Presentation selection only. Keep the original source objects/counts/units
 // intact so the frozen inventory comparison retains its original contract.
 export function sourceCoverage(dataset = {}) {

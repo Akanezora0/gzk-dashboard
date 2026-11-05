@@ -1,5 +1,5 @@
 {
-  "baseline": "dashboard-5184-20261105",
+  "baseline": "dashboard-5184-20261105-home-compact-header",
   "files": [
     {
       "file": "build.mjs",
@@ -64,7 +64,7 @@
     {
       "file": "web/index.html",
       "server_source": "dashboard/cursor_ui/web/index.html",
-      "sha256": "b845c08e3a5491277053f044de87045bd24d004de93d27b72174938f28691864"
+      "sha256": "f2e916570c9d093d3ed4004a539bd5e7aeaae60abd20247879b2fdab2dd2179c"
     },
     {
       "file": "lowalt/vite.config.js",
@@ -79,7 +79,7 @@
     {
       "file": "lowalt/index.html",
       "server_source": "dashboard/cursor_ui/lowalt/index.html",
-      "sha256": "5ed2c7d644c1e0a9b02fdf040fc16f3078280d0822369ab551c73fc4fc7750e9"
+      "sha256": "511edc6893d012a34c807cb7da5bbe0e48d38e34bbdafa3e91fb9b80c0b71b35"
     },
     {
       "file": "lowalt/src/displayCopy.js",
@@ -174,12 +174,12 @@
     {
       "file": "web/src/App.vue",
       "server_source": "dashboard/cursor_ui/web/src/App.vue",
-      "sha256": "9d1cca5d4374473c421efb044b622c0aa321fe76b929f5ff7bd33e2878781df8"
+      "sha256": "a9efc8f68d2bf0369bc2c7f0dddeed65817c1ab139eb3dafbe934ab9372a0973"
     },
     {
       "file": "web/src/main.js",
       "server_source": "dashboard/cursor_ui/web/src/main.js",
-      "sha256": "0b49757e71a024fcf4ebe1a3cae50c0983129a2c76b61b4df698f213ab823eeb"
+      "sha256": "e88b9b8e681f7acf8b066c816e7559bd3c8a99013abf8d3bda97eb9a727b1cb1"
     },
     {
       "file": "web/src/shared.js",
@@ -189,7 +189,7 @@
     {
       "file": "web/src/shell.css",
       "server_source": "dashboard/cursor_ui/web/src/shell.css",
-      "sha256": "478bcfe6710336c42c045394853c7ec100dc47797255c43e6786c0a166601363"
+      "sha256": "c4f0b35a20d79956651c67d1dc2e580e161b0ce2cd27afc12e369f8c50d3e6ed"
     },
     {
       "file": "web/src/components/ResearchAtlas.vue",
@@ -254,7 +254,7 @@
     {
       "file": "web/src/components/OverviewHub.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/OverviewHub.vue",
-      "sha256": "70324acbd18bafd05ec6c61ba833a3cd085e66e99848d29882c9a6392b0a9bcd"
+      "sha256": "be1a5535f914b259ae5b1b7a71eacbba20cd5eaef4a3a37c51b4ab387e0a2e5d"
     },
     {
       "file": "web/src/components/LowAltitudeEmbed.vue",
@@ -324,7 +324,7 @@
     {
       "file": "web/src/helpers/foundationSources.js",
       "server_source": "dashboard/cursor_ui/web/src/helpers/foundationSources.js",
-      "sha256": "4c1681d08a7e82c48d753297e6ef2d062742adfbdf2c6a73c06916f280214dcd"
+      "sha256": "10c2c760d66477467dec7d32a7af030a6837f9a415fc03131c16dd6ded34c733"
     },
     {
       "file": "web/src/helpers/strengthTip.js",
@@ -635,6 +635,16 @@
       "file": "legacy/src/components/screen/ScreenPanel.vue",
       "server_source": "dashboard/cursor_ui/legacy/src/components/screen/ScreenPanel.vue",
       "sha256": "38a5dcf6d0e232f8f0f07a4ba909443e999cc982c34e9a5febcede628ab57798"
+    },
+    {
+      "file": "web/src/home.css",
+      "server_source": "dashboard/cursor_ui/web/src/home.css",
+      "sha256": "46cb0231cd3c95f267a50479c8dddbac7ab27ab4499f60a547d7cedf5158209c"
+    },
+    {
+      "file": "web/src/components/HomePage.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/HomePage.vue",
+      "sha256": "13b49b68266289d22e6b45e766f1551e237b738207d2b6f19ff2a62b05ce61c2"
     }
   ],
   "portable_adaptations": [
