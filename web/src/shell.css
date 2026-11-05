@@ -3,7 +3,7 @@
 body{background:radial-gradient(ellipse at 50% 0,#ae0d2808,transparent 52%),linear-gradient(180deg,#faf9f7,#f5f3f0 60%,#f0eeeb)}
 .research-header{position:relative;isolation:isolate;overflow:hidden;padding:22px 36px 18px;text-align:center;border-top:4px solid #a50e2c;background:linear-gradient(115deg,#fcf8f9 0%,#fff 42%,#fbf8f4 100%)}
 .masthead-lines{position:absolute;inset:0;width:100%;height:100%;color:#ae0d28;opacity:.1;z-index:-1;pointer-events:none}
-.research-heading h1{color:#94132c;font-size:clamp(30px,3.5vw,48px);font-weight:800;letter-spacing:2px;line-height:1.35}
+.research-heading h1{color:#94132c;font-size:clamp(30px,3.5vw,44px);font-weight:800;letter-spacing:2px;line-height:1.35}
 .masthead-caption{display:flex;justify-content:center;align-items:center;gap:13px;color:#89616a;font-size:11px;line-height:18px;letter-spacing:2px;margin-bottom:7px;font-weight:600}
 .masthead-caption span{width:32px;height:1px;background:#cdb1a7}.research-heading p{font-size:16px;color:#627082;margin-top:12px;font-weight:500;letter-spacing:.6px}.research-heading i{font-style:normal;color:#baa3aa;margin:0 11px}
 .research-actions{position:absolute;right:3.4%;top:14px;display:flex;align-items:center;gap:18px;font-size:13px}.research-actions a{color:#8e5766}.research-actions button{font-size:13px;padding:4px 8px;background:transparent;border-color:transparent;color:#777582;display:flex;align-items:center;gap:6px}.research-actions button:hover{background:#fff;border-color:#e5d6db;color:#92162d}.research-actions svg{height:15px;width:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}.spinning{animation:refresh-turn 1.2s linear infinite}

@@ -3,7 +3,7 @@
 .dashboard-shell .nav-indicator{width:calc((100% - 10px)/6)}
 .landing-shell{background:#faf9f6}
 .dashboard-shell .home-workspace{width:100%;max-width:none;margin:0;padding:0}
-.project-home{--home-ink:#252b32;--home-muted:#677078;--home-red:#a21535;color:var(--home-ink);font-weight:400}
+.project-home{--home-scroll-cue-height:56px;--home-ink:#252b32;--home-muted:#677078;--home-red:#a21535;color:var(--home-ink);font-weight:400}
 .project-home :is(h1,h2,h3,h4){color:inherit}
 .project-home a{text-decoration:none}
 .project-home p{line-height:1.9}
@@ -12,11 +12,11 @@
 .home-eyebrow{font-size:13px;font-weight:650;letter-spacing:2.5px;color:var(--home-red);display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .home-eyebrow:before{content:"";display:block;height:2px;width:26px;background:currentColor}
 .home-eyebrow.light{color:#e1b2ba}
-.home-hero{position:relative;overflow:hidden;isolation:isolate;background:#211820;color:#fff;min-height:calc(100svh - var(--home-masthead-height,260px));display:flex}
+.home-hero{position:relative;overflow:hidden;isolation:isolate;background:#211820;color:#fff;min-height:calc(100svh - var(--home-masthead-height,260px) - var(--home-scroll-cue-height));display:flex}
 .home-hero-art{position:absolute;inset:0 0 0 23%;z-index:-1;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 20%)}
 .home-hero-art svg{width:100%;height:100%;max-width:none}
 .home-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#211820 6%,#211820b0 36%,transparent 75%);pointer-events:none}
-.home-hero-content{padding-top:clamp(28px,calc((100svh - var(--home-masthead-height,260px) - 440px)/2),116px);position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:inherit;box-sizing:border-box}
+.home-hero-content{padding-top:clamp(28px,calc((100svh - var(--home-masthead-height,260px) - var(--home-scroll-cue-height) - 440px)/2),116px);position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:inherit;box-sizing:border-box}
 .home-hero h1{font-size:clamp(44px,4.7vw,68px);line-height:1.25;font-weight:650;letter-spacing:1px;color:#fff;margin-bottom:28px}
 .home-hero h1 span{color:#dca887}
 .home-hero-description{font-size:18px;color:#d7cfd3;max-width:610px;font-weight:400}
@@ -84,3 +84,13 @@
   .home-hero-actions{margin-top:22px;margin-bottom:18px}
   .home-hero-bottom{padding-block:16px}
 }
+
+/* A quiet, clickable scroll cue occupies the last strip of the first screen. */
+.home-scroll-cue{height:var(--home-scroll-cue-height);display:flex;align-items:center;justify-content:center;background:#faf9f6}
+.project-home .home-scroll-button{display:grid;place-items:center;width:48px;height:44px;padding:0;border:0;border-radius:8px;background:transparent;box-shadow:none;color:#9c6874;cursor:pointer;transform:none;transition:color .2s}
+.project-home .home-scroll-button:hover{background:transparent;box-shadow:none;transform:none;color:#a21535}
+.project-home .home-scroll-button:focus-visible{outline:2px solid #b79aa2;outline-offset:2px}
+.home-scroll-button svg{width:24px;height:28px;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;animation:home-scroll-hint 2.8s ease-in-out infinite}
+.home-scroll-button .cue-echo{opacity:.35}
+@keyframes home-scroll-hint{0%,100%{transform:translateY(-3px);opacity:.4}50%{transform:translateY(3px);opacity:.75}}
+@media(prefers-reduced-motion:reduce){.home-scroll-button svg{animation:none;opacity:.65}}

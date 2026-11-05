@@ -1,5 +1,5 @@
 {
-  "baseline": "dashboard-5184-20261105-home-compact-header",
+  "baseline": "dashboard-5184-20261105-home-scroll-cue",
   "files": [
     {
       "file": "build.mjs",
@@ -189,7 +189,7 @@
     {
       "file": "web/src/shell.css",
       "server_source": "dashboard/cursor_ui/web/src/shell.css",
-      "sha256": "c4f0b35a20d79956651c67d1dc2e580e161b0ce2cd27afc12e369f8c50d3e6ed"
+      "sha256": "ca98f9cdd29db2080582b63f1bb1d82607c2d5853597f856dc89b6bb6ffff50a"
     },
     {
       "file": "web/src/components/ResearchAtlas.vue",
@@ -639,12 +639,12 @@
     {
       "file": "web/src/home.css",
       "server_source": "dashboard/cursor_ui/web/src/home.css",
-      "sha256": "46cb0231cd3c95f267a50479c8dddbac7ab27ab4499f60a547d7cedf5158209c"
+      "sha256": "419fc22586c1bb54acda6eb2b904969601cc99b36d1fb5537f8069d35a4a8685"
     },
     {
       "file": "web/src/components/HomePage.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/HomePage.vue",
-      "sha256": "13b49b68266289d22e6b45e766f1551e237b738207d2b6f19ff2a62b05ce61c2"
+      "sha256": "8f534b0fa3b6b8b073feb4f7fd3abf16032f1f2f25373843d33b9bbfd7bdc54f"
     }
   ],
   "portable_adaptations": [

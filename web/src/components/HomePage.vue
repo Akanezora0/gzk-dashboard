@@ -3,6 +3,9 @@ import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
 import {overviewHeadline} from '../helpers/foundationSources'
 
 const props=defineProps({data:Object})
+function exploreBelow(){
+  document.getElementById('about')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})
+}
 const mastheadHeight=ref(260)
 let mastheadObserver
 onMounted(()=>{
@@ -59,6 +62,12 @@ const uses=[
       <div class="home-hero-bottom"><span>基础研究全链条数据系统构建与集成</span><a href="#about">向下探索 <span aria-hidden="true">↓</span></a></div>
     </div>
   </section>
+
+  <div class="home-scroll-cue">
+    <button type="button" class="home-scroll-button" aria-label="向下浏览项目介绍" @click="exploreBelow">
+      <svg viewBox="0 0 28 30" fill="none" aria-hidden="true"><path d="M14 4v18M7 16l7 7 7-7"/><path class="cue-echo" d="m9 23 5 5 5-5"/></svg>
+    </button>
+  </div>
 
   <section id="about" class="home-wrap home-about home-section">
     <div><p class="home-eyebrow">项目缘起</p><h2>研究的价值，<br/>在长链条中逐步显现。</h2></div>
