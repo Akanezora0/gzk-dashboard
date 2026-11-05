@@ -1,4 +1,5 @@
 <script setup>
+import {useYearPlayback} from '../helpers/useYearPlayback'
 import {computed,ref,onBeforeUnmount} from 'vue'
 import {useTip,fmt,emph} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
@@ -9,11 +10,8 @@ const split=computed(()=>S.value.split||[])
 const annual=computed(()=>S.value.annual||[])
 const years=computed(()=>split.value.map(r=>r.year))
 const AX=290,X=y=>200+(y-2017)*170,KO=0.6,KP=0.13,G=16
-const shown=ref(2021),playing=ref(false);let timer=null
+const {year:shown,playing,play,pause}=useYearPlayback(2017,2021)
 const clipW=computed(()=>X(shown.value)+(shown.value>=2021?90:85))
-function play(){if(playing.value){stop();return}shown.value=2017;playing.value=true;timer=setInterval(()=>{if(shown.value>=2021)stop();else shown.value++},900)}
-function stop(){clearInterval(timer);playing.value=false;shown.value=2021}
-onBeforeUnmount(()=>clearInterval(timer))
 function band(inner,outer,dir){
   const pts=split.value.map((r,i)=>[X(r.year),inner[i],outer[i]])
   if(!pts.length)return ''
@@ -45,7 +43,7 @@ function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b
 <template>
   <section class="rs-page" ref="root">
     <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3><span class="rs-sub">AI 基金项目，2017—2021 年批准</span>
-      <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button></div></header>
+      <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':shown>=2021?'▶ 重播':'▶ 播放'}}</button></div></header>
     <div v-if="!split.length" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <div v-else class="rs-trend">
       <div class="rs-scroll rs-fit"><svg class="rs-svg" viewBox="0 0 1100 660" role="img" aria-label="既有机构与新进入机构的机构数和项目数">

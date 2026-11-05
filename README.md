@@ -1,60 +1,63 @@
-# 国自科 Dashboard 前端
+# 国自科 Dashboard · 团队协作版
 
-当前 5184 Dashboard 的独立前端代码，用于 Claude 修改展示并通过 Pull Request 合并。**这份现有设计尚未获用户认可，不是目标模板。请按用户提供的《研究力量接续.pdf》和研究力量版图逐页重新设计。**
+本仓库是当前 5184 Dashboard 的完整可运行协作版本，供不同电脑上的开发者、Claude、Cursor、Codex 等工具共同开发。**2026-11-05 版本替代此前面向 Claude 的局部设计交接包**，保留原 Git 历史及已审定的研究力量设计。
 
-## 快速启动
+包含人工智能与低空经济两领域的页面、当前展示数据、技术演进、综述正文与参考文献、证据关系、投入产出动画及研究力量。默认读取本地快照，运行时不依赖项目内网服务器，也不调用付费模型。原始数据库与文献全文包保留在项目服务器。
 
-需要 Node.js 20.19+（推荐22）和 npm。
+## 先运行
+
+安装 Node.js 22 LTS 和 npm，然后：
 
 ```bash
+git clone https://github.com/Akanezora0/gzk-dashboard.git
+cd gzk-dashboard
 npm ci
-npm run build:lowalt
 npm run dev
 ```
 
-打开 `http://localhost:5184/chain?domain=ai&module=strength`。
+打开 **http://localhost:5184/overview**。`dev` 会先构建低空嵌入页面；首次安装需要访问 npm，之后页面和展示接口均在本地提供。Windows、macOS、Linux 使用相同命令。端口被占用时在 `.env.local` 设置 `DASHBOARD_PORT=5185`。
 
-默认 `demo` 模式提供合成样例和公开技术节点，用于排版、交互和截图，不包含业务数据库或真实关联明细。示例不是研究结果；部分历史组件仍包含原有展示文案，不能从演示数字推导新结论。数据总览、领域数据与综述在演示模式下仅提供空结构；完整数据通过下面的只读后端接入。
+生产构建预览：
 
-## 接入服务器数据
-
-复制 `.env.example` 为 `.env.local`，设置：
-
-```dotenv
-DASHBOARD_MODE=live
-DASHBOARD_API_BASE=http://127.0.0.1:5174
-DASHBOARD_ARTIFACTS=/absolute/path/to/private/dashboard-assets
+```bash
+npm run verify:snapshot
+npm test
+npm run build
+npm run preview
 ```
 
-`DASHBOARD_API_BASE` 指向既有只读 API。远程电脑可先通过自己的 SSH 权限将服务器5174端口转发至本机；勿向公网开放数据库。`DASHBOARD_ARTIFACTS` 下应有 `analysis_public/chain-analysis/v1/`（研究力量JSON和五份动画HTML）及 `reference_serving/authoritative_metrics.json`。真实展示资产保留在服务器，未上传GitHub；服务器内的原路径由维护者配置。改完环境配置重启开发服务。
+## 交给 AI 工具
 
-## 页面与代码
+先让它读根目录 [AGENTS.md](AGENTS.md)，再按 [docs/00_阅读指南.md](docs/00_阅读指南.md) 阅读相关章节。文档包含项目主线、八个研究问题、当前进展、数据口径、页面设计、代码结构、数据更新和协作部署。`CLAUDE.md` 与 Cursor 规则引用同一套约定。
 
-| 页面 | 主要文件 |
+## 当前包含什么
+
+| 内容 | 仓库内范围 |
 |---|---|
-| 全站框架、导航、领域切换 | `web/src/App.vue`、`shell.css`、`style.css` |
-| AI证据链模块入口 | `web/src/components/AiChainWorkspace.vue` |
-| 原始证据链（保留第一标签） | `web/src/components/EvidenceHub.vue` |
-| 投入、论文专利、70技术点、曲线 | `web/src/components/InvestmentOutcomes.vue` |
-| 机构时间版图 | `web/src/components/ResearchLandscape.vue` |
-| 基金负责人接续和案例 | `web/src/components/ResearchContinuity.vue` |
-| 技术树与综述 | `web/src/components/EvolutionHub.vue`等 |
-| 低空嵌入页 | `lowalt/src/`与`legacy/src/` |
+| 前端 | AI 主站、低空嵌入应用、共享样式/交互、全部图表组件及源资源 |
+| 首页与领域数据 | 当前汇总指标、来源说明、年度/主题统计、人工维护的更新动态 |
+| 搜索与分页 | 11 来源、237,522 条当前页面候选记录；完整翻页、标题搜索、证据详情 |
+| AI 综述 | 当前 B 路线 70 篇，另保留可读历史 A 路线 32 篇 |
+| 低空综述 | 33 技术点的 A/B 两路线，共 66 篇 |
+| 关系与分析 | 六种 AI 证据图、低空关系及贡献筛选、基金/论文/专利七层和70点动画、七类曲线 |
+| 研究力量 | 数据底座、机构趋势、机构版图、负责人接续、案例与证据下钻 |
+| 数据生产 | 当前 Dashboard 生产脚本及来源映射；其服务器依赖另有说明 |
 
-入口参数：`/chain?domain=ai` 原始页；`module=investment` 投入产出；`module=strength` 研究力量（总体格局）；再加 `view=continuity` 查看接续与证据。
+237,522 是**现有页面可逐条查询的候选集合**，并非首页规范论文库或 AI 统一库总量。现有两领域案例专题仍为筹备入口，按线上现状保留。外部 DOI/论文来源链接需要联网。
 
-`demo/` 是设计样例；`scripts/build_ai_chain.py` 是服务器端展示数据生产器源码，依赖完整项目和本地数据，在本仓库中不用运行。`SOURCE_MAP.json` 记录服务器源文件对应及交接时SHA，便于回合并核对。
+## 目录
 
-## 修改与合并
+```text
+web/                  主站 Vue 应用与人工更新台账
+lowalt/               低空嵌入应用入口
+legacy/               低空复用组件及资源
+shared/               统一样式、图表与播放交互
+snapshot/             完整展示快照与本地只读接口
+scripts/              数据生产脚本及快照完整性检查
+server_reference/     原项目只读接口/计算实现，供理解口径
+specifications/       当前70词与分层配置
+source_docs/          保留的原前端维护说明
+docs/                团队文档（从00开始）
+```
 
-1. 从 `main` 建功能分支，例如 `claude/research-strength-design`。
-2. 按 `CLAUDE.md` 逐页设计，保留原始证据链和其他页面。
-3. `npm run build`；在1440/1920宽屏检查布局、文字重叠、年份、筛选、点击详情和窄屏滚动。
-4. 提交PR，附改动说明和关键页面截图，注明使用演示还是实际数据。
-5. 经用户审阅后合并 `main`。**合并不会自动部署服务器**；维护者按源文件对应表核查差异，在既有备份流程下集成到5184。
-
-工作区源码的相对结构与服务器 `dashboard/cursor_ui/` 一致。移植时保留服务器的环境路径与只读代理配置；不要直接用仓库演示配置覆盖服务器配置。当前站点不会因创建本仓库发生变化。
-
-## 构建
-
-`npm run build` 构建主站和低空页，产物位于忽略的 `.runtime/build/`；`npm run preview` 预览构建版。GitHub Actions只检查构建，不部署。真实数据、`.env.local`、依赖和构建目录均不入Git。
+可选 `live` 模式连接原项目只读 API，配置见 [06_本地运行与服务器部署](docs/06_本地运行与服务器部署.md)。合并 PR 不会自动更新线上 5184；部署人员按差异和备份流程发布。不要将协作版启动配置直接覆盖服务器自己的代理和路径。

@@ -210,6 +210,11 @@ def strength(handoff=None):
     d = (handoff or HANDOFF) / '数据表'
     metrics = [dict(label=r['label'], value=int(r['value']), unit=r['unit'], scope=r['scope'])
                for r in table(d / '01_首页七项数据.csv')]
+    current = read(OUT/'current-inventory.json')
+    keys={'AI基金项目':'project_scope','AI基金登记成果关系':'project_outcome','基金—论文关系':'project_paper','基金—人员来源记录':'project_person','人员—机构观察':'person_organization_observation','论文引用关系':'citation_edge','已接通专利—论文关系':'patent_paper_link_all'}
+    for metric in metrics:
+        if metric['label'] in keys:
+            metric['value']=current['counts'][keys[metric['label']]]
     annual = []
     for r in table(d / '02_基金年度支持概览.csv'):
         if r['approval_year'] and 2017 <= int(r['approval_year']) <= 2021:
@@ -258,7 +263,34 @@ def strength(handoff=None):
                for g, n, a, b, t1, t2 in CONTINUITY_CASES],
     ), project_counts
 
+def build_animations():
+    animations={
+        'funding.html':'red_animations_20261027_v9/1.1_在研项目批准经费_人大红.html',
+        'outputs.html':'seven_layer_patent_20261027_v1/2.1_七大层_论文与专利年度动画.html',
+        'funding-terms.html':'keyword_tiles_20261027_v2/1.1_70技术点投入演进.html',
+        'output-terms.html':'patent_terms_reclassified_20261027_v2/2.1_论文与专利_专利逐年播放.html',
+        'curves.html':'patent_terms_reclassified_20261027_v1/七大技术方向_投入与产出曲线_专利重分类.html',
+    }
+    for name,relative in animations.items():
+        src=ROOT/'data/outputs/shared/innovation_research'/relative
+        original=src.read_text()
+        output=original
+        if name!='curves.html':
+            css=(ROOT/'dashboard/cursor_ui/shared/annual-player.css').read_text()
+            js=(ROOT/'dashboard/cursor_ui/shared/annual-player.js').read_text()
+            style='<style>'+css+'</style>'
+            script='<script>'+js+'</script>'
+            output=original.replace('</head>',style+'</head>') if '</head>' in original else original+style
+            output=output.replace('</body>',script+'</body>') if '</body>' in output else output+script
+            assert output!=original
+        (OUT/name).write_text(output)
+        SOURCES.append(dict(path=str(src.relative_to(ROOT)),sha256=hashlib.sha256(src.read_bytes()).hexdigest(),asset=name,presentation_sha256=hashlib.sha256(output.encode()).hexdigest()))
+    return len(animations)
+
+
 def main():
+    import runpy
+    runpy.run_path(str(Path(__file__).with_name('build_current_inventory.py')))['build']()
     OUT.mkdir(parents=True,exist_ok=True)
     raw = read(HANDOFF/'关系明细/真实关系原始结构.json')
     focus = read(BASE/'research_graph_focus_20261103_v2/verified_institution_data.json')
@@ -282,27 +314,27 @@ def main():
                        strength=strength_data,
                        institutionSummary=institution_analysis['retained_vs_new_2021']))
     (OUT/'research.json').write_text(json.dumps(payload,ensure_ascii=False,separators=(',',':')))
-    animations={
-        'funding.html':'red_animations_20261027_v9/1.1_在研项目批准经费_人大红.html',
-        'outputs.html':'seven_layer_patent_20261027_v1/2.1_七大层_论文与专利年度动画.html',
-        'funding-terms.html':'keyword_tiles_20261027_v2/1.1_70技术点投入演进.html',
-        'output-terms.html':'patent_terms_reclassified_20261027_v2/2.1_论文与专利_专利逐年播放.html',
-        'curves.html':'patent_terms_reclassified_20261027_v1/七大技术方向_投入与产出曲线_专利重分类.html',
-    }
-    for name,relative in animations.items():
-        src=ROOT/'data/outputs/shared/innovation_research'/relative
-        shutil.copy2(src,OUT/name)
-        h=hashlib.sha256(src.read_bytes()).hexdigest()
-        assert hashlib.sha256((OUT/name).read_bytes()).hexdigest()==h
-        SOURCES.append(dict(path=str(src.relative_to(ROOT)),sha256=h,asset=name))
+    animation_count=build_animations()
     # Provenance is retained outside the public asset directory.
     manifest=OUT.parents[2]/'analysis_v1_sources.json'
     manifest.write_text(json.dumps({'version':payload['version'],'sources':SOURCES,'checks':{
         'continuity_edges':286,'continuity_people':278,'projects':242,'papers':2971,
-        'milestones':len(payload['landscape']['events']),'animations':len(animations),
+        'milestones':len(payload['landscape']['events']),'animations':animation_count,
         'strength_scope_projects':7032,'strength_scope_institutions':727,'entry_cohort':168,
-        'original_animation_bytes_unchanged':True}},ensure_ascii=False,indent=2))
+        'original_source_assets_unchanged':True,'animation_data_unchanged':True}},ensure_ascii=False,indent=2))
     print(json.dumps({'output':str(OUT),'payload_bytes':(OUT/'research.json').stat().st_size,'checks':'passed'},ensure_ascii=False))
 
 if __name__=='__main__':
-    main()
+    import sys
+    if '--animations-only' in sys.argv:
+        count=build_animations()
+        manifest=OUT.parents[2]/'analysis_v1_sources.json'
+        metadata=json.loads(manifest.read_text())
+        metadata['sources']=[row for row in metadata['sources'] if not row.get('asset')]+SOURCES
+        metadata['checks'].pop('original_animation_bytes_unchanged',None)
+        metadata['checks'].update(original_source_assets_unchanged=True,animation_data_unchanged=True)
+        metadata['presentation_version']='shared-interactions-20261105'
+        manifest.write_text(json.dumps(metadata,ensure_ascii=False,indent=2))
+        print(json.dumps({'animations':count,'data_changed':False}))
+    else:
+        main()

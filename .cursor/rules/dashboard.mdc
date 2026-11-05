@@ -1,0 +1,5 @@
+---
+description: 国自科 Dashboard 项目与协作约定
+alwaysApply: true
+---
+遵循仓库根 AGENTS.md。首次读取 docs/00_阅读指南.md 与任务相关章节；不要使用旧局部交接版的演示数据或设计状态。当前默认 snapshot 模式，全部展示快照在仓库内；live 是可选只读服务器接入。

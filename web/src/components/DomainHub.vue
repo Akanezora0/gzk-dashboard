@@ -2,6 +2,7 @@
 import {ref,computed,watch,onBeforeUnmount,provide,nextTick} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import Chart from './Chart.vue'
+import CurrentDomainInventory from './CurrentDomainInventory.vue'
 import CountValue from './CountValue.vue'
 import '../domain.css'
 import '../domain_delta.css'
@@ -25,6 +26,7 @@ const profiles={
 const validType=v=>Object.hasOwn(profiles,String(v))?String(v):'paper'
 const type=ref(validType(route.query.type||route.query.tab))
 const profile=computed(()=>profiles[type.value])
+const hasCurrent=computed(()=>Boolean(props.data.currentInventory&&['paper','fund','patent'].includes(type.value)))
 const metricList=computed(()=>(props.data?.domain?.metrics||[]).map(presentSource))
 const normalize=m=>m.kind==='copyright'?'software':m.kind
 const sources=computed(()=>metricList.value.filter(m=>normalize(m)===type.value).sort((a,b)=>Number(b.namespace===profile.value.primary)-Number(a.namespace===profile.value.primary)))
@@ -122,9 +124,9 @@ function horizontalChart(items,{color=profile.value.color,topic=false,label='记
 function compositionChart(items){return {...chartBase,tooltip:{trigger:'item',confine:true,formatter:p=>`${escape(p.name)}<br/>${p.marker} ${fmt(p.value)} ${profile.value.unit} · ${p.percent}%`},legend:{bottom:0,left:'center',textStyle:{fontSize:14,color:'#526073'}},series:[{type:'pie',radius:['43%','66%'],center:['50%','44%'],label:{show:true,formatter:p=>`${escape(p.name)}\n${fmt(p.value)}`,fontSize:13,lineHeight:20},labelLine:{length:12,length2:8},itemStyle:{borderColor:'#fff',borderWidth:3},emphasis:{scaleSize:5},data:(items||[]).map((r,i)=>({name:r.name,value:r.count,itemStyle:{color:colors[(i+1)%colors.length]}}))}]}}
 const chartPanels=computed(()=>{
  const a=analytics.value;if(!a)return []
- return profile.value.charts.flatMap(key=>{
+ return profile.value.charts.filter(key=>!hasCurrent.value||['topics','ranking'].includes(key)).flatMap(key=>{
   if(key==='years')return a.years?.length?[{key,title:`${profile.value.year}分布`,subtitle:current.value?.name,option:yearChart(a)}]:[]
-  if(key==='topics')return a.topics?.length?[{key,title:'技术主题分布',subtitle:`${current.value?.name} · 词表匹配`,option:horizontalChart(a.topics,{topic:true,label:'候选记录'}),topic:true}]:[]
+  if(key==='topics')return a.topics?.length?[{key,title:'技术主题分布',subtitle:`${current.value?.name} · ${hasCurrent.value?'专题来源样本 · ':''}词表匹配`,option:horizontalChart(a.topics,{topic:true,label:'候选记录'}),topic:true}]:[]
   if(key==='ranking'){
    if(type.value==='policy'){
     const items=[{name:'中央政策',count:policyPresent.central},{name:'地方独立政策',count:policyPresent.local}]
@@ -132,7 +134,7 @@ const chartPanels=computed(()=>{
    }
    if(!a.ranking?.items?.length)return []
    const pie=type.value==='report',limit=type.value==='company'?10:8
-   return [{key,title:profile.value.rankTitle||'期刊分布 · 前 8 位',subtitle:pie?'':`前 ${Math.min(limit,a.ranking.items.length)} 位`,option:pie?compositionChart(a.ranking.items):horizontalChart(a.ranking.items,{label:type.value==='fund'?'项目数':'记录数',limit}),full:type.value==='company'}]
+   return [{key,title:profile.value.rankTitle||'期刊分布 · 前 8 位',subtitle:pie?'':`${hasCurrent.value?current.value?.name+' · 专题来源样本 · ':''}前 ${Math.min(limit,a.ranking.items.length)} 位`,option:pie?compositionChart(a.ranking.items):horizontalChart(a.ranking.items,{label:type.value==='fund'?'项目数':'记录数',limit}),full:type.value==='company'}]
   }
   if(key==='secondary'&&secondary.value){
    const b=secondary.value
@@ -162,7 +164,7 @@ function armPane(){paneReady.value=false;const token=++paneToken;nextTick(()=>re
 watch(type, armPane, {immediate:true})
 function metricOf(ns){return metricList.value.find(m=>m.namespace===ns)}
 function metricCandidates(ns){return ns==='ai_policy'?policyPresent.total:metricOf(ns)?.ai_candidates}
-function tabCount(id){const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
+function tabCount(id){const counts=props.data.currentInventory?.counts;const current={paper:counts?.ai_papers,fund:counts?.ai_funds,patent:counts?.ai_patents}[id];if(current!=null)return concise(current);const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
 const brief=computed(()=>{
  const a=analytics.value,p=profile.value,span=yearRange(a)
  const topics=a?.topic_count,top=(a?.topics||[]).slice(0,2).map(t=>t.name)
@@ -234,14 +236,15 @@ const brief=computed(()=>{
   <div class="type-tabs" aria-label="数据类别"><button v-for="[id,label] in tabs" :key="id" :class="{active:type===id}" :aria-pressed="type===id" @click="selectType(id)"><span>{{label}}</span><small v-if="tabCount(id)">{{tabCount(id)}}</small></button></div>
 
   <div :key="type" class="pane-swap">
-  <section v-if="brief" class="ai-data-hero" :style="{'--hero-color':profile.color}">
+  <CurrentDomainInventory v-if="hasCurrent" :inventory="data.currentInventory" :type="type" :tone="profile.color"/>
+  <section v-if="brief&&!hasCurrent" class="ai-data-hero" :style="{'--hero-color':profile.color}">
    <div class="ai-hero-main"><span class="ai-hero-tag">{{brief.tag}}</span><h3 class="ai-hero-title">{{brief.title}}</h3><p class="ai-hero-desc">{{brief.desc}}</p><ul v-if="brief.bullets.length" class="ai-hero-bullets"><li v-for="item in brief.bullets" :key="item">{{item}}</li></ul><p v-if="brief.insight" class="ai-hero-insight">{{brief.insight}}</p></div>
    <div class="ai-hero-highlights"><button v-for="h in brief.highlights" :key="h.label" type="button" class="ai-highlight" :class="{link:h.type&&h.type!==type}" @click="h.type&&h.type!==type&&selectType(h.type)"><strong><CountValue v-if="h.numeric" :value="h.value"/><span v-else>{{h.value}}</span><small v-if="h.hint">{{h.hint}}</small></strong><span>{{h.label}}</span></button></div>
   </section>
-  <div v-if="brief?.strip?.length" class="ai-kpi-strip"><article v-for="(k,i) in brief.strip" :key="k.label" :class="{lead:i===0}"><strong v-if="k.text" class="text">{{k.value}}</strong><strong v-else><CountValue v-if="k.value!=null" :value="Number(k.value)"/><span v-else>—</span><small v-if="k.unit">{{k.unit}}</small></strong><span>{{k.label}}</span></article></div>
+  <div v-if="brief?.strip?.length&&!hasCurrent" class="ai-kpi-strip"><article v-for="(k,i) in brief.strip" :key="k.label" :class="{lead:i===0}"><strong v-if="k.text" class="text">{{k.value}}</strong><strong v-else><CountValue v-if="k.value!=null" :value="Number(k.value)"/><span v-else>—</span><small v-if="k.unit">{{k.unit}}</small></strong><span>{{k.label}}</span></article></div>
   <div v-if="loading" class="domain-loading" role="status">正在读取{{profile.title}}…</div>
   <template v-else>
-   <div v-if="sources.length>1" class="domain-source-grid">
+   <div v-if="sources.length>1&&!hasCurrent" class="domain-source-grid">
     <article v-for="s in sourceCards" :key="s.namespace" class="domain-source-card">
      <div class="domain-source-top"><h3>{{s.name}}</h3><span>领域候选</span></div>
      <div class="domain-source-total"><strong><CountValue v-if="s.total!=null" :value="s.total"/><span v-else>—</span></strong><span>条</span><small>{{s.years}}</small></div>
@@ -273,7 +276,7 @@ const brief=computed(()=>{
   </section>
 
   <section ref="recordsSection" class="panel records-panel domain-records">
-   <div class="panel-heading"><h3>{{profile.recordTitle}}检索</h3><form class="search-box" @submit.prevent="search"><input v-model="recordQuery" placeholder="输入标题或关键词" aria-label="检索记录"/><button class="button" type="submit">检索</button></form></div>
+   <div class="panel-heading"><h3>{{profile.recordTitle}}{{hasCurrent?' · 来源记录检索':'检索'}}</h3><form class="search-box" @submit.prevent="search"><input v-model="recordQuery" placeholder="输入标题或关键词" aria-label="检索记录"/><button class="button" type="submit">检索</button></form></div>
    <div v-if="sources.length>1" class="domain-record-source-tabs" aria-label="检索记录来源"><button v-for="s in sources" :key="s.namespace" :class="{active:recordNamespace===s.namespace}" :aria-pressed="recordNamespace===s.namespace" @click="selectRecordSource(s.namespace)">{{sourceLabel(s.namespace)}}</button></div>
    <div v-if="recordsLoading" class="empty-state compact">正在读取记录…</div>
    <div v-else-if="recordError" class="notice error">{{recordError}} <button @click="loadRecords">重试</button></div>
@@ -288,3 +291,4 @@ const brief=computed(()=>{
   </div>
  </div>
 </template>
+<style scoped>@media(max-width:700px){.domain-page.domain-v6>.type-tabs{flex-wrap:wrap}}</style>

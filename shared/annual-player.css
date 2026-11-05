@@ -1,0 +1,8 @@
+/* Shared with the Vue playback controls. */
+.play,#play,.fullscreen,#fullscreen{font-family:inherit;font-size:14px!important;line-height:20px!important;min-height:36px;padding:7px 12px!important;border-radius:8px!important;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.play,#play{background:#ae0d28;color:#fff;border:1px solid #ae0d28}
+.fullscreen,#fullscreen{background:#fff;color:#576774;border:1px solid #e2d5d9}
+.fullscreen:hover,#fullscreen:hover{border-color:#ae6d7d;color:#ae0d28;background:#fbf5f7}
+button:focus-visible,input:focus-visible{outline:2px solid #a86b7a;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.ui-number-current,.ui-number-ghost{font:inherit!important;color:inherit!important;letter-spacing:inherit!important;line-height:inherit!important}

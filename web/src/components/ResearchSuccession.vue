@@ -1,12 +1,12 @@
 <script setup>
-import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
+import {useSurface} from '../helpers/useSurface'
+import {computed,ref} from 'vue'
 import {useTip,fmt,emph,typeGroup,TYPE_NAME,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const emit=defineEmits(['explore'])
 const {tip,show,move,hide}=useTip()
-const onKey=e=>{if(e.key==='Escape')picked.value=null}
-onMounted(()=>window.addEventListener('keydown',onKey));onBeforeUnmount(()=>window.removeEventListener('keydown',onKey))
-const root=ref(null),picked=ref(null)
+const root=ref(null),picked=ref(null),dialog=ref(null)
+useSurface(computed(()=>!!picked.value),{element:dialog,close:()=>picked.value=null,modal:true})
 const records=computed(()=>Array.isArray(props.dataset?.continuity)?props.dataset.continuity:[])
 const ORDER=['青年','地区','面上','重点等']
 const flows=computed(()=>{const c=new Map();for(const r of records.value){const k=typeGroup(r.earlier_project_type)+'>'+typeGroup(r.later_project_type);c.set(k,(c.get(k)||0)+1)}
@@ -87,7 +87,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
     </div>
     <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
     <Teleport to="body"><div v-if="picked" class="rs-modal-mask" @click.self="picked=null">
-      <div class="rs-modal" role="dialog" :aria-label="`${picked.person}的接续项目`">
+      <div class="rs-modal" ref="dialog" role="dialog" aria-modal="true" :aria-label="`${picked.person}的接续项目`">
         <button class="rs-modal-x" aria-label="关闭" @click="picked=null">×</button>
         <p class="rs-modal-who"><b>{{picked.person}}</b><span>{{picked.org}}</span></p>
         <ol class="rs-modal-steps"><li v-for="(s,i) in picked.steps" :key="i"><em :style="{background:TYPE_COLOR[s.t],color:s.t==='青年'?'#7a0a1c':'#fff'}">{{s.y}} · {{TYPE_NAME[s.t]}}</em><b>{{s.title}}</b><small>批准号 {{s.grant}}</small></li></ol>

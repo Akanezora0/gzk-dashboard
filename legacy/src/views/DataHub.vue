@@ -52,7 +52,7 @@
               :class="{ clickable: h.tab || h.route }"
               @click="onHighlightClick(h)"
             >
-              <span class="hc-val">{{ fmtHighlight(h.value) }}</span>
+              <span class="hc-val"><CountValue v-if="typeof h.value==='number'" :value="h.value" :formatter="fmtHighlight"/><template v-else>{{fmtHighlight(h.value)}}</template></span>
               <span class="hc-label">{{ h.label }}</span>
               <span v-if="h.hint" class="hc-hint">{{ h.hint }}</span>
             </button>
@@ -80,7 +80,7 @@
             :key="ek.label"
             class="kpi-static kpi-extra"
           >
-            <div class="ks-val" :style="{ color: ek.color }">{{ ek.value }}</div>
+            <div class="ks-val" :style="{ color: ek.color }"><CountValue v-if="typeof ek.value==='number'" :value="ek.value"/><template v-else>{{ek.value}}</template></div>
             <div class="ks-label">{{ ek.label }}</div>
           </div>
         </div>
@@ -193,9 +193,11 @@ import * as echarts from 'echarts'
 import PageShell from '../components/layout/PageShell.vue'
 import ScreenPanel from '../components/screen/ScreenPanel.vue'
 import MetricFlop from '../components/screen/MetricFlop.vue'
+import CountValue from '../../../web/src/components/CountValue.vue'
 import { PAGE_META, DATA_TYPES } from '../constants/site.js'
 import { DATA_ARCHIVE, DEFAULT_DATA_CATALOG, tabCountFor } from '../constants/dataCatalog.js'
 import { buildDataHubProfile, DATA_HUB_META, relatedCatalogForTab } from '../constants/dataHubProfiles.js'
+import {chartPresentation} from '../../../shared/chartPresentation.js'
 import { CHART, chartXAxis, chartYAxis, paletteColor } from '../constants/chartTheme.js'
 import { apiGet, fmtCount } from '../composables/useApi'
 
@@ -298,6 +300,8 @@ function selectRank(i) {
   renderBarChart()
 }
 
+function setChart(instance,option){instance.setOption(chartPresentation(option,false,window.matchMedia('(prefers-reduced-motion: reduce)').matches))}
+
 function renderTrendChart() {
   const p = profile.value
   const color = meta.value.color
@@ -306,7 +310,7 @@ function renderTrendChart() {
   trendInst = echarts.init(trendChart.value)
 
   if (p.trendMode === 'dual') {
-    trendInst.setOption({
+    setChart(trendInst,{
       backgroundColor: 'transparent',
       grid: { left: 52, right: 20, top: 36, bottom: 32 },
       legend: { data: ['申请量', '授权量'], top: 0, ...CHART.legend },
@@ -328,7 +332,7 @@ function renderTrendChart() {
     return
   }
 
-  trendInst.setOption({
+  setChart(trendInst,{
     backgroundColor: 'transparent',
     grid: { left: 52, right: 20, top: 28, bottom: 32 },
     tooltip: { trigger: 'axis', ...CHART.tooltip },
@@ -349,7 +353,7 @@ function renderDistChart() {
   if (!distChart.value || !p) return
   distInst?.dispose()
   distInst = echarts.init(distChart.value)
-  distInst.setOption({
+  setChart(distInst,{
     backgroundColor: 'transparent',
     tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)', ...CHART.tooltip },
     legend: { orient: 'vertical', right: 4, top: 'middle', ...CHART.legend },
@@ -388,7 +392,7 @@ function renderBarChart() {
       }))
     : [...p.barData].sort((a, b) => b.value - a.value).slice(0, 10)
 
-  barInst.setOption({
+  setChart(barInst,{
     backgroundColor: 'transparent',
     grid: { left: 8, right: 48, top: 8, bottom: 8, containLabel: true },
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },

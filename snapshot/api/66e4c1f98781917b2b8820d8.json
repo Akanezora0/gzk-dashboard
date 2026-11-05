@@ -1,0 +1,1 @@
+{"nodes":[],"edges":[],"meta":{"scope":"llm","chain":"fund_patent","nodes":0,"edges":0,"sample_limit":5,"sample_records":0,"note":"来源内候选与来源字段关联；节点大小仅区分实体类型，不代表影响力。图为确定性讲解样本，不据此估计领域比例或因果贡献。","scope_label":"LLM明确词","selection":"按技术主题轮转选取，优先有技术命中的近期记录；非随机代表性样本。"}}

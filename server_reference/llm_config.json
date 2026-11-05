@@ -1,0 +1,21 @@
+{
+  "release": "llm_dashboard_20260922_v9",
+  "snapshot": "data/warehouse/llm/domain_snapshot/llm_screen_20260917_v2",
+  "tree": "data/outputs/llm/keywords/ai_keywords_20260918_v4/technology_tree.json",
+  "survey_batch": "data/outputs/llm/survey_publication/skills70_20261029_v1",
+  "policy": "data/warehouse/llm/policy/policy_yaoyuan_20260917_v1",
+  "legacy_inventory": "data/runs/llm/policy_ingestion/policy_yaoyuan_20260917_v1/gzk_lowalt_smalltable_20260917.json",
+  "milestones": "data/outputs/llm/dashboard/llm_dashboard_20260918_v1/milestones.json",
+  "web": "data/outputs/llm/dashboard/web",
+  "evidence": "data/outputs/llm/dashboard/llm_dashboard_20260922_v9/verification",
+  "research_views": "data/outputs/llm/dashboard/llm_dashboard_20260918_v2/research_views_final/research_views.json",
+  "domain_tree": "data/outputs/llm/keywords/llm_keywords_20260916_v1/technology_tree.json",
+  "study_views": "data/outputs/llm/dashboard/llm_dashboard_20260920_v5/study_views.json",
+  "chronology": "data/outputs/llm/dashboard/llm_dashboard_20260920_v6/chronology.json",
+  "inventory": "data/outputs/llm/dashboard/llm_dashboard_20260922_v9/inventory",
+  "low_altitude_web": "data/outputs/llm/dashboard/llm_dashboard_20260921_v7/low-altitude-web",
+  "foundation_patent_receipt": "data/warehouse/shared/patent/cn_patents_20260921_v1/receipt.json",
+  "foundation_patent_sha256": "ab6c4c4e4f61dbcf7885d9a6149c1773569d1d1c9aa603b915e4ce5c79250232",
+  "legacy_report_metrics": "data/warehouse/low_altitude/serving/authoritative_metrics.json",
+  "legacy_report_metrics_sha256": "58aa2e4685162d9754add73d12244590252a5e9e0fb1ef6933399f29f7613e90"
+}

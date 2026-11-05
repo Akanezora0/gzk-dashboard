@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "record_count": 3727,
+  "recommended_runtime_files": [
+    "rows.json.gz",
+    "metadata.json",
+    "contribution.mjs"
+  ],
+  "uncompressed_alternative": "rows.json",
+  "validation": "validation.json",
+  "files": [
+    {
+      "file": "rows.json",
+      "bytes": 589526,
+      "sha256": "7b790da2568520aa8e1d93c4437879cacb27b119556f26374f6a2fa1e0e5c31c"
+    },
+    {
+      "file": "rows.json.gz",
+      "bytes": 16716,
+      "sha256": "af6f8782c52d01f5b93d2cd87b80e7013a632079225af531bba3caa72f973d9c"
+    },
+    {
+      "file": "metadata.json",
+      "bytes": 2680,
+      "sha256": "82e85a8c96a5cfa8f56a9322bf352652d90881cd9f887f35e191419e5f7fc353"
+    },
+    {
+      "file": "contribution.mjs",
+      "bytes": 3402,
+      "sha256": "3dd2eca61fe9478953cd64e2002e1418f3ff801f29049fc06b9d463dad363546"
+    },
+    {
+      "file": "validation.json",
+      "bytes": 8987,
+      "sha256": "54950bb82d057d460feef43b0785fd681816ee3e5b9bb6d47b0fc308f00fa412"
+    },
+    {
+      "file": "validation_cases.json",
+      "bytes": 302,
+      "sha256": "88428db8b1cc5ed6e1ff7a0c961adf80174afc7bb896e7f33554d93346c159d3"
+    }
+  ]
+}

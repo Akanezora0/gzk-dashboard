@@ -1,7 +1,7 @@
 <script setup>
 import {ref,watch,onMounted,onBeforeUnmount} from 'vue'
 import {fmt} from '../shared'
-const props=defineProps({value:{type:Number,default:0}})
+const props=defineProps({value:{type:Number,default:0},formatter:{type:Function,default:fmt}})
 const shown=ref(props.value)
 let frame,media
 function update(value){
@@ -20,4 +20,4 @@ onMounted(()=>{media=matchMedia('(prefers-reduced-motion: reduce)');media.addEve
 watch(()=>props.value,update)
 onBeforeUnmount(()=>{cancelAnimationFrame(frame);media?.removeEventListener('change',reduce)})
 </script>
-<template><span class="count-value" :aria-label="fmt(value)"><span aria-hidden="true">{{fmt(shown)}}</span></span></template>
+<template><span class="count-value" :aria-label="formatter(value)"><span aria-hidden="true">{{formatter(shown)}}</span></span></template>

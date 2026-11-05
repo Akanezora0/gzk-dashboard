@@ -14,7 +14,7 @@ export function sourceCoverage(dataset = {}) {
 
 // The project overview includes existing deliveries from multiple domains.
 // Only dedicated AI rows are excluded; source scope remains unchanged in the catalog.
-const aiOnlyIds = new Set(['ai_company', 'ai_report', 'policy_central', 'policy_local'])
+const aiOnlyIds = new Set(['ai_company', 'ai_report', 'policy_central', 'policy_local','unified_ai_paper','unified_ai_fund','unified_ai_patent'])
 export const overviewSources = datasets => (datasets || []).filter(dataset => !aiOnlyIds.has(dataset.id)).map(presentSource)
 
 // Display vocabulary only. Source identifiers, quantities and comparison receipts
@@ -39,15 +39,13 @@ const sourceLabels = {
   ai_policy: ['人工智能政策文献', '篇', '人工智能中央与地方政策文本'],
 }
 export function presentSource(dataset = {}) {
+  if(dataset.verified_at==='2026-11-03'&&dataset.description)return {...dataset}
   const label = sourceLabels[dataset.id || dataset.namespace]
   return label ? {...dataset, name: label[0], unit: label[1], description: label[2]} : {...dataset}
 }
 
-// Authorized presentation-only value, deliberately separate from inventory and
-// increment calculations. The resource catalog always shows the actual stock.
-export const overviewDemonstration = Object.freeze({
-  cn_patent_base: Object.freeze({count: 6904000, label: '演示值', authorizedOn: '2026-09-24'}),
-})
+// All display counts now use accepted stock; legacy demonstration overrides removed.
+export const overviewDemonstration = Object.freeze({})
 export const overviewDisplayCount = source => overviewDemonstration[source.id]?.count ?? source.count
 export function overviewCountTitle(source) {
   const actual = Number(source.count).toLocaleString('zh-CN') + ' ' + sourceDisplayUnit(source)
@@ -58,7 +56,7 @@ export function overviewCountTitle(source) {
 
 export function sourceDisplayUnit(dataset = {}) {
   const unit = String(sourceLabels[dataset.id || dataset.namespace]?.[1] || dataset.unit || '')
-  if (['篇', '条', '家', '项', '份'].includes(unit)) return unit
+  if (['篇', '条', '家', '项', '份','对','个'].includes(unit)) return unit
   if (unit === '篇/条') return '篇'
   if (unit === '家/条') return '家'
   if (unit === '项/条') return '项'

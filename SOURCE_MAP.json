@@ -1,5 +1,5 @@
 {
-  "baseline": "dashboard-5184-20261103",
+  "baseline": "dashboard-5184-20261105",
   "files": [
     {
       "file": "build.mjs",
@@ -12,6 +12,11 @@
       "sha256": "39a5a0a392bc48d84c18516ce0236b44f723248fc50df5310ef2d191c1ce5df8"
     },
     {
+      "file": ".gitignore",
+      "server_source": "dashboard/cursor_ui/.gitignore",
+      "sha256": "d2d9b5c0a4e23f051df3c0c10526a421bd518294e5a9deb653d20357d95966d1"
+    },
+    {
       "file": "package.json",
       "server_source": "dashboard/cursor_ui/package.json",
       "sha256": "d8f105bfdf982cf5e1bf03ca1e8f64087e902382c52b7eb0752fa752925f699a"
@@ -19,17 +24,37 @@
     {
       "file": "scripts/build_ai_chain.py",
       "server_source": "dashboard/cursor_ui/scripts/build_ai_chain.py",
-      "sha256": "5b48d9cf2ca3fd3254506ce5fa332d2a45e188191980ef22d665be5621797fd9"
+      "sha256": "cc094052447eb1e3d80ea676dba568ac9e58ed2d4e2b7f4bf3119ae129e55414"
+    },
+    {
+      "file": "scripts/build_current_inventory.py",
+      "server_source": "dashboard/cursor_ui/scripts/build_current_inventory.py",
+      "sha256": "b8de7604252de60264ec418a2a135f0a1aee4dfab59cc2f2765e758c73e5b8f2"
+    },
+    {
+      "file": "shared/interactions.css",
+      "server_source": "dashboard/cursor_ui/shared/interactions.css",
+      "sha256": "b315d1d93a2df2b4a2a773bc249c3e9d3dfa670057a6fed5175b44b72a6528d9"
+    },
+    {
+      "file": "shared/annual-player.js",
+      "server_source": "dashboard/cursor_ui/shared/annual-player.js",
+      "sha256": "a421c7bbf347202b84bd2cd8934a2c1953e68ccd26840221a3d8fe64b6148b4d"
+    },
+    {
+      "file": "shared/chartPresentation.js",
+      "server_source": "dashboard/cursor_ui/shared/chartPresentation.js",
+      "sha256": "a183834c40e9e0c3d9db369403644ed38c048b2a285570eb11834ce4e9aa3e31"
+    },
+    {
+      "file": "shared/annual-player.css",
+      "server_source": "dashboard/cursor_ui/shared/annual-player.css",
+      "sha256": "351f1c2320c3af053984ff59fa78c2b255cf61c42f17f8984fb93d73ca682a1a"
     },
     {
       "file": "web/vite.config.js",
       "server_source": "dashboard/cursor_ui/web/vite.config.js",
       "sha256": "f00a69cb091ed8c5ec42f26f600cda0573d21bc19b94ca2c47cde444da96496b"
-    },
-    {
-      "file": "web/package-lock.json",
-      "server_source": "dashboard/cursor_ui/web/package-lock.json",
-      "sha256": "d476978a6f433ea7d7d5440e3ad4a748196e76014a371173b3cef644e745a1da"
     },
     {
       "file": "web/package.json",
@@ -79,7 +104,17 @@
     {
       "file": "lowalt/src/main.js",
       "server_source": "dashboard/cursor_ui/lowalt/src/main.js",
-      "sha256": "9925c5c469d167d2a76fa67ae85e05da80a52045b94c01de7104d7c153a9a415"
+      "sha256": "9e7eac89abfa75626f746be304b6de93ae0387a403562136e37f1663d511dff1"
+    },
+    {
+      "file": "web/content/catalog-activity.json",
+      "server_source": "dashboard/cursor_ui/web/content/catalog-activity.json",
+      "sha256": "d87ede4539d067a10b6ecc0582a331106f13f0c5318d2dc7c14549314a0ac802"
+    },
+    {
+      "file": "web/src/strength.css",
+      "server_source": "dashboard/cursor_ui/web/src/strength.css",
+      "sha256": "e680d15d995133b5bc806843ee4bc95d9ad9146bcc511dc09e5287a19e6021c4"
     },
     {
       "file": "web/src/evolution-tree.css",
@@ -139,12 +174,12 @@
     {
       "file": "web/src/App.vue",
       "server_source": "dashboard/cursor_ui/web/src/App.vue",
-      "sha256": "7b62aba2e85b36d8f82aa6333fe7d57a64bc9cb4ec2d834cd56e71ae10c83bdd"
+      "sha256": "9d1cca5d4374473c421efb044b622c0aa321fe76b929f5ff7bd33e2878781df8"
     },
     {
       "file": "web/src/main.js",
       "server_source": "dashboard/cursor_ui/web/src/main.js",
-      "sha256": "14ee68489f2e372883292e605c6053452cf75ac81e80bd9551b90c16d89a294f"
+      "sha256": "0b49757e71a024fcf4ebe1a3cae50c0983129a2c76b61b4df698f213ab823eeb"
     },
     {
       "file": "web/src/shared.js",
@@ -157,6 +192,16 @@
       "sha256": "478bcfe6710336c42c045394853c7ec100dc47797255c43e6786c0a166601363"
     },
     {
+      "file": "web/src/components/ResearchAtlas.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ResearchAtlas.vue",
+      "sha256": "f57a66609d59999c156e80cbbe24823b0a30ee891dadc274346d30dab808f9ec"
+    },
+    {
+      "file": "web/src/components/StrengthBase.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/StrengthBase.vue",
+      "sha256": "e6cc432fe8a5a67de4f794007025a353aa47dc271d0370c5674ab4761a3edaf1"
+    },
+    {
       "file": "web/src/components/TechnologyEvolutionTree.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/TechnologyEvolutionTree.vue",
       "sha256": "ab6ccba8bacc92503cabe5dd46b463abd9e65ce3ce79659f101f586ec7818504"
@@ -164,7 +209,7 @@
     {
       "file": "web/src/components/AiChainWorkspace.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/AiChainWorkspace.vue",
-      "sha256": "075b73ff21f60e6237f2b0515297160cd05cd5d58e56b0d55511ba86a31ed534"
+      "sha256": "2b37172becb8387069878a26ef46e2dd74c5c60ad4ad0eb338651c336a4670a0"
     },
     {
       "file": "web/src/components/ResearchNetwork.vue",
@@ -179,7 +224,7 @@
     {
       "file": "web/src/components/CountValue.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/CountValue.vue",
-      "sha256": "5b34383ab1d9302645e12c526eccb96aaccf0270c2cb78b3c57c0fb77f7f3b66"
+      "sha256": "6dd65182daa72b0604e1bf94bfe268c3b31d424aa243c37cb9975bfad8613573"
     },
     {
       "file": "web/src/components/DataWorkspace.vue",
@@ -187,19 +232,29 @@
       "sha256": "c982df0a8624bfd055355ff3122e49791a286e0d1657149ff07d95d9b63fe2fe"
     },
     {
-      "file": "web/src/components/InvestmentOutcomes.vue",
-      "server_source": "dashboard/cursor_ui/web/src/components/InvestmentOutcomes.vue",
-      "sha256": "222bc503a9b8ce1430595028b442623fa573eff00741adf13a7c520892b7d94d"
+      "file": "web/src/components/ResearchSuccession.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/ResearchSuccession.vue",
+      "sha256": "6a95b800a7aa4e660d6b3b75855c7fc59cdd350a02bed1b845476057886dbd66"
     },
     {
-      "file": "web/src/components/ResearchContinuity.vue",
-      "server_source": "dashboard/cursor_ui/web/src/components/ResearchContinuity.vue",
-      "sha256": "cb00d96991d1638db900ad86eac02e8fbfccb3a0c67b4c551e4784f7808e5779"
+      "file": "web/src/components/InvestmentOutcomes.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/InvestmentOutcomes.vue",
+      "sha256": "30ee8a434628dc0e0a8a5116b28b65bb8159f37b2b652a17fd7035dfa70b7a18"
+    },
+    {
+      "file": "web/src/components/EvidenceExplorer.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/EvidenceExplorer.vue",
+      "sha256": "2c8bd63fcad868b96de9bbff0bd10006e0be7092b0c7ded86d28f6b3a5e48d27"
+    },
+    {
+      "file": "web/src/components/StrengthTrend.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/StrengthTrend.vue",
+      "sha256": "3bf8c15dac10e584640bc0cb94f8b0d52063382a80db4366555bae6258b646c9"
     },
     {
       "file": "web/src/components/OverviewHub.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/OverviewHub.vue",
-      "sha256": "431f8284d10cc1012c6ef0c99e8bd6c97e18e89b7f11821db38cd053d23a2c4a"
+      "sha256": "70324acbd18bafd05ec6c61ba833a3cd085e66e99848d29882c9a6392b0a9bcd"
     },
     {
       "file": "web/src/components/LowAltitudeEmbed.vue",
@@ -209,7 +264,12 @@
     {
       "file": "web/src/components/Chart.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/Chart.vue",
-      "sha256": "91f090a0a63e5c930f204b337f6bdbabb4dd3d1a27e23358380c71ebd390113b"
+      "sha256": "9ce07fbccc9f6595a0ecc32768048c84a6691dc2f8fb78987bbf31df95469bd6"
+    },
+    {
+      "file": "web/src/components/InvestmentCurves.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/InvestmentCurves.vue",
+      "sha256": "f609519cb91b2d47156d24f348dde14a1c4ce68cfb14d526a01071e552283e48"
     },
     {
       "file": "web/src/components/FeaturedTechnologyTimeline.vue",
@@ -222,34 +282,34 @@
       "sha256": "321323c53d39b0ad4761fac7bff69232fe0b1c6c8e512a8d9faab36b52c4a759"
     },
     {
-      "file": "web/src/components/ResearchLandscape.vue",
-      "server_source": "dashboard/cursor_ui/web/src/components/ResearchLandscape.vue",
-      "sha256": "e3874aa44e34dd288bfab90ac7ceb4479d4261d48ac8bfee81109b6ba85e5b21"
-    },
-    {
       "file": "web/src/components/FundContribution.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/FundContribution.vue",
-      "sha256": "de92894f057d90a45a917dd9f9afca2d0e846421b92e31979bb3f1df6ccffa7a"
+      "sha256": "17ff0367cd265dec72acd8b69068c81cdb3e8a9e729552a1c2d8de7fb288ddf1"
     },
     {
       "file": "web/src/components/DatasetCatalog.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/DatasetCatalog.vue",
-      "sha256": "7d029dedc7703f5400908ca07f00a6896fa74f70532d8a0612aa64901b7a024c"
+      "sha256": "fd5d26bbcd0e18cbf009b92be6906c84c97ead0fe0fe636ac9714210f5cbbf0e"
     },
     {
       "file": "web/src/components/EvidenceHub.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/EvidenceHub.vue",
-      "sha256": "76c426dd5147286093e321c93c9d4725f3ea3aae71356c53c74dc121446ea60e"
+      "sha256": "3eecde71d94aa40e7f57361baffd6031ca75908b79424807ec388c8d577d9ea9"
+    },
+    {
+      "file": "web/src/components/CurrentDomainInventory.vue",
+      "server_source": "dashboard/cursor_ui/web/src/components/CurrentDomainInventory.vue",
+      "sha256": "90f09785fec1473291cf9a285f61d95a51f69f2e351aa654e3ff31a8c7c9811f"
     },
     {
       "file": "web/src/components/CatalogPulse.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/CatalogPulse.vue",
-      "sha256": "d2e5e28bc1394683172d3f97503c54d4d51dc3c53b34bfc330bc066cb084209c"
+      "sha256": "92f1b20a046dedcdb071d5d1744538241b453dbd012419c3b31039cd86c09cdc"
     },
     {
       "file": "web/src/components/DomainHub.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/DomainHub.vue",
-      "sha256": "b454495aa28a6c0d8462742bef7337a0ed43510fba2f0e97519bc4ec0096294a"
+      "sha256": "1affb2a900abc95f129338095ba6e68ea752c966dc22137ffee0f1f0806acd82"
     },
     {
       "file": "web/src/components/TechnologyChronology.vue",
@@ -259,17 +319,32 @@
     {
       "file": "web/src/components/EvolutionHub.vue",
       "server_source": "dashboard/cursor_ui/web/src/components/EvolutionHub.vue",
-      "sha256": "b49be449d14303c1e2fe7b389f0bf8caa0cc907cb4160f007bd438cc6b4cc8b2"
+      "sha256": "4b4b223bafdb6c4f15f6204d10273edc2c422586fe052e887df6601f304a192e"
     },
     {
       "file": "web/src/helpers/foundationSources.js",
       "server_source": "dashboard/cursor_ui/web/src/helpers/foundationSources.js",
-      "sha256": "882e0871dc89b80533bfb3a68b4f97055cfd7ee436a205d4a006ca5228f29b13"
+      "sha256": "4c1681d08a7e82c48d753297e6ef2d062742adfbdf2c6a73c06916f280214dcd"
+    },
+    {
+      "file": "web/src/helpers/strengthTip.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/strengthTip.js",
+      "sha256": "360684c837a9b60306bab7e22bdca9ff71c4082c568663eee8c601eedf8c5195"
+    },
+    {
+      "file": "web/src/helpers/currentInventory.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/currentInventory.js",
+      "sha256": "98006d7e03ec09e8d3fff81f81b2c21284b32e3d7c2d1f47c2a100023e388105"
     },
     {
       "file": "web/src/helpers/catalogActivity.js",
       "server_source": "dashboard/cursor_ui/web/src/helpers/catalogActivity.js",
-      "sha256": "14a1689d227a87b8518b3b9fdda6001429548b8694464e2571324d466f01b25d"
+      "sha256": "cd692645cb54b868219ebb3e4d6d87db974eb8383c0839430a78ff1d4531533c"
+    },
+    {
+      "file": "web/src/helpers/useSurface.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/useSurface.js",
+      "sha256": "aa0bb04984b1ea7a61af6c453a4ef9877b7d69e7dc68c08b4d7d7c2d42523588"
     },
     {
       "file": "web/src/helpers/aiYearBuckets.js",
@@ -280,6 +355,11 @@
       "file": "web/src/helpers/catalogCoverage.js",
       "server_source": "dashboard/cursor_ui/web/src/helpers/catalogCoverage.js",
       "sha256": "8df64ca4d37cd46fc20865eb8ee4a40228cca9abb35103e01f17af4c4a93ff53"
+    },
+    {
+      "file": "web/src/helpers/useYearPlayback.js",
+      "server_source": "dashboard/cursor_ui/web/src/helpers/useYearPlayback.js",
+      "sha256": "de2155b1b3a44aa6cb74b23ddf03de0a4ed25b890c79515b2d0a072cd5ea6766"
     },
     {
       "file": "legacy/src/style.css",
@@ -309,7 +389,7 @@
     {
       "file": "legacy/src/views/DataHub.vue",
       "server_source": "dashboard/cursor_ui/legacy/src/views/DataHub.vue",
-      "sha256": "713eefc86661b8e0334b461648a9b5f3d4b388ba44bf7bea8f5e06e2162454f4"
+      "sha256": "4366ffe6652dd45bf2b1b8fe42d0bb98f37e90e7da4dc217a839dc03a755fc1e"
     },
     {
       "file": "legacy/src/views/Contribution.vue",
@@ -367,6 +447,11 @@
       "sha256": "5be21acd42eb7b896e517f4e0f0f11eb5c5d9e54fbbcebe9453f033008fcca6f"
     },
     {
+      "file": "legacy/src/assets/hero.png",
+      "server_source": "dashboard/cursor_ui/legacy/src/assets/hero.png",
+      "sha256": "881ffbcaafc212e49addad08846a5b82761355fa20624253af3477ba33262c5c"
+    },
+    {
       "file": "legacy/src/assets/vue.svg",
       "server_source": "dashboard/cursor_ui/legacy/src/assets/vue.svg",
       "sha256": "5532db34f1c52841881bab8aeca6c3e8d092bd21a689a65f4d8f8cf8041eef9d"
@@ -374,7 +459,7 @@
     {
       "file": "legacy/src/constants/chartTheme.js",
       "server_source": "dashboard/cursor_ui/legacy/src/constants/chartTheme.js",
-      "sha256": "b72ac629e0e321b0c50d0e283821ba8f2fa07d425de6246b5e30aa64960c6541"
+      "sha256": "11815b410c00b272e1242edd407973ea7019fc52f748c4565d28ae18a1b61209"
     },
     {
       "file": "legacy/src/constants/chainHubContent.js",
@@ -544,12 +629,20 @@
     {
       "file": "legacy/src/components/screen/MetricFlop.vue",
       "server_source": "dashboard/cursor_ui/legacy/src/components/screen/MetricFlop.vue",
-      "sha256": "de6346d6078c7b0bbbacef8a6ed99e4eab01d736e1db51750ea448954c78b389"
+      "sha256": "ca38bb431c4dbe7bdb8a7f3fe3320bb0b8c9c295eedb429434b33a97896f3410"
     },
     {
       "file": "legacy/src/components/screen/ScreenPanel.vue",
       "server_source": "dashboard/cursor_ui/legacy/src/components/screen/ScreenPanel.vue",
       "sha256": "38a5dcf6d0e232f8f0f07a4ba909443e999cc982c34e9a5febcede628ab57798"
     }
-  ]
+  ],
+  "portable_adaptations": [
+    "ui.config.mjs",
+    "build.mjs",
+    "web/vite.config.js",
+    "lowalt/vite.config.js",
+    "package.json"
+  ],
+  "note": "源文件SHA用于比对部署差异；构建入口在协作版适配为本地路径。"
 }

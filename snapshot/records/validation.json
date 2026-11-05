@@ -1,0 +1,208 @@
+{
+  "total_records": 237522,
+  "parts": 20,
+  "checks": [
+    {
+      "namespace": "nsfc_fund",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 13550,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "nsfc_fund",
+      "q": "",
+      "offset": 13540,
+      "count": 10,
+      "total": 13550,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "nsfc_paper",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 26331,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "nsfc_paper",
+      "q": "",
+      "offset": 26321,
+      "count": 10,
+      "total": 26331,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 128520,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "",
+      "offset": 128510,
+      "count": 10,
+      "total": 128520,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "模型",
+      "offset": 0,
+      "count": 10,
+      "total": 15717,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "GPT",
+      "offset": 0,
+      "count": 10,
+      "total": 779,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "%",
+      "offset": 0,
+      "count": 10,
+      "total": 27,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "cnki_paper",
+      "q": "_",
+      "offset": 0,
+      "count": 8,
+      "total": 8,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_patent",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 11438,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_patent",
+      "q": "",
+      "offset": 11428,
+      "count": 10,
+      "total": 11438,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_software",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 12027,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_software",
+      "q": "",
+      "offset": 12017,
+      "count": 10,
+      "total": 12027,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_product",
+      "q": "",
+      "offset": 0,
+      "count": 2,
+      "total": 2,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_news",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 9062,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_news",
+      "q": "",
+      "offset": 9052,
+      "count": 10,
+      "total": 9062,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_policy",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 3678,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "legacy_policy",
+      "q": "",
+      "offset": 3668,
+      "count": 10,
+      "total": 3678,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_policy",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 4051,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_policy",
+      "q": "",
+      "offset": 4041,
+      "count": 10,
+      "total": 4051,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_company",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 27075,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_company",
+      "q": "",
+      "offset": 27065,
+      "count": 10,
+      "total": 27075,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_report",
+      "q": "",
+      "offset": 0,
+      "count": 10,
+      "total": 1788,
+      "matches_live_api": true
+    },
+    {
+      "namespace": "ai_report",
+      "q": "",
+      "offset": 1778,
+      "count": 10,
+      "total": 1788,
+      "matches_live_api": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

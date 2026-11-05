@@ -1,0 +1,332 @@
+{
+  "passed": true,
+  "live_comparisons": 4,
+  "checks": [
+    {
+      "query": {},
+      "matched_live_api": true,
+      "total_papers": 3727,
+      "local": {
+        "filters": {
+          "tech_layer": null,
+          "tech_tag_id": null,
+          "year_start": null,
+          "year_end": null
+        },
+        "coverage": {
+          "fund_supported_papers": 1141,
+          "fund_supported_ratio": 0.3061,
+          "total_papers": 3727,
+          "covered_tech_points": 33,
+          "covered_tech_layers": 6,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 121.44,
+          "high_cite_ratio": 0.3872,
+          "avg_funding_score": 0.2547
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "任务载荷与作业应用层",
+            "papers": 805,
+            "fund_ratio": 0.3714
+          },
+          {
+            "tech_layer": "安全运维与地面系统层",
+            "papers": 460,
+            "fund_ratio": 0.2826
+          },
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 865,
+            "fund_ratio": 0.2543
+          },
+          {
+            "tech_layer": "感知避障与数据层",
+            "papers": 447,
+            "fund_ratio": 0.2729
+          },
+          {
+            "tech_layer": "能源动力与链路层",
+            "papers": 575,
+            "fund_ratio": 0.2904
+          },
+          {
+            "tech_layer": "飞控导航与自主层",
+            "papers": 575,
+            "fund_ratio": 0.353
+          }
+        ]
+      },
+      "live": {
+        "filters": {
+          "tech_layer": null,
+          "tech_tag_id": null,
+          "year_start": null,
+          "year_end": null
+        },
+        "coverage": {
+          "fund_supported_papers": 1141,
+          "fund_supported_ratio": 0.3061,
+          "total_papers": 3727,
+          "covered_tech_points": 33,
+          "covered_tech_layers": 6,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 121.44,
+          "high_cite_ratio": 0.3872,
+          "avg_funding_score": 0.2547
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "任务载荷与作业应用层",
+            "papers": 805,
+            "fund_ratio": 0.3714
+          },
+          {
+            "tech_layer": "安全运维与地面系统层",
+            "papers": 460,
+            "fund_ratio": 0.2826
+          },
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 865,
+            "fund_ratio": 0.2543
+          },
+          {
+            "tech_layer": "感知避障与数据层",
+            "papers": 447,
+            "fund_ratio": 0.2729
+          },
+          {
+            "tech_layer": "能源动力与链路层",
+            "papers": 575,
+            "fund_ratio": 0.2904
+          },
+          {
+            "tech_layer": "飞控导航与自主层",
+            "papers": 575,
+            "fund_ratio": 0.353
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "tech_layer": "平台构型与结构层",
+        "year_start": 2010,
+        "year_end": 2020
+      },
+      "matched_live_api": true,
+      "total_papers": 367,
+      "local": {
+        "filters": {
+          "tech_layer": "平台构型与结构层",
+          "tech_tag_id": null,
+          "year_start": 2010,
+          "year_end": 2020
+        },
+        "coverage": {
+          "fund_supported_papers": 102,
+          "fund_supported_ratio": 0.2779,
+          "total_papers": 367,
+          "covered_tech_points": 8,
+          "covered_tech_layers": 1,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 172.07,
+          "high_cite_ratio": 0.4414,
+          "avg_funding_score": 0.226
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 367,
+            "fund_ratio": 0.2779
+          }
+        ]
+      },
+      "live": {
+        "filters": {
+          "tech_layer": "平台构型与结构层",
+          "tech_tag_id": null,
+          "year_start": 2010,
+          "year_end": 2020
+        },
+        "coverage": {
+          "fund_supported_papers": 102,
+          "fund_supported_ratio": 0.2779,
+          "total_papers": 367,
+          "covered_tech_points": 8,
+          "covered_tech_layers": 1,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 172.07,
+          "high_cite_ratio": 0.4414,
+          "avg_funding_score": 0.226
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 367,
+            "fund_ratio": 0.2779
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "tech_tag_id": "airframe_fixed_wing",
+        "year_start": 2018,
+        "year_end": 2024
+      },
+      "matched_live_api": true,
+      "total_papers": 59,
+      "local": {
+        "filters": {
+          "tech_layer": null,
+          "tech_tag_id": "airframe_fixed_wing",
+          "year_start": 2018,
+          "year_end": 2024
+        },
+        "coverage": {
+          "fund_supported_papers": 22,
+          "fund_supported_ratio": 0.3729,
+          "total_papers": 59,
+          "covered_tech_points": 1,
+          "covered_tech_layers": 1,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 100.07,
+          "high_cite_ratio": 0.3559,
+          "avg_funding_score": 0.322
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 59,
+            "fund_ratio": 0.3729
+          }
+        ]
+      },
+      "live": {
+        "filters": {
+          "tech_layer": null,
+          "tech_tag_id": "airframe_fixed_wing",
+          "year_start": 2018,
+          "year_end": 2024
+        },
+        "coverage": {
+          "fund_supported_papers": 22,
+          "fund_supported_ratio": 0.3729,
+          "total_papers": 59,
+          "covered_tech_points": 1,
+          "covered_tech_layers": 1,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 100.07,
+          "high_cite_ratio": 0.3559,
+          "avg_funding_score": 0.322
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": [
+          {
+            "tech_layer": "平台构型与结构层",
+            "papers": 59,
+            "fund_ratio": 0.3729
+          }
+        ]
+      }
+    },
+    {
+      "query": {
+        "tech_layer": "平台构型与结构",
+        "year_start": 2010,
+        "year_end": 2020
+      },
+      "matched_live_api": true,
+      "total_papers": 0,
+      "local": {
+        "filters": {
+          "tech_layer": "平台构型与结构",
+          "tech_tag_id": null,
+          "year_start": 2010,
+          "year_end": 2020
+        },
+        "coverage": {
+          "fund_supported_papers": 0,
+          "fund_supported_ratio": 0,
+          "total_papers": 0,
+          "covered_tech_points": 0,
+          "covered_tech_layers": 0,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 0,
+          "high_cite_ratio": 0,
+          "avg_funding_score": 0
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": []
+      },
+      "live": {
+        "filters": {
+          "tech_layer": "平台构型与结构",
+          "tech_tag_id": null,
+          "year_start": 2010,
+          "year_end": 2020
+        },
+        "coverage": {
+          "fund_supported_papers": 0,
+          "fund_supported_ratio": 0,
+          "total_papers": 0,
+          "covered_tech_points": 0,
+          "covered_tech_layers": 0,
+          "fund_patent_candidates": 1
+        },
+        "impact": {
+          "avg_citation": 0,
+          "high_cite_ratio": 0,
+          "avg_funding_score": 0
+        },
+        "diffusion": {
+          "status": "in_progress",
+          "note": "产业渗透指标后续接入证据链复用统计"
+        },
+        "by_layer": []
+      }
+    }
+  ]
+}

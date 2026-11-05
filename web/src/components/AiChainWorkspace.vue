@@ -28,20 +28,42 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
 <template>
   <section class="ai-chain-workspace" :data-module="active">
     <nav class="analysis-modules" aria-label="人工智能分析模块">
-      <button v-for="(m,i) in modules" :key="m.id" :class="{active:active===m.id}" :aria-current="active===m.id?'page':undefined" @click="choose(m.id)"><span class="module-no">0{{i+1}}</span><span><b>{{m.label}}</b><small>{{m.caption}}</small></span><span class="module-arrow">↗</span></button>
+      <span class="module-label">分析模块</span>
+      <div class="module-links">
+        <button v-for="m in modules" :key="m.id" :class="{active:active===m.id}" :aria-current="active===m.id?'page':undefined" @click="choose(m.id)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <template v-if="m.id==='evidence'"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h7a2 2 0 0 1 2 2v7M6 9v7a2 2 0 0 0 2 2h7"/></template>
+            <template v-else-if="m.id==='investment'"><path d="M4 3v17h17M8 15v-4M13 15V7M18 15V4"/></template>
+            <template v-else><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></template>
+          </svg>
+          <span>{{m.label}}</span>
+        </button>
+      </div>
     </nav>
+    <div :key="active" class="pane-swap">
     <EvidenceHub v-if="active==='evidence'" :data="data"/>
     <InvestmentOutcomes v-else-if="active==='investment'"/>
     <template v-else>
       <nav class="strength-views" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><i v-if="i" class="sv-sep" aria-hidden="true"></i><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
-      <div v-else-if="strengthView==='overview'" class="strength-stack"><StrengthBase :dataset="dataset"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>
-      <div v-else class="strength-stack"><ResearchSuccession :dataset="dataset" @explore="explore"/><EvidenceExplorer id="rs-evidence" :dataset="dataset" :person="evidencePerson"/></div>
+      <div v-else-if="strengthView==='overview'" class="strength-stack pane-swap" :key="strengthView"><StrengthBase :dataset="dataset"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>
+      <div v-else class="strength-stack pane-swap" :key="strengthView"><ResearchSuccession :dataset="dataset" @explore="explore"/><EvidenceExplorer id="rs-evidence" :dataset="dataset" :person="evidencePerson"/></div>
     </template>
+    </div>
   </section>
 </template>
 <style scoped>
-.analysis-modules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 30px}.analysis-modules button{display:flex;align-items:center;gap:16px;text-align:left;padding:19px 22px;border:1px solid #e3dfd9;border-radius:12px;background:#fff;color:#68635f;cursor:pointer;transition:border-color .2s,box-shadow .2s}.analysis-modules button.active{border-color:#ae0d28;box-shadow:inset 0 -3px #ae0d28;color:#ae0d28}.module-no{font-size:15px;font-weight:700;opacity:.65}.analysis-modules b{display:block;font-size:21px;letter-spacing:.4px}.analysis-modules small{display:block;font-size:13px;color:#8c8580;margin-top:6px}.module-arrow{margin-left:auto;font-size:23px}.analysis-modules button:not(.active):hover{border-color:#b6ada7}.analysis-heading{margin:32px 0 23px}.analysis-kicker{font-size:13px!important;color:#ae0d28!important;font-weight:600;letter-spacing:1.4px}.analysis-heading h2{font-size:32px;color:#2d2a28;margin:10px 0 12px;line-height:1.45}.analysis-heading p{font-size:16px;color:#817a74;line-height:1.8;margin:0}.strength-views{display:flex;align-items:center;gap:22px;margin:2px 0 20px;padding:0 4px}.strength-views button{position:relative;background:none;border:0;padding:6px 0;font-family:inherit;font-size:17px;color:#8c8580;cursor:pointer;transition:color .2s}.strength-views button:hover{color:#57534e}.strength-views button.active{color:#ae0d28;font-weight:700}.strength-views button.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:#ae0d28}.sv-sep{width:1px;height:16px;background:#d9d3cd}.strength-stack{display:flex;flex-direction:column;gap:28px}.analysis-loading{padding:80px;text-align:center;background:white;border-radius:12px;color:#6b6560}button:focus-visible{outline:3px solid #ac6b7a;outline-offset:4px}@media(max-width:700px){.analysis-modules{gap:7px;margin-bottom:22px}.analysis-modules button{padding:12px 9px;gap:7px}.analysis-modules b{font-size:15px}.analysis-modules small{font-size:11px}.module-no,.module-arrow{display:none}.analysis-heading h2{font-size:25px}.analysis-heading p{font-size:14px}.analysis-loading{padding:45px 15px}}
+/* Compact module rail: distinct from the primary pills and view underline tabs. */
+.analysis-modules{display:flex;align-items:center;gap:24px;margin:6px 0 26px;padding:10px 0;border-bottom:1px solid #e6e1dc}
+.module-label{flex:none;font-size:12px;letter-spacing:1.2px;color:#918982}
+.module-links{display:flex;align-items:center;gap:8px}
+.analysis-modules button{position:relative;display:flex;align-items:center;gap:9px;min-height:40px;padding:8px 18px;border:0;border-radius:4px;background:transparent;color:#726e69;font:inherit;font-size:16px;line-height:24px;cursor:pointer;transition:background .18s,color .18s}
+.analysis-modules button::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:2px;background:transparent}
+.analysis-modules button.active{background:#f1ece9;color:#a90d2b;font-weight:650}
+.analysis-modules button.active::before{background:#ae0d28}
+.analysis-modules button:not(.active):hover{background:#f1eeeb;color:#403a36}
+.analysis-modules svg{width:18px;height:18px;flex:none}
+.analysis-modules button span{white-space:nowrap}
+.analysis-heading{margin:32px 0 23px}.analysis-kicker{font-size:13px!important;color:#ae0d28!important;font-weight:600;letter-spacing:1.4px}.analysis-heading h2{font-size:32px;color:#2d2a28;margin:10px 0 12px;line-height:1.45}.analysis-heading p{font-size:16px;color:#817a74;line-height:1.8;margin:0}.strength-views{display:flex;align-items:center;gap:22px;margin:2px 0 20px;padding:0 4px}.strength-views button{position:relative;background:none;border:0;padding:6px 0;font-family:inherit;font-size:17px;color:#8c8580;cursor:pointer;transition:color .2s}.strength-views button:hover{color:#57534e}.strength-views button.active{color:#ae0d28;font-weight:700}.strength-views button.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:#ae0d28}.sv-sep{width:1px;height:16px;background:#d9d3cd}.strength-stack{display:flex;flex-direction:column;gap:28px}.analysis-loading{padding:80px;text-align:center;background:white;border-radius:12px;color:#6b6560}button:focus-visible{outline:3px solid #ac6b7a;outline-offset:4px}@media(max-width:700px){.analysis-modules{gap:0;margin-bottom:20px;padding:8px 0}.module-label{display:none}.module-links{width:100%;gap:4px}.analysis-modules button{flex:1;justify-content:center;padding:8px 6px;gap:6px;font-size:14px}.analysis-modules svg{width:16px;height:16px}.analysis-heading h2{font-size:25px}.analysis-heading p{font-size:14px}.analysis-loading{padding:45px 15px}}
 </style>
-

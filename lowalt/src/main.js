@@ -1,3 +1,4 @@
+import '../../shared/interactions.css'
 import { createApp, nextTick } from 'vue'
 import { createPinia } from 'pinia'
 import DataVVue3 from '@kjgl77/datav-vue3'

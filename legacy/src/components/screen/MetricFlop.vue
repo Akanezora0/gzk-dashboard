@@ -1,63 +1,8 @@
-<template>
-  <div class="metric-flop" @click="$emit('click')">
-    <div class="metric-flop__chart">
-      <dv-digital-flop :config="flopConfig" style="width:100%;height:42px" />
-    </div>
-    <div class="metric-flop__label">{{ label }}</div>
-    <div v-if="en" class="metric-flop__en">{{ en }}</div>
-  </div>
-</template>
-
 <script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
-  value: { type: [Number, String], required: true },
-  label: { type: String, required: true },
-  en: { type: String, default: '' },
-  color: { type: String, default: '#ae0d28' },
-  suffix: { type: String, default: '' },
-})
-
-defineEmits(['click'])
-
-const flopConfig = computed(() => {
-  const num = typeof props.value === 'number' ? props.value : parseFloat(String(props.value).replace(/[^0-9.]/g, '')) || 0
-  return {
-    number: [num],
-    content: props.suffix ? `{nt}${props.suffix}` : '{nt}',
-    toFixed: num >= 10000 ? 1 : 0,
-    style: { fontSize: 28, fill: props.color, fontWeight: 700 },
-    textAlign: 'center',
-  }
-})
+import CountValue from '../../../../web/src/components/CountValue.vue'
+defineProps({value:{type:[Number,String],default:0},label:String,en:String,color:{type:String,default:'#ae0d28'},suffix:{type:String,default:''}})
 </script>
-
+<template><div class="metric-flop"><strong class="metric-value" :style="{color}"><CountValue :value="Number(String(value).replace(/,/g,''))||0"/><small v-if="suffix">{{suffix}}</small></strong><div class="metric-flop__label">{{label}}</div><div v-if="en" class="metric-flop__en">{{en}}</div></div></template>
 <style scoped>
-.metric-flop {
-  text-align: center;
-  padding: 10px 6px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: background 0.2s, transform 0.15s, border-color 0.15s;
-  background: var(--surface-card);
-  border: 1px solid var(--border);
-}
-.metric-flop:hover {
-  background: var(--ruc-red-muted);
-  border-color: rgba(174, 13, 40, 0.25);
-  transform: translateY(-2px);
-}
-.metric-flop__label {
-  font-size: 0.8rem;
-  color: var(--muted);
-  font-weight: 600;
-  margin-top: 4px;
-}
-.metric-flop__en {
-  font-size: 0.68rem;
-  color: #a8a29e;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
+.metric-flop{text-align:center;padding:16px 8px;border:1px solid #e6eaef;border-radius:12px;background:#fff}.metric-value{font-size:26px;line-height:1.25;font-weight:700;font-variant-numeric:tabular-nums}.metric-value small{font-size:12px;margin-left:3px}.metric-flop__label{font-size:13px;color:#7b8796;margin-top:4px}.metric-flop__en{font-size:11px;color:#a8a29e;margin-top:2px}
 </style>

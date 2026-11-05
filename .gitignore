@@ -13,3 +13,5 @@ __pycache__/
 *.key
 *.zip
 *.tar*
+playwright-report/
+test-results/

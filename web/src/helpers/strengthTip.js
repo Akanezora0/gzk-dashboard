@@ -1,10 +1,10 @@
-import {reactive} from 'vue'
+import {reactive,nextTick} from 'vue'
 
 /** Shared hover card for the research-strength charts. */
 export function useTip(){
   const tip=reactive({show:false,html:'',x:0,y:0})
   const show=(e,html)=>{tip.html=html;tip.show=true;move(e)}
-  const move=e=>{tip.x=Math.min(e.clientX+14,window.innerWidth-340);tip.y=Math.min(e.clientY+14,window.innerHeight-160)}
+  const move=e=>{const x=e.clientX,y=e.clientY;tip.x=Math.max(12,Math.min(x+14,window.innerWidth-332));tip.y=Math.max(12,Math.min(y+14,window.innerHeight-172));nextTick(()=>{if(!tip.show)return;const box=document.querySelector('.rs-tip')?.getBoundingClientRect();if(!box)return;tip.x=Math.max(12,Math.min(x+14,window.innerWidth-box.width-12));tip.y=Math.max(12,Math.min(y+14,window.innerHeight-box.height-12))})}
   const hide=()=>{tip.show=false}
   return {tip,show,move,hide}
 }

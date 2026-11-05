@@ -2,6 +2,7 @@
 import {ref,computed,onMounted,onBeforeUnmount,provide,watch,nextTick} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import {api} from './shared'
+import {applyCurrentInventory} from './helpers/currentInventory'
 import './study.css'
 import './inventory.css'
 import OverviewHub from './components/OverviewHub.vue'
@@ -18,7 +19,7 @@ const activeNav=computed(()=>Math.max(0,nav.findIndex(([id])=>id===route.name)))
 const navIcons=['M3 5c0-3 18-3 18 0s-18 3-18 0v7c0 3 18 3 18 0V5 M3 12v7c0 3 18 3 18 0v-7','M4 20h17 M5 16h3v-5H5z M11 16h3V6h-3z M17 16h3V3h-3z','M3 20h18 M4 15l5-6 5 3 6-9 M18 3h3v3','M8 7h8 M7 8v8 M16 8l-7 8 M17 8v8 M4 4h6v6H4z M14 4h6v6h-6z M4 16h6v6H4z M14 16h6v6h-6z','M3 7h18v14H3z M8 7V3h8v4 M3 12h18 M10 12v3h4v-3']
 function navTo(id){return {path:'/'+id,query:id==='overview'?{}:{domain:domain.value}}}
 function selectDomain(value){if(domain.value!==value)router.push({path:route.path,query:{domain:value}})}
-async function load(){loading.value=true;try{data.value=await api('/api/llm/bootstrap');updated.value=new Date().toLocaleTimeString('zh-CN',{hour12:false});error.value=''}catch(e){error.value=e.message}finally{loading.value=false}}
+async function load(){loading.value=true;try{const [base,current]=await Promise.all([api('/api/llm/bootstrap'),api('/chain-analysis/v1/current-inventory.json')]);data.value=applyCurrentInventory(base,current);updated.value=new Date().toLocaleTimeString('zh-CN',{hour12:false});error.value=''}catch(e){error.value=e.message}finally{loading.value=false}}
 let timer,settleToken=0
 function settleView(){viewSettled.value=false;const token=++settleToken;nextTick(()=>requestAnimationFrame(()=>setTimeout(()=>{if(token===settleToken)viewSettled.value=true},70)))}
 watch(stageKey,settleView)

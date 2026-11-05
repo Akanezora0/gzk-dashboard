@@ -1,6 +1,6 @@
 {
   "name": "gzk-dashboard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -11,9 +11,12 @@
     "node": ">=20.19"
   },
   "scripts": {
+    "predev": "npm run build:lowalt",
     "dev": "npm --workspace web run dev",
     "build": "node build.mjs",
     "build:lowalt": "node build.mjs --lowalt",
-    "preview": "npm --workspace web run preview"
+    "preview": "npm --workspace web run preview",
+    "test": "node --test tests/*.test.mjs",
+    "verify:snapshot": "node scripts/verify_snapshot.mjs"
   }
 }

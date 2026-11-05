@@ -1,4 +1,5 @@
 <script setup>
+import {chartPresentation} from '../../../shared/chartPresentation.js'
 import {ref,onMounted,onBeforeUnmount,watch,nextTick,inject} from 'vue'
 import * as echarts from 'echarts/core'
 import {BarChart,LineChart,PieChart,GraphChart} from 'echarts/charts'
@@ -17,40 +18,10 @@ const el=ref(null)
 const viewSettled=inject('viewSettled', ref(true))
 let instance,observer,motion,resizeFrame,played=false
 
-function decorateSeries(series, first){
-  if(!Array.isArray(series))return series
-  return series.map((item,index)=>{
-    if(!item||typeof item!=='object')return item
-    const next={...item}
-    if(next.animationDelay==null)next.animationDelay=idx=>idx*26+index*70
-    if(next.animationDuration==null)next.animationDuration=first?920:480
-    if(next.animationEasing==null)next.animationEasing='cubicOut'
-    return next
-  })
-}
 function draw(update=played, force=false){
   if(!instance||!props.option)return
   if(!force&&!viewSettled.value&&!motion?.matches)return
-  const option={
-    animationDuration:update?520:920,
-    animationDurationUpdate:480,
-    animationEasing:'cubicOut',
-    animationEasingUpdate:'cubicOut',
-    ...props.option,
-    series:decorateSeries(props.option.series, !update),
-    ...(motion?.matches?{animation:false}:{}),
-  }
-  if(option.tooltip&&typeof option.tooltip==='object'&&!Array.isArray(option.tooltip)){
-    option.tooltip={
-      confine:true,
-      backgroundColor:'#fffffffa',
-      borderColor:'#e2d5d9',
-      padding:[11,14],
-      extraCssText:'box-shadow:0 6px 22px #49212c16;border-radius:8px;',
-      ...option.tooltip,
-      textStyle:{color:'#344054',fontSize:14,lineHeight:22,...option.tooltip.textStyle},
-    }
-  }
+  const option=chartPresentation(props.option,update,motion?.matches)
   instance.setOption(option,{notMerge:true,lazyUpdate:false})
   played=true
 }

@@ -1,4 +1,6 @@
 <script setup>
+import {useSurface} from '../helpers/useSurface'
+import {useYearPlayback} from '../helpers/useYearPlayback'
 import {computed,ref,onBeforeUnmount,nextTick} from 'vue'
 import {useTip,fmt,textWidth,toggleFullscreen,emph} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
@@ -6,7 +8,10 @@ const {tip,show,move,hide}=useTip()
 const root=ref(null),closeBtn=ref(null)
 const L=computed(()=>props.dataset?.landscape||{})
 const annual=computed(()=>props.dataset?.strength?.annual||[])
-const region=ref('all'),year=ref(2026),playing=ref(false),focus=ref(''),picked=ref(null);let timer=null
+const detailSurface=ref(null)
+const region=ref('all'),focus=ref(''),picked=ref(null)
+const {year,playing,play,pause,seek}=useYearPlayback(2017,2026)
+useSurface(computed(()=>!!picked.value),{element:detailSurface,close:()=>picked.value=null})
 const X0=290,YW=106,XT=t=>X0+(t-2017)*YW,XM=(y,m)=>XT(y+((m||6)-0.5)/12)
 const LH=52,GG=14,TOP=92
 const COL={cn:'#ae0d28',intl:'#2f5f7a'}
@@ -27,9 +32,6 @@ const H=computed(()=>layout.value.end+130)
 const yearsAxis=Array.from({length:10},(_,i)=>2017+i)
 const nsfc=computed(()=>annual.value.map(a=>({...a,h:a.amount_yi/Math.max(...annual.value.map(z=>z.amount_yi),1)*42})))
 const visible=e=>e.year+(e.month||6)/12<=year.value+1
-function play(){if(playing.value){stop();return}year.value=2017;playing.value=true;timer=setInterval(()=>{if(year.value>=2026)stop();else year.value++},1000)}
-function stop(){clearInterval(timer);playing.value=false}
-onBeforeUnmount(()=>clearInterval(timer))
 function open(e){picked.value=e;hide();nextTick(()=>closeBtn.value?.focus())}
 function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.month} · ${e.description}<br><span style="color:#78716c">${e.open?'开源 / 开放权重':'闭源 / 论文 / 事件'}${e.url?' · 点击查看来源':''}</span>`)}
 </script>
@@ -38,8 +40,8 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
     <header class="rs-head"><span class="rs-no">03</span><h3>研究力量版图</h3>
       <div class="rs-tools">
         <div class="rs-seg" role="group" aria-label="机构范围"><button :class="{on:region==='all'}" @click="region='all'">全部</button><button :class="{on:region==='cn'}" @click="region='cn'">中国</button><button :class="{on:region==='intl'}" @click="region='intl'">国际</button></div>
-        <button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'停止':'▶ 按年播放'}}</button>
-        <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026" v-model.number="year" aria-label="显示到年份"></label></div></header>
+        <button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':year>=2026?'▶ 重播':'▶ 播放'}}</button>
+        <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026"  :value="year" @input="seek($event.target.value)" aria-label="显示到年份"></label></div></header>
     <div v-if="!L.groups" class="rs-empty">版图数据为旧格式，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <template v-else>
     <div class="rs-legend">
@@ -77,7 +79,7 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
         <circle :cx="f.x0" :cy="f.y0" r="2.8" :fill="f.merge?'#2f5f7a':'#ae0d28'"/>
         <text :x="f.x-8" :y="f.y1+17" font-size="12.5" :fill="f.merge?'#2f5f7a':'#ae0d28'" text-anchor="end">{{f.label}}</text></g>
       <g v-for="(n,i) in notes" :key="'n'+i">
-        <template v-if="n.pill"><rect :x="n.x" :y="n.y-15" :width="XT(2027)-12-n.x" height="30" rx="15" fill="#fbeef0"/><text :x="n.x+14" :y="n.y+5" font-size="13.5" font-weight="500" fill="#ae0d28">{{n.text.replace('OpenAI 人才外溢：','OpenAI 人才外溢 → ')}}</text></template>
+        <template v-if="n.pill"><rect :x="n.x" :y="n.y-15" :width="XT(2027)-12-n.x" height="30" rx="15" fill="#fbeef0"/><text :x="n.x+14" :y="n.y+5" :textLength="XT(2027)-40-n.x" lengthAdjust="spacingAndGlyphs" font-size="13.5" font-weight="500" fill="#ae0d28">{{n.text.replace('OpenAI 人才外溢：','OpenAI 人才外溢 → ')}}</text></template>
         <text v-else :x="n.x-8" :y="n.y+5" font-size="12.5" fill="#ae0d28" text-anchor="end">{{n.text}}</text></g>
       <g v-if="nsfc.length" :transform="`translate(0,${layout.end+22})`">
         <rect x="84" y="0" width="1276" height="84" rx="10" fill="#fbeef0"/>
@@ -92,7 +94,7 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
         <text :x="XT(2023.3)" y="56" font-size="12.5" fill="#57534e">清华、中科院自动化所、鹏城实验室均在资助名单中</text>
       </g>
     </svg></div>
-    <aside v-if="picked" class="rs-atlas-card" role="dialog" aria-label="成果详情">
+    <aside v-if="picked" class="rs-atlas-card" ref="detailSurface" role="dialog" aria-label="成果详情">
       <button ref="closeBtn" class="rs-close" aria-label="关闭" @click="picked=null">×</button>
       <p class="k">{{picked.lane}}<template v-if="picked.month"> · {{picked.year}}.{{picked.month}}</template></p>
       <h4>{{picked.label}}</h4>

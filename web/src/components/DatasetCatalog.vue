@@ -2,11 +2,11 @@
 import {computed,ref,watch} from 'vue'
 import {useRoute} from 'vue-router'
 import {fmt,sourceContent} from '../shared'
-import {overviewSources,sourceDisplayUnit} from '../helpers/foundationSources'
+import {overviewSources,sourceDisplayUnit,presentSource} from '../helpers/foundationSources'
 import '../catalog.css'
 const props=defineProps({data:Object,integrated:Boolean}),route=useRoute(),query=ref('')
 const kind=ref(route.query.kind||'全部')
-const rows=computed(()=>overviewSources(props.data.overview.datasets))
+const rows=computed(()=>props.data.overview.datasets.map(presentSource))
 const types=computed(()=>[...new Set(rows.value.map(d=>d.kind))])
 const filtered=computed(()=>rows.value.filter(d=>(kind.value==='全部'||d.kind===kind.value)&&[d.name,d.kind,d.scope,d.status].join(' ').toLowerCase().includes(query.value.toLowerCase())))
 watch(()=>route.query.kind,value=>kind.value=types.value.includes(value)?value:'全部')

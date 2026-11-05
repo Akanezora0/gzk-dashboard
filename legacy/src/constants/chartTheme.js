@@ -56,9 +56,12 @@ export const CHART = {
   label: { color: '#4a4540' },
   splitLine: { lineStyle: { color: '#e8e4df' } },
   tooltip: {
-    backgroundColor: 'rgba(255,255,255,0.98)',
-    borderColor: '#e8e4df',
-    textStyle: { color: '#2a2a2a', fontSize: 12 },
+    confine: true,
+    backgroundColor: '#fffffffa',
+    borderColor: '#e2d5d9',
+    padding: [11, 14],
+    extraCssText: 'box-shadow:0 6px 22px #49212c16;border-radius:8px;',
+    textStyle: { color: '#344054', fontSize: 14, lineHeight: 22 },
   },
   legend: { textStyle: { color: '#78716c', fontSize: 11 } },
   radar: {

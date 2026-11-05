@@ -1,0 +1,2479 @@
+{
+  "captured_at": "2026-11-05T04:35:55.012884+00:00",
+  "source": "5184 Dashboard read-only API snapshot",
+  "normalization": "machine path prefixes only; displayed data unchanged",
+  "responses": {
+    "/api/llm/analytics?namespace=ai_company&scope=ai": {
+      "file": "541a77e5aa8899b4e9572d3f.json",
+      "status": 200,
+      "bytes": 1117,
+      "sha256": "76c9b92552a27c68dad6237cf2323264d4c132cd506922ef72dfe20af663ef71"
+    },
+    "/api/llm/analytics?namespace=ai_company&scope=context": {
+      "file": "bdab25d35b13fe0a16228d04.json",
+      "status": 200,
+      "bytes": 760,
+      "sha256": "e24b44899cae14809409bf1900bb6251f525a6fec55397ed00b6e7306a983f1b"
+    },
+    "/api/llm/analytics?namespace=ai_company&scope=llm": {
+      "file": "f378ff82f15a844de3ef28de.json",
+      "status": 200,
+      "bytes": 756,
+      "sha256": "4f53e5e58dcb19c19996512241981d6ac18c5667f2dbd058621f5de05f8e42ae"
+    },
+    "/api/llm/analytics?namespace=ai_policy&scope=ai": {
+      "file": "8d815bccada527b30c64e855.json",
+      "status": 200,
+      "bytes": 1968,
+      "sha256": "29086c36a097a2f4e461273a09c03defea39be657112f33732b1fda711cb2865"
+    },
+    "/api/llm/analytics?namespace=ai_policy&scope=context": {
+      "file": "1d74b559d8a688ad4b4aeec9.json",
+      "status": 200,
+      "bytes": 1413,
+      "sha256": "fa3e4d3421d97734583a339fcc3e2ecb25db87730dd7598d40d20a163c7459b7"
+    },
+    "/api/llm/analytics?namespace=ai_policy&scope=llm": {
+      "file": "4255029e3d54a8dae570b4da.json",
+      "status": 200,
+      "bytes": 1273,
+      "sha256": "37a9d18c281477c8511e7fad75d09b1937712555109d776a0c721244e281c57b"
+    },
+    "/api/llm/analytics?namespace=ai_report&scope=ai": {
+      "file": "35908e5c854b2fbf59d62391.json",
+      "status": 200,
+      "bytes": 1475,
+      "sha256": "33ce8dfa3f324fb60502ec059d0f17ca4007eb0fa3d034502c03ef60b9cb1c10"
+    },
+    "/api/llm/analytics?namespace=ai_report&scope=context": {
+      "file": "d5399c0889823dcba1413aaf.json",
+      "status": 200,
+      "bytes": 1371,
+      "sha256": "e93c8d730c433ab0fc9e9fbd8403dd997bf9192804010aa24081b42bde5cddcb"
+    },
+    "/api/llm/analytics?namespace=ai_report&scope=llm": {
+      "file": "7d253aca6d294edc392f3acc.json",
+      "status": 200,
+      "bytes": 1452,
+      "sha256": "8363b842a98006955895418e07f4a61a10707e91ead042926fbd58e0b2e9ac3e"
+    },
+    "/api/llm/analytics?namespace=cnki_paper&scope=ai": {
+      "file": "11197fdb92bf1ce0fde2c04c.json",
+      "status": 200,
+      "bytes": 2462,
+      "sha256": "6485ca653b706ae0aadb05bd36c95f6f4b071cb8cc4b551125cbe63114172cf4"
+    },
+    "/api/llm/analytics?namespace=cnki_paper&scope=context": {
+      "file": "4bc86abaf0fd36eecca76531.json",
+      "status": 200,
+      "bytes": 2038,
+      "sha256": "00e56ad273d27d080fa80bd70d132010988bcd870b0d76cdf784590b5887ae6e"
+    },
+    "/api/llm/analytics?namespace=cnki_paper&scope=llm": {
+      "file": "3f3f301ff76b06e0a91febd9.json",
+      "status": 200,
+      "bytes": 1958,
+      "sha256": "61233bc44159a98c3c8bad5867b09315057e588353bfd54426b713c78c48c472"
+    },
+    "/api/llm/analytics?namespace=legacy_news&scope=ai": {
+      "file": "556b100cf1fda5ff9b5a5854.json",
+      "status": 200,
+      "bytes": 2058,
+      "sha256": "ebbec0a51e38291856710686987963c3b8a005985067d6151591059cf5ec5048"
+    },
+    "/api/llm/analytics?namespace=legacy_news&scope=context": {
+      "file": "584df914b5ddc4c94ca20738.json",
+      "status": 200,
+      "bytes": 1133,
+      "sha256": "ab28acf976313efcd2f749642752f2159931959f9c6446fc597f7b5e93fed8ab"
+    },
+    "/api/llm/analytics?namespace=legacy_news&scope=llm": {
+      "file": "f17f5f2eec965888cb986bf9.json",
+      "status": 200,
+      "bytes": 1741,
+      "sha256": "898cc6ba888930613977e7915f9910e443543c457b1073fec8bb71ccdf8980d2"
+    },
+    "/api/llm/analytics?namespace=legacy_patent&scope=ai": {
+      "file": "cf9f81f5d48844b8a13c527b.json",
+      "status": 200,
+      "bytes": 2672,
+      "sha256": "dfcff53ce489c5b27cb558aa476e9e9eafce6b923b1c47c9ee4683df7c3bcf48"
+    },
+    "/api/llm/analytics?namespace=legacy_patent&scope=context": {
+      "file": "ea91671d513454617fcb00d8.json",
+      "status": 200,
+      "bytes": 2235,
+      "sha256": "6f96ea7d03edcdbd990372af0b7a620e578263a35ace46a65bda633321f9ac6e"
+    },
+    "/api/llm/analytics?namespace=legacy_patent&scope=llm": {
+      "file": "a0989ffb48a654599afa75a9.json",
+      "status": 200,
+      "bytes": 2126,
+      "sha256": "5ba006f2018265dc5b46ec6d87df7e42db8b368a988fd509b7b14f3e974bc579"
+    },
+    "/api/llm/analytics?namespace=legacy_policy&scope=ai": {
+      "file": "8961563b7a53d8e64f58c47d.json",
+      "status": 200,
+      "bytes": 2259,
+      "sha256": "174c17af5d6e26f3b9b55b46d8cf8c81ae5fa7725348040aaa565d64dea2b35c"
+    },
+    "/api/llm/analytics?namespace=legacy_policy&scope=context": {
+      "file": "074e2a895ba7e219579e907c.json",
+      "status": 200,
+      "bytes": 1289,
+      "sha256": "05fb7edddab1a78800d3dcd8d3dfea8738547b81dd3ddddfec7aff3ff31e310d"
+    },
+    "/api/llm/analytics?namespace=legacy_policy&scope=llm": {
+      "file": "900896a7be0fec5d5af9edf9.json",
+      "status": 200,
+      "bytes": 1959,
+      "sha256": "4f272797a8cf6600286d0ebafd8d8e5b70f318fe40a6bcf26eaea55a95b0d725"
+    },
+    "/api/llm/analytics?namespace=legacy_product&scope=ai": {
+      "file": "aba277fa5281f5bd318ccd2a.json",
+      "status": 200,
+      "bytes": 751,
+      "sha256": "fc94fcb546cef812e2ea95d0f464e8b86c235ca42e2a9e08523a5379ea776c1e"
+    },
+    "/api/llm/analytics?namespace=legacy_product&scope=context": {
+      "file": "1d933d9179587552007786f8.json",
+      "status": 200,
+      "bytes": 717,
+      "sha256": "3a59f6b15fa7a3dbb2bfd417bbbf915e59b57bc9e901a0bafe3650a3602078ab"
+    },
+    "/api/llm/analytics?namespace=legacy_product&scope=llm": {
+      "file": "4c4cb173cfb4574d0467587d.json",
+      "status": 200,
+      "bytes": 713,
+      "sha256": "2ff86f48e43b9dcc6dd8d2e4dd4b6c180df9362530675b92a81812ad8e51b218"
+    },
+    "/api/llm/analytics?namespace=legacy_software&scope=ai": {
+      "file": "8df415d2690a0a18f0067927.json",
+      "status": 200,
+      "bytes": 2466,
+      "sha256": "c356e4bf93458bc123b13c83eb19994ac0c6c54d93bc14269426cdb5463d161e"
+    },
+    "/api/llm/analytics?namespace=legacy_software&scope=context": {
+      "file": "999d94f730c32cff746e9ec2.json",
+      "status": 200,
+      "bytes": 1521,
+      "sha256": "5e2ee8ab95754294a9bf7dd88326ccde5ff38293ac6c27a36e02b378a101d543"
+    },
+    "/api/llm/analytics?namespace=legacy_software&scope=llm": {
+      "file": "b8d83d56d80d7964e8a9e6de.json",
+      "status": 200,
+      "bytes": 1621,
+      "sha256": "ffa05b5cf2f7e5997353c59cef5c3a7f8fa83efe58d78df06fd210a18cbd46de"
+    },
+    "/api/llm/analytics?namespace=nsfc_fund&scope=ai": {
+      "file": "fe0fcea14a129a09e8e716b4.json",
+      "status": 200,
+      "bytes": 2766,
+      "sha256": "01766523bd9f9c65b9874f2f699d84577c5149e12bdf5a4688a10dbc2fe5ffcf"
+    },
+    "/api/llm/analytics?namespace=nsfc_fund&scope=context": {
+      "file": "adb6f4544743b621be9dea6d.json",
+      "status": 200,
+      "bytes": 1597,
+      "sha256": "dde4daddda261bd65544ccce1efe6fbd9965be0af405ceca7470c59fffdf7b04"
+    },
+    "/api/llm/analytics?namespace=nsfc_fund&scope=llm": {
+      "file": "8b5dfb1fd32d58d0e781f489.json",
+      "status": 200,
+      "bytes": 831,
+      "sha256": "89ffb471097ed854ef003b1059973759e5e0ea6b946acffbc7a96ecf42a0823c"
+    },
+    "/api/llm/analytics?namespace=nsfc_paper&scope=ai": {
+      "file": "329a7489950ec8e2fec00cea.json",
+      "status": 200,
+      "bytes": 1709,
+      "sha256": "57e0aa37993f56a7c475142081dd9734554c7c3e8dcab925df7bfe6497ac9d5c"
+    },
+    "/api/llm/analytics?namespace=nsfc_paper&scope=context": {
+      "file": "cac0a9917892d3ae13bec9ea.json",
+      "status": 200,
+      "bytes": 1126,
+      "sha256": "b7b5932681f2d71b8e945d444023d65868301883b70de1278ffdc7d11b642f2a"
+    },
+    "/api/llm/analytics?namespace=nsfc_paper&scope=llm": {
+      "file": "d8b6ea4aa3bbdd246c592894.json",
+      "status": 200,
+      "bytes": 777,
+      "sha256": "7bfe628da497dd22cc396833461654bc96ee85c049eb47ee182e4ac830a7369e"
+    },
+    "/api/llm/bootstrap": {
+      "file": "496230642ca66d79c6533c11.json",
+      "status": 200,
+      "bytes": 516234,
+      "sha256": "068bc26b21e0dc8c028b0846975d90940131ccf7b417ae0f42de40b63db09497"
+    },
+    "/api/llm/chain-summary?scope=ai": {
+      "file": "964a888a608c471583bdbc23.json",
+      "status": 200,
+      "bytes": 2058,
+      "sha256": "274c590c7539933067c98a7c4f4fde88777dd1c3df933d85ae1bd6a7f7dce56d"
+    },
+    "/api/llm/chain-summary?scope=context": {
+      "file": "13fd89569338a82e3e7045e1.json",
+      "status": 200,
+      "bytes": 2052,
+      "sha256": "af39f20a08aee10da761253c9bc4c1f98a9c2df9aa43ee47a4a2172c5cdcae35"
+    },
+    "/api/llm/chain-summary?scope=llm": {
+      "file": "52f49842eb19c07a9790918e.json",
+      "status": 200,
+      "bytes": 2020,
+      "sha256": "1599bc0a2dcfad0f425c43be5614248515c4907481f904954403b30e68ec4b59"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=10&scope=ai": {
+      "file": "0feb667cdefb340838fbfde4.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "03614edd456841124958a7b1edf8a0a1a0d3d0b06865bacb2ad84d030aa0758b"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=10&scope=context": {
+      "file": "9779cc1a6ab38b1556b6a187.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "06ff5481ecf878ffc514877c6764daf31d3531fc5d66698670065f644a15e6f5"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=10&scope=llm": {
+      "file": "b89707f10136f4bd9fbfc09c.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "fe7fee536ba26c8a2dfd8320e738be3f1c1013e317865281f915514d089816e7"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=20&scope=ai": {
+      "file": "f91f7cc3d02bc4d1cbec1233.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "56a011920f6689912044dc95a9ab3e8ad0cc4426ac4ce0620529aed4c735e760"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=20&scope=context": {
+      "file": "404b809af6933c135efeb412.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "06ae3c262e7cfc6fb1da1bac791873c5ecc3dac131bf45cd45a6364736064123"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=20&scope=llm": {
+      "file": "27a4485aa6c8dfbfcf40ea79.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "cf54682d8f510ad1e49a22b22943311e959cbcbb7cddab6973e6853d8417fe26"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=30&scope=ai": {
+      "file": "a3d3517fab5f4f9cab67fb71.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "12890ef12339c46bb029318a80b6e471e4bf924ceee6adcf9715175dbd84921d"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=30&scope=context": {
+      "file": "6c20c1fd8cd0dc8ea8995aa6.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "50545a3556532533c5777c5b12ac15ad1636cd3a88bae86b8c84735adf29be6d"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=30&scope=llm": {
+      "file": "6933fb6b1243cd4d541af55b.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "d524201c867920ca811883d9d8c1a02a2e286c8f9b93a63344394d213af1b73e"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=40&scope=ai": {
+      "file": "04c866be9e60f898112a9a7c.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "d22590bcf4cc0d4d77dea53140888c03d9338bc59004741e1c10b4c09e808a0d"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=40&scope=context": {
+      "file": "2929baa80ae5ca09fe583e9a.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "d30b0a2778344778ed784f416c66f3ba9f62fd41e74992767e189cad58f920a5"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=40&scope=llm": {
+      "file": "23f50145cdebbdef69e6a93b.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "ee6a8a0136a9bb1d01cf023ffd244b8db374a996ead3164142ba9a458c9e84f8"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=5&scope=ai": {
+      "file": "f1e4eec95a9ad28dde4f6fe3.json",
+      "status": 200,
+      "bytes": 10556,
+      "sha256": "0969626548855be38e6ab57d2455945178cefda593ad910bbffe84d348004b7f"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=5&scope=context": {
+      "file": "b49e0c45b37d72081a851c11.json",
+      "status": 200,
+      "bytes": 10055,
+      "sha256": "c04b0f3409079e4240a9ef962cff497ae74c71c117328efb8d41c7ac4dccf975"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=5&scope=llm": {
+      "file": "68f6f053cf07f4624f76c3dc.json",
+      "status": 200,
+      "bytes": 445,
+      "sha256": "af5ad6d859c8be417bdcf075f3b029caad2ed708d4582587aff7ec646c78664d"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=50&scope=ai": {
+      "file": "27d56401c6f0797815de809f.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "72c9ff9b925e7fd79324aa7c00240a7ea3e6b90d0a942ba8162127f07a9af28b"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=50&scope=context": {
+      "file": "09a340b60236ebce75a052e7.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "98c077a43742a9ece068340c5dbf234902c72de0b256cd5e2140aa30590505e7"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=50&scope=llm": {
+      "file": "5fd78dcc418fc40b86eacf3e.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "6c56b8adc6dcef6f6e9566df6ca876c2043c7a160dfd6904235df12592664227"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=60&scope=ai": {
+      "file": "c6031081b86b9c23695ec9ef.json",
+      "status": 200,
+      "bytes": 12471,
+      "sha256": "ef59afae28424e58e4e4eb02d699b0541ddf582dc8c54a6ec7cc82de4cbfca19"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=60&scope=context": {
+      "file": "2ff93624c63ece70d508dcff.json",
+      "status": 200,
+      "bytes": 11643,
+      "sha256": "9697c2e9d50a325acf73cd00333d1a88d60ad6df49f162125935f79ba290da1d"
+    },
+    "/api/llm/graph?chain=fund_paper&limit=60&scope=llm": {
+      "file": "67ebb67450dd58616e7c8340.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "ba40dbb440b033d6f37f034456bb677499714940bba5d9b8fe29dd5b6660fd85"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=10&scope=ai": {
+      "file": "8620060321befd765d38527a.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "e87f93567f4115bd0900067b91f97076ebf78f5d1f79113464d082130817e4a6"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=10&scope=context": {
+      "file": "1b6b2462a5c6fe97142d451e.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "363449ad3ab189d57af15cd52cab196a6882f3b3944f52c0d7a3babdfe01ef41"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=10&scope=llm": {
+      "file": "23ee7ba10236f85af6b11d1a.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "4deec8b3f6365999d3f742c00cf841bb9ef5d67e7a4a4638c5f444c8329b7a97"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=20&scope=ai": {
+      "file": "70d6a60d85a54770ba3f49f4.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "f77733f44d76922bd40411d82377721f1e988682300148a08d69693f45f76a9e"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=20&scope=context": {
+      "file": "d89518707ca418bd5e22c726.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "a4bc34abf87d10acbefebca3a1b731a707108098e1c5c4a439d2cd7978d0ba88"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=20&scope=llm": {
+      "file": "c43029bb7f6702e06421aced.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "3f4e7c013c5b00cc974c6d37e1b705c5d854801cd709f7e1d8dd173433e5c99b"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=30&scope=ai": {
+      "file": "5703d1ceb75e3247c5c61ee6.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "621f6192fdb6a863520321c630875aea696fa520c3e42ed384120946f4834c47"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=30&scope=context": {
+      "file": "6a7a67976c63105c05463658.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "1436b71e2edcafe807f78dc5baf9057ff4673bd8667e9391e6a717431fb427f4"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=30&scope=llm": {
+      "file": "57f8173203890384fbebcb30.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "fdea2266b2501c94a8f247a4ec5d9d337641592e8fb9f107e6ca5380ed2b0abb"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=40&scope=ai": {
+      "file": "6e4b1a88a6436cbece9de6d0.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "8acc849459afb35671e056af871cdd654d19002f53f3b653c0e067497d09ad80"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=40&scope=context": {
+      "file": "bda8a211fb3255178c4e3dc0.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "baa821cd17d690a2025dac5ccacdb72c2f86dcd0725886f205c649a79e005da5"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=40&scope=llm": {
+      "file": "2d9c9ea3a30c8d5e1bf08aeb.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "259e0c4d012dd4a5afc2bad9f956c2c78dbdc534f4d7ff201552ba4c46b3b2f6"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=5&scope=ai": {
+      "file": "2bf40456aff3a5f7297c5f45.json",
+      "status": 200,
+      "bytes": 454,
+      "sha256": "e21f729e406705232b0f2bf98475d821a0d7457b4bf8cf6ffe4e55d7fd09fd4e"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=5&scope=context": {
+      "file": "09a22bf1c4f927eb95cd3981.json",
+      "status": 200,
+      "bytes": 456,
+      "sha256": "299c02ec8381f5b76cc6c6f996b0ba146572b3606d90297971228d14dac49b2f"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=5&scope=llm": {
+      "file": "66e4c1f98781917b2b8820d8.json",
+      "status": 200,
+      "bytes": 446,
+      "sha256": "c8eccc2408b99019b9ed5e52697af358bc7d32c4e0c692bc98c6499131fd4dfd"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=50&scope=ai": {
+      "file": "5249e2fbe1ba342285279747.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "194aae556e0cf425551878326191acc60b12d0e5bceb7249dc01e3d4acae19b3"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=50&scope=context": {
+      "file": "4c43a304e84feda8c86afcb6.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "0d16509256d53e371ef5e18fe77b84a5da5725d3c85df87d8b595d233096897f"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=50&scope=llm": {
+      "file": "8528b45b812ffcee8e1702c8.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "20f554365b9bc82c28f2f1b0f28e14bbb79aa50cf7dea09ee5f8276fb4c3caba"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=60&scope=ai": {
+      "file": "57c93293e645c217552a8b6c.json",
+      "status": 200,
+      "bytes": 455,
+      "sha256": "8e8bc4aeb090234239fcff94574ff6f24f317bde1ce487577faddb4667741dea"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=60&scope=context": {
+      "file": "4b37af3234430ba30d262af7.json",
+      "status": 200,
+      "bytes": 457,
+      "sha256": "3791e5cdc8262676dace42a900a1b0b139a6270d2fb778349f8b2726988f54f1"
+    },
+    "/api/llm/graph?chain=fund_patent&limit=60&scope=llm": {
+      "file": "e37d4d79f7a3661cf190d1c3.json",
+      "status": 200,
+      "bytes": 447,
+      "sha256": "60ab474dfb190c97520090f5871dd34969f59318cffdfb2cb149052676051711"
+    },
+    "/api/llm/graph?chain=mixed&limit=10&scope=ai": {
+      "file": "cf10e95c6a233512368a7f6b.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=10&scope=context": {
+      "file": "b6373e54048fd9e590cbd1e8.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=10&scope=llm": {
+      "file": "7ef10d6ba7b9011e418a62a9.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=20&scope=ai": {
+      "file": "c04263a86225d543e46842bf.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=20&scope=context": {
+      "file": "9c64f87cd1ed66d1fa61b8b7.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=20&scope=llm": {
+      "file": "efc5109c3a968b5a76ebae99.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=30&scope=ai": {
+      "file": "797c082e31db839ac06f551d.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=30&scope=context": {
+      "file": "ac990381d12aed85ae2f64e4.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=30&scope=llm": {
+      "file": "6d7f2b2d030f9dea5209ae30.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=40&scope=ai": {
+      "file": "8d2fac7b8302ada457de33ef.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=40&scope=context": {
+      "file": "f3df85d4791abea258be2d8f.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=40&scope=llm": {
+      "file": "0f9e57ca425d7c3b2146e673.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=5&scope=ai": {
+      "file": "4202e33981bc588e8dbca47e.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=5&scope=context": {
+      "file": "5e2d1ebd0646c22cebff5678.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=5&scope=llm": {
+      "file": "d1802b13e9a7f21fa6f8064c.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=50&scope=ai": {
+      "file": "04ec8db5ab1fb5ee873e8096.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=50&scope=context": {
+      "file": "f8d0b5c10b130ad48cdeff55.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=50&scope=llm": {
+      "file": "4d5afba2d5789148d125416e.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=60&scope=ai": {
+      "file": "cd62786696458cf62e1ee386.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=60&scope=context": {
+      "file": "8e382b33e65d0146ca0aa2db.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=mixed&limit=60&scope=llm": {
+      "file": "fde25ec918bbbdc5381f57fe.json",
+      "status": 200,
+      "bytes": 41381,
+      "sha256": "29f2f2a190ac7f848cffdad221b5add7b358807298dcc9d893026c086afd755d"
+    },
+    "/api/llm/graph?chain=paper_network&limit=10&scope=ai": {
+      "file": "44d517d6e44033c6f338da91.json",
+      "status": 200,
+      "bytes": 7623,
+      "sha256": "6a2048c750c2280901d4eea63ef3285a8389295283c23ca01669b69509183c80"
+    },
+    "/api/llm/graph?chain=paper_network&limit=10&scope=context": {
+      "file": "e949b44cb7fde1a01d165202.json",
+      "status": 200,
+      "bytes": 7628,
+      "sha256": "3b5189e5976852697d3622bafb3b12220858b37de942705ba43277b8f7599ad1"
+    },
+    "/api/llm/graph?chain=paper_network&limit=10&scope=llm": {
+      "file": "061367b7d8c2fd6b273d1db8.json",
+      "status": 200,
+      "bytes": 7624,
+      "sha256": "e84cca34a9da07293b76aebf27619458d02f481e71800d11c5decfda26c8ffd5"
+    },
+    "/api/llm/graph?chain=paper_network&limit=20&scope=ai": {
+      "file": "6cea276590ed119e59ee3e6e.json",
+      "status": 200,
+      "bytes": 12771,
+      "sha256": "587d570fbe82eb0e1105073c0b90abfc372645e832200dd4cd15757f179db8e2"
+    },
+    "/api/llm/graph?chain=paper_network&limit=20&scope=context": {
+      "file": "26e75069097a48d030f59f31.json",
+      "status": 200,
+      "bytes": 12776,
+      "sha256": "af4b45b37be7e2c5a7e1cc6d2962cb71696fbcdc8b6cdd1ec4f22608522da523"
+    },
+    "/api/llm/graph?chain=paper_network&limit=20&scope=llm": {
+      "file": "77a70e321eab10e9bccb69d7.json",
+      "status": 200,
+      "bytes": 12772,
+      "sha256": "0c9cbc600d494e11966bb5223a1e65a94974322e83a66483a7a8dccbdd0e5c0a"
+    },
+    "/api/llm/graph?chain=paper_network&limit=30&scope=ai": {
+      "file": "bd9851502bb6b35a673ba307.json",
+      "status": 200,
+      "bytes": 12771,
+      "sha256": "e2b9d9038d2734a94461a4735073f9b522aa36b4bd3bf28e9cb931230a3d1e5f"
+    },
+    "/api/llm/graph?chain=paper_network&limit=30&scope=context": {
+      "file": "34bf8744cfaecbd993179d3e.json",
+      "status": 200,
+      "bytes": 12776,
+      "sha256": "efbd9d066c6ca4899f079d817cb8d104c9afad2f766657e69dec182a343270f3"
+    },
+    "/api/llm/graph?chain=paper_network&limit=30&scope=llm": {
+      "file": "5166fede0bd0fdd1f373dca6.json",
+      "status": 200,
+      "bytes": 12772,
+      "sha256": "680751e88db3c090ba57d4e59f10157ea2ebb621cd7ea4a301cdd1fe11396f32"
+    },
+    "/api/llm/graph?chain=paper_network&limit=40&scope=ai": {
+      "file": "e9f40b6fa16998ead7a21394.json",
+      "status": 200,
+      "bytes": 12771,
+      "sha256": "56b26ebad8464b52725c3f241d8181e95f134709088080f44c1991c7a1189840"
+    },
+    "/api/llm/graph?chain=paper_network&limit=40&scope=context": {
+      "file": "3b43ac839a5bb58500dd69d5.json",
+      "status": 200,
+      "bytes": 12776,
+      "sha256": "2ffe1983ec86f03574c74bf23a75e14c8ec8d5966ac10c5fe00b655357578d35"
+    },
+    "/api/llm/graph?chain=paper_network&limit=40&scope=llm": {
+      "file": "d6a0651e0b76d380a5720675.json",
+      "status": 200,
+      "bytes": 12772,
+      "sha256": "b6b9bcafbe4356a227a2210cf82f7b039ec938ae021ffc6f0d4cb9f3f057d9a0"
+    },
+    "/api/llm/graph?chain=paper_network&limit=5&scope=ai": {
+      "file": "e1f224de4a66c0ffb39ea5e7.json",
+      "status": 200,
+      "bytes": 4376,
+      "sha256": "05e9c5ae74b12929fc8acc99f13ba7efdbf8bd3d52fa4453df9dcbaccf6ccdc5"
+    },
+    "/api/llm/graph?chain=paper_network&limit=5&scope=context": {
+      "file": "36666f7f6df5a519f9ef1a36.json",
+      "status": 200,
+      "bytes": 4381,
+      "sha256": "09469ee1fa77e6bb8e1cb9f578831357480057f358b170049943235f7b400adb"
+    },
+    "/api/llm/graph?chain=paper_network&limit=5&scope=llm": {
+      "file": "80b2d8a5fc8846ab0eb8180a.json",
+      "status": 200,
+      "bytes": 4377,
+      "sha256": "79787082e9fdcbf0be74c3009038c7e0bb91f6e41a898613f42592c741c9f745"
+    },
+    "/api/llm/graph?chain=paper_network&limit=50&scope=ai": {
+      "file": "6657977883853cce5a950f47.json",
+      "status": 200,
+      "bytes": 12771,
+      "sha256": "04cd5ae030e3ce7504b1ee1019425224035c8e907af73316641275a34a7faaad"
+    },
+    "/api/llm/graph?chain=paper_network&limit=50&scope=context": {
+      "file": "e31c784207a12ece45898a38.json",
+      "status": 200,
+      "bytes": 12776,
+      "sha256": "52aa614fca832481924cad468c9643487d398546e5a7907a23e27fb30f6d0f4d"
+    },
+    "/api/llm/graph?chain=paper_network&limit=50&scope=llm": {
+      "file": "4719cef9e126b5b31624bfa1.json",
+      "status": 200,
+      "bytes": 12772,
+      "sha256": "77bb3c11a703b5693730831812fd78ebf16c103c0b94dd2890d4d649046405b8"
+    },
+    "/api/llm/graph?chain=paper_network&limit=60&scope=ai": {
+      "file": "f8bf85647d7aa1416607e46e.json",
+      "status": 200,
+      "bytes": 12771,
+      "sha256": "c6a83d3426489f5de5aa3cb10416015d752ec211263a42f6997e41a6b5f8e3fe"
+    },
+    "/api/llm/graph?chain=paper_network&limit=60&scope=context": {
+      "file": "7177a091bf99e1be2a9ca9fa.json",
+      "status": 200,
+      "bytes": 12776,
+      "sha256": "425db65dbaefbcaca8d2801cfe1af26203a519fdee0aca78acbd4315d09ecacc"
+    },
+    "/api/llm/graph?chain=paper_network&limit=60&scope=llm": {
+      "file": "c9d045c7d78fcdfe05104840.json",
+      "status": 200,
+      "bytes": 12772,
+      "sha256": "250ab3e24d0d54e840f6bce63370bc038ccadde70bc00fab5f5394310801368e"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=10&scope=ai": {
+      "file": "3b902221070e3ad11af7dd7e.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "ba57f38922b916d6ebb422175656ef0a7e4a9b23250b441103091f96f41e1474"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=10&scope=context": {
+      "file": "26339466f2d0cd4a8b73f52b.json",
+      "status": 200,
+      "bytes": 26296,
+      "sha256": "d52807cf2eee1b8e50465b9e5da1d2b5d5b068ad56316bb99a1b5655fcef8bfe"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=10&scope=llm": {
+      "file": "8274b22afba7e13636641e97.json",
+      "status": 200,
+      "bytes": 32417,
+      "sha256": "184ca066e35486b8f0a892ef2f2b6a083f14ba3e4d5dda8be3aa187d898ba468"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=20&scope=ai": {
+      "file": "43bf14cef99a4680b5b7ee2b.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "14c78e702ec45a4de2dd6ecdd0ad3ad122e0a537a709912567b3e9d06ec3e7d1"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=20&scope=context": {
+      "file": "a92440d5f8a1c104d3a78970.json",
+      "status": 200,
+      "bytes": 46764,
+      "sha256": "927b44d164cc62045f91ed781e78ba1bf6c14d332b1fb4182f75b35a04594734"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=20&scope=llm": {
+      "file": "96f1c5b50675198a9d994e3f.json",
+      "status": 200,
+      "bytes": 57588,
+      "sha256": "c99ebcb82667311b10ca8c8e8a2b90cc5339b65bcfe188cbba228d993e5131c3"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=30&scope=ai": {
+      "file": "c1ddcca4b434b80d981131ee.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "e718a12865a91646a99511398737eb0a2a73245fc181f59af7fd9fb526fa22c5"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=30&scope=context": {
+      "file": "555a335cb7c2bdcfa12acae0.json",
+      "status": 200,
+      "bytes": 67526,
+      "sha256": "3f83a3299507671560ac18f33be26787de79329ea82df7402cfd5d2a0edce5c6"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=30&scope=llm": {
+      "file": "dec24be14dc7313d783f31e4.json",
+      "status": 200,
+      "bytes": 83963,
+      "sha256": "471ae8d0e69abf0f56fec9846f095fd2664640b7fdde8d2af632bdd708c0529a"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=40&scope=ai": {
+      "file": "eb7707456ae302f08879e12d.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "89164fdc844e297630f69ba5ef6da198e568abfc9978326f202c2249b6f4cb38"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=40&scope=context": {
+      "file": "18353cf15da7a9b717e8521a.json",
+      "status": 200,
+      "bytes": 86998,
+      "sha256": "5bab06b019d3363fe5dfe25c237e32c51736835dda023a9a8ab8a20e7ac35230"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=40&scope=llm": {
+      "file": "6f6b8e80280e24476fbb29a4.json",
+      "status": 200,
+      "bytes": 108174,
+      "sha256": "3e6fae5993551b7564905dc70da8653529a2fd43c8e795d789fc1365eb7270d3"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=5&scope=ai": {
+      "file": "c0782bad8212f8e39402dc12.json",
+      "status": 200,
+      "bytes": 6075,
+      "sha256": "8ff38602a88f5e858300880a7ac336783478e234a42bcdfbefb16b03ca354f9c"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=5&scope=context": {
+      "file": "437689fb122ae870a462658a.json",
+      "status": 200,
+      "bytes": 13599,
+      "sha256": "9639bc863f7cda13bd060e50ed15857d9c2075ccc579fb94eeea69e5e0a62880"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=5&scope=llm": {
+      "file": "beb2ae9d97219ec57ad20137.json",
+      "status": 200,
+      "bytes": 14997,
+      "sha256": "b02895e824780a2ca330848e7c8e029432ad18cee082f730e9ec9958a04910a1"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=50&scope=ai": {
+      "file": "f49cf11df434b47c751605a8.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "a9c7f5169e049f4c7dd053a6c6ed2c021967d7d115dd8ee800dcbe622f0c8769"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=50&scope=context": {
+      "file": "29ad14e20d96c4e0a915273e.json",
+      "status": 200,
+      "bytes": 108323,
+      "sha256": "348fe3e79faba4ded7c2b99586401571531c489db416046dcd6a58be12fad123"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=50&scope=llm": {
+      "file": "7692267fec7f540fa4b5e9ec.json",
+      "status": 200,
+      "bytes": 136611,
+      "sha256": "669b923f23e0c333b923e25ac25f00a2c318f388250a8579056b0d212c813760"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=60&scope=ai": {
+      "file": "69d9c5a84c38b3afdafbbcb7.json",
+      "status": 200,
+      "bytes": 9930,
+      "sha256": "f6410fd0604f3f1571ab723d6d658b32b0aaaf7a4cb910119b537bda594efad9"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=60&scope=context": {
+      "file": "a57ab17b5586dcfe9b25690f.json",
+      "status": 200,
+      "bytes": 124965,
+      "sha256": "a1cb641e9e5aecee3f5d20c9e7cbba6a92ffd576b3672304a75049a035610d56"
+    },
+    "/api/llm/graph?chain=paper_tech&limit=60&scope=llm": {
+      "file": "5d974fc22304935614c2f784.json",
+      "status": 200,
+      "bytes": 161009,
+      "sha256": "0a860b058a7d7c5f7a0e24574dc99b47b0914178083318f9b0265cba3582aff7"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=10&scope=ai": {
+      "file": "727614f8badd2ee165199107.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "4d0f2911a32ff59b349af8d83504cf8d95bf75c7a519ec420f821c5a7c7aded6"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=10&scope=context": {
+      "file": "26c4323233073dd525a0c6b8.json",
+      "status": 200,
+      "bytes": 20836,
+      "sha256": "999df82c4c57b53cde37512efae7357969a5a8f9ffeb16820f73fedb37ac459b"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=10&scope=llm": {
+      "file": "aeed86fae12c1f8af03ea56e.json",
+      "status": 200,
+      "bytes": 22626,
+      "sha256": "cddf82419808e67e0c57118519609541a41c92c79ae27346697162b8c9032500"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=20&scope=ai": {
+      "file": "781bd86209238ac1d3dd7efe.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "df73a15bbb12771052f0bf8f926e742f2deddd7616590db2894523d6016e1441"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=20&scope=context": {
+      "file": "b2fa8fe543faee517d67d7c4.json",
+      "status": 200,
+      "bytes": 42210,
+      "sha256": "7aba050926f3b4c647a4e79fcdd79d234ae7d8ca75c94cd8e3df23dda7fecf71"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=20&scope=llm": {
+      "file": "03761c492919bcf990094f33.json",
+      "status": 200,
+      "bytes": 40642,
+      "sha256": "4436260db12b7f4f70bf13f952c849ca3e052fcefdaf5e670a94bfe280ac6beb"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=30&scope=ai": {
+      "file": "66340386aece3e8d80d329ed.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "cec4b11d99af5cbc7b20e55a72685a8944ae6262745d3844fdfc3f7872cd3377"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=30&scope=context": {
+      "file": "8c7b0558bff090b24906adb6.json",
+      "status": 200,
+      "bytes": 63193,
+      "sha256": "875aacb52d13e1fc6430c08b141e93575f746b765d9337cb7f6e201f94351d2e"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=30&scope=llm": {
+      "file": "db84db24738875acac0bcec7.json",
+      "status": 200,
+      "bytes": 48768,
+      "sha256": "ee892bb6b9a19b08b9c99d2f8595a271237cc5347b324f2b720a1ff2809b8cbf"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=40&scope=ai": {
+      "file": "4e3a9946f3e2f67d55d88c7e.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "27536d5a65a5872c621d101f9b5759c44eea3ff1a211e9d4174d6693f470b83a"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=40&scope=context": {
+      "file": "37b99f187aca3ffb7c11ef5d.json",
+      "status": 200,
+      "bytes": 82011,
+      "sha256": "5a40824d59a2e172d213bd94dc1dcf087eabe6d5379ea1fc6fc557ad83858da6"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=40&scope=llm": {
+      "file": "9da6312a93fd1355291f46fa.json",
+      "status": 200,
+      "bytes": 48768,
+      "sha256": "08a4e217b9bc993b6f9d5ca1e5e1b86affbb2e6f8e0d2ae1b91e277ef0096374"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=5&scope=ai": {
+      "file": "9213aa0a498ddadf52ae0b20.json",
+      "status": 200,
+      "bytes": 16818,
+      "sha256": "0b3c7b192332ea586abbbeff2c44cc0409396af338d4b1653cc3747b4c3cf567"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=5&scope=context": {
+      "file": "4c894af3b6e70283e8a9c7ba.json",
+      "status": 200,
+      "bytes": 10950,
+      "sha256": "f54c139a57657e0cd48a361cebcd85c1a4777e5fa545e6915eb92ff3521e94d4"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=5&scope=llm": {
+      "file": "b0c76ba80462156653b60de8.json",
+      "status": 200,
+      "bytes": 13048,
+      "sha256": "96ddf84db70f86a63ec04568088f0555816f9a76045609b2b253f6aa10fa8892"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=50&scope=ai": {
+      "file": "3da26a1efc726b2af1bac406.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "9f8917a178298b5d158a0aedcd5815cb097c0c9d4c40af3d6162355f220bdb4d"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=50&scope=context": {
+      "file": "ad4c580882ded41bb64d17a6.json",
+      "status": 200,
+      "bytes": 88184,
+      "sha256": "6c65b416ccbee804f0fe55be4ed24a3d41e976c754c7afe43b93824b9314ae24"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=50&scope=llm": {
+      "file": "69524128d26966b05351b3ee.json",
+      "status": 200,
+      "bytes": 48768,
+      "sha256": "d5cb51333a242685f46cff15f5c22a072c93aece35946343fdd71b8a3e655b58"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=60&scope=ai": {
+      "file": "60246de53457a558b3d8758c.json",
+      "status": 200,
+      "bytes": 26952,
+      "sha256": "86a974d8b15e8a9dcf6352f96de747ed795b12419b6e09cb7071ffce311eb842"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=60&scope=context": {
+      "file": "e0ad01eca0fe63b5fe7506ae.json",
+      "status": 200,
+      "bytes": 88184,
+      "sha256": "bd9b00c44ac2f83c6e5e38ed40dfe54b8a386d315da269cb287e33e724ed8244"
+    },
+    "/api/llm/graph?chain=patent_tech&limit=60&scope=llm": {
+      "file": "d6e9c70dcdbd4138063398ae.json",
+      "status": 200,
+      "bytes": 48768,
+      "sha256": "076225c70dd3bc849df49a0f809a39597e39fde2671aaa8f11b0124f63ef5c24"
+    },
+    "/api/llm/study": {
+      "file": "3610d8d5a6552444a09e48fc.json",
+      "status": 200,
+      "bytes": 118526,
+      "sha256": "7cac5c6aeeaefddf984c0160438e171d71b2743b62a46226df29f5ec29fd730c"
+    },
+    "/api/llm/survey/AI1.01/A": {
+      "file": "cf1e8fbe25dfe20ff5d533ec.json",
+      "status": 200,
+      "bytes": 266359,
+      "sha256": "9c22dadbc093fb42dccf2c697c6807020a08efc9113b302159f49d4a426d6aae"
+    },
+    "/api/llm/survey/AI1.01/B": {
+      "file": "1a3e940a9accd6e454ad3093.json",
+      "status": 200,
+      "bytes": 82358,
+      "sha256": "d828e010b2d72ad32cf6150d56c2c50c4e857b84f5f1f8d6c1119b6e27250159"
+    },
+    "/api/llm/survey/AI1.02/A": {
+      "file": "beec38a7798079f1b9c3c2cb.json",
+      "status": 200,
+      "bytes": 246653,
+      "sha256": "0d6ff0915c2c57bec24bde0e5239b1809bd59ad6d84139cb95cc09df2a3be50d"
+    },
+    "/api/llm/survey/AI1.02/B": {
+      "file": "618ef458b9deae9452a4136e.json",
+      "status": 200,
+      "bytes": 74696,
+      "sha256": "aecb6aef11f1f2e1dc336d960d8a41cd4822fa505ca031e4ab50666c3bbd97bf"
+    },
+    "/api/llm/survey/AI1.03/A": {
+      "file": "75e14238b056ae1ef91557db.json",
+      "status": 200,
+      "bytes": 267406,
+      "sha256": "0fc1505f18f635e07bfd7106b9b6f968ce546351f7159507754761eaae3650c8"
+    },
+    "/api/llm/survey/AI1.03/B": {
+      "file": "8c66228db4f41d806778722f.json",
+      "status": 200,
+      "bytes": 65891,
+      "sha256": "ac385dfbac2659f22341bbe9a56a5f488aaddf2e86bb40f6e56bac76f9a62a4c"
+    },
+    "/api/llm/survey/AI1.04/A": {
+      "file": "7b3589a5c245e7bd43acd997.json",
+      "status": 200,
+      "bytes": 298101,
+      "sha256": "11f1b69c83267d15ce4d43c4fa7be9c4bf0cd5d743923a933d8f01cc8e52a0f0"
+    },
+    "/api/llm/survey/AI1.04/B": {
+      "file": "bf8e8ab3e10084d2a893c4cb.json",
+      "status": 200,
+      "bytes": 89493,
+      "sha256": "b14134a8e4e38ad142800a3333c950ebb82219df9d059a4dc29a02205ff943af"
+    },
+    "/api/llm/survey/AI1.05/A": {
+      "file": "8bd766b5ee9d5bd2c8c32170.json",
+      "status": 200,
+      "bytes": 270186,
+      "sha256": "a6627aad9be62d3f1e210b75eac44ca41c38a8469c085c681a1c7406652ac602"
+    },
+    "/api/llm/survey/AI1.05/B": {
+      "file": "9e0d33a0169407cd31191010.json",
+      "status": 200,
+      "bytes": 47560,
+      "sha256": "89c87d78acd0efbfbe43fcbf6d3cf0929e7eb29424ca76d462e9ffe2b0e7a9fc"
+    },
+    "/api/llm/survey/AI1.06/A": {
+      "file": "ef9fbc912f5648dbe64e64aa.json",
+      "status": 200,
+      "bytes": 249439,
+      "sha256": "e0e54ec699793ce25f51316a737c0fa4055f3d1d639648ae3494be6c451401d3"
+    },
+    "/api/llm/survey/AI1.06/B": {
+      "file": "180e9936a8855ab4c4e15748.json",
+      "status": 200,
+      "bytes": 77030,
+      "sha256": "e7a60a17408f275af2fd696fc339fa5a2b1672b41dd114c858af645040d4d60c"
+    },
+    "/api/llm/survey/AI1.07/A": {
+      "file": "1eae36e2853d15899baf1102.json",
+      "status": 200,
+      "bytes": 322864,
+      "sha256": "cc26fb68236b7a7c48f377be649e9d862a8db496bec63e35a456bb5f2754055c"
+    },
+    "/api/llm/survey/AI1.07/B": {
+      "file": "086645b4a1d876681291f802.json",
+      "status": 200,
+      "bytes": 74244,
+      "sha256": "d29f933b08ca72b5da04612ac5a132a0e5c8285915f0621b69ca46e14675eb56"
+    },
+    "/api/llm/survey/AI1.08/A": {
+      "file": "193d43d366b7e6798beae8ca.json",
+      "status": 200,
+      "bytes": 282921,
+      "sha256": "f1b7f5cc177ba7d36f23c64f8a59fffb2106a5f6f48007520336ed1b3416928f"
+    },
+    "/api/llm/survey/AI1.08/B": {
+      "file": "59cad0fdaed35f97e6f58986.json",
+      "status": 200,
+      "bytes": 58902,
+      "sha256": "105e7fcfa4cb17220ffa150344f39b5f18988e697d700103ac0678da06281556"
+    },
+    "/api/llm/survey/AI1.09/A": {
+      "file": "b41ba9802da293ea97faca4e.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI1.09/B": {
+      "file": "a8bbe9942f3bef1c23076cb7.json",
+      "status": 200,
+      "bytes": 59440,
+      "sha256": "8c95eb702459eeae3b8497dcfe2a841345806333bc1e2d90952f10031bf8028b"
+    },
+    "/api/llm/survey/AI2.01/A": {
+      "file": "7a3b1abc039acc788f505750.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI2.01/B": {
+      "file": "91b0c03d2c0a3cbe66865101.json",
+      "status": 200,
+      "bytes": 67030,
+      "sha256": "e68019ccf15c3035bdda6ee5358441ac306d19625918ae022ac5e4abee8804b8"
+    },
+    "/api/llm/survey/AI2.02/A": {
+      "file": "cefe196b29c842b7c0ac2d6f.json",
+      "status": 200,
+      "bytes": 272516,
+      "sha256": "be71f8bc17b2e81ea65444462b36d525ac12704118475881470abe1a06eb9961"
+    },
+    "/api/llm/survey/AI2.02/B": {
+      "file": "ee29a74e9c827da9a977fd69.json",
+      "status": 200,
+      "bytes": 70690,
+      "sha256": "457eb60e69367c2acb07393e21678a9f5031665a3cfd43230348349bf19b0f42"
+    },
+    "/api/llm/survey/AI2.03/A": {
+      "file": "2ec782b7e024877a8866a15f.json",
+      "status": 200,
+      "bytes": 358797,
+      "sha256": "d76c5eddc5478e9a305941f283ccd8a3bad8de1adc3c0588833635db3b22a876"
+    },
+    "/api/llm/survey/AI2.03/B": {
+      "file": "51f2299b7a36e541934f2807.json",
+      "status": 200,
+      "bytes": 67552,
+      "sha256": "33cdbb3c071cb9143e8ff914e5c631634f43cbacaf9a4446afce0d0cee801c15"
+    },
+    "/api/llm/survey/AI2.04/A": {
+      "file": "3db37cfca32f547964ebdf6e.json",
+      "status": 200,
+      "bytes": 292440,
+      "sha256": "79b68fad2a578420d7da761dd3ab72e857a10082c769013016a222cbee9e3df6"
+    },
+    "/api/llm/survey/AI2.04/B": {
+      "file": "d469ba502fc90d2ac9df5023.json",
+      "status": 200,
+      "bytes": 59705,
+      "sha256": "cf59da39b4dc3763055eb50cb9a8a99bc7c36363b579f3948cbad9039c7f0875"
+    },
+    "/api/llm/survey/AI2.05/A": {
+      "file": "57f6c5a8cc1a20a71fffe535.json",
+      "status": 200,
+      "bytes": 255372,
+      "sha256": "2e841bda9edca253bc41185ce7dc2e2eaa642e3507978ca90b73113ae9a1eaf3"
+    },
+    "/api/llm/survey/AI2.05/B": {
+      "file": "7b312696bee6d528006b5ff6.json",
+      "status": 200,
+      "bytes": 53034,
+      "sha256": "9df1701e834938540d963d1551b8fd104faf7c57a8e0bdf79c9bbc913e2af1c7"
+    },
+    "/api/llm/survey/AI2.06/A": {
+      "file": "31ea5c789a7b6dd2e573de3d.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI2.06/B": {
+      "file": "cac3b5aa9ac7945c1f60f97a.json",
+      "status": 200,
+      "bytes": 54499,
+      "sha256": "bbfb4b45be04868afb30220c8d432f27dc811a30fc93fb27501ef690e2fa3dbb"
+    },
+    "/api/llm/survey/AI2.07/A": {
+      "file": "445b1e830ce74e24201af307.json",
+      "status": 200,
+      "bytes": 276738,
+      "sha256": "b42372cdc9ff6a43d4a62be266d81ddb397f6c01c5e196f65b8f7a0c6146e307"
+    },
+    "/api/llm/survey/AI2.07/B": {
+      "file": "f3e03ccbe25b0a8baf05affc.json",
+      "status": 200,
+      "bytes": 66315,
+      "sha256": "3cd2fd43ad6cf60b0161dd50d1c7211682298d320f6a90b4b9b860793b192a8b"
+    },
+    "/api/llm/survey/AI2.08/A": {
+      "file": "5323a30f45ab4b53c4b0b943.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI2.08/B": {
+      "file": "c6dc64f9147f958d43b0cefb.json",
+      "status": 200,
+      "bytes": 53309,
+      "sha256": "b43886cbebfb05e6265023ef86274a5cdbf7b5e97e6faeed29af740f991905d1"
+    },
+    "/api/llm/survey/AI2.09/A": {
+      "file": "e22c6a6d948e8f465bc33b38.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI2.09/B": {
+      "file": "3c12d1e5b6ada8288d7786f2.json",
+      "status": 200,
+      "bytes": 42733,
+      "sha256": "d2ffa210969e1c5729cec0046f3cbbbdb85c88422155fa2d4bf4dfca281c851a"
+    },
+    "/api/llm/survey/AI2.10/A": {
+      "file": "cad839d13b154275c8b653ce.json",
+      "status": 200,
+      "bytes": 150004,
+      "sha256": "9fc8869b95dbfe6f198a168e7dd7f7c52da3a0e49592505a5ed794bbd8c40438"
+    },
+    "/api/llm/survey/AI2.10/B": {
+      "file": "12046344eb13b322448363ea.json",
+      "status": 200,
+      "bytes": 51191,
+      "sha256": "05e9c90e660104b976baaf341b6262380423859a207c6517430126a669cc6a77"
+    },
+    "/api/llm/survey/AI2.11/A": {
+      "file": "8dae9e8bbdea30252ec709f1.json",
+      "status": 200,
+      "bytes": 342621,
+      "sha256": "cc9550fad4380c74fdababe93fa20bf6bbe6c9945df06b6c1c7e2af000073dd4"
+    },
+    "/api/llm/survey/AI2.11/B": {
+      "file": "5c5b349b9d07d5a0be033399.json",
+      "status": 200,
+      "bytes": 68805,
+      "sha256": "dcc2fe220e50fad212c4cd5d46a3659b142794ddb192a73f6ecaa35679dc18a9"
+    },
+    "/api/llm/survey/AI2.12/A": {
+      "file": "a21752bf187c97171bf33a69.json",
+      "status": 200,
+      "bytes": 251420,
+      "sha256": "c5566a639a18f2f375e328ec547f7bcaa4e21ff466a895a2f06bf39ce4477eb4"
+    },
+    "/api/llm/survey/AI2.12/B": {
+      "file": "9dbcc12f9075f3011bfb2ed4.json",
+      "status": 200,
+      "bytes": 67114,
+      "sha256": "c7976b07a32a4a317f9d966a3d70ee19de007c0df9e7c7e0928ada7cf619e848"
+    },
+    "/api/llm/survey/AI2.13/A": {
+      "file": "b5e4643a9cb3a7d81af1000a.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI2.13/B": {
+      "file": "fa46b363484fab1934f32af6.json",
+      "status": 200,
+      "bytes": 66587,
+      "sha256": "9fae86b44fb5e0c596e1cdd1361e541c5fb1f98243799774add07fc3969fcc4b"
+    },
+    "/api/llm/survey/AI2.14/A": {
+      "file": "13b9a6c171a51d0c200c6a7f.json",
+      "status": 200,
+      "bytes": 192194,
+      "sha256": "fc2c60aedeadd0e7964fab6b9a6e1b34118b16058e749c10d053b1572f5f2347"
+    },
+    "/api/llm/survey/AI2.14/B": {
+      "file": "9cdcac724bd5d58805091197.json",
+      "status": 200,
+      "bytes": 53440,
+      "sha256": "d29904c38a79de162c4732ecaa3a566f01ba35eb8f4b5ab384b608cee19f6dd0"
+    },
+    "/api/llm/survey/AI2.15/A": {
+      "file": "2fe21f78d354bec1931e5b02.json",
+      "status": 200,
+      "bytes": 366063,
+      "sha256": "f894d4abc1f14815698c8e391aeda05495572f5522e1d9efb4963b53c2f777fe"
+    },
+    "/api/llm/survey/AI2.15/B": {
+      "file": "8b028f8110bd4bbf9847ced7.json",
+      "status": 200,
+      "bytes": 69117,
+      "sha256": "35b9abf088741f032916852b3cedb3b5b57ae57139dfb21547b8d5e1a3f97672"
+    },
+    "/api/llm/survey/AI3.01/A": {
+      "file": "24ba9f7952f30816a521e8ac.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.01/B": {
+      "file": "a2721185701230b389cac167.json",
+      "status": 200,
+      "bytes": 68321,
+      "sha256": "d852b00c88823ed27f234958fc1cc364dcab91b4fb07e8cdb18de959ac45a809"
+    },
+    "/api/llm/survey/AI3.02/A": {
+      "file": "f78382fcab25c410d2604cec.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.02/B": {
+      "file": "63a69688b0b8286821e29dcb.json",
+      "status": 200,
+      "bytes": 50630,
+      "sha256": "8bd079ebc50183304d182de7c258d78a45eb38d8147ab3fa2013f9cf6066ac3b"
+    },
+    "/api/llm/survey/AI3.03/A": {
+      "file": "0d4d8b96710f471c957cf2e1.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.03/B": {
+      "file": "92f6acd782080e73f897cede.json",
+      "status": 200,
+      "bytes": 52104,
+      "sha256": "241de97b6c62103672dfc0f4fa4d503e0812cbb9d19ecfceae06d5b78f450c41"
+    },
+    "/api/llm/survey/AI3.04/A": {
+      "file": "334d45e37df65a2ffa5fae22.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.04/B": {
+      "file": "53a381b3a4287e6cbfebab26.json",
+      "status": 200,
+      "bytes": 37838,
+      "sha256": "9c726b20ac0607d5708758dd408cb6729392bfef2f044fbbf9c5ea02cd2aa29c"
+    },
+    "/api/llm/survey/AI3.05/A": {
+      "file": "138c408d3dd2510624aa3ef8.json",
+      "status": 200,
+      "bytes": 328781,
+      "sha256": "8eece11c7347251573c8b60d5eca4db830571537fca8f3e48e99f90f9aa04987"
+    },
+    "/api/llm/survey/AI3.05/B": {
+      "file": "8f8f66b5dd342156e5ada811.json",
+      "status": 200,
+      "bytes": 59741,
+      "sha256": "158e219aa7453574805f3be9b573f0c3effc95003061a49d7b4c00680d748d07"
+    },
+    "/api/llm/survey/AI3.06/A": {
+      "file": "197209ffdec3a128a2e5005f.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.06/B": {
+      "file": "e70e39bb6452ec47d26e0d2d.json",
+      "status": 200,
+      "bytes": 47391,
+      "sha256": "dda1abb4cf319d387827db7ff1723f021cf43f2f83325ddede31f90951755e35"
+    },
+    "/api/llm/survey/AI3.07/A": {
+      "file": "6797cb2f907d67ccf0e80521.json",
+      "status": 409,
+      "bytes": 44,
+      "sha256": "ec3f2011d174096a8e77e52340dd21767fdfd4333556dd697978480dd098d6d2"
+    },
+    "/api/llm/survey/AI3.07/B": {
+      "file": "fc900469f8b486c38f404f90.json",
+      "status": 200,
+      "bytes": 67537,
+      "sha256": "bc0523049af25bf23cb5626ccc72d8f1881008b069c8362f11b4fb6b02b84c54"
+    },
+    "/api/llm/survey/AI3.08/A": {
+      "file": "f0942d9f2002726665fed890.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.08/B": {
+      "file": "efae16b29e2db3c42a7d8768.json",
+      "status": 200,
+      "bytes": 52185,
+      "sha256": "cccb2e1c603f851a251c6ae3e416e68daee61afe6035c9021e4d500a891d1742"
+    },
+    "/api/llm/survey/AI3.09/A": {
+      "file": "5c1c4ba14f8244f68b72f426.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.09/B": {
+      "file": "8ae79f346cfcfe29228e52d9.json",
+      "status": 200,
+      "bytes": 38018,
+      "sha256": "a1f60f578f499e8d5a7d5ee0f238091b72192713313b1ecd1189c0d2b98c05d8"
+    },
+    "/api/llm/survey/AI3.10/A": {
+      "file": "56cb7730088b9c4f09ee03e7.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.10/B": {
+      "file": "fc2a0d2a60190511694eb1f9.json",
+      "status": 200,
+      "bytes": 72676,
+      "sha256": "aa447d57eb138e1c541b5d0dc6e452adb5c22397b6decdffbb3a1bbeee45c18b"
+    },
+    "/api/llm/survey/AI3.11/A": {
+      "file": "3be2821c07a480c1e76ed345.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.11/B": {
+      "file": "83bc8b89af989c945f2555ad.json",
+      "status": 200,
+      "bytes": 39504,
+      "sha256": "c079fc52c0ab9afb7bb0dd93b3abaabdebe4a37eac7464f9d46f6af29056c901"
+    },
+    "/api/llm/survey/AI3.12/A": {
+      "file": "d1133e520d23438b3944f43a.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.12/B": {
+      "file": "a4102eaa0ccca38d5a026d72.json",
+      "status": 200,
+      "bytes": 81008,
+      "sha256": "36c22883f401225d0057133e014e39df348aba406a4074f9c3caa773bc09ae36"
+    },
+    "/api/llm/survey/AI3.13/A": {
+      "file": "ef03edbb66d074b78f1ebc67.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI3.13/B": {
+      "file": "b827b86774667eec2c011f89.json",
+      "status": 200,
+      "bytes": 105117,
+      "sha256": "d809f0c247d59a082c6c7f8cee0884c3245cb99b7c8bb67b561981b345186062"
+    },
+    "/api/llm/survey/AI4.01/A": {
+      "file": "058c9ddb5446081f78f7b694.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI4.01/B": {
+      "file": "1676590bb26a6719e47925ee.json",
+      "status": 200,
+      "bytes": 73438,
+      "sha256": "5969fd86488865d7e024e2660c3265d270d40d64ba8991fea423f5156cb68fd1"
+    },
+    "/api/llm/survey/AI4.02/A": {
+      "file": "624535169fa828e7d242eb08.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI4.02/B": {
+      "file": "4316c856b2814a3f606eb82e.json",
+      "status": 200,
+      "bytes": 55529,
+      "sha256": "225ec6b7f0a469d0d50529e46b1dbf5c4662d1a7753d3b310143bb54d3872700"
+    },
+    "/api/llm/survey/AI4.03/A": {
+      "file": "d7f87f48bab824d7847213d7.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI4.03/B": {
+      "file": "6eb00ffa4245c5f64d593f1c.json",
+      "status": 200,
+      "bytes": 55643,
+      "sha256": "45c3bcef8cbe60591c33cc2bb489aecce88981f3b9a9df8b4638869dafdfef4f"
+    },
+    "/api/llm/survey/AI4.04/A": {
+      "file": "947e08c97eab0ac27a83c8ce.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI4.04/B": {
+      "file": "1409b26382fc937f21ea19b0.json",
+      "status": 200,
+      "bytes": 55163,
+      "sha256": "892c04c1ecfe73139acb59a1c9e351a8c04b2fa2027357741c1ad22fa25fb5af"
+    },
+    "/api/llm/survey/AI4.05/A": {
+      "file": "f86b685cfb1001791a1483e0.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI4.05/B": {
+      "file": "4115490327728af49a0e0bd0.json",
+      "status": 200,
+      "bytes": 70613,
+      "sha256": "fb3c4e3b1bab87cf7d2c1a7bb22f85667aab86dba1fb9961aa66565111315c36"
+    },
+    "/api/llm/survey/AI5.01/A": {
+      "file": "fbca363ba9c8de7a948d63ad.json",
+      "status": 200,
+      "bytes": 466685,
+      "sha256": "830345ca0792df2e58b178f56fcfe00a212413e399df89ce9b40c2a257e21b64"
+    },
+    "/api/llm/survey/AI5.01/B": {
+      "file": "48f0648ba11c2332ebf407c3.json",
+      "status": 200,
+      "bytes": 43912,
+      "sha256": "165e2824ac249dba4e99c943943cdaa89b3b786d48b94392d7960f993f4f54c5"
+    },
+    "/api/llm/survey/AI5.02/A": {
+      "file": "91d354f3d6e14a6dc5ae7132.json",
+      "status": 200,
+      "bytes": 330395,
+      "sha256": "efcb9e71f0ad67b27759d6b4ecc2ee89c9b8a9be14eaa0abddb6da34f3f8e2e6"
+    },
+    "/api/llm/survey/AI5.02/B": {
+      "file": "316def7b15abbc04a1db8748.json",
+      "status": 200,
+      "bytes": 52707,
+      "sha256": "e33f574c7470f4f93bd3f58505868aac1596ae879db6be9721a02ebe5962e08f"
+    },
+    "/api/llm/survey/AI5.03/A": {
+      "file": "6e707b7ab64a2d0d94ce24dd.json",
+      "status": 200,
+      "bytes": 266804,
+      "sha256": "8b2cc7bf72c19f349e5c2ce1083804a824dd3ec73d0878e978136ac089bbda7a"
+    },
+    "/api/llm/survey/AI5.03/B": {
+      "file": "dca8419b7be62a582698a4e0.json",
+      "status": 200,
+      "bytes": 68633,
+      "sha256": "a5d7b347439bdd924f197d58f454f308f5a90d7f79cb9e1cc8c7c2c74ad3d6a4"
+    },
+    "/api/llm/survey/AI5.04/A": {
+      "file": "f1738015b64f79c778f7260b.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.04/B": {
+      "file": "e2bb56b2eff64c09be9512be.json",
+      "status": 200,
+      "bytes": 34945,
+      "sha256": "e0d2c089f6fc8bf64599e003d60a48631c20692688b719d544422a81a23e2d01"
+    },
+    "/api/llm/survey/AI5.05/A": {
+      "file": "307e065d1b6faf32d0caafa1.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.05/B": {
+      "file": "45820373d0602124d1db90be.json",
+      "status": 200,
+      "bytes": 39832,
+      "sha256": "2ed809c1367bd74cacc44e6e104b4662ad40eced23623b8c64175e71b4775d5b"
+    },
+    "/api/llm/survey/AI5.06/A": {
+      "file": "f596af005fcdc3711e9265db.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.06/B": {
+      "file": "1d6d06f5c9616f7f70d3a6ae.json",
+      "status": 200,
+      "bytes": 80327,
+      "sha256": "4e9330cb31dae1a9b69f8e5c564354afe8e01f5dd8db847f221577f4fdf62b82"
+    },
+    "/api/llm/survey/AI5.07/A": {
+      "file": "33da00bd05532ecd742bba42.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.07/B": {
+      "file": "48f729b61bddebd20dcec33a.json",
+      "status": 200,
+      "bytes": 66231,
+      "sha256": "037288878e56e72ae6e82b6b18030ad76f5fcd2283bf696bc995527976e02de2"
+    },
+    "/api/llm/survey/AI5.08/A": {
+      "file": "810444fb4d801ed044360b7e.json",
+      "status": 200,
+      "bytes": 219128,
+      "sha256": "dbc62a95502cfa3235da15f856db4d4482cefb0816f075ca1a12b29c83c90789"
+    },
+    "/api/llm/survey/AI5.08/B": {
+      "file": "c88ce14a2392b47171e9610e.json",
+      "status": 200,
+      "bytes": 65696,
+      "sha256": "aced22218c3a170690a701bcf9e292a2067d5cd662262d4533013e570c79ed22"
+    },
+    "/api/llm/survey/AI5.09/A": {
+      "file": "db74bbbd6244ee6c47d00667.json",
+      "status": 200,
+      "bytes": 375434,
+      "sha256": "161fcd134920da6d528a5319685afc6bf1208c3d1c820034569f0c0060f0fe25"
+    },
+    "/api/llm/survey/AI5.09/B": {
+      "file": "3137a623014c71408bcd8d65.json",
+      "status": 200,
+      "bytes": 36352,
+      "sha256": "5323a0217b3a4ffa0bd30ec7560699c23082828c6446d030be9c2e155554bc9e"
+    },
+    "/api/llm/survey/AI5.10/A": {
+      "file": "d3d3d4d1644dcecbca8ffb73.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.10/B": {
+      "file": "5ab8c78c297fbd161dc3af7e.json",
+      "status": 200,
+      "bytes": 46449,
+      "sha256": "3502c3827bf9928497cc08097455c12462eeea84663b4b26489c57cb001d2367"
+    },
+    "/api/llm/survey/AI5.11/A": {
+      "file": "bf0a7d6fda4808bfbaa380df.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.11/B": {
+      "file": "0f8fbf5fcb884f3f5d6ee2ac.json",
+      "status": 200,
+      "bytes": 66495,
+      "sha256": "b1583f7bea151c2881876fca24a79de4c8997907d25c1bfe899a646919b198a0"
+    },
+    "/api/llm/survey/AI5.12/A": {
+      "file": "e8b463261c44b73d6a82cee8.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.12/B": {
+      "file": "964a6975bef6c742bfef1126.json",
+      "status": 200,
+      "bytes": 62435,
+      "sha256": "7dbbf5fd5867b16b209956cc5d3cc0f1502ac59bd96360bafcf2ce93a081701b"
+    },
+    "/api/llm/survey/AI5.13/A": {
+      "file": "c7bd224d4b479ba95189417d.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.13/B": {
+      "file": "a18276d24f8a7e76806d3fc0.json",
+      "status": 200,
+      "bytes": 57187,
+      "sha256": "bf9215665a06a10ad2643ed3394c6df9e9bb7305c2958a9be1f9f2f6323625c7"
+    },
+    "/api/llm/survey/AI5.14/A": {
+      "file": "db1390759027c2dd35b737d6.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI5.14/B": {
+      "file": "e1b392350f7fbe8cb1b3ea52.json",
+      "status": 200,
+      "bytes": 74701,
+      "sha256": "456b329b16d58b18594adfcc642882814c2090b2f9426bd4cf6d17e8f53d6c7f"
+    },
+    "/api/llm/survey/AI6.01/A": {
+      "file": "16eabb0b1814af925ed766c9.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI6.01/B": {
+      "file": "45d126e09a13a932bf072ce0.json",
+      "status": 200,
+      "bytes": 57229,
+      "sha256": "28a2ab2dce47271ab154a344925d10cfc201b415765d1c1bf1412a5035b097c6"
+    },
+    "/api/llm/survey/AI6.02/A": {
+      "file": "7ec88e530782f6fdc5cb1cfc.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI6.02/B": {
+      "file": "4788ff3d4b3df0ed7659a505.json",
+      "status": 200,
+      "bytes": 37050,
+      "sha256": "7cf0cd5ae534bb10de30be44d9d6f8f5a61357a11dafe96615ff592f729a210a"
+    },
+    "/api/llm/survey/AI6.03/A": {
+      "file": "6110ba77d57d0feb128b86c1.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI6.03/B": {
+      "file": "f5e97add56366293a98596d2.json",
+      "status": 200,
+      "bytes": 51550,
+      "sha256": "51bf9dbc39437bf450456c515406cdba68b4fe508d00e6ed7d3120aadb497d89"
+    },
+    "/api/llm/survey/AI6.04/A": {
+      "file": "89962e00de40d43fd6d80046.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI6.04/B": {
+      "file": "b56a5a5978708a80ec403714.json",
+      "status": 200,
+      "bytes": 54763,
+      "sha256": "4c5e50d0194ba075c0ce9da8c7e5d91ee3143de7c59877eba957d00db4de9e2a"
+    },
+    "/api/llm/survey/AI6.05/A": {
+      "file": "cb2490ca8156c60fa599191b.json",
+      "status": 200,
+      "bytes": 406768,
+      "sha256": "7f37f808cd8905fd8bc5423358ddb2741616ddc41b3fdc3638736f4b41fc344a"
+    },
+    "/api/llm/survey/AI6.05/B": {
+      "file": "fdd1865a3d0f7365766d3db6.json",
+      "status": 200,
+      "bytes": 66172,
+      "sha256": "dc224af212cec7578658f9bdd9a3e5988ca90ac29d78006989c43ba10eb3fe63"
+    },
+    "/api/llm/survey/AI6.06/A": {
+      "file": "d7a2424cf5d387db76c909e0.json",
+      "status": 200,
+      "bytes": 249289,
+      "sha256": "89c18dc913711b7f95493bff4c600b4b02901cadbdcf652b93a01707d8db0ebe"
+    },
+    "/api/llm/survey/AI6.06/B": {
+      "file": "d9044af475338043b90ef1c6.json",
+      "status": 200,
+      "bytes": 51263,
+      "sha256": "24410b3c485e5f97ec30ebca773a63c730c5f897bcf4c7b13f91b91692e3bbe3"
+    },
+    "/api/llm/survey/AI6.07/A": {
+      "file": "c53ddc84da02d0cb28ba2b63.json",
+      "status": 200,
+      "bytes": 373046,
+      "sha256": "471518033eb658b5da98cbbf7df7cfde3ef21e8bc4fd0436665b9d14c22c9d4f"
+    },
+    "/api/llm/survey/AI6.07/B": {
+      "file": "ffd1cb841a5dc128bbd1a5ce.json",
+      "status": 200,
+      "bytes": 71671,
+      "sha256": "4e4356ee5ce837e089578cf74a1d2dd03488e0e23dd7893c48ad663b7f4b3a0b"
+    },
+    "/api/llm/survey/AI7.01/A": {
+      "file": "2cd0290674b09cec76820f9b.json",
+      "status": 200,
+      "bytes": 298362,
+      "sha256": "eaea5c5a9daa410c0d0a8ed0e610288c42f85a6534487f38fb50b980bbf17d87"
+    },
+    "/api/llm/survey/AI7.01/B": {
+      "file": "63f64d4ec6ea8cf3159cd04a.json",
+      "status": 200,
+      "bytes": 27091,
+      "sha256": "760efa2a2444a258c4e3bad060d1bf57a1a4d5d48decc687725022b452d35ed5"
+    },
+    "/api/llm/survey/AI7.02/A": {
+      "file": "02e5f080bacb89a29952c75d.json",
+      "status": 200,
+      "bytes": 223689,
+      "sha256": "28d99124f2764f4797fd5f588dd5724a5e96f6ea422f8d7bed9f32e7347687af"
+    },
+    "/api/llm/survey/AI7.02/B": {
+      "file": "5f81065a977036f655472660.json",
+      "status": 200,
+      "bytes": 50283,
+      "sha256": "749e97deb63ed066290dcb2bf6fc156966b59fcfb7b8b463cc8fae435f763886"
+    },
+    "/api/llm/survey/AI7.03/A": {
+      "file": "71895c48f966df69560ac0e8.json",
+      "status": 200,
+      "bytes": 269442,
+      "sha256": "c854821ea139c9588c332a2bcb0e276b22859725752ea93d69a034552e62de00"
+    },
+    "/api/llm/survey/AI7.03/B": {
+      "file": "4410ec977f9f8810eda0f3e3.json",
+      "status": 200,
+      "bytes": 53864,
+      "sha256": "d09263f28e99f8290c18b0f0720343545d791353482f3096304678b3bad2d114"
+    },
+    "/api/llm/survey/AI7.04/A": {
+      "file": "96cafccb2b6256cbf714adbb.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI7.04/B": {
+      "file": "014d1e8e19a7bc94c0b39524.json",
+      "status": 200,
+      "bytes": 46474,
+      "sha256": "ba3fa4ac56866b89f04276cf38e4cdf798e1a61205c13a051b31a2a044538075"
+    },
+    "/api/llm/survey/AI7.05/A": {
+      "file": "c892ab348d2cb0c369956dc6.json",
+      "status": 409,
+      "bytes": 113,
+      "sha256": "e29dc1bc3e5206240a9e4a301b87b43a55dc0498ad0abc262f61b7eec9a5fcfa"
+    },
+    "/api/llm/survey/AI7.05/B": {
+      "file": "e9d78bcacaed7e6f948b22e0.json",
+      "status": 200,
+      "bytes": 38219,
+      "sha256": "0d974e361971d12535e0abf663a74d67a9fb134fead109de119f87731c4fcb1e"
+    },
+    "/api/llm/survey/AI7.06/A": {
+      "file": "ff599e79faab0752c7357032.json",
+      "status": 200,
+      "bytes": 292059,
+      "sha256": "a13f698516fb928b64e70cc2abcc60dc750d18c642213c3bc19ec1001c3df12e"
+    },
+    "/api/llm/survey/AI7.06/B": {
+      "file": "b13a759b8aff1e7100efd065.json",
+      "status": 200,
+      "bytes": 54557,
+      "sha256": "1ff811023650a13981774afcae998b31c322da218a9e41c71e969df5be1c2cb6"
+    },
+    "/api/llm/survey/AI7.07/A": {
+      "file": "b39faa733f8df263bf8e4d18.json",
+      "status": 200,
+      "bytes": 166526,
+      "sha256": "df362bbd32ca96958a86c54a8b21e35d683893f4434521110e4e287cce3a9e70"
+    },
+    "/api/llm/survey/AI7.07/B": {
+      "file": "25de56080654d0cb73f18450.json",
+      "status": 200,
+      "bytes": 36670,
+      "sha256": "8603d061ebe2107e26bf42d3552046b267d6eb959d6be35413d162f7ffaea757"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=fund_paper_tech&limit=40": {
+      "file": "a1990cd1fd052c3e4c66dbbd.json",
+      "status": 200,
+      "bytes": 24145,
+      "sha256": "74b09a27576346f6db9a3098f36565bff9eec3bb956410d6c464f3629c374ca6"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=fund_paper_tech&limit=60": {
+      "file": "5c9614220a4a1ab464d42a5f.json",
+      "status": 200,
+      "bytes": 32745,
+      "sha256": "8681cc8594a870f6e31ac0b69eb337bf9934000b4e6474042849e271ceb36843"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=fund_paper_tech&limit=80": {
+      "file": "ae2f757380aa5e7f5b31f834.json",
+      "status": 200,
+      "bytes": 32745,
+      "sha256": "2cbddde3794ea20fd1788a29fa4b2905807a5be3a3c885883da33ed51065fe13"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=patent_tech&limit=40": {
+      "file": "3c57c9cec31de34d0572dd59.json",
+      "status": 200,
+      "bytes": 10051,
+      "sha256": "2dc6204c9f56b995ac6c6bd9362f4c81afc7b282dfd705df9595df409dfba5c1"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=patent_tech&limit=60": {
+      "file": "dab1903fdc281b92adff2a81.json",
+      "status": 200,
+      "bytes": 13838,
+      "sha256": "7f9943864ffdba027e9d710c1837c95fae153011835861a776d0e6f530fc678a"
+    },
+    "/api/low-altitude/chain?aggregate=false&chain_type=patent_tech&limit=80": {
+      "file": "b555f6ccaa080aa5b25ab780.json",
+      "status": 200,
+      "bytes": 17629,
+      "sha256": "0943fbe2baeb15274cb9187abbecf2b1cdd33aa61f4a8765e9e57e823e4b552e"
+    },
+    "/api/low-altitude/chain?aggregate=true&chain_type=aggregate_overview&limit=30": {
+      "file": "b6d156aadbc7c949aa0b0bf5.json",
+      "status": 200,
+      "bytes": 1254,
+      "sha256": "9af1e1e174f2bdf8e8845b2657fdff30e8bc0f0de933c1b1ef2d0206a5226638"
+    },
+    "/api/low-altitude/overview": {
+      "file": "b62452062e413d648caaddaf.json",
+      "status": 200,
+      "bytes": 7227,
+      "sha256": "e67cf3c76ddf8e046559fe0f4be85575a077122c9c2745ea06435504c27ea7b9"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_airship": {
+      "file": "c3deb73583ce2b6d3fd32961.json",
+      "status": 200,
+      "bytes": 105307,
+      "sha256": "d1cb1e18ab000571c1403fc2491228cf6cdb1fdb765cd006f98270f5d343ee89"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_environment": {
+      "file": "4cddd065b0069f63abe1fba2.json",
+      "status": 200,
+      "bytes": 106579,
+      "sha256": "db866c28b0ebd8099e39f53446d6a3399e47990ab2c767e6328fc5b11b8fd77a"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_fixed_wing": {
+      "file": "22556adf13c9136f92fefde4.json",
+      "status": 200,
+      "bytes": 103805,
+      "sha256": "bfa4d769e697869d225754249e4dd1e761aefd39ac15c6e6a3a3b234fe5b4ffc"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_foldable": {
+      "file": "42e3ebaf58e50bf1dd3c0fa9.json",
+      "status": 200,
+      "bytes": 99394,
+      "sha256": "9485f8b54a8e53f56b1496b9c45ae01f6c655be61951eefa5e1b79e0f091cde4"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_lightweight": {
+      "file": "e055ecce1781ac10a521efea.json",
+      "status": 200,
+      "bytes": 99870,
+      "sha256": "5e114eb1f1a0e826ebd6716431a0946175109c107f895d30dc3464d56795b5f8"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_multirotor": {
+      "file": "3197b68f74de68b5ecda99c3.json",
+      "status": 200,
+      "bytes": 97353,
+      "sha256": "b47e2b51301deea7995aee01d51584c7835f3bf37651daf57e64cbbff25d6ec5"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_rotorcraft": {
+      "file": "6b2b40524a3519dd0f0b9867.json",
+      "status": 200,
+      "bytes": 91759,
+      "sha256": "caf22a133b595374bc8873cc22808438748b052e47421bee204d4ab725b2abff"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=airframe_vtol": {
+      "file": "236b9b55159833a524fc626f.json",
+      "status": 200,
+      "bytes": 100369,
+      "sha256": "e8cbab4b8bf6a89a64ab944b062456d5ca90bf12b49ccd64289b7fc48e14d5f8"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=control_flight_controller": {
+      "file": "b76880a3f22be6191a55bab5.json",
+      "status": 200,
+      "bytes": 107751,
+      "sha256": "ed5a6fef6c5c8808fea1d64b783d7f2d8507e6eb2e69717501e40f58562b9faa"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=control_navigation": {
+      "file": "19cdbd9fe49cae0392bb9844.json",
+      "status": 200,
+      "bytes": 95909,
+      "sha256": "ede936de88a6bb0e5e946c0e163f0fc88730e4a8e80c0dadb9b905c3ffdb1466"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=control_route": {
+      "file": "12623650ea27c9dbbdaab8c0.json",
+      "status": 200,
+      "bytes": 105921,
+      "sha256": "3627daa5847eea5284abb32d46ca5894e4222e9994b62faecd386ee1b429131c"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=control_rtk": {
+      "file": "91db12169939e20534558ff9.json",
+      "status": 200,
+      "bytes": 100998,
+      "sha256": "b0be73a11a50b2547e7285fc699c6393c98583b69f60bc490b183f6226451180"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=control_swarm": {
+      "file": "69a62f4474551bfc6900fa35.json",
+      "status": 200,
+      "bytes": 105700,
+      "sha256": "c214baa44b38dd2a8412f18739870042a8820331e8fce1b412f869d25a29fa49"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=link_datalink": {
+      "file": "fe83fb909cfee666233f4f1b.json",
+      "status": 200,
+      "bytes": 98979,
+      "sha256": "b0766250e5f601958b714aa73abf508a0e657e82a92f5839ddc583bbcaf726cb"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=link_video": {
+      "file": "3be3e39d8e608f22e9df8d79.json",
+      "status": 200,
+      "bytes": 99584,
+      "sha256": "58be18d3e690e78729c1ff2af5161f091de6d95f437287840652ca72a32998b6"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=ops_ground_station": {
+      "file": "6c6a350f6f202a057b1128a7.json",
+      "status": 200,
+      "bytes": 100046,
+      "sha256": "94c8155f9ab06485a69aa46654e6571c5d21caf33e8e97f7ed43466a84dc1724"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=ops_maintenance": {
+      "file": "fe85bfe4ab186ce54d801c62.json",
+      "status": 200,
+      "bytes": 99679,
+      "sha256": "9c779c01ef2f550224c26b6d7b220709d5148d2bb3e283531e017395e189f1e8"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_gimbal_camera": {
+      "file": "f74466ca5898a4bdd0f5889d.json",
+      "status": 200,
+      "bytes": 100304,
+      "sha256": "8f40041c9927b1d3b95018164ba7119d22d804420257d4925fe7afa4ea042d48"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_mapping": {
+      "file": "c18f2b8ff680b570d15899fe.json",
+      "status": 200,
+      "bytes": 91980,
+      "sha256": "502b4fb137ce478f751e4a0b12ff432508a2b91a9382334cfe518b423fc8831c"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_modular": {
+      "file": "c0ff75c9b591a2a2eb9f2d2f.json",
+      "status": 200,
+      "bytes": 97363,
+      "sha256": "b531f4d6049c1c2d265f4495134fc09c56c0aac33dc32d80a1e5c68346efb662"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_public_safety": {
+      "file": "5efef60c6352ef05921a27ff.json",
+      "status": 200,
+      "bytes": 104243,
+      "sha256": "85daa37fd9177b62d249e6d1608d755176107381de6546b41d50ae167ffa3faf"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_spray": {
+      "file": "4596ce5ac28a0039ef43c86d.json",
+      "status": 200,
+      "bytes": 104249,
+      "sha256": "0f808448054b728cb7b6bfa189d7e6963ae41d803fde2c7ca919b0abe7fd2a04"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_training": {
+      "file": "a73a5b2721df46d76d8f686b.json",
+      "status": 200,
+      "bytes": 103451,
+      "sha256": "e22b3690ca12aa9845aeb1c67044493e054fc421cbca4c556a8cff7c699da6b6"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=payload_transport": {
+      "file": "95aa9ad2a97748223f44fc82.json",
+      "status": 200,
+      "bytes": 96334,
+      "sha256": "bfcabc94519a5165e5011c4f8f25a661329696c7973e941e2fb42936c3498916"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=power_battery": {
+      "file": "3c172cd46d329703f73f8764.json",
+      "status": 200,
+      "bytes": 99570,
+      "sha256": "7b3e4c34740907c8c5a7a48215919f34f3aff7a549b4c3e6a8c066ac6da2eb8d"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=power_electric": {
+      "file": "e6a5addc5bc9d2062ad3e34f.json",
+      "status": 200,
+      "bytes": 98442,
+      "sha256": "4c6681ea393c075a14a9badaa6e36dd72a5c33c599f8653e3bd26122ed1f9c3d"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=power_hybrid": {
+      "file": "b5f8073f96ac52c5d160aa67.json",
+      "status": 200,
+      "bytes": 104735,
+      "sha256": "56e19649ed5acb184d6a42470c5a9cf40aed183bdb8a82a181ccfaf2f1b93dfc"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=safety_protection": {
+      "file": "a952478587ef50fc2eb5b0ab.json",
+      "status": 200,
+      "bytes": 103260,
+      "sha256": "42555ed51b0bba9e14dd4597ea0a4e3aecbda40b86a2d9fa962c0f5fd8e72c3c"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=safety_redundancy": {
+      "file": "2538682763119dc765de72db.json",
+      "status": 200,
+      "bytes": 95366,
+      "sha256": "5cd00d59bcde39446cd8164757b307c88a921dcc981d541da9a2b23eaabee5db"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=sense_data_record": {
+      "file": "1a779a50961d2a96ac54d6c2.json",
+      "status": 200,
+      "bytes": 101430,
+      "sha256": "6108da4af2931f2deea03d0021af79e56bf09ec5f4615fddd4866b564e2bc7e5"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=sense_image_processing": {
+      "file": "b03a702751a22f704d6b7515.json",
+      "status": 200,
+      "bytes": 99145,
+      "sha256": "cf2bf34a7ae261378ef6bbea109555e5e98b9fdee0ca7a0cd402d68e449fda0c"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=sense_multisensor": {
+      "file": "5854274e3d8340981201a73a.json",
+      "status": 200,
+      "bytes": 101861,
+      "sha256": "d6a44a4d5b2508c1a4e0f2f13da2ec90fb37569d4914662fcd850e8c82a8ea30"
+    },
+    "/api/low-altitude/survey?line_type=A&tech_tag_id=sense_obstacle": {
+      "file": "a17cbf6f665265800f479d7c.json",
+      "status": 200,
+      "bytes": 105809,
+      "sha256": "e3910237a276583a89db1e23cb3d724398540b38dbf84e57defd6ab0de5cda6c"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_airship": {
+      "file": "a6ed93e8b37d1b730b6e74c3.json",
+      "status": 200,
+      "bytes": 68674,
+      "sha256": "e884cad72a5647b4f6b0312e93609bac657eb6529e89aec15910363a1b1ed29a"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_environment": {
+      "file": "8bcc3544cf32e8dd993d0ffb.json",
+      "status": 200,
+      "bytes": 81684,
+      "sha256": "e4f716d5a31ab947d62224d10df84b845fb066d368071989edc493b7f26c3690"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_fixed_wing": {
+      "file": "39446c770f9f4fe3f943cb6e.json",
+      "status": 200,
+      "bytes": 95670,
+      "sha256": "056bd050e417d14002880ff14c2a2bcb3f501e86124934e764690bd80eb1cc5e"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_foldable": {
+      "file": "25fadf2cedb21d38cc8c77a8.json",
+      "status": 200,
+      "bytes": 86134,
+      "sha256": "0ac769e6f759d802a605d3b66d1553d75eb5be6f3c7fdf0943fb8e8ad57714a0"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_lightweight": {
+      "file": "c58a1816f412956326dd8f4b.json",
+      "status": 200,
+      "bytes": 75385,
+      "sha256": "cf4db67a9585dffd42de6ed26123bb72085a34bab377f2934c56673e83a57982"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_multirotor": {
+      "file": "a9639fb61c949c02bd14acc6.json",
+      "status": 200,
+      "bytes": 83397,
+      "sha256": "de9d5658cb91c126f20b72f02f6def5c2b1d83938f35e6ef64835a93a27afd18"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_rotorcraft": {
+      "file": "bec38e5bc43fd203e76196df.json",
+      "status": 200,
+      "bytes": 91051,
+      "sha256": "3b9ee51bd6b522dfd08da579ea4a6da8d5ad0b9bc853d870d1b0f8e7b2264c18"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=airframe_vtol": {
+      "file": "42dd4b60f2403efe67a17ec3.json",
+      "status": 200,
+      "bytes": 86821,
+      "sha256": "7d3e0050b5da6c6207066182e729800c82e909a7ba0d184c546a884ebd828ba8"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=control_flight_controller": {
+      "file": "fb8fbc8763398a32d934e325.json",
+      "status": 200,
+      "bytes": 82289,
+      "sha256": "820e1f16fb7ff899c9d75cec925dcb99fe3a03ebd832e5080966abb0de1862bb"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=control_navigation": {
+      "file": "8e024004ed560dfc495f87ff.json",
+      "status": 200,
+      "bytes": 85410,
+      "sha256": "da3eead761c021bfd9461b939da15fe91e3d28657880050eb39c1a55ed616ceb"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=control_route": {
+      "file": "f72ed5bf50440a2c11466612.json",
+      "status": 200,
+      "bytes": 85255,
+      "sha256": "c9feca5b7a6438d0e0c45b351bc3ca18208e128d7b828c10c1926023ed476e54"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=control_rtk": {
+      "file": "5c976feee6f572927b02bee7.json",
+      "status": 200,
+      "bytes": 77492,
+      "sha256": "52343fa03c55643c80717cea43d8cfca79ac32f6d8c211b78a2dbaa7d7ef53ef"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=control_swarm": {
+      "file": "361fda07f944d21ec2e61599.json",
+      "status": 200,
+      "bytes": 87490,
+      "sha256": "0fc261af97b0a825643c449733f6e674dd339ae85815dba209f3d914bd38d533"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=link_datalink": {
+      "file": "e18c76378d752832d052eb95.json",
+      "status": 200,
+      "bytes": 83941,
+      "sha256": "b7b0157048ab9fb626f7cef2770a48474d8ded033f3aa15583ce6887965fac2f"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=link_video": {
+      "file": "7926da7d158514d861bf0c29.json",
+      "status": 200,
+      "bytes": 86614,
+      "sha256": "83aca550c5c3b136ce9b214628fbf352102bd094ed954f4e42223e464d528791"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=ops_ground_station": {
+      "file": "e1188e851fdc65cb42536deb.json",
+      "status": 200,
+      "bytes": 90995,
+      "sha256": "847da6c189af6580fbe45f94c658a95132c6df42619b74be962dd064a204245d"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=ops_maintenance": {
+      "file": "e63a63a435e0198a7f9416ef.json",
+      "status": 200,
+      "bytes": 74897,
+      "sha256": "742019dd6a90b29d79c9bcc2e1e72c6a2bb7d67017023f5f35b31839c0194c83"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_gimbal_camera": {
+      "file": "2df48071ea3cc1df554c8b1c.json",
+      "status": 200,
+      "bytes": 88379,
+      "sha256": "88303b7c6263d3e3e4577c0560e75d8fafe6057218cf2d2785c79be283182929"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_mapping": {
+      "file": "78ed741e850eb2488b9238a7.json",
+      "status": 200,
+      "bytes": 88928,
+      "sha256": "dbd03e5f5679c8f88a7f7d27c8aea61a89f1814185c1ac25d6b0e283b07c66e1"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_modular": {
+      "file": "e3c03060757d102e72491af1.json",
+      "status": 200,
+      "bytes": 90594,
+      "sha256": "52be8b3e84079ae66c614064ea9d5d9d90fdf48938cf0c2c659fbe2f609a2015"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_public_safety": {
+      "file": "1338aa0b966e401ac5210506.json",
+      "status": 200,
+      "bytes": 83572,
+      "sha256": "a8f7cba35bfafeacf3294acd2d8534dff7fe5b203feacf6e908af7c304b75ede"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_spray": {
+      "file": "acc3d103355083a7d6412b79.json",
+      "status": 200,
+      "bytes": 83695,
+      "sha256": "919300b04182e4f416cebab32580ff51a432a76243f6de4f07ff3cc064561098"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_training": {
+      "file": "489308c612a58d7aa8329030.json",
+      "status": 200,
+      "bytes": 84840,
+      "sha256": "10479a29d4e11814ab6158acd7d7f8e9e3f4a5ab7ad10307cf622856ef5e697d"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=payload_transport": {
+      "file": "47fe7d19c0ffc61ef017710f.json",
+      "status": 200,
+      "bytes": 90730,
+      "sha256": "19687211bbd2088e8eb9a8f88488d50738ae477cdcbde4b99ebd05d273049048"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=power_battery": {
+      "file": "e520b161d245a5c29a3f69b3.json",
+      "status": 200,
+      "bytes": 88705,
+      "sha256": "62eadd2c1af0a1f328270536d6fbc4bc88e83023cee9075b4ee5b51c5e541d7d"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=power_electric": {
+      "file": "da32fdbc895499d7c4e404ab.json",
+      "status": 200,
+      "bytes": 88060,
+      "sha256": "32e646d37e56f660052830afdd7774c08057b45f6e444a90be6e4d147c4ee657"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=power_hybrid": {
+      "file": "edad869511b80026b02f3d1f.json",
+      "status": 200,
+      "bytes": 84049,
+      "sha256": "86bbf7bad865650f21c33038c6824b5009a83007f8ced113716c583560dca2ca"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=safety_protection": {
+      "file": "b9dabf8e85e9173b84ba4349.json",
+      "status": 200,
+      "bytes": 78855,
+      "sha256": "ea2111e74d6560db9326bd7b1220ac6061c2047a3872db119e25c3c2e3e63fa7"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=safety_redundancy": {
+      "file": "7799055c6ccdbbc20517da82.json",
+      "status": 200,
+      "bytes": 90688,
+      "sha256": "ac0d14443980ed9fee586a5d92677bf134509becb5639112053558fb2ce05f2f"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=sense_data_record": {
+      "file": "2b03e1d0641a24fa0369a35b.json",
+      "status": 200,
+      "bytes": 71777,
+      "sha256": "0a3bdbcd36688bd08f2b090cd788a621b4c1bf6e9991c0c6ef82a3fea1434adf"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=sense_image_processing": {
+      "file": "8b7ad177b8fa72d933386e9b.json",
+      "status": 200,
+      "bytes": 88088,
+      "sha256": "df035af3bf12c4f4ea39b3d4a285c7a47bf21f9ea650f5f67065ba3f2e001b66"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=sense_multisensor": {
+      "file": "acee121c6ba76f5b4a883a5e.json",
+      "status": 200,
+      "bytes": 87726,
+      "sha256": "c074df5d3d17441b22972873743c37958042176fd4d74c7e49f25a01020e749b"
+    },
+    "/api/low-altitude/survey?line_type=B&tech_tag_id=sense_obstacle": {
+      "file": "8253082bbca0a689402e5ea3.json",
+      "status": 200,
+      "bytes": 83213,
+      "sha256": "825ab8aaa73557ee0f719fbfa652ab02b3eebf9a620c22259478c8cd3073fcee"
+    },
+    "/api/low-altitude/tech/airframe_airship": {
+      "file": "c7374a8dbca3fc8c0e256602.json",
+      "status": 200,
+      "bytes": 2030,
+      "sha256": "380a5a4f05d95978930cbceb8998f54e62ce3dfd67f90d6932d339acf7f6c28b"
+    },
+    "/api/low-altitude/tech/airframe_environment": {
+      "file": "a6f8501fec060dad84a04204.json",
+      "status": 200,
+      "bytes": 2129,
+      "sha256": "ba3427dc096007f97f1b7ba517cb57e2bf9bbe0ec4668b386b4c28413acb8a64"
+    },
+    "/api/low-altitude/tech/airframe_fixed_wing": {
+      "file": "0c113ca889686cdb5b126c23.json",
+      "status": 200,
+      "bytes": 2303,
+      "sha256": "f00904e4346e929e9c0948421fc361157abe0e27e93c9a4146fbf4a53bb1b17c"
+    },
+    "/api/low-altitude/tech/airframe_foldable": {
+      "file": "c25d5c7050435f2996a99380.json",
+      "status": 200,
+      "bytes": 2161,
+      "sha256": "ee8ec9b34e764f644413f65850588b71ec042862f809544e96cea2305b28aeb3"
+    },
+    "/api/low-altitude/tech/airframe_lightweight": {
+      "file": "aac99c4c218da7ef071d3a71.json",
+      "status": 200,
+      "bytes": 2253,
+      "sha256": "8a618359078d2bbed550e0810e31e163b81bc1b1fdd0413c1ca6bba089de2468"
+    },
+    "/api/low-altitude/tech/airframe_multirotor": {
+      "file": "77131e1ecab03267f3703094.json",
+      "status": 200,
+      "bytes": 2149,
+      "sha256": "ca47fffa0502d2792021cc6c980acb4f45b29f03e37d8d4caea9975a6d869e3f"
+    },
+    "/api/low-altitude/tech/airframe_rotorcraft": {
+      "file": "6be22a7036e01f7d530f7b13.json",
+      "status": 200,
+      "bytes": 2351,
+      "sha256": "a74d4c8a17c097734f23e4f75c54ef7914e6525a21e070754edaf36fa659926b"
+    },
+    "/api/low-altitude/tech/airframe_vtol": {
+      "file": "58a8621fcb9bdb7f131063ef.json",
+      "status": 200,
+      "bytes": 2167,
+      "sha256": "2771fcf550045ff9bf2c4f75026c24b90723d11160d56a3de65282b4f2d55a73"
+    },
+    "/api/low-altitude/tech/control_flight_controller": {
+      "file": "972b0ce094dfa812417ef362.json",
+      "status": 200,
+      "bytes": 2211,
+      "sha256": "9ec7ee0a1609c2ce30399b5a8c736b283e984e4bf2ea06f5b6a28c0f92c541ce"
+    },
+    "/api/low-altitude/tech/control_navigation": {
+      "file": "535fdb402482f2799c2d353d.json",
+      "status": 200,
+      "bytes": 2303,
+      "sha256": "cddddfe998a2e71ec0880c381fb268c9b48aa407bad6e9447b7dfc69603a42f2"
+    },
+    "/api/low-altitude/tech/control_route": {
+      "file": "1cf79d1f446056b71028549a.json",
+      "status": 200,
+      "bytes": 2337,
+      "sha256": "3c2b19775ca3491c99a284e5e0293350fadf6abf3a50d1b2ff9c2e46f484d72c"
+    },
+    "/api/low-altitude/tech/control_rtk": {
+      "file": "e0cac7578fcd522d992295c2.json",
+      "status": 200,
+      "bytes": 2290,
+      "sha256": "0ef88d77b6a4a388dcb8ba972a419c8315420f32ecd70bb5d5e25dd59a174163"
+    },
+    "/api/low-altitude/tech/control_swarm": {
+      "file": "934f601f40e6b80df97fecf4.json",
+      "status": 200,
+      "bytes": 2313,
+      "sha256": "d26428d33ad85d89773a68b908399db5da27f82812eb98b6b7bdaf94637389ee"
+    },
+    "/api/low-altitude/tech/link_datalink": {
+      "file": "f1cab8549d2bd3fa35abab5a.json",
+      "status": 200,
+      "bytes": 2374,
+      "sha256": "1c4e60335e356a058f42817e83d03092f9ca8b000806d1156a208ff100fe6127"
+    },
+    "/api/low-altitude/tech/link_video": {
+      "file": "8974127a47cc63411f74a064.json",
+      "status": 200,
+      "bytes": 2289,
+      "sha256": "6b41e74b4da6cb3a3e40b128cdf472c2773ea73351ef1b92e595be2f834f7f13"
+    },
+    "/api/low-altitude/tech/ops_ground_station": {
+      "file": "cd6f3dde2b7cad77eb56d6dd.json",
+      "status": 200,
+      "bytes": 2477,
+      "sha256": "b64f03bbf02133d1bb1771b8a554dfbfeb89bdf3a0364e6dd68391e6ec8820c5"
+    },
+    "/api/low-altitude/tech/ops_maintenance": {
+      "file": "536d05e72f147c9b48fd8ceb.json",
+      "status": 200,
+      "bytes": 2319,
+      "sha256": "14f0c0a5794e2734306b7733ab002f6f903e87cbb43ca78febae39df254be5d3"
+    },
+    "/api/low-altitude/tech/payload_gimbal_camera": {
+      "file": "06f21f638b6942b4716c7851.json",
+      "status": 200,
+      "bytes": 2303,
+      "sha256": "32a0ac0e825b17f5104b5c1e1ee95d38fa863f77da9ceffd78cf8cc2aa4c2112"
+    },
+    "/api/low-altitude/tech/payload_mapping": {
+      "file": "0736241978e7e3c0359d37e8.json",
+      "status": 200,
+      "bytes": 2279,
+      "sha256": "448c13e59fc457c3d3f47ad2b74803484e878236fe8fb090ec06ebeb25f2d8dc"
+    },
+    "/api/low-altitude/tech/payload_modular": {
+      "file": "3be410e231271da966b4002c.json",
+      "status": 200,
+      "bytes": 2300,
+      "sha256": "a0bb4ff103432524c98ecc776e95bd86571b9cd0d5b267d461d641ff394b4ff4"
+    },
+    "/api/low-altitude/tech/payload_public_safety": {
+      "file": "e3c5fe15256f2a56b8aaf57e.json",
+      "status": 200,
+      "bytes": 2277,
+      "sha256": "6d33760959ca3be986b82d687371c301624da729db2683569aa923c111344a4d"
+    },
+    "/api/low-altitude/tech/payload_spray": {
+      "file": "9e0385f1657bc88a6c4bd10e.json",
+      "status": 200,
+      "bytes": 2258,
+      "sha256": "b04a11b43580ae8ed60874df45d332ebe0324bb7bd725a226475e8847d02cfc6"
+    },
+    "/api/low-altitude/tech/payload_training": {
+      "file": "bd7c20dfa65028181c850bae.json",
+      "status": 200,
+      "bytes": 2252,
+      "sha256": "4ffef6f985ab7561902592c1cd6be1ff0b42a51d0c8b4577af2c027c56d0b51f"
+    },
+    "/api/low-altitude/tech/payload_transport": {
+      "file": "9dffaa0247d03428d12d9b24.json",
+      "status": 200,
+      "bytes": 2216,
+      "sha256": "22f2c2973aa3d79f0c180f322b1330b9bd7de77a9306c77ce959abc136a53af1"
+    },
+    "/api/low-altitude/tech/power_battery": {
+      "file": "a7bfc0fc2e5cd6d23519ee9d.json",
+      "status": 200,
+      "bytes": 2220,
+      "sha256": "ca6ed973c1c8a67644cb3c60ad5a9725deaa71101e01b00b195abfa9d2368436"
+    },
+    "/api/low-altitude/tech/power_electric": {
+      "file": "d3516c8e0f954fa32c346c0b.json",
+      "status": 200,
+      "bytes": 2238,
+      "sha256": "7e8be5dc779f7ba6cd40baf9cde2a6bba31fb8c88ef956b1d45331c734529ad7"
+    },
+    "/api/low-altitude/tech/power_hybrid": {
+      "file": "a56be751f0a16e1ab75e13b5.json",
+      "status": 200,
+      "bytes": 2353,
+      "sha256": "67b0bc94e8cd6155920ead7b952fd68dea6252b4bd95e173ed459093c2e95ef5"
+    },
+    "/api/low-altitude/tech/safety_protection": {
+      "file": "9bb1e5ea5b96906e3e24325e.json",
+      "status": 200,
+      "bytes": 2190,
+      "sha256": "3da545233846a60c2cedde2761e9148a2d7217619e87c4638401de476ac681c7"
+    },
+    "/api/low-altitude/tech/safety_redundancy": {
+      "file": "c19ca95fda75b9285ae775a3.json",
+      "status": 200,
+      "bytes": 2311,
+      "sha256": "02f9c01a323d8edb8140c62fea03dc52c53ae91ca43bdcd25b4bb228f11d91aa"
+    },
+    "/api/low-altitude/tech/sense_data_record": {
+      "file": "1909062f0228c58c76500e58.json",
+      "status": 200,
+      "bytes": 2216,
+      "sha256": "76a427a9cef4319aeb819298ef9b4bce54b357401ede9eeb52474efff139e2a9"
+    },
+    "/api/low-altitude/tech/sense_image_processing": {
+      "file": "5d22c2dcb90720e7002db01c.json",
+      "status": 200,
+      "bytes": 2402,
+      "sha256": "cd95bc08524cdf564fd3b1782b733ba17a4086c4587949ee4bd9f992ea6ae863"
+    },
+    "/api/low-altitude/tech/sense_multisensor": {
+      "file": "9ceff86c38bb8825da851e0d.json",
+      "status": 200,
+      "bytes": 2400,
+      "sha256": "3a86784b5693e6483603b7eba9609e5dca31584cf465a454fcd362adc3556c52"
+    },
+    "/api/low-altitude/tech/sense_obstacle": {
+      "file": "79017d89f2a62f9071506079.json",
+      "status": 200,
+      "bytes": 2119,
+      "sha256": "98e4817f84010ae49408dbace42f62f4c490404bcfbbe56e38c8db67c5c8640f"
+    },
+    "/api/low-altitude/tech/tree": {
+      "file": "70ff9395c91ac9ecf45f5e11.json",
+      "status": 200,
+      "bytes": 7441,
+      "sha256": "ee899f5fbd99e413b27280383344a7cd6c040c05446203a4934a643d62a1f1b5"
+    }
+  }
+}

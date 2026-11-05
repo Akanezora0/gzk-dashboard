@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-05",
+  "api_responses": 412,
+  "searchable_records": 237522,
+  "record_shards": 20,
+  "record_live_parity_cases": 25,
+  "lowalt_contribution_live_parity_cases": 4,
+  "node_test_suites": 5,
+  "browser_routes": 27,
+  "browser_checks": 38,
+  "screen_widths": [
+    1440,
+    1920,
+    390
+  ],
+  "browser_errors": 0,
+  "failed_requests": 0,
+  "external_runtime_requests": 0,
+  "source_live_service_modified": false,
+  "notes": [
+    "当前页面完整快照与源码迁移，非全库导出",
+    "页面数包含现有案例筹备入口",
+    "npm依赖锁沿用既有主版本；未在交接时扩大升级范围"
+  ]
+}

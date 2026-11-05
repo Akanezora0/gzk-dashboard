@@ -1,9 +1,10 @@
 <script setup>
+import {useSurface} from '../helpers/useSurface'
 import {computed,ref,watch,nextTick} from 'vue'
 import {useTip,fmt,toggleFullscreen,typeGroup,TYPE_NAME,BASIS} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object,person:{type:String,default:''}})
 const {tip,show,move,hide}=useTip()
-const root=ref(null),closeBtn=ref(null)
+const root=ref(null),closeBtn=ref(null),drawerSurface=ref(null)
 const graph=computed(()=>props.dataset?.graph||{})
 const records=computed(()=>Array.isArray(props.dataset?.continuity)?props.dataset.continuity:[])
 const detail=computed(()=>props.dataset?.caseDetail||{})
@@ -38,6 +39,7 @@ const stats=computed(()=>{const ps=projects.value.filter(p=>p.institution===org.
 function pick(kind,obj,person){selected.value={kind,...obj,person};hide()}
 function changeOrg(n){org.value=n;query.value='';selected.value=null;drawer.value=''}
 function openDrawer(name){drawer.value=name;selected.value=null;nextTick(()=>closeBtn.value?.focus())}
+useSurface(computed(()=>!!drawer.value),{element:drawerSurface,close:()=>drawer.value=''})
 const drawerPerson=computed(()=>people.value.find(p=>p.name===drawer.value)||null)
 const drawerCase=computed(()=>{if(!drawerPerson.value)return null;const grants=new Set(drawerPerson.value.projects.map(p=>String(p.grant_no)));const dp=(detail.value.projects||[]).filter(p=>grants.has(String(p.grant_no)));return dp.length?{projects:dp,papers:(detail.value.papers||[]).filter(p=>dp.some(x=>p.project_id===`NSFC:${x.grant_no}`)),summary:detail.value.project_continuity?.display_summary||''}:null})
 const drawerPapers=computed(()=>{if(!drawerPerson.value)return [];return drawerPerson.value.projects.flatMap(p=>(edgesByProject.value.get(pid(p))||[]).map(e=>({p,q:papers.value.get(e.paper_id),e}))).filter(x=>x.q).sort((a,b)=>a.q.publication_year-b.q.publication_year)})
@@ -96,7 +98,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
           <a v-if="selected.doi_url||selected.doi" :href="selected.doi_url||`https://doi.org/${selected.doi}`" target="_blank" rel="noopener">DOI ↗</a>
         </template>
       </aside>
-      <div v-if="drawerPerson" class="rs-drawer" role="dialog" :aria-label="`${drawerPerson.name}的接续详情`">
+      <div v-if="drawerPerson" class="rs-drawer" ref="drawerSurface" role="dialog" :aria-label="`${drawerPerson.name}的接续详情`">
         <button ref="closeBtn" class="rs-close" aria-label="关闭" @click="drawer=''">×</button>
         <header><b>{{drawerPerson.name}}</b><span>{{org}}<template v-if="drawerCase&&detail.case"> · {{String(detail.case).split('：').at(-1).replace(/研究$/,'')}}</template></span></header>
         <div class="chips"><template v-for="(p,i) in drawerPerson.projects" :key="pid(p)"><i v-if="i">→</i><span :class="typeGroup(p.project_type)==='青年'?'soft':''">{{TYPE_NAME[typeGroup(p.project_type)]}} {{p.grant_no}} · {{p.approval_year}} 批准</span></template></div>

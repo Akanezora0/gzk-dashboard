@@ -1,0 +1,51 @@
+{
+  "version": "dashboard-20261105",
+  "source": "当前5184 Dashboard 的展示数据和只读接口；不包含原始数据库",
+  "ai_readable_surveys": 102,
+  "ai_current_B_surveys": 70,
+  "lowalt_surveys": 66,
+  "searchable_display_records": 237522,
+  "assets": [
+    {
+      "file": "snapshot/public/chain-analysis/v1/research.json",
+      "bytes": 3559434,
+      "sha256": "c49ebe48988acb60b18499d0fd9044ae4a554a81d96112753e98c8248a45f491"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/outputs.html",
+      "bytes": 26462,
+      "sha256": "6ee58f5dcf040e1f397028a41fb525c4519f308e770d0fbdf0148232f96a7291"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/funding-terms.html",
+      "bytes": 22554,
+      "sha256": "75f15d4a8cb44ff8be2b42a41ea6a6c1624b593ed4998697e288f1a88e8bb4ec"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/output-terms.html",
+      "bytes": 27464,
+      "sha256": "9eb9a242aa9c24c15da2bcf796b2b72ecf1421f74e2759f4184dd1213e563e8e"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/current-inventory.json",
+      "bytes": 18972,
+      "sha256": "52f09ce7d86aac4f2bde274f686f23b085af9dfa970d96629853e89a5f730c19"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/funding.html",
+      "bytes": 23478,
+      "sha256": "4e708a8646500dfb09ff035d6abfad5fd7e7156e452b1a6af98b56893a8b9067"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/curves.html",
+      "bytes": 13808,
+      "sha256": "f526939e81377afd8f99de178745da4c2395935e9af5583974818a74a9fd904f"
+    },
+    {
+      "file": "snapshot/reference_serving/authoritative_metrics.json",
+      "bytes": 11679,
+      "sha256": "58aa2e4685162d9754add73d12244590252a5e9e0fb1ef6933399f29f7613e90"
+    }
+  ],
+  "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。"
+}

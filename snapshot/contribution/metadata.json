@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source_endpoint": "/api/low-altitude/contribution",
+  "algorithm": "dashboard/api/services/metrics_builder.py:get_contribution/_funding_score",
+  "count": 3727,
+  "missing_year_count": 3,
+  "fund_patent_candidates": 1,
+  "diffusion": {
+    "status": "in_progress",
+    "note": "产业渗透指标后续接入证据链复用统计"
+  },
+  "source_order_preserved": true,
+  "funding_score_precomputed": true,
+  "score_formula": "has_funding_metadata ? min(1, 0.4 + 0.15*min(openalex_funder_count+crossref_funder_count,3) + 0.15*min(openalex_award_count,2)) : 0",
+  "layer_values": [
+    "任务载荷与作业应用层",
+    "安全运维与地面系统层",
+    "平台构型与结构层",
+    "感知避障与数据层",
+    "能源动力与链路层",
+    "飞控导航与自主层"
+  ],
+  "tech_tag_ids": [
+    "airframe_airship",
+    "airframe_environment",
+    "airframe_fixed_wing",
+    "airframe_foldable",
+    "airframe_lightweight",
+    "airframe_multirotor",
+    "airframe_rotorcraft",
+    "airframe_vtol",
+    "control_flight_controller",
+    "control_navigation",
+    "control_route",
+    "control_rtk",
+    "control_swarm",
+    "link_datalink",
+    "link_video",
+    "ops_ground_station",
+    "ops_maintenance",
+    "payload_gimbal_camera",
+    "payload_mapping",
+    "payload_modular",
+    "payload_public_safety",
+    "payload_spray",
+    "payload_training",
+    "payload_transport",
+    "power_battery",
+    "power_electric",
+    "power_hybrid",
+    "safety_protection",
+    "safety_redundancy",
+    "sense_data_record",
+    "sense_image_processing",
+    "sense_multisensor",
+    "sense_obstacle"
+  ],
+  "semantics": [
+    "Filter truthy tech_tag_id first, otherwise truthy tech_layer; compare exactly.",
+    "For truthy year_start: (year or 0) >= year_start.",
+    "For truthy year_end: (year or 9999) <= year_end.",
+    "Year 0 means no filter. Omitted query values are null; explicit empty string layer/tag remain empty strings in filters.",
+    "Citation high threshold is >=20. Average citation rounds to 2 digits; other ratios/scores to 4 with Python round.",
+    "The live source layer strings include suffixes absent from current UI choices; preserve exact source filtering, including empty-result choices.",
+    "Summation order is source JSONL order, preserved in rows.json."
+  ],
+  "files": [
+    {
+      "file": "rows.json",
+      "bytes": 589526,
+      "sha256": "7b790da2568520aa8e1d93c4437879cacb27b119556f26374f6a2fa1e0e5c31c"
+    },
+    {
+      "file": "rows.json.gz",
+      "bytes": 16716,
+      "sha256": "af6f8782c52d01f5b93d2cd87b80e7013a632079225af531bba3caa72f973d9c"
+    }
+  ],
+  "source_stats_unchanged": true
+}

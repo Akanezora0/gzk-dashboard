@@ -1,0 +1,283 @@
+{
+  "version": "2026-06-13",
+  "precedence": "与同口径冲突时，以同事 dim 盘库统计为准；SQLite/Skills 以本仓库实测为准",
+  "metrics": {
+    "archive_business_files": {
+      "value": 815,
+      "label": "业务数据文件数",
+      "source": "数据梳理/数据资产全量梳理说明_20260417.md §1",
+      "source_file": "（全库扫描）"
+    },
+    "archive_volume_gb": {
+      "value": 13.65,
+      "label": "原始盘库体量（GB）",
+      "source": "数据梳理/数据资产全量梳理说明_20260417.md §1",
+      "source_file": "13981.02 MB 折算"
+    },
+    "nsfc_fund_projects": {
+      "value": 370008,
+      "label": "基金项目",
+      "display_note": "CSV 盘库有效记录，非后台入库实体",
+      "source": "本仓库 CSV 全量扫描（2026-06-22）",
+      "source_file": "数据梳理/杨冠灿老师nsfc_chaoqun_raw/projs.csv",
+      "verified_local_rows": 370008,
+      "verified_valid_rows": 370008,
+      "valid_rule": "proj_id 与 proj_name 均非空"
+    },
+    "nsfc_papers": {
+      "value": 3741265,
+      "label": "基金资助论文条目（期刊+会议）",
+      "display_note": "CSV 盘库有效记录；ptype 限 journal/conference",
+      "source": "本仓库 CSV 全量扫描（2026-06-22）",
+      "source_file": "数据梳理/杨冠灿老师nsfc_chaoqun_raw/papers.csv",
+      "verified_local_rows": 4131657,
+      "verified_valid_rows": 3741265,
+      "valid_rule": "paper_id、proj_id、title 非空，且 ptype 为 journal 或 conference",
+      "note": "papers.csv 原始 4,131,657 行；另含 patent/reward/book 等产出类型 390,320 条，见 nsfc_funded_outputs"
+    },
+    "nsfc_funded_outputs": {
+      "value": 4131585,
+      "label": "基金资助产出目录（全类型）",
+      "source": "本仓库 CSV 全量扫描（2026-06-22）",
+      "source_file": "数据梳理/杨冠灿老师nsfc_chaoqun_raw/papers.csv",
+      "verified_local_rows": 4131657,
+      "verified_valid_rows": 4131585,
+      "valid_rule": "paper_id、proj_id、title 非空（含论文/专利/奖励/著作等 ptype）"
+    },
+    "nsfc_paper_links": {
+      "value": 4146401,
+      "label": "基金—论文关联记录",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §3.5",
+      "source_file": "杨冠灿老师nsfc_chaoqun_raw/paper_links.csv"
+    },
+    "journal_papers": {
+      "value": 2833016,
+      "label": "期刊论文条目（知网文献库）",
+      "display_note": "CSV 盘库有效记录",
+      "source": "本仓库 CSV 全量扫描（2026-06-22）",
+      "source_file": "数据梳理/杨冠灿老师期刊论文数据_0415/ods_papers_00基本信息表.csv",
+      "verified_local_rows": 2833016,
+      "verified_valid_rows": 2832958,
+      "valid_rule": "title 与 article_link 非空",
+      "note": "唯一 article_link 约 2,832,957；唯一 title 约 2,442,222"
+    },
+    "soft_copyright": {
+      "value": 949645,
+      "label": "软件著作权条目",
+      "display_note": "CSV 盘库有效记录",
+      "source": "本仓库 CSV 全量扫描（2026-06-22）",
+      "source_file": "数据梳理/低空经济_相关数据/低空经济_10-16_0124/软件著作.csv",
+      "verified_local_rows": 949645,
+      "verified_valid_rows": 949645,
+      "valid_rule": "软件全称与登记号均非空；登记号无重复"
+    },
+    "la_applicant": {
+      "value": 48783,
+      "label": "专利申请主体",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §1.2",
+      "source_file": "低空经济_相关数据/低空经济_10-16_0124/专利申请主体.csv"
+    },
+    "la_product": {
+      "value": 8213,
+      "label": "低空载体产品",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §1.2",
+      "source_file": "低空经济_相关数据/低空经济_10-16_0124/低空载体产品.csv"
+    },
+    "la_research": {
+      "value": 853,
+      "label": "低空专题科研项目",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §1.2",
+      "source_file": "低空经济_相关数据/低空经济_10-16_0124/科研项目.csv"
+    },
+    "la_org": {
+      "value": 378,
+      "label": "科研单位",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §1.2",
+      "source_file": "低空经济_相关数据/低空经济_10-16_0124/科研单位.csv"
+    },
+    "la_policy": {
+      "value": 13733,
+      "label": "低空经济政策",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §2.10",
+      "source_file": "低空经济_相关数据/低空经济_0123/低空经济政策_13733条_原始数据csv.csv"
+    },
+    "industry_report_pdf": {
+      "value": 395,
+      "label": "行业报告 PDF（去重后）",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §2.9",
+      "source_file": "19-低空经济-代老师行业报告 + （04.13）低空经济资料"
+    },
+    "la_news": {
+      "value": 151668,
+      "label": "产业新闻",
+      "source": "数据梳理/数据资产梳理汇报版_20260417.md §3.3",
+      "source_file": "低空经济_相关数据/低空经济_4-7_0124/产业新闻.csv"
+    },
+    "patent_raw": {
+      "value": 265771,
+      "label": "原始专利（全量）",
+      "source": "同事 dim 盘库统计（优先）",
+      "source_file": "/data/dikong/data/zhuanli/专利文件.csv",
+      "note": "取代数据梳理旧包 397,034 口径"
+    },
+    "patent_rule_filtered": {
+      "value": 107203,
+      "label": "低空专利（规则筛选）",
+      "source": "同事 dim 盘库统计（优先）",
+      "source_file": "/data/dikong/data/zhuanli/低空经济专利_规则筛选.csv",
+      "display_primary": true
+    },
+    "patent_target_company": {
+      "value": 59533,
+      "label": "目标公司名下专利",
+      "source": "同事 dim 盘库统计",
+      "source_file": "（目标公司专利聚合）"
+    },
+    "patent_layer_a": {
+      "value": 20884,
+      "label": "A 层：目标公司 + 命中低空规则",
+      "source": "同事 dim 盘库统计"
+    },
+    "patent_layer_b": {
+      "value": 38649,
+      "label": "B 层：目标公司未命中低空规则",
+      "source": "同事 dim 盘库统计"
+    },
+    "tech_tags": {
+      "value": 33,
+      "label": "基础技术点",
+      "source": "同事 dim 盘库统计",
+      "source_file": "/data/dikong/data/dim/dim_tech_tag.csv"
+    },
+    "tech_vocab": {
+      "value": 33,
+      "label": "低空受控词表",
+      "source": "同事 dim 盘库统计",
+      "source_file": "/data/dikong/data/dim/dim_low_altitude_tech_vocab.csv"
+    },
+    "tech_layer_airframe": { "value": 8, "label": "平台构型与结构层技术点", "source": "同事 dim 盘库统计" },
+    "tech_layer_payload": { "value": 7, "label": "任务载荷与作业应用层技术点", "source": "同事 dim 盘库统计" },
+    "tech_layer_control": { "value": 5, "label": "飞控导航与自主层技术点", "source": "同事 dim 盘库统计" },
+    "tech_layer_power": { "value": 5, "label": "能源动力与链路层技术点", "source": "同事 dim 盘库统计" },
+    "tech_layer_sense": { "value": 4, "label": "感知避障与数据层技术点", "source": "同事 dim 盘库统计" },
+    "tech_layer_safety": { "value": 4, "label": "安全运维与地面系统层技术点", "source": "同事 dim 盘库统计" },
+    "product_tech_links": {
+      "value": 38965,
+      "label": "产品—技术点关联",
+      "source": "同事 dim 盘库统计",
+      "source_file": "/data/dikong/data/dim/dim_product_tech_tag.csv"
+    },
+    "products_with_tech": {
+      "value": 8211,
+      "label": "已映射技术标签的产品数",
+      "source": "同事 dim 盘库统计",
+      "source_file": "dim_product_tech_tag.csv 聚合"
+    },
+    "tech_tags_in_products": {
+      "value": 29,
+      "label": "产品侧已用技术标签数",
+      "source": "同事 dim 盘库统计"
+    },
+    "sqlite_dim_fund_project": {
+      "value": 1588,
+      "label": "SQLite 基金项目维表",
+      "source": "tech_offer_table_design/10_db_framework/runtime/tech_offer_supply.db",
+      "source_file": "stage_b_fund_paper_load_report.json",
+      "dynamic": true
+    },
+    "sqlite_dim_paper": {
+      "value": 4923,
+      "label": "SQLite 论文维表",
+      "source": "tech_offer_table_design 入库实测",
+      "dynamic": true
+    },
+    "sqlite_dim_patent": {
+      "value": 120000,
+      "label": "SQLite 专利维表（已入库子集）",
+      "source": "load_stagec_patent_base.py --max-rows 120000",
+      "note": "自数据梳理专利 CSV 首批入库，非全量 107,203 规则集",
+      "dynamic": true
+    },
+    "sqlite_fact_fund_paper_link": {
+      "value": 1093,
+      "label": "基金—论文主链",
+      "source": "tech_offer_table_design 入库实测",
+      "dynamic": true
+    },
+    "sqlite_fact_patent_tech_link": {
+      "value": 26784,
+      "label": "专利—技术关联边",
+      "source": "stage_d_patent_tech_rule_report.json",
+      "dynamic": true
+    },
+    "sqlite_fact_paper_tech_link": {
+      "value": 2,
+      "label": "论文—技术规则边（SQLite）",
+      "source": "stage_d_paper_tech_rule_report.json",
+      "dynamic": true
+    },
+    "sqlite_reject_queue_fund_paper": {
+      "value": 78903,
+      "label": "基金—论文回补队列",
+      "source": "stage_b_fund_paper_load_report.json",
+      "dynamic": true
+    },
+    "skills_b_line_papers": {
+      "value": 3727,
+      "label": "Skills B 线文献池",
+      "source": "openscholar/technology_point/runs/_warehouse/paper_fact_enriched.jsonl",
+      "verified_local_rows": 3727
+    },
+    "skills_a_line_papers": {
+      "value": 4850,
+      "label": "OpenScholar A 线高置信文献",
+      "source": "paper_fact_line_a_enriched.jsonl",
+      "verified_local_rows": 4850
+    },
+    "skills_union_papers": {
+      "value": 14530,
+      "label": "融合文献 union",
+      "source": "paper_fact_union_enriched.jsonl",
+      "verified_local_rows": 14530
+    },
+    "skills_funding_ratio": {
+      "value": 0.306,
+      "label": "Skills 池基金标注占比",
+      "source": "dashboard/技术供给侧Dashboard需求说明书.md",
+      "display": "30.6%"
+    },
+    "skills_high_cite_ratio": {
+      "value": 0.387,
+      "label": "Skills 池高被引占比",
+      "source": "dashboard/技术供给侧Dashboard需求说明书.md",
+      "display": "38.7%"
+    },
+    "tech_surveys_total": {
+      "value": 66,
+      "label": "33 技术点 × 2 管线 Survey",
+      "source": "openscholar/technology_point 产出目录"
+    },
+    "demo_products": {
+      "value": 3,
+      "label": "Dashboard 示范产品（案例页）",
+      "source": "dashboard 案例页配置",
+      "note": "非全量 8213 产品"
+    },
+    "industry_chain_nodes": {
+      "value": 65,
+      "label": "发改委产业链节点",
+      "source": "dashboard metrics_builder PERCEPTION_CARDS",
+      "note": "候选扩量"
+    }
+  },
+  "fund_type_breakdown": {
+    "fund_general": { "value": 192756, "source": "数据梳理 NSFC 分类统计" },
+    "fund_youth": { "value": 129086, "source": "数据梳理 NSFC 分类统计" },
+    "fund_region": { "value": 19356, "source": "数据梳理 NSFC 分类统计" },
+    "fund_special": { "value": 10951, "source": "数据梳理 NSFC 分类统计" },
+    "fund_key": { "value": 6522, "source": "数据梳理 NSFC 分类统计" },
+    "fund_major": { "value": 4905, "source": "数据梳理 NSFC 分类统计" },
+    "fund_joint": { "value": 3812, "source": "数据梳理 NSFC 分类统计" },
+    "fund_math": { "value": 2620, "source": "数据梳理 NSFC 分类统计" }
+  }
+}
