@@ -35,7 +35,7 @@
 
 唯一内容文件是 `web/content/catalog-activity.json`。页面直接读取此文件，刷新按钮重新读取；不再调用后台 `catalog-activity` 扫描接口，也不定时同步库存。该文件是工作人员可独立维护的展示台账，随前端内容交接，不能被后端同步脚本覆盖。
 
-`events` 中每项包含唯一 `id`、`date`（`YYYY-MM-DD`）、`title`、`detail`、`status`（`received`／`loaded`／`published`）。三个非负整数 `receivedBatches`、`loadedBatches`、`publishedBatches` 分别表示本条对接收、入库、展示批次的贡献；只写说明时均为 0。可选 `records`、`files` 不是批次数，`origin` 是内部维护备注。最新规范库交付卡片由同文件 `latestRelease` 维护，改动后更新 `updatedAt`。
+`events` 中每项包含唯一 `id`、`date`（`YYYY-MM-DD`）、`title`、`detail`、`status`（`received`／`loaded`／`published`）。三个非负整数 `receivedBatches`、`loadedBatches`、`publishedBatches` 分别表示本条对接收、入库、展示批次的贡献；只写说明时均为 0。可选 `records`、`files` 不是批次数，`origin` 是内部维护备注。页面顶部“最近交付”自动取最新的规范入库与展示更新记录（最多 4 条），不再单独维护交付卡片；新增交付只需登记一条事件，改动后更新 `updatedAt`。`detail` 面向页面读者，不写版本号、存储路径等后台标识。
 
 例如本次接收 10 批、其中 2 批入库，可记为 10／2／0；以后补写入库事件时接收贡献填 0，防止重复累计。日历、每日／每周／累计趋势和明细从同一组记录计算，不能分别手改图上的数。
 

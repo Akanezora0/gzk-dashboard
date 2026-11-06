@@ -1,6 +1,6 @@
 <script setup>
 import {computed,ref,watch,nextTick,onMounted,onBeforeUnmount} from 'vue'
-import {fmt,escape} from '../shared'
+import {fmt,escape,concise} from '../shared'
 import Chart from './Chart.vue'
 import {activityDate,activitySeries,activityTitle,parseActivityLedger} from '../helpers/catalogActivity'
 import activityLedgerUrl from '../../content/catalog-activity.json?url'
@@ -22,6 +22,11 @@ const filtered=computed(()=>events.value.filter(e=>{
  const stageOk=stage.value==='all'||(stage.value==='received'?e.receivedBatches>0:stage.value==='loaded'?e.loaded:e.status===stage.value)
  return stageOk&&(!selectedDate.value||activityDate(e.date)===selectedDate.value)
 }))
+/* 最近交付：取最新的规范入库与展示更新记录，任何新交付登记后自动出现 */
+const recent=computed(()=>{const seen=new Set();return events.value.filter(e=>e.status!=='received').filter(e=>{const k=e.date+'|'+e.title;if(seen.has(k))return false;seen.add(k);return true}).slice(0,4)})
+const recentMetric=e=>e.records!=null?{v:concise(e.records),u:e.unit||'条'}:e.files!=null?{v:fmt(e.files),u:'份文件'}:{v:fmt(e.loadedBatches+e.publishedBatches||1),u:'批'}
+const latestDate=computed(()=>recent.value[0]?eventDate(recent.value[0].date):'')
+function showLoaded(){stage.value='loaded';selectedDate.value='';document.querySelector('.activity-detail-heading')?.scrollIntoView({behavior:'smooth',block:'start'})}
 const pages=computed(()=>Math.max(1,Math.ceil(filtered.value.length/pageSize)))
 const visible=computed(()=>filtered.value.slice((page.value-1)*pageSize,page.value*pageSize))
 watch([stage,selectedDate],()=>page.value=1)
@@ -55,7 +60,8 @@ onMounted(refresh)
 onBeforeUnmount(()=>{generation++})
 </script>
 <template>
-<section v-if="activity?.latestRelease" class="panel current-release-panel"><div class="panel-heading"><h3>最新规范库交付</h3><span>{{activity.latestRelease.asOf}} · 展示已同步</span></div><div class="current-release-grid"><article v-for="card in activity.latestRelease.cards" :key="card.title"><span>{{card.title}}</span><strong>{{fmt(card.value)}} <small>{{card.unit}}</small></strong><p>{{card.detail}}</p></article></div></section>
+<section v-if="recent.length" class="panel recent-delivery"><div class="panel-heading"><h3>最近交付</h3><span>最近更新 {{latestDate}}<button class="recent-all" @click="showLoaded">查看全部 <span aria-hidden="true">→</span></button></span></div>
+<div class="recent-grid"><article v-for="e in recent" :key="e.id" class="recent-card" :class="'stage-'+e.status"><div class="recent-top"><time :datetime="e.date">{{eventDate(e.date)}}</time><span class="recent-tag">{{stageLabel(e)}}</span></div><h4>{{activityTitle(e)}}</h4><strong>{{recentMetric(e).v}}<small>{{recentMetric(e).u}}</small></strong><p v-if="e.detail">{{e.detail}}</p></article></div></section>
 <section class="panel catalog-pulse" aria-label="数据批次更新">
  <div class="panel-heading"><h3>数据更新动态</h3><button class="catalog-refresh" :disabled="loading" :title="activity?.updatedAt?'台账更新：'+activity.updatedAt:'读取更新记录'" @click="refresh"><svg viewBox="0 0 24 24" :class="{spinning:loading}" aria-hidden="true"><path d="M20 10a8 8 0 1 0-1 7M20 3v7h-7"/></svg>{{loading?'读取中':'刷新'}}</button></div>
  <template v-if="activity">
@@ -92,4 +98,22 @@ onBeforeUnmount(()=>{generation++})
 </section>
 </template>
 
-<style scoped>.current-release-panel{margin-bottom:24px}.current-release-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.current-release-grid article{display:grid;gap:8px}.current-release-grid span,.current-release-grid p{color:#748091;font-size:14px;margin:0}.current-release-grid strong{font-size:24px;color:#ae1833}.current-release-grid small{font-size:13px;font-weight:400}@media(max-width:700px){.current-release-grid{grid-template-columns:1fr}}</style>
+<style scoped>
+.recent-delivery{margin-bottom:24px}
+.recent-delivery .panel-heading>span{display:inline-flex;align-items:center;gap:18px;font-size:14px;color:#7b8797}
+.recent-all{border:0;background:none;padding:0;font:inherit;font-weight:650;color:#a21535;cursor:pointer}
+.recent-all:hover{color:#7d0f27}
+.recent-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.recent-card{--tone:#23806e;position:relative;display:flex;flex-direction:column;gap:8px;padding:22px 24px 22px;border:1px solid #e4dcd7;border-radius:4px;background:linear-gradient(180deg,color-mix(in srgb,var(--tone) 5%,#fff),#fff 55%);transition:transform .45s cubic-bezier(.22,.68,0,1),box-shadow .45s,border-color .3s}
+.recent-card.stage-published{--tone:#2c64a0}
+.recent-card:before{content:"";position:absolute;top:-1px;left:0;height:2px;width:0;background:var(--tone);transition:width .5s cubic-bezier(.22,.68,0,1)}
+.recent-card:hover{transform:translateY(-3px);box-shadow:0 18px 32px -22px rgba(80,18,32,.42);border-color:#c9b9b6}
+.recent-card:hover:before{width:100%}
+.recent-top{display:flex;justify-content:space-between;align-items:center}
+.recent-top time{font-size:13px;color:#857d80;font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.recent-tag{font-size:12px;font-weight:650;color:var(--tone);background:color-mix(in srgb,var(--tone) 9%,#fff);padding:3px 9px;border-radius:2px}
+.recent-card h4{margin:4px 0 0;font-size:18px;font-weight:700;color:#2a3038}
+.recent-card strong{font-size:30px;font-weight:700;color:var(--tone);line-height:1.15;font-variant-numeric:tabular-nums}
+.recent-card strong small{font-size:13px;font-weight:400;color:#7c7577;margin-left:6px}
+.recent-card p{margin:2px 0 0;font-size:13.5px;line-height:1.75;color:#6a7280}
+</style>

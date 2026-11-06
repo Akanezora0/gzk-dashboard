@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-06",
   "description": "人工维护的更新展示台账。每条可汇总多批；编辑此文件即可维护页面，独立于后台资产库。历史示意分布沿用现有页面，origin仅供维护人员辨识。",
   "instructions": {
     "date": "YYYY-MM-DD；页面按北京时间显示",
@@ -19,35 +19,12 @@
     "weeks": 32,
     "colorSplitDate": "2026-10-10"
   },
-  "latestRelease": {
-    "asOf": "2026-11-03",
-    "cards": [
-      {
-        "title": "跨来源论文",
-        "value": 140781506,
-        "unit": "篇",
-        "detail": "AI—LLM 3,119,247 篇"
-      },
-      {
-        "title": "专利公开文献",
-        "value": 56903567,
-        "unit": "条",
-        "detail": "AI研究集合 8,469,646 条"
-      },
-      {
-        "title": "基金—论文关系",
-        "value": 4129661,
-        "unit": "对",
-        "detail": "AI基金关联 371,805 对"
-      }
-    ]
-  },
   "events": [
     {
       "id": "present-innovation-relations-20261102",
       "date": "2026-11-02",
       "title": "基金中心关联库",
-      "detail": "AI 基金 21,078 项、登记成果关系 388,629 条；全库基金—论文关系 4,129,661 对。版本 innovation_relations_20261102_v1。",
+      "detail": "AI 基金 21,078 项、登记成果关系 388,629 条；全库基金—论文关系 4,129,661 对。",
       "status": "loaded",
       "receivedBatches": 0,
       "loadedBatches": 0,
@@ -60,7 +37,7 @@
       "id": "present-paper-unified-20261030",
       "date": "2026-10-30",
       "title": "论文规范库",
-      "detail": "跨来源去重论文 140,781,506 篇；AI—LLM 论文 3,119,247 篇。版本 paper_unified_20261030_v1。",
+      "detail": "跨来源去重论文 140,781,506 篇；AI—LLM 论文 3,119,247 篇。",
       "status": "loaded",
       "receivedBatches": 0,
       "loadedBatches": 0,
@@ -73,7 +50,7 @@
       "id": "present-patent-unified-20261030",
       "date": "2026-10-30",
       "title": "专利规范库",
-      "detail": "全国专利公开文献 56,903,567 条；AI 候选公开文献 8,469,646 条。版本 patent_unified_20261030_v1。",
+      "detail": "全国专利公开文献 56,903,567 条；AI 候选公开文献 8,469,646 条。",
       "status": "loaded",
       "receivedBatches": 0,
       "loadedBatches": 0,

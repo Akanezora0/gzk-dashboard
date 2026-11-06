@@ -38,7 +38,8 @@ export function parseActivityLedger(data){
   for(const field of ['receivedBatches','loadedBatches','publishedBatches']){
    if(!Number.isSafeInteger(row[field]??0)||(row[field]??0)<0)throw new Error('批次数必须为非负整数')
   }
-  return {...row,receivedBatches:row.receivedBatches??0,loadedBatches:row.loadedBatches??0,publishedBatches:row.publishedBatches??0,loaded:row.status==='loaded'||row.status==='published',presentBatches:row.receivedBatches??0}
+  const detail=typeof row.detail==='string'?row.detail.replace(/\s*版本\s*[A-Za-z0-9_.\-]+。?/g,'').trim():row.detail
+  return {...row,detail,receivedBatches:row.receivedBatches??0,loadedBatches:row.loadedBatches??0,publishedBatches:row.publishedBatches??0,loaded:row.status==='loaded'||row.status==='published',presentBatches:row.receivedBatches??0}
  }).sort((a,b)=>b.date.localeCompare(a.date)||a.id.localeCompare(b.id))
  return {...data,events}
 }
