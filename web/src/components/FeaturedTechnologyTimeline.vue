@@ -50,7 +50,7 @@ const layout=computed(()=>{
   const side=pts.filter(q=>q.dir===p.dir&&q!==p)
   const rank=p.lx>=p.tx?side.filter(q=>q.i>p.i&&q.tx<p.lx).length:side.filter(q=>q.i<p.i&&q.tx>p.lx).length
   p.end=AY+p.dir*(p.far?FAR:NEAR);p.c=tone(fyOf(p.tx))
-  p.path=`M ${p.tx} ${AY} V ${AY+p.dir*(14+rank*8)} H ${p.lx} V ${p.end}`
+  p.path=`M ${p.tx} ${AY} V ${AY+p.dir*(24+Math.min(rank,4)*7)} H ${p.lx} V ${p.end}`
  })
  const marks=years.length?Array.from({length:span},(_,k)=>({year:first+k,x:yearX(first+k),c:tone(first+k)})):[]
  const stops=Array.from({length:21},(_,t)=>({o:t/20,c:tone(fyOf(ax0+(ax1-ax0)*t/20))}))
