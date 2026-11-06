@@ -44,20 +44,30 @@ export function horizontalLayout(tree,chronology){
  const cats=tree.nodes.filter(n=>n.node_type==='category'),events=chronology?.events||[]
  const yk=y=>Math.max(2016,Number(y))
  const years=[...new Set(events.map(e=>yk(e.year)))].sort((a,b)=>a-b)
- const colW=232,left=180,nodeW=184,nodeH=44,gap=8,minLane=92,axisH=46
+ // 紧凑排布：同一年份同一大类较多时，改为两行多列，让七条泳道尽量落在一屏内
+ const left=180,nodeW=164,nodeH=34,gapX=10,gapY=6,padX=26,padY=12,minLane=54,axisH=42
  const cell={};events.forEach(e=>{const k=e.category_id+'|'+yk(e.year);(cell[k]=cell[k]||[]).push(e)})
+ const most=id=>Math.max(1,...years.map(yr=>(cell[id+'|'+yr]||[]).length))
+ const rowsOf=Object.fromEntries(laneOrder.map(id=>[id,most(id)>=3?2:1]))
  const lanes=[];let y=0
- laneOrder.forEach(id=>{const most=Math.max(1,...years.map(yr=>(cell[id+'|'+yr]||[]).length));const h=Math.max(minLane,most*(nodeH+gap)+28);lanes.push({...cats.find(c=>c.id===id),id,y,h,tone:treeColors[id]});y+=h})
- const height=y+axisH,width=left+years.length*colW+36
+ laneOrder.forEach(id=>{const R=rowsOf[id],h=Math.max(minLane,R*nodeH+(R-1)*gapY+padY*2);lanes.push({...cats.find(c=>c.id===id),id,y,h,rows:R,tone:treeColors[id]});y+=h})
+ const cols=[];let x=left
+ years.forEach(yr=>{const c=Math.max(1,...laneOrder.map(id=>Math.ceil((cell[id+'|'+yr]||[]).length/rowsOf[id])));const w=c*nodeW+(c-1)*gapX+padX*2;cols.push({year:yr,x,w});x+=w})
+ const height=y+axisH,width=x+40
  const points=[]
- lanes.forEach(l=>years.forEach((yr,i)=>{const list=(cell[l.id+'|'+yr]||[]).sort((a,b)=>a.year-b.year||a.topic_id.localeCompare(b.topic_id));const block=list.length*(nodeH+gap)-gap;list.forEach((e,j)=>points.push({...e,col:i,x:left+i*colW+(colW-nodeW)/2,y:l.y+(l.h-block)/2+j*(nodeH+gap),w:nodeW,h:nodeH,tone:l.tone,yearKey:yr}))}))
+ lanes.forEach(l=>cols.forEach((col,i)=>{
+  const list=(cell[l.id+'|'+col.year]||[]).sort((a,b)=>a.year-b.year||a.topic_id.localeCompare(b.topic_id));if(!list.length)return
+  const R=Math.min(l.rows,list.length),C=Math.ceil(list.length/R)
+  const bw=C*nodeW+(C-1)*gapX,bh=R*nodeH+(R-1)*gapY,x0=col.x+(col.w-bw)/2,y0=l.y+(l.h-bh)/2
+  list.forEach((e,j)=>{const cc=Math.floor(j/R),rr=j%R;points.push({...e,col:i,x:x0+cc*(nodeW+gapX),y:y0+rr*(nodeH+gapY),w:nodeW,h:nodeH,tone:l.tone,yearKey:col.year})})
+ }))
  const byId=new Map(points.map(p=>[p.id,p]))
  const edges=(chronology?.edges||[]).map(e=>({...e,from:byId.get(e.source),to:byId.get(e.target)})).filter(e=>e.from&&e.to)
- return {width,height,left,colW,axisH,years,lanes,points,edges}
+ return {width,height,left,axisH,years,cols,lanes,points,edges}
 }
 export function horizontalCurve(e){
  const a=e.from,b=e.to
- if(a.col===b.col){const x=a.x+a.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${x} ${y1} C ${x+26} ${y1}, ${x+26} ${y2}, ${x} ${y2}`}
+ if(a.col===b.col&&Math.abs(a.x-b.x)<a.w){const x=a.x+a.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${x} ${y1} C ${x+22} ${y1}, ${x+22} ${y2}, ${x} ${y2}`}
  const fwd=b.x>=a.x,x1=fwd?a.x+a.w:a.x,x2=fwd?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2,dx=Math.max(36,Math.abs(x2-x1)*.45)*(fwd?1:-1)
  return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`
 }

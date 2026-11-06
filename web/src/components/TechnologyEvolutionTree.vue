@@ -1,11 +1,11 @@
 <script setup>
 import {computed,ref,watch,nextTick,onMounted,onBeforeUnmount} from 'vue'
 import {horizontalLayout,horizontalCurve,treeColors,labelLines} from '../technologyTreeLayout'
-import {safeUrl} from '../shared'
+import TechNodeDetail from './TechNodeDetail.vue'
 import '../evolution-tree.css'
 const props=defineProps({tree:Object,chronology:Object,entries:Array,selected:String,selectedEvent:String})
 const emit=defineEmits(['select','survey'])
-const shell=ref(null),detail=ref(null),scroller=ref(null),hover=ref(''),highlight=ref(''),detailsOpen=ref(false),search=ref('')
+const shell=ref(null),scroller=ref(null),hover=ref(''),highlight=ref(''),detailsOpen=ref(false),search=ref('')
 const layout=computed(()=>horizontalLayout(props.tree,props.chronology))
 const yearLabel=y=>y===2016?'≤ 2016':String(y)
 
@@ -13,17 +13,13 @@ const yearLabel=y=>y===2016?'≤ 2016':String(y)
 const selectedPoint=computed(()=>layout.value.points.find(p=>p.id===props.selectedEvent)||layout.value.points.find(p=>p.topic_id===props.selected))
 const active=computed(()=>layout.value.points.find(p=>p.id===hover.value)||selectedPoint.value)
 const linked=computed(()=>new Set(layout.value.edges.filter(e=>e.source===active.value?.id||e.target===active.value?.id).flatMap(e=>[e.source,e.target])))
-const relations=computed(()=>layout.value.edges.filter(e=>e.source===selectedPoint.value?.id||e.target===selectedPoint.value?.id))
-const entry=computed(()=>props.entries?.find(e=>e.topic_id===selectedPoint.value?.topic_id&&e.route==='B'))
-const topic=computed(()=>props.tree.nodes.find(n=>n.id===selectedPoint.value?.topic_id))
 const matches=computed(()=>new Set(layout.value.points.filter(p=>[p.topic_label,p.label,p.title].join(' ').toLowerCase().includes(search.value.toLowerCase())).map(p=>p.id)))
-const categoryLabel=id=>props.tree.nodes.find(n=>n.id===id)?.label||id
-const nodeTitle=p=>{const l=labelLines(p.label,11);return l[0]+(l.length>1?'…':'')}
-const nodeSub=p=>{const t=String(p.topic_label).replace(/（[^）]*）/g,'');return t.length>11?t.slice(0,10)+'…':t}
+const nodeTitle=p=>{const l=labelLines(p.label,10.5);return l[0]+(l.length>1?'…':'')}
+const nodeSub=p=>{const t=String(p.topic_label).replace(/（[^）]*）/g,'');return t.length>10?t.slice(0,9)+'…':t}
 function choose(p){stop();emit('select',p);detailsOpen.value=true;scrollToX(p.x+p.w/2)}
 function closeDetails(restoreFocus=false){detailsOpen.value=false;if(restoreFocus&&selectedPoint.value)nextTick(()=>document.getElementById('tree-'+selectedPoint.value.id)?.focus({preventScroll:true}))}
 function onOutsidePointer(event){
- if(!detailsOpen.value||detail.value?.contains(event.target)||document.querySelector('.survey-overlay'))return
+ if(!detailsOpen.value||(event.target instanceof Element&&event.target.closest('.tree-node-detail'))||document.querySelector('.survey-overlay'))return
  const node=event.target instanceof Element?event.target.closest('.tree-topic-node'):null
  if(node&&shell.value?.contains(node))return
  closeDetails()
@@ -58,7 +54,7 @@ let timer
 const shownYear=computed(()=>shownIndex.value<0?null:layout.value.years[shownIndex.value])
 const isFuture=p=>shownYear.value!==null&&p.yearKey>shownYear.value
 const isCurrent=p=>shownYear.value!==null&&p.yearKey===shownYear.value
-function goYear(i){shownIndex.value=Math.max(0,Math.min(lastIndex.value,i));const L=layout.value;scrollToX(L.left+(shownIndex.value+.5)*L.colW)}
+function goYear(i){shownIndex.value=Math.max(0,Math.min(lastIndex.value,i));const L=layout.value;const c=L.cols[shownIndex.value];scrollToX(c.x+c.w/2)}
 function step(){if(shownIndex.value>=lastIndex.value){stop();return}goYear(shownIndex.value+1)}
 function play(){if(playing.value){stop();return}if(shownIndex.value<0||shownIndex.value>=lastIndex.value)goYear(0);playing.value=true;timer=setInterval(step,reduced()?600:1700)}
 function stop(){playing.value=false;clearInterval(timer)}
@@ -78,16 +74,16 @@ function pickYear(i){stop();goYear(i)}
  <div ref="scroller" class="tree-scroll h-scroll" @scroll="measure">
  <svg class="evolution-tree-svg" :width="layout.width" :height="layout.height" :viewBox="`0 0 ${layout.width} ${layout.height}`" role="img" aria-label="人工智能技术演进树，横轴为年份，纵向为七类技术方向">
   <g><rect v-for="(l,i) in layout.lanes" :key="l.id" x="0" :y="l.y" :width="layout.width" :height="l.h" :fill="i%2?'#fbf7f4':'#fffcf9'"/></g>
-  <g><line v-for="(y,i) in layout.years" :key="'g'+y" :x1="layout.left+i*layout.colW" :x2="layout.left+i*layout.colW" y1="0" :y2="layout.height-layout.axisH" stroke="#ece4df" stroke-dasharray="3 6"/></g>
-  <rect v-if="shownYear!==null" class="h-current-col" :x="layout.left+shownIndex*layout.colW" y="0" :width="layout.colW" :height="layout.height-layout.axisH"/>
-  <g class="h-axis"><line :x1="layout.left-12" :x2="layout.width-12" :y1="layout.height-30" :y2="layout.height-30"/><path :d="`M${layout.width-22},${layout.height-35} L${layout.width-11},${layout.height-30} L${layout.width-22},${layout.height-25}`"/>
-   <g v-for="(y,i) in layout.years" :key="'a'+y" :class="{on:shownYear===y}" @click="pickYear(i)"><line :x1="layout.left+(i+.5)*layout.colW" :x2="layout.left+(i+.5)*layout.colW" :y1="layout.height-34" :y2="layout.height-26"/><text :x="layout.left+(i+.5)*layout.colW" :y="layout.height-8">{{yearLabel(y)}}</text></g></g>
+  <g><line v-for="c in layout.cols" :key="'g'+c.year" :x1="c.x" :x2="c.x" y1="0" :y2="layout.height-layout.axisH" stroke="#ece4df" stroke-dasharray="3 6"/></g>
+  <rect v-if="shownYear!==null" class="h-current-col" :x="layout.cols[shownIndex].x" y="0" :width="layout.cols[shownIndex].w" :height="layout.height-layout.axisH"/>
+  <g class="h-axis"><line :x1="layout.left-12" :x2="layout.width-12" :y1="layout.height-27" :y2="layout.height-27"/><path :d="`M${layout.width-22},${layout.height-32} L${layout.width-11},${layout.height-27} L${layout.width-22},${layout.height-22}`"/>
+   <g v-for="(c,i) in layout.cols" :key="'a'+c.year" :class="{on:shownYear===c.year}" @click="pickYear(i)"><line :x1="c.x+c.w/2" :x2="c.x+c.w/2" :y1="layout.height-31" :y2="layout.height-23"/><text :x="c.x+c.w/2" :y="layout.height-6">{{yearLabel(c.year)}}</text></g></g>
   <g class="tree-evidence-edges"><path v-for="e in layout.edges" :key="e.id" :d="horizontalCurve(e)" fill="none" :stroke="e.from.tone" :stroke-width="hover&&(e.source===hover||e.target===hover)?2.8:1.5" :stroke-dasharray="e.kind==='shared_work'?'3 5':null" :opacity="isFuture(e.to)||isFuture(e.from)?.06:hover?(e.source===hover||e.target===hover?.92:.06):.45" class="h-edge"><title>{{e.from.topic_label}} → {{e.to.topic_label}}：{{e.label}}</title></path></g>
   <g v-for="p in layout.points" :key="p.id" :id="'tree-'+p.id" class="tree-topic-node h-node" :class="{selected:selectedPoint?.id===p.id,related:hover&&linked.has(p.id),future:isFuture(p),current:isCurrent(p)}" :opacity="isFuture(p)?.18:(highlight&&highlight!==p.category_id)||(search&&!matches.has(p.id))?.25:1" tabindex="0" role="button" :aria-expanded="detailsOpen&&selectedPoint?.id===p.id" :aria-label="`${p.year} ${p.topic_label} ${p.label}`" @mouseenter="hover=p.id" @mouseleave="hover=''" @click="choose(p)" @keydown.enter="choose(p)" @keydown.space.prevent="choose(p)">
    <rect :x="p.x" :y="p.y" :width="p.w" :height="p.h" rx="3" fill="#fff" :stroke="p.tone" :stroke-width="selectedPoint?.id===p.id||isCurrent(p)?2:1"/><rect :x="p.x" :y="p.y" :width="p.w" :height="p.h" rx="3" :fill="p.tone" :opacity="selectedPoint?.id===p.id?.14:.04"/><rect :x="p.x" :y="p.y" width="3" :height="p.h" :fill="p.tone"/>
-   <text :x="p.x+12" :y="p.y+19" font-size="13" font-weight="700" fill="#2f353b">{{nodeTitle(p)}}</text><text :x="p.x+12" :y="p.y+35" font-size="11" :fill="p.tone">{{p.year}} · {{nodeSub(p)}}</text><title>{{p.topic_label}}\n{{p.year}} · {{p.title}}</title></g>
+   <text :x="p.x+10" :y="p.y+15" font-size="12.5" font-weight="700" fill="#2f353b">{{nodeTitle(p)}}</text><text :x="p.x+10" :y="p.y+28" font-size="10.5" :fill="p.tone">{{p.year}} · {{nodeSub(p)}}</text><title>{{p.topic_label}}\n{{p.year}} · {{p.title}}</title></g>
  </svg></div>
- <aside v-if="detailsOpen&&selectedPoint" ref="detail" class="tree-node-detail" :style="{'--branch-color':selectedPoint.tone}" aria-label="技术节点详情"><div class="tree-detail-top"><span>{{categoryLabel(selectedPoint.category_id)}}</span><button aria-label="收起节点详情" @click="closeDetails(true)">×</button></div><p class="tree-detail-year">{{selectedPoint.year}}<small>{{topic?.level2}}</small></p><h3>{{selectedPoint.topic_label}}</h3><p class="tree-definition">{{topic?.source?.cells?.C}}</p><button class="tree-survey-open" :disabled="!entry?.ready_for_dashboard" @click="openSelectedSurvey"><span>{{entry?.ready_for_dashboard?'阅读技术综述':'综述整理中'}}</span><small v-if="entry?.ready_for_dashboard">{{entry.actual_references}} 篇引用文献 ↗</small></button><a class="tree-source-paper" :href="safeUrl(selectedPoint.url)" target="_blank" rel="noopener"><span>代表成果 ↗</span><b>{{selectedPoint.title}}</b></a><p v-if="selectedPoint.authors?.length" class="tree-people">{{selectedPoint.authors.join(' · ')}}</p><p v-if="selectedPoint.institutions?.length" class="tree-people">{{selectedPoint.institutions.join(' · ')}}</p><div v-if="relations.length" class="tree-relation-list"><h4>相关技术联系</h4><a v-for="e in relations" :key="e.id" :href="safeUrl(e.source_url)" target="_blank" rel="noopener"><b>{{e.from.topic_label}} · {{e.to.topic_label}}</b><span>{{e.label}} ↗</span></a></div></aside>
+ <TechNodeDetail v-if="detailsOpen&&selectedPoint" :point="selectedPoint" :tone="selectedPoint.tone" :tree="tree" :chronology="chronology" :entries="entries" @close="closeDetails" @survey="openSelectedSurvey"/>
 </div>
 <div class="h-overview">
  <span>全景</span>
