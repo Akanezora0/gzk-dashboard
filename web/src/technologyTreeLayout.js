@@ -37,3 +37,27 @@ export function relationCurve(e){
  const sy=a.y+dy*a.h/2,ty=b.y-dy*b.h/2,dist=Math.max(32,Math.abs(ty-sy)*.45)
  return `M ${a.x} ${sy} C ${a.x} ${sy+dy*dist}, ${b.x} ${ty-dy*dist}, ${b.x} ${ty}`
 }
+
+/* ===== 横向技术演进树：横轴为年份，七条泳道为技术大类 ===== */
+export const laneOrder=['AI1','AI2','AI3','AI4','AI5','AI6','AI7']
+export function horizontalLayout(tree,chronology){
+ const cats=tree.nodes.filter(n=>n.node_type==='category'),events=chronology?.events||[]
+ const yk=y=>Math.max(2016,Number(y))
+ const years=[...new Set(events.map(e=>yk(e.year)))].sort((a,b)=>a-b)
+ const colW=232,left=180,nodeW=184,nodeH=44,gap=8,minLane=92,axisH=46
+ const cell={};events.forEach(e=>{const k=e.category_id+'|'+yk(e.year);(cell[k]=cell[k]||[]).push(e)})
+ const lanes=[];let y=0
+ laneOrder.forEach(id=>{const most=Math.max(1,...years.map(yr=>(cell[id+'|'+yr]||[]).length));const h=Math.max(minLane,most*(nodeH+gap)+28);lanes.push({...cats.find(c=>c.id===id),id,y,h,tone:treeColors[id]});y+=h})
+ const height=y+axisH,width=left+years.length*colW+36
+ const points=[]
+ lanes.forEach(l=>years.forEach((yr,i)=>{const list=(cell[l.id+'|'+yr]||[]).sort((a,b)=>a.year-b.year||a.topic_id.localeCompare(b.topic_id));const block=list.length*(nodeH+gap)-gap;list.forEach((e,j)=>points.push({...e,col:i,x:left+i*colW+(colW-nodeW)/2,y:l.y+(l.h-block)/2+j*(nodeH+gap),w:nodeW,h:nodeH,tone:l.tone,yearKey:yr}))}))
+ const byId=new Map(points.map(p=>[p.id,p]))
+ const edges=(chronology?.edges||[]).map(e=>({...e,from:byId.get(e.source),to:byId.get(e.target)})).filter(e=>e.from&&e.to)
+ return {width,height,left,colW,axisH,years,lanes,points,edges}
+}
+export function horizontalCurve(e){
+ const a=e.from,b=e.to
+ if(a.col===b.col){const x=a.x+a.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${x} ${y1} C ${x+26} ${y1}, ${x+26} ${y2}, ${x} ${y2}`}
+ const fwd=b.x>=a.x,x1=fwd?a.x+a.w:a.x,x2=fwd?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2,dx=Math.max(36,Math.abs(x2-x1)*.45)*(fwd?1:-1)
+ return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`
+}
