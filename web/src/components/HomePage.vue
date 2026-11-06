@@ -113,7 +113,7 @@ const uses=[
       <p class="home-eyebrow light">国家自然科学基金委员会专项项目</p>
       <h1 id="home-title">从基础研究出发<br/>理解创新的价值</h1>
       <p class="home-hero-description">贯通创新链、产业链与政策链，构建基础研究全链条数据系统，<br class="desktop-break"/>为评估基础研究的科学、经济与社会价值提供数据与证据。</p>
-      <div class="home-hero-actions"><a class="home-cta light" href="#approach">了解研究框架 <span aria-hidden="true">↓</span></a><router-link class="home-cta outline" to="/overview">进入数据总览 <span aria-hidden="true">↗</span></router-link></div>
+      <div class="home-hero-actions"><a class="home-cta light" href="#about" @click.prevent="exploreBelow">了解研究详情 <span aria-hidden="true">↓</span></a><router-link class="home-cta outline" to="/overview">进入数据总览 <span aria-hidden="true">↗</span></router-link></div>
       <div class="home-hero-bottom"><span>基础研究全链条数据系统构建与集成</span><span>中国人民大学 · 基础研究与中国式现代化发展战略研究中心</span></div>
     </div>
   </section>
