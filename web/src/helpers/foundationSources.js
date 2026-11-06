@@ -8,7 +8,7 @@ export function overviewHeadline(data) {
     {id:'literature',name:'文献数量',value:(c.papers/1e8).toFixed(4)+'亿',unit:'篇',title:`跨来源去重论文：${fmt(c.papers)} 篇`,color:'#ae1833'},
     {id:'fund',name:'基金项目',value:'42.8万',unit:'条',title:'基金项目：428409条',color:'#377f70'},
     {id:'patent',name:'专利条数',value:concise(c.national_patents),unit:'条',title:'按公开号去重：'+fmt(c.national_patents),color:'#987aab'},
-    {id:'recruit',name:'招聘数据条数',value:'728.4万',unit:'条',title:'招聘数据：7284624条',color:'#c56b32'},
+    {id:'recruit',name:'招聘数据条数',value:concise(7284624),unit:'条',title:'招聘数据：7284624条',color:'#c56b32'},
   ]
 }
 
