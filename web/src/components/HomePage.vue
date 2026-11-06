@@ -51,6 +51,7 @@ const chain=[
   {label:'产业应用',sub:'企业、产品与市场',icon:'industry',tone:tones.gold},
   {label:'经济社会价值',sub:'增长、就业与公共服务',icon:'society',tone:tones.teal},
 ]
+const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','证据链'],['/cases','案例专题']]
 const platformLinks=[['平台简介','https://brain.ruc.edu.cn/jggk/ptjj/index.htm'],['交叉研究','https://brain.ruc.edu.cn/jcyj/index.htm'],['云端平台','https://brain.ruc.edu.cn/ydpt/index.htm'],['学术交流','https://brain.ruc.edu.cn/xsjl/index.htm'],['联系我们','https://brain.ruc.edu.cn/lxwm/index.htm']]
 const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'grant',tone:'#f2c4cc'},{title:'关键成果',text:'方法、论文与专利',icon:'paper',tone:'#f2c4cc'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#f2c4cc'},{title:'发展表现',text:'产业与社会影响',icon:'growth',tone:'#f2c4cc'}]
 const uses=[
@@ -164,6 +165,9 @@ const uses=[
         <a class="home-cta light" href="https://brain.ruc.edu.cn" target="_blank" rel="noopener">了解更多 <span aria-hidden="true">↗</span></a>
       </div>
       <div class="home-platform-links">
+        <div><h3>系统导航</h3><ul>
+          <li v-for="[to,label] in siteLinks" :key="to"><router-link :to="to">{{label}}</router-link></li>
+        </ul></div>
         <div><h3>平台栏目</h3><ul>
           <li v-for="[label,href] in platformLinks" :key="label"><a :href="href" target="_blank" rel="noopener">{{label}}</a></li>
         </ul></div>
@@ -174,7 +178,7 @@ const uses=[
         </ul></div>
       </div>
     </div>
-    <div class="home-wrap home-platform-bottom"><span>基础研究数据与评估系统</span><span>国家自然科学基金委员会专项项目 · 基础研究全链条数据系统构建与集成</span></div>
+    <div class="home-wrap home-platform-bottom"><span>基础研究数据与评估系统 · 中国人民大学 · 国家自然科学基金委员会</span><span>国家自然科学基金委员会专项项目 · 基础研究全链条数据系统构建与集成</span></div>
   </section>
 </div>
 </template>
