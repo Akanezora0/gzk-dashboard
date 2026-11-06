@@ -179,7 +179,7 @@ const brief=computed(()=>{
   desc=`论文按来源分别计数。中文期刊文献 ${fmt(m('cnki_paper'))} 条，保留题名、作者与期刊信息；国自然资助论文 ${fmt(m('nsfc_paper'))} 篇，为基金项目关联的成果记录。`
   bullets=['两类来源不能相加为唯一论文总数',yearNote]
   highlights=[chip('中文期刊文献',m('cnki_paper'),'条'),chip('国自然资助论文',m('nsfc_paper'),'篇'),chip('基金项目',m('nsfc_fund'),'项','fund'),chip('技术主题',topics,'项')]
-  add('中文期刊文献',m('cnki_paper'),'条');add('国自然资助论文',m('nsfc_paper'),'篇');add('时间范围',span,'',true);add('数据状态','已接入','',true);add('技术主题',topics,'项');add('作者信息',field(sourceViews.value.cnki_paper,'作者'),'条')
+  add('中文期刊文献',m('cnki_paper'),'条');add('国自然资助论文',m('nsfc_paper'),'篇');if(span&&span!=='—')add('时间范围',span,'',true);add('技术主题',topics,'项');add('作者信息',field(sourceViews.value.cnki_paper,'作者'),'条')
  }else if(type.value==='fund'){
   tag='领域数据 · 基础研究资助';title='国自然基金项目'
   desc=`人工智能相关国自然基金项目 ${fmt(a?.total??m('nsfc_fund'))} 项，按项目目录计数，保留批准号、依托单位与项目负责人。`
@@ -222,7 +222,7 @@ const brief=computed(()=>{
   highlights=[chip('产品记录',a?.total??m('legacy_product'),'条'),chip('专利公开候选',m('legacy_patent'),'条','patent'),chip('企业名录',m('ai_company'),'家','company'),chip('含产品型号',field(a,'产品型号'),'条')]
  }
  if(type.value!=='paper'){
-  add('数据总量',type.value==='policy'?policyPresent.total:(a?.total??m(p.primary)),p.unit);add('时间范围',span,'',true);add('数据状态',sources.value.length?'已接入':'整理中','',true)
+  add('数据总量',type.value==='policy'?policyPresent.total:(a?.total??m(p.primary)),p.unit);if(span&&span!=='—')add('时间范围',span,'',true)
   for(const k of kpis.value){if(tiles.length>=6)break;if(String(k.label).includes('候选')||k.label===p.year)continue;add(k.label,k.value,k.text?'':k.unit,!!k.text)}
  }
  highlights=highlights.filter(h=>h.value!=null&&h.value!=='')
@@ -241,7 +241,7 @@ const brief=computed(()=>{
    <div class="ai-hero-main"><span class="ai-hero-tag">{{brief.tag}}</span><h3 class="ai-hero-title">{{brief.title}}</h3><p class="ai-hero-desc">{{brief.desc}}</p><ul v-if="brief.bullets.length" class="ai-hero-bullets"><li v-for="item in brief.bullets" :key="item">{{item}}</li></ul><p v-if="brief.insight" class="ai-hero-insight">{{brief.insight}}</p></div>
    <div class="ai-hero-highlights"><button v-for="h in brief.highlights" :key="h.label" type="button" class="ai-highlight" :class="{link:h.type&&h.type!==type}" @click="h.type&&h.type!==type&&selectType(h.type)"><strong><CountValue v-if="h.numeric" :value="h.value"/><span v-else>{{h.value}}</span><small v-if="h.hint">{{h.hint}}</small></strong><span>{{h.label}}</span></button></div>
   </section>
-  <div v-if="brief?.strip?.length&&!hasCurrent" class="ai-kpi-strip"><article v-for="(k,i) in brief.strip" :key="k.label" :class="{lead:i===0}"><strong v-if="k.text" class="text">{{k.value}}</strong><strong v-else><CountValue v-if="k.value!=null" :value="Number(k.value)"/><span v-else>—</span><small v-if="k.unit">{{k.unit}}</small></strong><span>{{k.label}}</span></article></div>
+  <div v-if="brief?.strip?.length>=3&&!hasCurrent" class="ai-kpi-strip fit" :style="{'--n':brief.strip.length}"><article v-for="(k,i) in brief.strip" :key="k.label" :class="{lead:i===0}"><strong v-if="k.text" class="text">{{k.value}}</strong><strong v-else><CountValue v-if="k.value!=null" :value="Number(k.value)"/><span v-else>—</span><small v-if="k.unit">{{k.unit}}</small></strong><span>{{k.label}}</span></article></div>
   <div v-if="loading" class="domain-loading" role="status">正在读取{{profile.title}}…</div>
   <template v-else>
    <div v-if="sources.length>1&&!hasCurrent" class="domain-source-grid">

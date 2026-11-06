@@ -46,3 +46,10 @@
 @media(max-width:900px){.domain-v6 .domain-source-top{align-items:flex-start}.domain-v6 .domain-source-top h3{font-size:16px}.domain-v6 .domain-kpis strong{overflow-wrap:anywhere}.domain-v6 .domain-records .panel-heading{flex-wrap:wrap;align-items:flex-start}}
 @media(max-width:600px){.domain-v6 .domain-source-grid{grid-template-columns:1fr;gap:12px}.domain-v6 .domain-source-card{padding:14px 15px}.domain-v6 .domain-source-total strong{font-size:30px}.domain-v6 .domain-source-total small{font-size:13px}.domain-v6 .domain-kpis.three-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.domain-v6 .domain-kpis .kpi strong{font-size:27px}.domain-v6 .domain-kpis .kpi strong.smaller{font-size:19px}.domain-v6 .domain-kpis .kpi>span{font-size:13px}.domain-v6 .domain-chart-grid .panel-heading h3{font-size:17px}.domain-v6 .domain-records .search-box{width:100%;display:flex}.domain-v6 .domain-records .search-box input{flex:1;min-width:0;width:100%}.domain-v6 .domain-manufacturer-row b{margin-left:0}.domain-v6 .pagination{gap:10px;flex-wrap:wrap}.domain-v6 .pagination>span{flex-basis:100%}.domain-v6 .record-table{min-width:500px}}
 @media(prefers-reduced-motion:reduce){.domain-v6 .domain-topic-chips button{transition:none}}
+/* 领域数据：右侧亮点卡与指标条等高、内容垂直居中 */
+.domain-v6 .ai-hero-highlights{align-content:stretch;grid-auto-rows:1fr}
+.domain-v6 .ai-highlight{justify-content:center}
+.domain-v6 .ai-kpi-strip article{display:flex;flex-direction:column;justify-content:center;align-items:center}
+.domain-v6 .ai-kpi-strip.fit{grid-template-columns:repeat(var(--n,6),minmax(0,1fr))!important}
+@media(max-width:1100px){.domain-v6 .ai-kpi-strip.fit{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:600px){.domain-v6 .ai-kpi-strip.fit{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
