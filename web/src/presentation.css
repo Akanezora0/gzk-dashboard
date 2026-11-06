@@ -12,7 +12,7 @@ body::before{
   z-index:0;
 }
 .dashboard-shell{position:relative;z-index:1}
-.workspace,.site-footer{width:min(1180px,calc(100% - 200px));max-width:1180px}
+.workspace,.site-footer{width:min(1280px,calc(100% - 112px));max-width:1280px}
 
 .research-header{overflow:visible}
 .research-heading h1{position:relative;display:inline-block}
@@ -266,7 +266,7 @@ body::before{
 .evolution-tree-panel>.panel-heading{background:linear-gradient(#fff,#fdfafb)}
 
 @media(max-width:900px){
-  .workspace,.site-footer{width:min(1180px,calc(100% - 64px))}
+  .workspace,.site-footer{width:min(1280px,calc(100% - 64px))}
   .page-heading h1,.page-heading h2{font-size:28px}
   .data-overview .overview-subtabs button{padding:8px 14px;font-size:15px}
 }

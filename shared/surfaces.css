@@ -1,0 +1,73 @@
+/*
+ * 全站内容区域与卡片的统一样式（主应用、低空子应用、投入产出嵌入页共用）
+ *
+ * 容器：整宽面板与区块。1px 暖灰细描边、4px 圆角、无顶部色带、静止无投影。
+ * 卡片：成组出现的内容块。与容器同样的描边与圆角；悬停时上浮 3px、出现柔和投影、
+ *       描边加深，并在顶边由左向右展开一条 2px 刻度线（颜色取卡片自身 --tone，默认人大红）。
+ *
+ * 标题、标签页、面板标题本轮不在此统一。
+ * 这些规则需要压过各页面后加载的旧样式，因此关键属性使用 !important。
+ */
+:root{
+ --surface-line:#e4dcd7;
+ --surface-line-strong:#c9b9b6;
+ --surface-radius:4px;
+ --surface-red:#a21535;
+ --surface-ease:cubic-bezier(.22,.68,0,1);
+ --surface-shadow-hover:0 18px 32px -22px rgba(80,18,32,.42);
+}
+
+/* ---------- 容器 ---------- */
+.workspace :is(.panel,.ov3-section,.ai-data-hero,.rs-page,.rs-take,.curve-card,.embedded-report,.activity-calendar,.activity-trend,.graph-layout,.rs-ev-panel,.rs-ev-graph,.summary-strip,.domain-source-card),
+.tree-node-detail,
+.lowalt-embed :is(.data-hero,.screen-panel,.section-block,.chain-hero,.related-section,.archive-strip,.tree-overview-wrap,.evo-tree,.flow-svg),
+.board>section.row{
+ border:1px solid var(--surface-line)!important;
+ border-radius:var(--surface-radius)!important;
+ box-shadow:none!important;
+}
+.lowalt-embed .section-block::before{display:none!important}
+.board .cells>.cell{border-radius:3px!important}
+/* 低空证据链五步流程：卡片等高 */
+.lowalt-embed .pipe-card{align-items:stretch!important}
+.lowalt-embed .pipe-connector{align-self:center}
+
+/* ---------- 卡片 ---------- */
+.workspace :is(.process-cards>article,.evidence-compact-metrics>button,.fund-dimensions>article,.fund-kpis>article,.ai-highlight,.ai-kpi-strip>article,.topic-card,.case-pending,.rs-scope-card,.rs-keys>div,.rs-stay,.chain-cards>button,.kpi,.flow-node),
+.project-home :is(.home-domains>a,.home-resources>a),
+.lowalt-embed :is(.highlight-chip,.kpi-strip>*,.related-card,.layer-card,.link-card,.nav-hint,.pipe-card-inner,.placeholder-inner),
+.board>article.tile{
+ --surface-tone:var(--tone,var(--surface-red));
+ border:1px solid var(--surface-line)!important;
+ border-radius:var(--surface-radius)!important;
+ box-shadow:none!important;
+ background-image:linear-gradient(var(--surface-tone),var(--surface-tone))!important;
+ background-repeat:no-repeat!important;
+ background-position:0 0!important;
+ background-size:0 2px!important;
+ transition:transform .45s var(--surface-ease),box-shadow .45s var(--surface-ease),border-color .3s,background-size .5s var(--surface-ease),background-color .2s,color .2s!important;
+}
+.workspace .case-pending{--tone:#b8873d;background-color:#fff!important}
+.workspace :is(.process-cards>article,.evidence-compact-metrics>button,.fund-dimensions>article,.fund-kpis>article,.ai-highlight,.ai-kpi-strip>article,.topic-card,.case-pending,.rs-scope-card,.rs-keys>div,.rs-stay,.chain-cards>button,.kpi,.flow-node):hover,
+.project-home :is(.home-domains>a,.home-resources>a):hover,
+.lowalt-embed :is(.highlight-chip,.kpi-strip>*,.related-card,.layer-card,.link-card,.nav-hint,.pipe-card-inner,.placeholder-inner):hover,
+.lowalt-embed .pipe-card:is(:hover,.active) .pipe-card-inner,
+.board>article.tile:hover{
+ transform:translateY(-3px)!important;
+ box-shadow:var(--surface-shadow-hover)!important;
+ border-color:var(--surface-line-strong)!important;
+ background-size:100% 2px!important;
+}
+
+/* ---------- 链接：不用下划线，悬停时加深颜色、箭头位移 ---------- */
+a:hover{text-decoration:none!important}
+.project-home a span[aria-hidden]{display:inline-block;transition:transform .35s var(--surface-ease)}
+.project-home a:hover span[aria-hidden]{transform:translate(3px,-3px)}
+.project-home a.home-text-link:hover span[aria-hidden]{transform:translateX(4px)}
+.project-home a[href^="#"]:hover span[aria-hidden]{transform:translateY(3px)}
+.project-home .home-text-link{transition:color .2s,border-color .2s}
+.project-home .home-text-link:hover{color:#7d0f27;border-bottom-color:var(--surface-red)}
+
+@media (prefers-reduced-motion:reduce){
+ .workspace *,.project-home *,.lowalt-embed *,.board *{transition-duration:.01ms!important}
+}

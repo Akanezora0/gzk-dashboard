@@ -6,6 +6,7 @@ import './style.css'
 import './shell.css'
 import './refinement.css'
 import './presentation.css'
+import '../../shared/surfaces.css'
 const Empty={template:'<div />'}
 const domainPages=['data','evolution','chain','cases']
 const router=createRouter({history:createWebHistory(),routes:[{path:'/',redirect:'/home'},{path:'/case',redirect:to=>({path:'/cases',query:to.query})},{path:'/foundation',redirect:to=>({path:'/overview',query:to.query,hash:'#sources'})},...['home','overview',...domainPages].map(name=>({path:`/${name}`,name,component:Empty})),{path:'/:pathMatch(.*)*',redirect:'/home'}],scrollBehavior:(to,from)=>to.hash?{el:to.hash,top:100}:to.path===from.path&&to.query.domain===from.query.domain?false:{top:0}})

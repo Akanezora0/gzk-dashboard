@@ -7,6 +7,7 @@ import App from './App.vue'
 import '@kjgl77/datav-vue3/dist/style.css'
 import '@legacy/styles/screen-theme.scss'
 import './embed.css'
+import '../../shared/surfaces.css'
 
 const pages = new Set(['data', 'evolution', 'chain', 'cases'])
 const router = createRouter({
