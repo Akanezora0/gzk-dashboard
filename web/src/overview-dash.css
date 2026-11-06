@@ -125,3 +125,26 @@
 .ovd-kpis:before{display:none}
 .ovd-kpis{background:#ffffff08;border-radius:4px;margin:0 -22px 18px;padding:0}
 @media(max-width:700px){.ovd-hero h2{font-size:26px}}
+/* ===== 浅色首屏 ===== */
+.hero-light .ovd-hero{background:linear-gradient(180deg,#fff,#fdfaf8);color:var(--ovd-ink);border:1px solid var(--ovd-line);box-shadow:0 30px 60px -48px rgba(80,20,35,.3);padding-bottom:36px}
+.hero-light .ovd-hero-art svg{stroke:#a21535;stroke-opacity:.08}
+.hero-light .ovd-hero:before{display:none}
+.hero-light .ovd-eyebrow{color:var(--ovd-red)}
+.hero-light .ovd-hero h2{color:#232930}
+.hero-light .ovd-hero-lead{color:#5f666e}
+.hero-light .ovd-hero-meta strong{color:#9b1735}
+.hero-light .ovd-hero-meta span{color:#7d7579}
+.hero-light .ovd-hero-link{color:var(--ovd-red);border-color:#e3c3ca}
+.hero-light .ovd-hero-link:hover{background:#faf3f4;border-color:#c99aa4}
+.hero-light .ovd-hero-head{padding-bottom:0}
+/* ===== 核心数据（与构成图同卡） ===== */
+.ovd-core{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0 0 30px;padding:6px 0 30px;border-bottom:1px solid #efe9e5}
+.ovd-core-item{position:relative;padding:6px 18px 8px 24px;border-left:3px solid var(--c);border-radius:0 4px 4px 0;transition:background .35s,transform .45s cubic-bezier(.22,.68,0,1)}
+.ovd-core-item+.ovd-core-item{margin-left:22px}
+.ovd-core-item:hover{background:color-mix(in srgb,var(--c) 6%,#fff);transform:translateY(-3px)}
+.ovd-core-item span{display:block;font-size:16px;color:#4a4246;letter-spacing:1px;margin-bottom:8px}
+.ovd-core-item strong{display:block;font-size:clamp(34px,3.3vw,50px);font-weight:800;color:var(--c);letter-spacing:-1px;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ovd-core-item strong small{font-size:14px;font-weight:400;color:#857d80;margin-left:8px;letter-spacing:0}
+.ovd-core-item em{display:block;font-style:normal;font-size:13px;color:#8a8286;margin-top:8px}
+@media(max-width:1050px){.ovd-core{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}.ovd-core-item:nth-child(3){margin-left:0}}
+@media(max-width:600px){.ovd-core{grid-template-columns:1fr}.ovd-core-item+.ovd-core-item{margin-left:0}.ovd-core-item strong{font-size:32px}}

@@ -93,13 +93,14 @@ const activeRel=ref(0)
 </script>
 <template><div class="data-overview">
 <div class="domain-switch ovd-switch" aria-label="数据总览内容"><span>数据视图</span><div role="tablist" aria-label="数据总览内容" @keydown="moveTab"><button v-for="[id,label] in tabs" :id="'overview-tab-'+id" :key="id" role="tab" :aria-selected="view===id" :aria-controls="'overview-panel-'+id" :tabindex="view===id?0:-1" :class="{active:view===id}" @click="selectView(id)">{{label}}</button></div><small>{{types.length}} 类数据 · {{datasets.length}} 项来源 · 统计更新 {{data.currentInventory.as_of}}</small></div>
-<div v-if="view==='scale'" key="scale" class="pane-swap ovd hero-dark" id="overview-panel-scale" role="tabpanel" aria-labelledby="overview-tab-scale">
+<div v-if="view==='scale'" key="scale" class="pane-swap ovd hero-light" id="overview-panel-scale" role="tabpanel" aria-labelledby="overview-tab-scale">
 <section class="ovd-hero"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} ${330} C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div>
  <div class="ovd-hero-head"><div><p class="ovd-eyebrow">多源数据总览</p><h2>全领域、多来源的<br/>基础研究数据底座</h2><p class="ovd-hero-lead">汇聚论文、基金、专利、企业、政策等多源数据，持续规范入库与更新</p></div><div class="ovd-hero-meta"><div><strong>{{types.length}}</strong><span>类数据</span></div><div><strong>{{datasets.length}}</strong><span>项来源</span></div><div><strong class="date">{{data.currentInventory.as_of}}</strong><span>统计更新</span></div><a href="#updates" class="ovd-hero-link" @click.prevent="selectView('updates')">查看更新动态 <span aria-hidden="true">→</span></a></div></div>
- <p class="ovd-core-label">核心数据</p><div class="ovd-kpis"><div v-for="d in headline" :key="d.id" class="ovd-kpi" :style="{'--c':d.color}"><span class="ovd-kpi-name">{{d.name}}</span><strong :title="d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
+ 
 </section>
 
-<section class="ovd-card ovd-composition"><header class="ovd-card-head"><div><h3>数据构成与来源</h3><p>{{types.length}} 类数据及主要来源规模，点击类别筛选来源</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
+<section class="ovd-card ovd-composition"><header class="ovd-card-head"><div><h3>核心数据与来源构成</h3><p>四类核心数据规模，以及 {{types.length}} 类数据的主要来源，点击类别筛选来源</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
+ <div class="ovd-core"><div v-for="d in headline" :key="d.id" class="ovd-core-item" :style="{'--c':d.color}"><span>{{d.name}}</span><strong :title="d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
  <div class="ovd-comp-grid"><div class="ovd-ring"><Chart :option="ring2" :height="480" label="多源数据类别构成" @select="p=>pick(p.name)"/></div>
  <div class="ovd-rows"><div class="ovd-rows-head"><h4>{{kind==='全部'?'主要来源与规模':kind+' · 来源与规模'}}</h4><button class="overview-text-button" :aria-pressed="balanced" @click="balanced=!balanced">{{balanced?'均衡显示':'按数量显示'}} ⇄</button></div>
   <a v-for="d in rows" :key="d.id" class="ovd-row" :href="additions.some(item=>item.id===d.id)?undefined:'#source-'+encodeURIComponent(d.id)" :title="shownTitle(d)" :style="{'--c':color(d)}"><span class="ovd-row-name"><i></i>{{d.name}}</span><span class="ovd-row-track"><b :style="{width:width(d)+'%'}"></b></span><strong>{{concise(shownCount(d))}}<small>{{unit(d)}}</small></strong></a></div></div>
