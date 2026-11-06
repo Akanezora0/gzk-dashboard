@@ -1,6 +1,8 @@
 <script setup>
 import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
 import {overviewHeadline} from '../helpers/foundationSources'
+import {homeIcons} from '../helpers/homeIcons'
+import HomeIcon from './HomeIcon.vue'
 
 const props=defineProps({data:Object})
 function exploreBelow(){
@@ -44,20 +46,6 @@ const stages=[{x:330,label:'科学'},{x:540,label:'技术'},{x:750,label:'产业
 
 /* ---------- 内容 ---------- */
 const tones={red:'#a21535',blue:'#2c64a0',plum:'#6f4a94',gold:'#b2772a',teal:'#23806e'}
-const icons={
-  fund:'M7 4l5 7 5-7M12 11v9M8 13.5h8M8 17h8',
-  science:'M9 3h6M10 3v6l-5.2 9.1A2 2 0 0 0 6.5 21h11a2 2 0 0 0 1.7-2.9L14 9V3M7.6 15h8.8',
-  tech:'M7 7h10v10H7zM10 10h4v4h-4zM9.5 3v4M14.5 3v4M9.5 17v4M14.5 17v4M3 9.5h4M3 14.5h4M17 9.5h4M17 14.5h4',
-  industry:'M3 21V11l5 3v-3l5 3V7l8 4v10zM3 21h18M7 17.5h2M12 17.5h2M17 17.5h2',
-  society:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3.5 9h17M3.5 15h17M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z',
-  split:'M4 5h16M8 12h12M12 19h8M4 5v14M4 12h4M4 19h8',
-  gather:'M12 4c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zM4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
-  trace:'M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9',
-  assess:'M4 20V11M10 20V5M16 20v-7M3 20h18M20 4l-4 4',
-  growth:'M3 17l6-6 4 4 8-8M15 7h6v6',
-  policy:'M3 21h18M5 21v-9M9.7 21v-9M14.3 21v-9M19 21v-9M2.5 9.5 12 4l9.5 5.5z',
-  people:'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-3.9 3.1-7 7-7s7 3.1 7 7M16 3.3a4 4 0 0 1 0 7.4M18 14.4c2.4.9 4 3.3 4 6.6',
-}
 const chain=[
   {label:'基金资助',sub:'资助布局与投入',icon:'fund',tone:tones.red},
   {label:'科学研究',sub:'论文与知识积累',icon:'science',tone:tones.blue},
@@ -85,12 +73,19 @@ const uses=[
   {num:'01',title:'科学价值',icon:'science',tone:tones.blue,question:'哪些基础研究成为后续创新的源头？',text:'追踪代表成果、引用联系与方法复用，刻画知识积累与技术突破。',tags:['研究贡献','学术影响','技术扩散']},
   {num:'02',title:'经济效益',icon:'growth',tone:tones.gold,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
   {num:'03',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究力量与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
-  {num:'04',title:'社会影响',icon:'people',tone:tones.teal,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
+  {num:'04',title:'社会影响',icon:'society',tone:tones.teal,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
 ]
 </script>
 
 <template>
 <div ref="root" class="project-home" :style="{'--home-masthead-height':mastheadHeight+'px'}">
+  <svg class="home-icon-masks" aria-hidden="true" focusable="false"><defs>
+    <mask v-for="(g,key) in homeIcons" :id="`home-icon-cut-${key}`" :key="key" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+      <rect width="24" height="24" fill="#fff"/>
+      <path v-if="g.cut" :d="g.cut" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="square"/>
+      <path v-if="g.cutFill" :d="g.cutFill" fill="#000"/>
+    </mask>
+  </defs></svg>
   <section class="home-hero" aria-labelledby="home-title">
     <div class="home-hero-art" aria-hidden="true">
       <svg :viewBox="`0 0 ${ART_W} ${ART_H}`" preserveAspectRatio="xMinYMid slice">
@@ -138,8 +133,9 @@ const uses=[
       <div class="home-chain-head"><span>基础研究全链条</span><span>从资助投入到经济社会价值</span></div>
       <div class="home-chain-body">
       <div class="home-chain-track" aria-hidden="true"><i></i></div>
+      <div class="home-chain-nodes" aria-hidden="true"><i v-for="(c,i) in chain.slice(0,4)" :key="i" :style="{'--c':c.tone}"></i></div>
       <ol class="home-chain-stages">
-        <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i,'--tone':c.tone}"><span class="home-chain-icon"><svg viewBox="0 0 24 24"><path :d="icons[c.icon]"/></svg></span><em>0{{i+1}}</em><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
+        <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i,'--tone':c.tone}"><span class="home-chain-icon"><HomeIcon :name="c.icon"/></span><em>0{{i+1}}</em><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
       </ol>
       </div>
       <div class="home-chain-brackets">
@@ -155,7 +151,7 @@ const uses=[
       <div class="home-section-heading reveal"><div><p class="home-eyebrow">研究框架</p><h2>以技术点为单元，<br/>组织全链条数据。</h2></div><p>以共同技术词表为纲，将领域拆解为可研究的技术点；围绕技术点汇聚多源数据、梳理发展脉络，进而开展案例研究与价值评估。</p></div>
       <div class="home-steps">
         <article v-for="(step,i) in steps" :key="step.num" class="reveal" :style="{'--i':i,'--tone':step.tone}">
-          <div class="home-step-head"><span class="home-step-icon"><svg viewBox="0 0 24 24"><path :d="icons[step.icon]"/></svg></span><span class="home-step-num">{{step.num}}</span></div>
+          <div class="home-step-head"><span class="home-step-icon"><HomeIcon :name="step.icon"/></span><span class="home-step-num">{{step.num}}</span></div>
           <h3>{{step.title}}</h3><p>{{step.text}}</p>
         </article>
       </div>
@@ -175,7 +171,7 @@ const uses=[
     <div v-if="headline.length" class="home-data-strip reveal"><div v-for="item in headline" :key="item.id"><span>{{item.name}}</span><strong>{{item.value}}<small>{{item.unit}}</small></strong></div></div>
     <div class="home-resources">
       <router-link v-for="group in resourceGroups" :key="group.num" :to="group.to" class="reveal" :style="{'--tone':group.tone}">
-        <div class="home-resource-top"><span class="home-resource-icon"><svg viewBox="0 0 24 24"><path :d="icons[group.icon]"/></svg></span><span aria-hidden="true">↗</span></div>
+        <div class="home-resource-top"><span class="home-resource-icon"><HomeIcon :name="group.icon"/></span><span aria-hidden="true">↗</span></div>
         <h3>{{group.title}}</h3><p>{{group.text}}</p>
         <ul><li v-for="item in group.items" :key="item">{{item}}</li></ul>
       </router-link>
@@ -186,14 +182,14 @@ const uses=[
     <div class="reveal"><p class="home-eyebrow light">案例研究</p><h2>批量抽取优质案例，<br/>呈现基础研究的贡献路径。</h2><p>以技术、企业或产品为线索，按统一结构组织科研支持、关键成果、技术应用与发展表现，实现优质案例的批量抽取、核查与比较。</p><router-link class="home-cta outline" to="/chain?domain=ai">查看证据链 <span aria-hidden="true">↗</span></router-link></div>
     <div class="home-case-panel reveal">
       <p class="home-case-kicker">一个案例的四个层次</p>
-      <ol class="home-case-path"><li v-for="(item,i) in casePath" :key="item.title" :style="{'--i':i,'--tone':item.tone}"><span class="home-case-node"><svg viewBox="0 0 24 24"><path :d="icons[item.icon]"/></svg></span><em>0{{i+1}}</em><h3>{{item.title}}</h3><p>{{item.text}}</p></li></ol>
+      <ol class="home-case-path"><li v-for="(item,i) in casePath" :key="item.title" :style="{'--i':i,'--tone':item.tone}"><span class="home-case-node"><HomeIcon :name="item.icon"/></span><em>0{{i+1}}</em><h3>{{item.title}}</h3><p>{{item.text}}</p></li></ol>
     </div>
   </div></section>
 
   <section id="evaluation" class="home-wrap home-section home-evaluation">
     <div class="home-section-heading reveal"><div><p class="home-eyebrow">评估维度</p><h2>面向多维评估，<br/>回答基础研究的价值之问。</h2></div><p>以统一的数据底座与证据链为基础，围绕具体问题组织样本、指标与证据。</p></div>
     <div class="home-evaluation-grid"><article v-for="(use,i) in uses" :key="use.num" class="reveal" :style="{'--i':i,'--tone':use.tone}">
-      <div class="home-use-head"><span class="home-use-icon"><svg viewBox="0 0 24 24"><path :d="icons[use.icon]"/></svg></span><span class="home-use-num">{{use.num}}</span></div>
+      <div class="home-use-head"><span class="home-use-icon"><HomeIcon :name="use.icon"/></span><span class="home-use-num">{{use.num}}</span></div>
       <h3>{{use.title}}</h3><h4>{{use.question}}</h4><p>{{use.text}}</p>
       <ul><li v-for="t in use.tags" :key="t">{{t}}</li></ul>
     </article></div>
