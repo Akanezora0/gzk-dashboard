@@ -71,8 +71,8 @@ const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name
 const entities=computed(()=>{const c=cc.value;return [
  {id:'org',name:'机构',icon:'org',value:c.organization,unit:'',color:'#23806e',x:80},
  {id:'person',name:'人员',icon:'person',value:c.person,unit:'',color:'#6f4a94',x:240},
- {id:'fund',name:'基金项目',icon:'fund',value:c.project,unit:'',color:'#b2772a',x:400},
- {id:'paper',name:'论文',icon:'science',value:c.papers,unit:'',color:'#a21535',x:560},
+ {id:'fund',name:'基金项目',icon:'grant',value:c.project,unit:'',color:'#b2772a',x:400},
+ {id:'paper',name:'论文',icon:'paper',value:c.papers,unit:'',color:'#a21535',x:560},
  {id:'patent',name:'专利',icon:'patent',value:c.national_patents,unit:'',color:'#2c64a0',x:720},
 ]})
 const NY=118
@@ -82,7 +82,7 @@ const relations=computed(()=>{const c=cc.value;const X=Object.fromEntries(entiti
  {n:3,name:'人员—机构',value:c.person_organization_observation,note:'研究人员的机构归属观察',color:'#23806e',path:`M ${X.org+46} ${NY} L ${X.person-46} ${NY}`,bx:(X.org+X.person)/2,by:NY},
  {n:4,name:'基金—论文',value:c.project_paper,note:'基金项目与资助成果的连接',color:'#b2772a',path:`M ${X.fund+46} ${NY} L ${X.paper-46} ${NY}`,bx:(X.fund+X.paper)/2,by:NY},
  {n:5,name:'基金—人员',value:c.project_person,note:'项目负责人与成员记录',color:'#6f4a94',path:`M ${X.person+46} ${NY} L ${X.fund-46} ${NY}`,bx:(X.person+X.fund)/2,by:NY},
- {n:6,name:'基金—专利',value:c.project_patent,note:'基金项目与专利成果的连接',color:'#5d6f86',path:`M ${X.fund} ${NY+112} C ${X.fund+20} ${NY+175}, ${X.patent-20} ${NY+175}, ${X.patent} ${NY+112}`,bx:(X.fund+X.patent)/2,by:NY+159},
+ {n:6,name:'基金—专利',value:c.project_patent,note:'基金项目与专利成果的连接',color:'#5d6f86',path:`M ${X.fund} ${NY+92} C ${X.fund+20} ${NY+146}, ${X.patent-20} ${NY+146}, ${X.patent} ${NY+92}`,bx:(X.fund+X.patent)/2,by:NY+132},
 ]})
 const relWidth=v=>1.2+Math.log10(Math.max(10,v||10))/2
 const activeRel=ref(0)
@@ -103,7 +103,7 @@ const activeRel=ref(0)
 
 <section class="ovd-card ovd-network"><header class="ovd-card-head"><div><h3>实体与关系</h3><p>规范库中的核心实体，以及它们之间已建立的连接</p></div></header>
  <div class="ovd-net-stack"><div class="ovd-spine">
-  <svg viewBox="0 0 800 300" class="ovd-spine-svg" role="img" aria-label="实体与关系">
+  <svg viewBox="0 0 800 268" class="ovd-spine-svg" role="img" aria-label="实体与关系">
    <g class="ovd-links"><path v-for="r in relations" :key="r.n" :d="r.path" :style="{'--c':r.color,strokeWidth:relWidth(r.value)}" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}"/></g>
    <g v-for="r in relations" :key="'b'+r.n" class="ovd-badge" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}" :style="{'--c':r.color}" @mouseenter="activeRel=r.n" @mouseleave="activeRel=0"><circle :cx="r.bx" :cy="r.by" r="12"/><text :x="r.bx" :y="r.by+4.5">{{r.n}}</text></g>
   </svg>
