@@ -117,3 +117,11 @@
 .ovd-net-stack .ovd-spine{max-width:1000px;width:100%;justify-self:center;box-sizing:border-box}
 .ovd-net-stack .ovd-rel-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media(max-width:900px){.ovd-net-stack .ovd-rel-cards{grid-template-columns:1fr}}
+/* 2026-11-06 修订 */
+.ovd-hero h2{font-size:clamp(34px,3vw,42px);line-height:1.35}
+.ovd-hero-head{padding-bottom:30px}
+.ovd-core-label{display:flex;align-items:center;gap:14px;margin:0 0 6px;padding-top:26px;border-top:1px solid #ffffff2e;font-size:14px;font-weight:650;letter-spacing:4px;color:#f4c6cd}
+.ovd-core-label:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#ffffff26,transparent)}
+.ovd-kpis:before{display:none}
+.ovd-kpis{background:#ffffff08;border-radius:4px;margin:0 -22px 18px;padding:0}
+@media(max-width:700px){.ovd-hero h2{font-size:26px}}

@@ -40,14 +40,14 @@ const isCore=d=>coreIds.includes(d.id)
 const rows=computed(()=>{
  const all=[...datasets.value.filter(d=>d.id!=='unified_fund'),...additions]
  const byCount=(a,b)=>shownCount(b)-shownCount(a)
- if(kind.value!=='全部')return all.filter(d=>d.kind===kind.value).sort(byCount)
+ if(kind.value!=='全部')return all.filter(d=>d.kind===kind.value&&!isCore(d)).sort(byCount)
  const core=coreIds.map(id=>all.find(d=>d.id===id)).filter(Boolean)
  const coreKinds=new Set(core.map(d=>d.kind))
  const rest=all.filter(d=>!isCore(d)&&!d.pinBottom)
- const picked=types.value.filter(t=>!coreKinds.has(t)).map(t=>rest.filter(d=>d.kind===t).sort(byCount)[0]).filter(Boolean)
+ const picked=types.value.map(t=>rest.filter(d=>d.kind===t).sort(byCount)[0]).filter(Boolean)
  const cnki=rest.find(d=>d.id==='cnki_paper')
  if(cnki&&!picked.includes(cnki))picked.push(cnki)
- return [...core,...picked,...additions.filter(d=>d.pinBottom)].sort(byCount)
+ return [...picked,...additions.filter(d=>d.pinBottom)].sort(byCount)
 })
 const max=computed(()=>Math.max(1,...rows.value.map(shownCount)))
 const color=d=>d.color||palette[d.kind]
@@ -64,7 +64,7 @@ const cc=computed(()=>cur.value.counts||{})
 const heroSub={literature:'跨来源去重论文',fund:'基金项目记录',patent:'全国公开文献 · 按公开号去重',recruit:'企业招聘信息'}
 const kindSources=computed(()=>{const m={};[...datasets.value,...additions].forEach(d=>{(m[d.kind]||(m[d.kind]=[])).push(d)});return m})
 const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name)}<br/>${p.value} 项来源 · 点击筛选`},
- graphic:[{type:'text',left:'center',top:'41%',style:{text:String(types.value.length),fontSize:44,fontWeight:800,fill:'#9c1c38',align:'center'}},{type:'text',left:'center',top:'55%',style:{text:'类数据',fontSize:15,fill:'#6f7d90',align:'center'}}],
+ graphic:[{type:'text',left:'center',top:'38%',style:{text:String(types.value.length),fontSize:64,fontWeight:800,fill:'#9c1c38',align:'center'}},{type:'text',left:'center',top:'56%',style:{text:'类数据',fontSize:20,fontWeight:600,fill:'#5d6878',align:'center'}}],
  series:[{type:'pie',radius:['48%','74%'],center:['50%','50%'],startAngle:96,selectedMode:'single',selectedOffset:5,label:{show:true,formatter:'{b}',fontSize:15,color:'#4a5566',fontWeight:650},labelLine:{length:10,length2:8,lineStyle:{color:'#c3c9d2'}},itemStyle:{borderColor:'#fff',borderWidth:4,borderRadius:4},emphasis:{scaleSize:6},
   data:types.value.map(k=>({name:k,value:(kindSources.value[k]||[]).length||1,selected:kind.value===k,itemStyle:{color:palette[k]}}))}]}))
 /* 实体与关系：横向主干 + 编号连线 */
@@ -96,7 +96,7 @@ const activeRel=ref(0)
 <div v-if="view==='scale'" key="scale" class="pane-swap ovd hero-dark" id="overview-panel-scale" role="tabpanel" aria-labelledby="overview-tab-scale">
 <section class="ovd-hero"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} ${330} C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div>
  <div class="ovd-hero-head"><div><p class="ovd-eyebrow">多源数据总览</p><h2>全领域、多来源的<br/>基础研究数据底座</h2><p class="ovd-hero-lead">汇聚论文、基金、专利、企业、政策等多源数据，持续规范入库与更新</p></div><div class="ovd-hero-meta"><div><strong>{{types.length}}</strong><span>类数据</span></div><div><strong>{{datasets.length}}</strong><span>项来源</span></div><div><strong class="date">{{data.currentInventory.as_of}}</strong><span>统计更新</span></div><a href="#updates" class="ovd-hero-link" @click.prevent="selectView('updates')">查看更新动态 <span aria-hidden="true">→</span></a></div></div>
- <div class="ovd-kpis"><div v-for="d in headline" :key="d.id" class="ovd-kpi" :style="{'--c':d.color}"><span class="ovd-kpi-name">{{d.name}}</span><strong :title="d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
+ <p class="ovd-core-label">核心数据</p><div class="ovd-kpis"><div v-for="d in headline" :key="d.id" class="ovd-kpi" :style="{'--c':d.color}"><span class="ovd-kpi-name">{{d.name}}</span><strong :title="d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
 </section>
 
 <section class="ovd-card ovd-composition"><header class="ovd-card-head"><div><h3>数据构成与来源</h3><p>{{types.length}} 类数据及主要来源规模，点击类别筛选来源</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
@@ -105,16 +105,7 @@ const activeRel=ref(0)
   <a v-for="d in rows" :key="d.id" class="ovd-row" :href="additions.some(item=>item.id===d.id)?undefined:'#source-'+encodeURIComponent(d.id)" :title="shownTitle(d)" :style="{'--c':color(d)}"><span class="ovd-row-name"><i></i>{{d.name}}</span><span class="ovd-row-track"><b :style="{width:width(d)+'%'}"></b></span><strong>{{concise(shownCount(d))}}<small>{{unit(d)}}</small></strong></a></div></div>
 </section>
 
-<section class="ovd-card ovd-network"><header class="ovd-card-head"><div><h3>实体与关系</h3><p>规范库中的核心实体，以及它们之间已建立的连接</p></div></header>
- <div class="ovd-net-stack"><div class="ovd-spine">
-  <svg :viewBox="`0 0 ${SW} ${SH}`" class="ovd-spine-svg" role="img" aria-label="实体与关系">
-   <g class="ovd-links"><path v-for="r in relations" :key="r.n" :d="r.path" :style="{'--c':r.color,strokeWidth:relWidth(r.value)}" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}"/></g>
-   <g v-for="r in relations" :key="'b'+r.n" class="ovd-badge" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}" :style="{'--c':r.color}" @mouseenter="activeRel=r.n" @mouseleave="activeRel=0"><circle :cx="r.bx" :cy="r.by" r="12"/><text :x="r.bx" :y="r.by+4.5">{{r.n}}</text></g>
-  </svg>
-  <div class="ovd-nodes"><div v-for="e in entities" :key="e.id" class="ovd-node" :style="{'--tone':e.color,left:(e.x/SW*100)+'%',top:(e.y/SH*100)+'%'}"><span class="ovd-node-ring"><HomeIcon :name="e.icon"/></span><b>{{e.name}}</b><strong>{{concise(e.value)}}</strong></div></div>
- </div>
- <div class="ovd-rel-cards"><div v-for="r in relations" :key="r.n" class="ovd-rel" :class="{on:activeRel===r.n}" :style="{'--c':r.color}" @mouseenter="activeRel=r.n" @mouseleave="activeRel=0"><em class="ovd-rel-n">{{r.n}}</em><div><span>{{r.name}}</span><strong>{{concise(r.value)}}</strong></div><small>{{r.note}}</small></div></div></div>
-</section>
+
 
 
 </div><div v-else-if="view==='updates'" key="updates" class="pane-swap" id="overview-panel-updates" role="tabpanel" aria-labelledby="overview-tab-updates"><div id="updates"><CatalogPulse/></div></div><div v-else key="sources" class="pane-swap" id="overview-panel-sources" role="tabpanel" aria-labelledby="overview-tab-sources"><DatasetCatalog :data="data" integrated/></div>

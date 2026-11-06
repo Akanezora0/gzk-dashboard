@@ -1,6 +1,5 @@
 <script setup>
 import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
-import {overviewHeadline} from '../helpers/foundationSources'
 import {homeIcons} from '../helpers/homeIcons'
 import HomeIcon from './HomeIcon.vue'
 
@@ -26,7 +25,6 @@ onMounted(()=>{
   targets.forEach(el=>revealObserver.observe(el))
 })
 onBeforeUnmount(()=>{mastheadObserver?.disconnect();revealObserver?.disconnect()})
-const headline=computed(()=>overviewHeadline(props.data))
 
 /* ---------- 首屏主视觉：从一个源点出发，知识沿多条路径扩散到技术、产业与社会 ---------- */
 const ART_W=1200,ART_H=760,OX=70,OY=560
@@ -53,27 +51,13 @@ const chain=[
   {label:'产业应用',sub:'企业、产品与市场',icon:'industry',tone:tones.gold},
   {label:'经济社会价值',sub:'增长、就业与公共服务',icon:'society',tone:tones.teal},
 ]
-const steps=[
-  {num:'01',title:'技术拆解',icon:'split',tone:tones.red,text:'联合领域专家构建技术词表，将领域拆解为技术类别与技术点。'},
-  {num:'02',title:'数据汇聚',icon:'gather',tone:tones.blue,text:'围绕技术点关联基金、论文、专利、企业与政策等多源数据。'},
-  {num:'03',title:'脉络梳理',icon:'trace',tone:tones.plum,text:'结合技术综述与代表成果，梳理技术演进与知识传承。'},
-  {num:'04',title:'价值评估',icon:'assess',tone:tones.teal,text:'抽取典型案例，开展科学、经济、政策与社会多维评估。'},
-]
-const domains=[
-  {to:'/evolution?domain=ai',name:'人工智能',tone:tones.red,title:'从模型架构到技术应用',stats:[['7','大类'],['29','技术组'],['70','技术点']]},
-  {to:'/evolution?domain=lowalt',name:'低空经济',tone:tones.blue,title:'从关键技术到应用场景',stats:[['6','大类'],['33','技术点']]},
-]
-const resourceGroups=[
-  {num:'01',title:'创新链数据',icon:'science',tone:tones.red,items:['基金项目','学术论文','专利','软件著作权'],text:'刻画科研投入、知识成果及其相互联系。',to:'/data?domain=ai&type=fund'},
-  {num:'02',title:'产业链数据',icon:'industry',tone:tones.gold,items:['企业','产品','招聘','经营信息'],text:'追踪技术进入产品、企业与市场的过程。',to:'/data?domain=ai&type=company'},
-  {num:'03',title:'政策链数据',icon:'policy',tone:tones.blue,items:['政策文献','产业新闻','行业报告'],text:'呈现技术发展所处的政策与产业环境。',to:'/data?domain=ai&type=policy'},
-]
-const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'fund',tone:'#e2677f'},{title:'关键成果',text:'方法、论文与专利',icon:'science',tone:'#7aa9de'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#b597dc'},{title:'发展表现',text:'产业与社会影响',icon:'growth',tone:'#e5b86a'}]
+const platformLinks=[['平台简介','https://brain.ruc.edu.cn/jggk/ptjj/index.htm'],['交叉研究','https://brain.ruc.edu.cn/jcyj/index.htm'],['云端平台','https://brain.ruc.edu.cn/ydpt/index.htm'],['学术交流','https://brain.ruc.edu.cn/xsjl/index.htm'],['联系我们','https://brain.ruc.edu.cn/lxwm/index.htm']]
+const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'grant',tone:'#f2c4cc'},{title:'关键成果',text:'方法、论文与专利',icon:'paper',tone:'#f2c4cc'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#f2c4cc'},{title:'发展表现',text:'产业与社会影响',icon:'growth',tone:'#f2c4cc'}]
 const uses=[
-  {num:'01',title:'科学价值',icon:'science',tone:tones.blue,question:'哪些基础研究成为后续创新的源头？',text:'追踪代表成果、引用联系与方法复用，刻画知识积累与技术突破。',tags:['研究贡献','学术影响','技术扩散']},
-  {num:'02',title:'经济效益',icon:'growth',tone:tones.gold,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
+  {num:'01',title:'科学价值',icon:'science',tone:tones.red,question:'哪些基础研究成为后续创新的源头？',text:'追踪代表成果、引用联系与方法复用，刻画知识积累与技术突破。',tags:['研究贡献','学术影响','技术扩散']},
+  {num:'02',title:'经济效益',icon:'growth',tone:tones.red,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
   {num:'03',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究力量与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
-  {num:'04',title:'社会影响',icon:'society',tone:tones.teal,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
+  {num:'04',title:'社会影响',icon:'society',tone:tones.red,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
 ]
 </script>
 
@@ -131,50 +115,25 @@ const uses=[
     </div>
     <div class="home-chain reveal" aria-label="全链条：基金资助、科学研究、技术发展、产业应用、经济社会价值">
       <div class="home-chain-head"><span>基础研究全链条</span><span>从资助投入到经济社会价值</span></div>
-      <div class="home-chain-body">
-      <div class="home-chain-track" aria-hidden="true"><i></i></div>
-      <div class="home-chain-nodes" aria-hidden="true"><i v-for="(c,i) in chain.slice(0,4)" :key="i" :style="{'--c':c.tone}"></i></div>
-      <ol class="home-chain-stages">
-        <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i,'--tone':c.tone}"><span class="home-chain-icon"><HomeIcon :name="c.icon"/></span><em>0{{i+1}}</em><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
+      <ol class="home-flow">
+        <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i}"><em>{{String(i+1).padStart(2,'0')}}</em><i class="home-flow-dot" aria-hidden="true"></i><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
       </ol>
-      </div>
-      <div class="home-chain-brackets">
-        <div class="bracket innovation"><span><i></i>创新链</span></div>
-        <div class="bracket industry"><span><i></i>产业链</span></div>
-        <div class="bracket policy"><span><i></i>政策链 · 贯穿全过程</span></div>
+      <div class="home-flow-chains">
+        <span class="innovation">创新链</span><span class="industry">产业链</span><span class="policy">政策链贯穿全过程</span>
       </div>
     </div>
   </section>
 
   <section id="approach" class="home-method-section">
     <div class="home-wrap home-section">
-      <div class="home-section-heading reveal"><div><p class="home-eyebrow">研究框架</p><h2>以技术点为单元，<br/>组织全链条数据。</h2></div><p>以共同技术词表为纲，将领域拆解为可研究的技术点；围绕技术点汇聚多源数据、梳理发展脉络，进而开展案例研究与价值评估。</p></div>
-      <div class="home-steps">
-        <article v-for="(step,i) in steps" :key="step.num" class="reveal" :style="{'--i':i,'--tone':step.tone}">
-          <div class="home-step-head"><span class="home-step-icon"><HomeIcon :name="step.icon"/></span><span class="home-step-num">{{step.num}}</span></div>
-          <h3>{{step.title}}</h3><p>{{step.text}}</p>
-        </article>
+      <div class="home-section-heading reveal"><div><p class="home-eyebrow">研究框架</p><h2>以技术主题连接<br/>科研供给与产业需求。</h2></div><p>以共同技术词表组织技术主题，向上追溯科研支撑，向下追踪产品与产业应用，把分散的数据连成可核查的发展脉络。</p></div>
+      <div class="home-frame reveal">
+        <div class="home-frame-row supply"><span class="home-frame-label"><b>科研供给</b><small>向上追溯科研支撑</small></span><ul><li v-for="t in ['基金资助','论文成果','专利技术']" :key="t">{{t}}</li></ul></div>
+        <div class="home-frame-link up" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="home-frame-core"><span class="home-frame-label"><b>技术主题</b><small>共同技术词表 · 技术点</small></span><p>以技术点为单元，汇聚并对齐多源数据</p></div>
+        <div class="home-frame-link down" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="home-frame-row demand"><span class="home-frame-label"><b>产业需求</b><small>向下追踪产品与产业应用</small></span><ul><li v-for="t in ['企业主体','产品与服务','产业应用']" :key="t">{{t}}</li></ul></div>
       </div>
-      <div class="home-subhead reveal"><span>示范领域</span></div>
-      <div class="home-domains">
-        <router-link v-for="d in domains" :key="d.name" :to="d.to" class="reveal" :style="{'--tone':d.tone}">
-          <div><small>{{d.name}}</small><h3>{{d.title}}</h3></div>
-          <dl><div v-for="s in d.stats" :key="s[1]"><dt>{{s[0]}}</dt><dd>{{s[1]}}</dd></div></dl>
-          <span aria-hidden="true">↗</span>
-        </router-link>
-      </div>
-    </div>
-  </section>
-
-  <section id="resources" class="home-wrap home-section">
-    <div class="home-section-heading reveal"><div><p class="home-eyebrow">数据基础</p><h2>汇聚多源数据，<br/>构建统一研究底座。</h2></div><router-link class="home-text-link" to="/overview">查看数据总览 <span aria-hidden="true">→</span></router-link></div>
-    <div v-if="headline.length" class="home-data-strip reveal"><div v-for="item in headline" :key="item.id"><span>{{item.name}}</span><strong>{{item.value}}<small>{{item.unit}}</small></strong></div></div>
-    <div class="home-resources">
-      <router-link v-for="group in resourceGroups" :key="group.num" :to="group.to" class="reveal" :style="{'--tone':group.tone}">
-        <div class="home-resource-top"><span class="home-resource-icon"><HomeIcon :name="group.icon"/></span><span aria-hidden="true">↗</span></div>
-        <h3>{{group.title}}</h3><p>{{group.text}}</p>
-        <ul><li v-for="item in group.items" :key="item">{{item}}</li></ul>
-      </router-link>
     </div>
   </section>
 
@@ -193,6 +152,29 @@ const uses=[
       <h3>{{use.title}}</h3><h4>{{use.question}}</h4><p>{{use.text}}</p>
       <ul><li v-for="t in use.tags" :key="t">{{t}}</li></ul>
     </article></div>
+  </section>
+
+  <section class="home-platform" aria-labelledby="home-platform-title">
+    <div class="home-platform-art" aria-hidden="true"><svg viewBox="0 0 1200 420" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 18" :key="i" :d="`M ${-80+i*5} 460 C ${300+i*14} ${340-i*12}, ${620+i*10} ${60+i*10}, 1280 ${-40+i*24}`"/></svg></div>
+    <div class="home-wrap home-platform-content">
+      <div class="home-platform-intro">
+        <p class="home-eyebrow light">建设平台</p>
+        <h2 id="home-platform-title">中国人民大学<br/>国家治理大数据和人工智能创新平台</h2>
+        <p>平台以构建“智慧治理生态系统”为使命，以“整体提升社会科学服务国家治理能力”为目标，依托大数据与人工智能技术，汇聚交叉研究团队与子实验室，连接政府、科研机构、企业与公众，开展学术研究、应用研究与政策咨询。</p>
+        <a class="home-cta light" href="https://brain.ruc.edu.cn" target="_blank" rel="noopener">了解更多 <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="home-platform-links">
+        <div><h3>平台栏目</h3><ul>
+          <li v-for="[label,href] in platformLinks" :key="label"><a :href="href" target="_blank" rel="noopener">{{label}}</a></li>
+        </ul></div>
+        <div><h3>联系方式</h3><ul class="contact">
+          <li><small>地址</small>中国人民大学公共教学一楼三层 1301</li>
+          <li><small>邮箱</small><a href="mailto:brain@ruc.edu.cn">brain@ruc.edu.cn</a></li>
+          <li><small>官网</small><a href="https://brain.ruc.edu.cn" target="_blank" rel="noopener">brain.ruc.edu.cn</a></li>
+        </ul></div>
+      </div>
+    </div>
+    <div class="home-wrap home-platform-bottom"><span>基础研究数据与评估系统</span><span>国家自然科学基金委员会专项项目 · 基础研究全链条数据系统构建与集成</span></div>
   </section>
 </div>
 </template>
