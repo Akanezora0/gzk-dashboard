@@ -60,8 +60,10 @@
 .project-home .home-cta span{font-size:20px;font-weight:400;line-height:1}
 .project-home .home-cta.primary{color:#fff;background:#a21535;border-color:#a21535}
 .project-home .home-cta.primary:hover{background:#86112a;border-color:#86112a}
-.home-hero .home-cta.primary{background:#fffaf5;color:#7d1730;border-color:#fffaf5}
-.home-hero .home-cta.primary:hover{background:#f3e6e0}
+.home-hero .home-cta.light{background:#fffaf5;color:#8f1630;border-color:#fffaf5}
+.home-hero .home-cta.light:hover{background:#f3e6e0;border-color:#f3e6e0}
+.home-hero .home-cta.red{background:#a8183a;color:#fff;border-color:#ffffff38;box-shadow:0 14px 28px -18px #000}
+.home-hero .home-cta.red:hover{background:#bd1f44;border-color:#ffffff60}
 .project-home .home-cta.outline{border-color:#f0c9cf70;color:#fbecef;background:transparent}
 .project-home .home-cta.outline:hover{background:#ffffff14;border-color:#f3d5da}
 .home-hero-bottom{width:100%;margin-top:auto;padding:20px 0 22px;border-top:1px solid #ffffff26;display:flex;justify-content:space-between;gap:20px;color:#e2c3c9;font-size:13px;letter-spacing:1px}
