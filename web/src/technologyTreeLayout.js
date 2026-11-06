@@ -40,17 +40,30 @@ export function relationCurve(e){
 
 /* ===== 横向技术演进树：横轴为年份，七条泳道为技术大类 ===== */
 export const laneOrder=['AI1','AI2','AI3','AI4','AI5','AI6','AI7']
-export function horizontalLayout(tree,chronology){
+export function horizontalLayout(tree,chronology,opts={}){
  const cats=tree.nodes.filter(n=>n.node_type==='category'),events=chronology?.events||[]
  const yk=y=>Math.max(2016,Number(y))
  const years=[...new Set(events.map(e=>yk(e.year)))].sort((a,b)=>a-b)
- // 紧凑排布：同一年份同一大类较多时，改为两行多列，让七条泳道尽量落在一屏内
- const left=180,nodeW=164,nodeH=34,gapX=10,gapY=6,padX=26,padY=12,minLane=54,axisH=42
+ // 普通模式紧凑排布（同年同类较多时两行多列）；全屏模式按可用高度增加行数并拉伸泳道
+ const full=!!opts.full
+ const left=180,nodeW=164,nodeH=full?40:34,gapX=10,gapY=full?8:6,padX=26,padY=full?14:12,minLane=54,axisH=42
  const cell={};events.forEach(e=>{const k=e.category_id+'|'+yk(e.year);(cell[k]=cell[k]||[]).push(e)})
  const most=id=>Math.max(1,...years.map(yr=>(cell[id+'|'+yr]||[]).length))
+ const laneH=R=>Math.max(minLane,R*nodeH+(R-1)*gapY+padY*2)
  const rowsOf=Object.fromEntries(laneOrder.map(id=>[id,most(id)>=3?2:1]))
+ const total=()=>laneOrder.reduce((s,id)=>s+laneH(rowsOf[id]),0)+axisH
+ if(full&&opts.availH){
+  let grew=true
+  while(grew){grew=false
+   for(const id of [...laneOrder].sort((a,b)=>most(b)/rowsOf[b]-most(a)/rowsOf[a])){
+    if(most(id)<=rowsOf[id])continue
+    rowsOf[id]++;if(total()<=opts.availH){grew=true;break}rowsOf[id]--
+   }
+  }
+ }
+ const extra=full&&opts.availH?Math.max(0,(opts.availH-total())/laneOrder.length):0
  const lanes=[];let y=0
- laneOrder.forEach(id=>{const R=rowsOf[id],h=Math.max(minLane,R*nodeH+(R-1)*gapY+padY*2);lanes.push({...cats.find(c=>c.id===id),id,y,h,rows:R,tone:treeColors[id]});y+=h})
+ laneOrder.forEach(id=>{const R=rowsOf[id],h=laneH(R)+extra;lanes.push({...cats.find(c=>c.id===id),id,y,h,rows:R,tone:treeColors[id]});y+=h})
  const cols=[];let x=left
  years.forEach(yr=>{const c=Math.max(1,...laneOrder.map(id=>Math.ceil((cell[id+'|'+yr]||[]).length/rowsOf[id])));const w=c*nodeW+(c-1)*gapX+padX*2;cols.push({year:yr,x,w});x+=w})
  const height=y+axisH,width=x+40
@@ -63,11 +76,11 @@ export function horizontalLayout(tree,chronology){
  }))
  const byId=new Map(points.map(p=>[p.id,p]))
  const edges=(chronology?.edges||[]).map(e=>({...e,from:byId.get(e.source),to:byId.get(e.target)})).filter(e=>e.from&&e.to)
- return {width,height,left,axisH,years,cols,lanes,points,edges}
+ return {width,height,left,axisH,years,cols,lanes,points,edges,full}
 }
 export function horizontalCurve(e){
  const a=e.from,b=e.to
- if(a.col===b.col&&Math.abs(a.x-b.x)<a.w){const x=a.x+a.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${x} ${y1} C ${x+22} ${y1}, ${x+22} ${y2}, ${x} ${y2}`}
+ if(a.col===b.col){const r1=a.x+a.w,r2=b.x+b.w,mx=Math.max(r1,r2)+24,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${r1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${r2} ${y2}`}
  const fwd=b.x>=a.x,x1=fwd?a.x+a.w:a.x,x2=fwd?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2,dx=Math.max(36,Math.abs(x2-x1)*.45)*(fwd?1:-1)
  return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`
 }

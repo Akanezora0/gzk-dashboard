@@ -6,7 +6,8 @@ import '../evolution-tree.css'
 const props=defineProps({tree:Object,chronology:Object,entries:Array,selected:String,selectedEvent:String})
 const emit=defineEmits(['select','survey'])
 const shell=ref(null),scroller=ref(null),hover=ref(''),highlight=ref(''),detailsOpen=ref(false),search=ref('')
-const layout=computed(()=>horizontalLayout(props.tree,props.chronology))
+const isFull=ref(false),availH=ref(0)
+const layout=computed(()=>horizontalLayout(props.tree,props.chronology,{full:isFull.value,availH:availH.value}))
 const yearLabel=y=>y===2016?'≤ 2016':String(y)
 
 /* ---------- 选择、详情与悬停 ---------- */
@@ -43,8 +44,18 @@ function miniDown(e){stop();dragging=true;miniJump(e);mini.value.setPointerCaptu
 function miniMove(e){if(dragging)miniJump(e)}
 function miniUp(){dragging=false}
 let ro
-onMounted(()=>{document.addEventListener('pointerdown',onOutsidePointer,true);document.addEventListener('keydown',onDetailKey);ro=new ResizeObserver(measure);scroller.value&&ro.observe(scroller.value);measure()})
-onBeforeUnmount(()=>{document.removeEventListener('pointerdown',onOutsidePointer,true);document.removeEventListener('keydown',onDetailKey);ro?.disconnect();stop()})
+function onResize(){if(isFull.value)onFullChange()}
+/* 全屏：按屏幕可用高度重新排布，泳道与节点适当拉高 */
+async function onFullChange(){
+ const on=document.fullscreenElement===shell.value
+ if(!on){isFull.value=false;availH.value=0;await nextTick();measure();return}
+ isFull.value=true;await nextTick()
+ const area=shell.value.querySelector('.tree-canvas-area'),rest=[...shell.value.querySelectorAll('.h-overview,.h-hint')].reduce((s,el)=>s+el.offsetHeight,0)
+ availH.value=Math.max(420,window.innerHeight-area.getBoundingClientRect().top-rest-40)
+ await nextTick();measure()
+}
+onMounted(()=>{document.addEventListener('fullscreenchange',onFullChange);window.addEventListener('resize',onResize);document.addEventListener('pointerdown',onOutsidePointer,true);document.addEventListener('keydown',onDetailKey);ro=new ResizeObserver(measure);scroller.value&&ro.observe(scroller.value);measure()})
+onBeforeUnmount(()=>{document.removeEventListener('fullscreenchange',onFullChange);window.removeEventListener('resize',onResize);document.removeEventListener('pointerdown',onOutsidePointer,true);document.removeEventListener('keydown',onDetailKey);ro?.disconnect();stop()})
 
 /* ---------- 按年播放 ---------- */
 const lastIndex=computed(()=>layout.value.years.length-1)
@@ -56,7 +67,7 @@ const isFuture=p=>shownYear.value!==null&&p.yearKey>shownYear.value
 const isCurrent=p=>shownYear.value!==null&&p.yearKey===shownYear.value
 function goYear(i){shownIndex.value=Math.max(0,Math.min(lastIndex.value,i));const L=layout.value;const c=L.cols[shownIndex.value];scrollToX(c.x+c.w/2)}
 function step(){if(shownIndex.value>=lastIndex.value){stop();return}goYear(shownIndex.value+1)}
-function play(){if(playing.value){stop();return}if(shownIndex.value<0||shownIndex.value>=lastIndex.value)goYear(0);playing.value=true;timer=setInterval(step,reduced()?600:1700)}
+function play(){if(playing.value){stop();return}if(shownIndex.value<0||shownIndex.value>=lastIndex.value)goYear(0);playing.value=true;timer=setInterval(step,reduced()?600:1000)}
 function stop(){playing.value=false;clearInterval(timer)}
 function prev(){stop();goYear((shownIndex.value<0?lastIndex.value:shownIndex.value)-1)}
 function next(){stop();goYear((shownIndex.value<0?-1:shownIndex.value)+1)}
@@ -67,7 +78,7 @@ function pickYear(i){stop();goYear(i)}
 <template><div ref="shell" class="evolution-tree h-tree">
 <div class="tree-toolbar">
  <div class="tree-legend"><button v-for="l in layout.lanes" :key="l.id" :class="{active:highlight===l.id}" :style="{'--branch-color':l.tone}" @click="highlight=highlight===l.id?'':l.id"><i></i>{{l.label}}</button></div>
- <div class="tree-tools"><button class="tree-play" :class="{on:playing}" @click="play">{{playing?'❚❚ 暂停':'▶ 按年播放'}}</button><button @click="prev" aria-label="上一年">‹ 上一年</button><button @click="next" aria-label="下一年">下一年 ›</button><button @click="showAll">全部显示</button><label><input v-model="search" placeholder="定位技术关键词" aria-label="定位技术关键词" @keydown.enter="locate"/><button @click="locate">定位</button></label><button @click="fullscreen">全屏</button></div>
+ <div class="tree-tools"><button class="tree-play" :class="{on:playing}" @click="play">{{playing?'❚❚ 暂停':'▶ 按年播放'}}</button><button @click="prev" aria-label="上一年">‹ 上一年</button><button @click="next" aria-label="下一年">下一年 ›</button><button @click="showAll">全部显示</button><label><input v-model="search" placeholder="定位技术关键词" aria-label="定位技术关键词" @keydown.enter="locate"/><button @click="locate">定位</button></label><button @click="fullscreen">{{isFull?'退出全屏':'全屏'}}</button></div>
 </div>
 <div class="tree-canvas-area">
  <div class="h-lanes" aria-hidden="true" :style="{height:layout.height-layout.axisH+'px'}"><div v-for="l in layout.lanes" :key="l.id" :style="{height:l.h+'px','--c':l.tone}"><span>{{l.label}}</span></div></div>
@@ -81,7 +92,7 @@ function pickYear(i){stop();goYear(i)}
   <g class="tree-evidence-edges"><path v-for="e in layout.edges" :key="e.id" :d="horizontalCurve(e)" fill="none" :stroke="e.from.tone" :stroke-width="hover&&(e.source===hover||e.target===hover)?2.8:1.5" :stroke-dasharray="e.kind==='shared_work'?'3 5':null" :opacity="isFuture(e.to)||isFuture(e.from)?.06:hover?(e.source===hover||e.target===hover?.92:.06):.45" class="h-edge"><title>{{e.from.topic_label}} → {{e.to.topic_label}}：{{e.label}}</title></path></g>
   <g v-for="p in layout.points" :key="p.id" :id="'tree-'+p.id" class="tree-topic-node h-node" :class="{selected:selectedPoint?.id===p.id,related:hover&&linked.has(p.id),future:isFuture(p),current:isCurrent(p)}" :opacity="isFuture(p)?.18:(highlight&&highlight!==p.category_id)||(search&&!matches.has(p.id))?.25:1" tabindex="0" role="button" :aria-expanded="detailsOpen&&selectedPoint?.id===p.id" :aria-label="`${p.year} ${p.topic_label} ${p.label}`" @mouseenter="hover=p.id" @mouseleave="hover=''" @click="choose(p)" @keydown.enter="choose(p)" @keydown.space.prevent="choose(p)">
    <rect :x="p.x" :y="p.y" :width="p.w" :height="p.h" rx="3" fill="#fff" :stroke="p.tone" :stroke-width="selectedPoint?.id===p.id||isCurrent(p)?2:1"/><rect :x="p.x" :y="p.y" :width="p.w" :height="p.h" rx="3" :fill="p.tone" :opacity="selectedPoint?.id===p.id?.14:.04"/><rect :x="p.x" :y="p.y" width="3" :height="p.h" :fill="p.tone"/>
-   <text :x="p.x+10" :y="p.y+15" font-size="12.5" font-weight="700" fill="#2f353b">{{nodeTitle(p)}}</text><text :x="p.x+10" :y="p.y+28" font-size="10.5" :fill="p.tone">{{p.year}} · {{nodeSub(p)}}</text><title>{{p.topic_label}}\n{{p.year}} · {{p.title}}</title></g>
+   <text :x="p.x+10" :y="p.y+p.h/2-(layout.full?3:2)" :font-size="layout.full?13.5:12.5" font-weight="700" fill="#2f353b">{{nodeTitle(p)}}</text><text :x="p.x+10" :y="p.y+p.h/2+(layout.full?12:11)" :font-size="layout.full?11.5:10.5" :fill="p.tone">{{p.year}} · {{nodeSub(p)}}</text><title>{{p.topic_label}}\n{{p.year}} · {{p.title}}</title></g>
  </svg></div>
  <TechNodeDetail v-if="detailsOpen&&selectedPoint" :point="selectedPoint" :tone="selectedPoint.tone" :tree="tree" :chronology="chronology" :entries="entries" @close="closeDetails" @survey="openSelectedSurvey"/>
 </div>
