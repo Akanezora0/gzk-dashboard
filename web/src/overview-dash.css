@@ -67,8 +67,8 @@
 .ovd-badge text{text-anchor:middle;font-size:13px;font-weight:700;fill:var(--c)}
 .ovd-badge.on circle{fill:var(--c)}.ovd-badge.on text{fill:#fff}
 .ovd-badge.dim{opacity:.35}
-.ovd-nodes{position:absolute;left:0;right:0;top:calc(118/268*100% - 46px);height:0}
-.ovd-node{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;width:120px;text-align:center}
+.ovd-nodes{position:absolute;inset:0}
+.ovd-node{position:absolute;transform:translate(-50%,-46px);display:flex;flex-direction:column;align-items:center;width:120px;text-align:center}
 .ovd-node-ring{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;border:2px solid transparent;background:radial-gradient(circle at 34% 28%,#fff,color-mix(in srgb,var(--tone) 6%,#fff)) padding-box,conic-gradient(from 210deg,var(--tone),color-mix(in srgb,var(--tone) 15%,#fff) 45%,var(--tone)) border-box;box-shadow:0 16px 30px -20px var(--tone),0 0 0 7px #fff}
 .ovd-node-ring .home-icon{width:40px;height:40px}
 .ovd-node b{margin-top:12px;font-size:18px;color:#2f353b}
@@ -99,12 +99,14 @@
  .ovd-kpi{padding:22px 14px 20px}
  .ovd-kpi:before{left:14px}
  .ovd-row{grid-template-columns:110px 1fr 80px;gap:10px}
- .ovd-node-ring{width:52px;height:52px;box-shadow:0 0 0 4px #fff}
- .ovd-node-ring .home-icon{width:24px;height:24px}
- .ovd-nodes{top:calc(118/268*100% - 26px)}
- .ovd-node{width:64px}
- .ovd-node b{font-size:12px;margin-top:6px}
- .ovd-node strong{font-size:11px}
+ .ovd-node-ring{width:38px;height:38px;box-shadow:0 0 0 3px #fff}
+ .ovd-node-ring .home-icon{width:18px;height:18px}
+ .ovd-node{transform:translate(-50%,-19px);width:60px}
+ .ovd-node b{font-size:11px;margin-top:3px;line-height:1.3}
+ .ovd-node strong{display:none}
+ .ovd-net-stack .ovd-spine{padding:0 0 18px}
+ .ovd-net-stack .ovd-nodes{left:0;right:0}
+ .ovd-badge text{font-size:16px}
 }
 
 .ovd-comp-grid{align-items:center}
@@ -112,5 +114,6 @@
 .ovd-net-stack{display:grid;gap:22px}
 .ovd-net-stack .ovd-spine{padding:0 4%}
 .ovd-net-stack .ovd-nodes{left:4%;right:4%}
+.ovd-net-stack .ovd-spine{max-width:1000px;width:100%;justify-self:center;box-sizing:border-box}
 .ovd-net-stack .ovd-rel-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media(max-width:900px){.ovd-net-stack .ovd-rel-cards{grid-template-columns:1fr}}

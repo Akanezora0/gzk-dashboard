@@ -68,21 +68,25 @@ const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name
  series:[{type:'pie',radius:['48%','74%'],center:['50%','50%'],startAngle:96,selectedMode:'single',selectedOffset:5,label:{show:true,formatter:'{b}',fontSize:15,color:'#4a5566',fontWeight:650},labelLine:{length:10,length2:8,lineStyle:{color:'#c3c9d2'}},itemStyle:{borderColor:'#fff',borderWidth:4,borderRadius:4},emphasis:{scaleSize:6},
   data:types.value.map(k=>({name:k,value:(kindSources.value[k]||[]).length||1,selected:kind.value===k,itemStyle:{color:palette[k]}}))}]}))
 /* 实体与关系：横向主干 + 编号连线 */
+/* 布局按阅读顺序：上方回环为 1，第一行 2、3，其下 4、5，底部 6 */
+const SW=800,SH=400,NR=40
 const entities=computed(()=>{const c=cc.value;return [
- {id:'org',name:'机构',icon:'org',value:c.organization,unit:'',color:'#23806e',x:80},
- {id:'person',name:'人员',icon:'person',value:c.person,unit:'',color:'#6f4a94',x:240},
- {id:'fund',name:'基金项目',icon:'grant',value:c.project,unit:'',color:'#b2772a',x:400},
- {id:'paper',name:'论文',icon:'paper',value:c.papers,unit:'',color:'#a21535',x:560},
- {id:'patent',name:'专利',icon:'patent',value:c.national_patents,unit:'',color:'#2c64a0',x:720},
+ {id:'patent',name:'专利',icon:'patent',value:c.national_patents,color:'#2c64a0',x:90,y:125},
+ {id:'paper',name:'论文',icon:'paper',value:c.papers,color:'#a21535',x:300,y:125},
+ {id:'org',name:'机构',icon:'org',value:c.organization,color:'#23806e',x:540,y:125},
+ {id:'person',name:'人员',icon:'person',value:c.person,color:'#6f4a94',x:740,y:125},
+ {id:'fund',name:'基金项目',icon:'grant',value:c.project,color:'#b2772a',x:515,y:285},
 ]})
-const NY=118
-const relations=computed(()=>{const c=cc.value;const X=Object.fromEntries(entities.value.map(e=>[e.id,e.x]));return [
- {n:1,name:'论文引用',value:c.citation_edge,note:'论文之间的引用连接',color:'#a21535',path:`M ${X.paper-26} ${NY-38} C ${X.paper-60} ${NY-120}, ${X.paper+60} ${NY-120}, ${X.paper+26} ${NY-38}`,bx:X.paper,by:NY-103},
- {n:2,name:'专利—论文来源记录',value:c.cfrr_patent_paper_evidence,note:'专利引用科学文献的记录',color:'#2c64a0',path:`M ${X.paper+46} ${NY} L ${X.patent-46} ${NY}`,bx:(X.paper+X.patent)/2,by:NY},
- {n:3,name:'人员—机构',value:c.person_organization_observation,note:'研究人员的机构归属观察',color:'#23806e',path:`M ${X.org+46} ${NY} L ${X.person-46} ${NY}`,bx:(X.org+X.person)/2,by:NY},
- {n:4,name:'基金—论文',value:c.project_paper,note:'基金项目与资助成果的连接',color:'#b2772a',path:`M ${X.fund+46} ${NY} L ${X.paper-46} ${NY}`,bx:(X.fund+X.paper)/2,by:NY},
- {n:5,name:'基金—人员',value:c.project_person,note:'项目负责人与成员记录',color:'#6f4a94',path:`M ${X.person+46} ${NY} L ${X.fund-46} ${NY}`,bx:(X.person+X.fund)/2,by:NY},
- {n:6,name:'基金—专利',value:c.project_patent,note:'基金项目与专利成果的连接',color:'#5d6f86',path:`M ${X.fund} ${NY+92} C ${X.fund+20} ${NY+146}, ${X.patent-20} ${NY+146}, ${X.patent} ${NY+92}`,bx:(X.fund+X.patent)/2,by:NY+132},
+const cubic=(p)=>{const t=.5,u=.5;return [u*u*u*p[0]+3*u*u*t*p[2]+3*u*t*t*p[4]+t*t*t*p[6],u*u*u*p[1]+3*u*u*t*p[3]+3*u*t*t*p[5]+t*t*t*p[7]]}
+const curve=(p)=>{const [bx,by]=cubic(p);return {path:`M ${p[0]} ${p[1]} C ${p[2]} ${p[3]}, ${p[4]} ${p[5]}, ${p[6]} ${p[7]}`,bx,by}}
+const line=(x1,y1,x2,y2)=>({path:`M ${x1} ${y1} L ${x2} ${y2}`,bx:(x1+x2)/2,by:(y1+y2)/2})
+const relations=computed(()=>{const c=cc.value;const E=Object.fromEntries(entities.value.map(e=>[e.id,e]));const P=E.paper,T=E.patent,O=E.org,H=E.person,F=E.fund;return [
+ {n:1,name:'论文引用',value:c.citation_edge,note:'论文之间的引用连接',color:'#a21535',...curve([P.x-20,P.y-28,P.x-62,P.y-118,P.x+62,P.y-118,P.x+20,P.y-28])},
+ {n:2,name:'专利—论文来源记录',value:c.cfrr_patent_paper_evidence,note:'专利引用科学文献的记录',color:'#2c64a0',...line(T.x+NR,T.y,P.x-NR,P.y)},
+ {n:3,name:'人员—机构',value:c.person_organization_observation,note:'研究人员的机构归属观察',color:'#23806e',...line(O.x+NR,O.y,H.x-NR,H.y)},
+ {n:4,name:'基金—论文',value:c.project_paper,note:'基金项目与资助成果的连接',color:'#b2772a',...curve([P.x+NR,P.y,P.x+120,P.y,F.x-45,F.y-105,F.x-24,F.y-24])},
+ {n:5,name:'基金—人员',value:c.project_person,note:'项目负责人与成员记录',color:'#6f4a94',...curve([H.x-26,H.y+22,H.x-90,H.y+70,F.x+75,F.y-75,F.x+24,F.y-24])},
+ {n:6,name:'基金—专利',value:c.project_patent,note:'基金项目与专利成果的连接',color:'#5d6f86',...curve([T.x,T.y+112,T.x,T.y+205,F.x-120,F.y+60,F.x-NR,F.y])},
 ]})
 const relWidth=v=>1.2+Math.log10(Math.max(10,v||10))/2
 const activeRel=ref(0)
@@ -103,11 +107,11 @@ const activeRel=ref(0)
 
 <section class="ovd-card ovd-network"><header class="ovd-card-head"><div><h3>实体与关系</h3><p>规范库中的核心实体，以及它们之间已建立的连接</p></div></header>
  <div class="ovd-net-stack"><div class="ovd-spine">
-  <svg viewBox="0 0 800 268" class="ovd-spine-svg" role="img" aria-label="实体与关系">
+  <svg :viewBox="`0 0 ${SW} ${SH}`" class="ovd-spine-svg" role="img" aria-label="实体与关系">
    <g class="ovd-links"><path v-for="r in relations" :key="r.n" :d="r.path" :style="{'--c':r.color,strokeWidth:relWidth(r.value)}" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}"/></g>
    <g v-for="r in relations" :key="'b'+r.n" class="ovd-badge" :class="{on:activeRel===r.n,dim:activeRel&&activeRel!==r.n}" :style="{'--c':r.color}" @mouseenter="activeRel=r.n" @mouseleave="activeRel=0"><circle :cx="r.bx" :cy="r.by" r="12"/><text :x="r.bx" :y="r.by+4.5">{{r.n}}</text></g>
   </svg>
-  <div class="ovd-nodes"><div v-for="e in entities" :key="e.id" class="ovd-node" :style="{'--tone':e.color,left:(e.x/800*100)+'%'}"><span class="ovd-node-ring"><HomeIcon :name="e.icon"/></span><b>{{e.name}}</b><strong>{{concise(e.value)}}</strong></div></div>
+  <div class="ovd-nodes"><div v-for="e in entities" :key="e.id" class="ovd-node" :style="{'--tone':e.color,left:(e.x/SW*100)+'%',top:(e.y/SH*100)+'%'}"><span class="ovd-node-ring"><HomeIcon :name="e.icon"/></span><b>{{e.name}}</b><strong>{{concise(e.value)}}</strong></div></div>
  </div>
  <div class="ovd-rel-cards"><div v-for="r in relations" :key="r.n" class="ovd-rel" :class="{on:activeRel===r.n}" :style="{'--c':r.color}" @mouseenter="activeRel=r.n" @mouseleave="activeRel=0"><em class="ovd-rel-n">{{r.n}}</em><div><span>{{r.name}}</span><strong>{{concise(r.value)}}</strong></div><small>{{r.note}}</small></div></div></div>
 </section>
