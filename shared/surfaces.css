@@ -34,7 +34,7 @@
 
 /* ---------- 卡片 ---------- */
 .workspace :is(.process-cards>article,.evidence-compact-metrics>button,.fund-dimensions>article,.fund-kpis>article,.ai-highlight,.ai-kpi-strip>article,.topic-card,.case-pending,.rs-scope-card,.rs-keys>div,.rs-stay,.chain-cards>button,.kpi,.flow-node),
-.project-home :is(.home-domains>a,.home-resources>a),
+.project-home :is(.home-domains>a,.home-resources>a,.home-steps>article,.home-evaluation-grid>article),
 .lowalt-embed :is(.highlight-chip,.kpi-strip>*,.related-card,.layer-card,.link-card,.nav-hint,.pipe-card-inner,.placeholder-inner),
 .board>article.tile{
  --surface-tone:var(--tone,var(--surface-red));
@@ -45,11 +45,11 @@
  background-repeat:no-repeat!important;
  background-position:0 0!important;
  background-size:0 2px!important;
- transition:transform .45s var(--surface-ease),box-shadow .45s var(--surface-ease),border-color .3s,background-size .5s var(--surface-ease),background-color .2s,color .2s!important;
+ transition:transform .45s var(--surface-ease),box-shadow .45s var(--surface-ease),border-color .3s,background-size .5s var(--surface-ease),background-color .2s,color .2s,opacity .8s var(--surface-ease)!important;
 }
 .workspace .case-pending{--tone:#b8873d;background-color:#fff!important}
 .workspace :is(.process-cards>article,.evidence-compact-metrics>button,.fund-dimensions>article,.fund-kpis>article,.ai-highlight,.ai-kpi-strip>article,.topic-card,.case-pending,.rs-scope-card,.rs-keys>div,.rs-stay,.chain-cards>button,.kpi,.flow-node):hover,
-.project-home :is(.home-domains>a,.home-resources>a):hover,
+.project-home :is(.home-domains>a,.home-resources>a,.home-steps>article,.home-evaluation-grid>article):hover,
 .lowalt-embed :is(.highlight-chip,.kpi-strip>*,.related-card,.layer-card,.link-card,.nav-hint,.pipe-card-inner,.placeholder-inner):hover,
 .lowalt-embed .pipe-card:is(:hover,.active) .pipe-card-inner,
 .board>article.tile:hover{
