@@ -110,4 +110,4 @@
 .ovd-net-stack .ovd-spine{padding:0 4%}
 .ovd-net-stack .ovd-nodes{left:4%;right:4%}
 .ovd-net-stack .ovd-rel-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-@media(max-width:900px){.ovd-net-stack .ovd-rel-cards{grid-template-columns:1fr}
+@media(max-width:900px){.ovd-net-stack .ovd-rel-cards{grid-template-columns:1fr}}
