@@ -1,6 +1,7 @@
 <script setup>
 import {computed,ref,onMounted,onBeforeUnmount,nextTick} from 'vue'
 import TechNodeDetail from './TechNodeDetail.vue'
+import {milestoneStories} from '../helpers/milestoneStories'
 const props=defineProps({tree:Object,chronology:Object,entries:Array})
 const emit=defineEmits(['survey'])
 
@@ -17,7 +18,7 @@ const picks=[
  ['deepseekr1_2025','DeepSeek-R1','强化学习驱动推理'],
 ]
 const byId=computed(()=>new Map((props.chronology?.events||[]).map(e=>[e.id,e])))
-const items=computed(()=>picks.map(([id,name,note])=>({ev:byId.value.get(id),name,note})).filter(i=>i.ev).sort((a,b)=>String(a.ev.first_public_date||a.ev.year).localeCompare(String(b.ev.first_public_date||b.ev.year))))
+const items=computed(()=>picks.map(([id,name,note])=>({ev:byId.value.get(id),name,note,story:milestoneStories[id]})).filter(i=>i.ev).sort((a,b)=>String(a.ev.first_public_date||a.ev.year).localeCompare(String(b.ev.first_public_date||b.ev.year))))
 const entry=ev=>props.entries?.find(e=>e.topic_id===ev.topic_id&&e.route==='B')
 
 /* 配色：约每两年一种主色（红 → 金 → 青 → 蓝 → 紫），相邻主色之间平滑过渡 */
@@ -57,19 +58,35 @@ const layout=computed(()=>{
  return {years:marks,pts,ax0,ax1,stops,end:tone(last+1)}
 })
 
+/* 悬停介绍：停留片刻后在卡片旁弹出关键创新与影响 */
+const root=ref(null),peek=ref(null)
+let peekTimer
+const catLabel=id=>props.tree?.nodes.find(n=>n.id===id)?.label||''
+function hoverIn(p,e){
+ clearTimeout(peekTimer);if(!p.story)return
+ const card=e.currentTarget
+ peekTimer=setTimeout(()=>{
+  if(selected.value||!root.value)return
+  const r=card.getBoundingClientRect(),o=root.value.getBoundingClientRect(),PW=316,gap=14
+  const right=r.right+gap+PW<=o.right+8
+  peek.value={p,left:right?r.right-o.left+gap:r.left-o.left-gap-PW,top:r.top-o.top+r.height/2,side:right?'right':'left'}
+ },e.type==='focusin'?0:320)
+}
+function hoverOut(){clearTimeout(peekTimer);peek.value=null}
+
 /* 详情卡片 */
 const selected=ref(null)
-function choose(p){selected.value=selected.value?.ev.id===p.ev.id?null:p}
+function choose(p){hoverOut();selected.value=selected.value?.ev.id===p.ev.id?null:p}
 function close(restore=false){const id=selected.value?.ev.id;selected.value=null;if(restore&&id)nextTick(()=>document.getElementById('ms-'+id)?.focus({preventScroll:true}))}
 function onOutside(e){if(!selected.value||document.querySelector('.survey-overlay'))return;const t=e.target instanceof Element?e.target:null;if(t?.closest('.tree-node-detail')||t?.closest('.ms-name'))return;close()}
 function onKey(e){if(e.key==='Escape'&&selected.value&&!document.querySelector('.survey-overlay'))close(true)}
 let ro
 onMounted(()=>{document.addEventListener('pointerdown',onOutside,true);document.addEventListener('keydown',onKey);ro=new ResizeObserver(()=>{if(wrap.value)stageW.value=wrap.value.clientWidth});wrap.value&&ro.observe(wrap.value);stageW.value=wrap.value?.clientWidth||1180})
-onBeforeUnmount(()=>{document.removeEventListener('pointerdown',onOutside,true);document.removeEventListener('keydown',onKey);ro?.disconnect()})
+onBeforeUnmount(()=>{clearTimeout(peekTimer);document.removeEventListener('pointerdown',onOutside,true);document.removeEventListener('keydown',onKey);ro?.disconnect()})
 </script>
 
-<template><div class="ms">
- <div ref="wrap" class="ms-scroll">
+<template><div ref="root" class="ms">
+ <div ref="wrap" class="ms-scroll" @scroll.passive="hoverOut">
   <div class="ms-stage" :style="{width:W+'px',height:AY*2+28+'px'}">
    <svg :width="W" :height="AY*2" aria-hidden="true">
     <defs><linearGradient id="ms-grad" gradientUnits="userSpaceOnUse" :x1="layout.ax0" :x2="layout.ax1"><stop v-for="s in layout.stops" :key="s.o" :offset="s.o" :stop-color="s.c"/></linearGradient></defs>
@@ -81,11 +98,17 @@ onBeforeUnmount(()=>{document.removeEventListener('pointerdown',onOutside,true);
     </g>
    </svg>
    <span v-for="y in layout.years" :key="'y'+y.year" class="ms-year" :style="{left:y.x+'px',top:AY+'px','--c':y.c}">{{y.year}}</span>
-   <article v-for="p in layout.pts" :key="p.ev.id" class="ms-item" :class="[p.dir<0?'up':'down',{on:selected?.ev.id===p.ev.id,dim:selected&&selected.ev.id!==p.ev.id}]" :style="{left:p.lx+'px',top:p.end+'px','--c':p.c}">
+   <article v-for="p in layout.pts" :key="p.ev.id" class="ms-item" :class="[p.dir<0?'up':'down',{on:selected?.ev.id===p.ev.id,dim:selected&&selected.ev.id!==p.ev.id}]" :style="{left:p.lx+'px',top:p.end+'px','--c':p.c}" @mouseenter="hoverIn(p,$event)" @mouseleave="hoverOut" @focusin="hoverIn(p,$event)" @focusout="hoverOut">
     <button :id="'ms-'+p.ev.id" class="ms-name" :aria-expanded="selected?.ev.id===p.ev.id" @click="choose(p)"><b>{{p.name}}</b><small>{{p.note}}</small></button>
     <button v-if="entry(p.ev)?.ready_for_dashboard" class="ms-survey" @click="emit('survey',p.ev.topic_id)">阅读综述 ↗</button>
    </article>
   </div>
  </div>
- <TechNodeDetail v-if="selected" :point="selected.ev" :tone="selected.c" :tree="tree" :chronology="chronology" :entries="entries" @close="close" @survey="id=>emit('survey',id)"/>
+ <transition name="ms-peek"><div v-if="peek" class="ms-peek" :class="peek.side" role="tooltip" :style="{left:peek.left+'px',top:peek.top+'px','--c':peek.p.c}">
+  <p class="ms-peek-meta">{{peek.p.ev.first_public_date?.slice(0,7).replace('-','.')||peek.p.ev.year}}<span>{{catLabel(peek.p.ev.category_id)}}</span></p>
+  <h4>{{peek.p.name}}</h4>
+  <dl><dt>关键创新</dt><dd>{{peek.p.story.innovation}}</dd><dt>带来的影响</dt><dd>{{peek.p.story.impact}}</dd></dl>
+  <p class="ms-peek-foot">{{peek.p.ev.title}}</p>
+ </div></transition>
+ <TechNodeDetail v-if="selected" :point="selected.ev" :story="selected.story" :tone="selected.c" :tree="tree" :chronology="chronology" :entries="entries" @close="close" @survey="id=>emit('survey',id)"/>
 </div></template>
