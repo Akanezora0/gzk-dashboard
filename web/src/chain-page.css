@@ -1,0 +1,44 @@
+/* ===== 证据链页面：三层导航 =====
+   第一层  研究领域（页面顶部，与其他页面一致）
+   第二层  分析模块：嵌在首屏底部的大号模块切换，带编号与说明
+   第三层  模块内视图：统一的下划线标签
+   第四层  图表内筛选：保留各图表自身的小号胶囊按钮 */
+
+.page-hero.has-tabs{padding-bottom:0}
+.chain-modules{display:grid;grid-template-columns:repeat(3,1fr);margin:34px -48px 0;border-top:1px solid #ebe3df;background:rgba(255,255,255,.55)}
+.chain-modules button{position:relative;display:flex;align-items:center;gap:14px;padding:20px 28px 22px;border:0;border-left:1px solid #ebe3df;background:transparent;font:inherit;text-align:left;color:#6c666a;cursor:pointer;transition:background .2s,color .2s}
+.chain-modules button:first-child{border-left:0}
+.chain-modules button::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:transparent;transition:background .2s}
+.chain-modules button:hover:not(.active){background:#fbf7f6;color:#3d3a3c}
+.chain-modules button.active{background:#fff;color:#a21535}
+.chain-modules button.active::before{background:#a21535}
+.chain-modules i{font-style:normal;font-size:13px;font-weight:700;letter-spacing:1px;color:#b9aeb1;font-variant-numeric:tabular-nums}
+.chain-modules button.active i{color:#a21535}
+.chain-modules svg{width:22px;height:22px;flex:none}
+.chain-modules span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.chain-modules b{font-size:18px;font-weight:700;line-height:1.3;color:inherit}
+.chain-modules button:not(.active) b{color:#3d3a3c}
+.chain-modules small{font-size:13px;color:#8a8286;line-height:1.4}
+
+/* 第三层：模块内视图标签（原始证据链 / 投入与产出 / 研究力量统一） */
+.ai-chain-workspace .view-tabs{display:flex;align-items:flex-end;gap:32px;margin:6px 0 22px;padding:0 2px;border-bottom:1px solid #e3dcd7}
+.ai-chain-workspace .view-tabs nav{display:flex;gap:32px;flex-wrap:wrap}
+.ai-chain-workspace .view-tabs button{position:relative;margin:0;padding:12px 0 13px;border:0;border-radius:0;background:none;box-shadow:none;font:inherit;font-size:16px;font-weight:600;color:#7a7378;cursor:pointer;transition:color .2s}
+.ai-chain-workspace .view-tabs button::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:transparent;transition:background .2s;transform:none;opacity:1}
+.ai-chain-workspace .view-tabs button:hover:not(.active){color:#2f2b2d;transform:none;box-shadow:none}
+.ai-chain-workspace .view-tabs button.active{color:#a21535;font-weight:700;background:none;border:0}
+.ai-chain-workspace .view-tabs button.active::after{background:#a21535}
+.ai-chain-workspace .view-tools.view-tabs{justify-content:space-between;align-items:center;margin-bottom:14px}
+.ai-chain-workspace .view-tools.view-tabs a{font-size:14px}
+.ai-chain-workspace .view-caption{margin:0 0 20px;font-size:14.5px;color:#7a7378;line-height:1.7}
+.ai-chain-workspace .view-caption b{margin-right:12px;font-size:16px;font-weight:700;color:#2f2b2d}
+
+@media(max-width:1050px){.chain-modules{margin:28px -26px 0}.chain-modules button{padding:16px 16px 18px;gap:10px}.chain-modules i{display:none}}
+@media(max-width:700px){
+ .chain-modules small,.chain-modules svg{display:none}
+ .chain-modules button{justify-content:center;text-align:center;padding:14px 6px}
+ .chain-modules b{font-size:15px}
+ .ai-chain-workspace .view-tabs,.ai-chain-workspace .view-tabs nav{gap:20px}
+ .ai-chain-workspace .view-tabs button{font-size:14.5px}
+ .ai-chain-workspace .view-caption b{display:block;margin:0 0 2px}
+}

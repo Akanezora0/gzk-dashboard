@@ -9,11 +9,20 @@ import ResearchAtlas from './ResearchAtlas.vue'
 import ResearchSuccession from './ResearchSuccession.vue'
 const EvidenceExplorer=defineAsyncComponent(()=>import('./EvidenceExplorer.vue'))
 import '../strength.css'
-defineProps({data:Object})
+import '../chain-page.css'
+import PageHero from './PageHero.vue'
+import {fmt} from '../shared'
+const props=defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 // Additional analysis modules are registered here after their data are ready.
-const modules=[{id:'evidence',label:'原始证据链',caption:'关系与依据'},{id:'investment',label:'投入与产出',caption:'布局与成果'},{id:'strength',label:'研究力量',caption:'机构与接续'}]
+const modules=[
+ {id:'evidence',label:'原始证据链',caption:'基金、论文、专利与技术的关联依据',title:'创新链证据<br/>与基金贡献',lead:'连接基金成果、论文方法与专利技术，追溯基础研究对人工智能技术的支撑作用。'},
+ {id:'investment',label:'投入与产出',caption:'经费布局与论文、专利产出',title:'基金投入<br/>与成果产出',lead:'按年份观察在研项目经费与论文、专利成果在七大技术方向上的分布与变化。'},
+ {id:'strength',label:'研究力量',caption:'机构格局与负责人接续',title:'研究力量<br/>与人员接续',lead:'从机构、项目负责人与成果关系出发，观察人工智能基础研究力量的格局与接续。'}]
 const active=computed(()=>modules.some(x=>x.id===route.query.module)?route.query.module:'evidence')
+const activeModule=computed(()=>modules.find(m=>m.id===active.value))
+const fundPapers=computed(()=>props.data?.currentInventory?.counts.ai_fund_papers??props.data?.study?.contribution?.source_metrics?.fund_paper_edges)
+const heroStats=computed(()=>[{value:fundPapers.value!=null?fmt(fundPapers.value):'—',label:'基金—论文关联'},{value:'7',label:'技术方向'},{value:'70',label:'技术点'}])
 // 研究力量：先总体（数据底座、机构参与、版图），再人员接续，最后可下钻到项目与论文证据
 const strengthViews=[{id:'overview',label:'总体格局',caption:'已建立关系 · 机构参与 · 研究力量版图'},{id:'continuity',label:'接续与证据',caption:'负责人接续 · 项目与论文证据'}]
 const strengthView=computed(()=>['continuity','evidence'].includes(route.query.view)?'continuity':'overview')
@@ -27,24 +36,24 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
 </script>
 <template>
   <section class="ai-chain-workspace" :data-module="active">
-    <nav class="analysis-modules" aria-label="人工智能分析模块">
-      <span class="module-label">分析模块</span>
-      <div class="module-links">
-        <button v-for="m in modules" :key="m.id" :class="{active:active===m.id}" :aria-current="active===m.id?'page':undefined" @click="choose(m.id)">
+    <PageHero eyebrow="证据链" :title="activeModule.title" :lead="activeModule.lead" :stats="heroStats" :action="{label:'技术演进'}" @action="router.push('/evolution')">
+      <template #tabs><nav class="chain-modules" role="tablist" aria-label="分析模块">
+        <button v-for="(m,i) in modules" :key="m.id" role="tab" :aria-selected="active===m.id" :class="{active:active===m.id}" @click="choose(m.id)">
+          <i>{{String(i+1).padStart(2,'0')}}</i>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <template v-if="m.id==='evidence'"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h7a2 2 0 0 1 2 2v7M6 9v7a2 2 0 0 0 2 2h7"/></template>
             <template v-else-if="m.id==='investment'"><path d="M4 3v17h17M8 15v-4M13 15V7M18 15V4"/></template>
             <template v-else><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></template>
           </svg>
-          <span>{{m.label}}</span>
+          <span><b>{{m.label}}</b><small>{{m.caption}}</small></span>
         </button>
-      </div>
-    </nav>
+      </nav></template>
+    </PageHero>
     <div :key="active" class="pane-swap">
     <EvidenceHub v-if="active==='evidence'" :data="data"/>
     <InvestmentOutcomes v-else-if="active==='investment'"/>
     <template v-else>
-      <nav class="strength-views" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><i v-if="i" class="sv-sep" aria-hidden="true"></i><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
+      <nav class="strength-views view-tabs" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
       <div v-else-if="strengthView==='overview'" class="strength-stack pane-swap" :key="strengthView"><StrengthBase :dataset="dataset"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>
