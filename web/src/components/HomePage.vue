@@ -137,7 +137,7 @@ const uses=[
         <div class="hf-axis" aria-hidden="true"><span class="up"><b>向上追溯</b>科研支撑</span><i><em class="fu"></em><em class="hub"></em><em class="fd"></em></i><span class="down"><b>向下追踪</b>产品与产业应用</span></div>
         <div class="hf-tiers">
           <div class="hf-tier supply"><p class="hf-k">科研供给</p><ul><li v-for="t in frameSupply" :key="t.n"><span class="hf-ic"><HomeIcon :name="t.icon"/></span><b>{{t.n}}</b><small>{{t.d}}</small></li></ul></div>
-          <div class="hf-core"><div><b>技术主题</b></div><p>以技术点为单元，把基金、论文、专利与企业、产品、产业数据对齐到同一坐标</p><span class="hf-pulse" aria-hidden="true"></span></div>
+          <div class="hf-core"><div><span class="hf-core-ic"><HomeIcon name="gather"/></span><b>技术主题</b></div><p>以技术点为单元，把基金、论文、专利与企业、产品、产业数据对齐到同一坐标</p><span class="hf-pulse" aria-hidden="true"></span></div>
           <div class="hf-tier demand"><p class="hf-k">产业需求</p><ul><li v-for="t in frameDemand" :key="t.n"><span class="hf-ic"><HomeIcon :name="t.icon"/></span><b>{{t.n}}</b><small>{{t.d}}</small></li></ul></div>
         </div>
       </div>

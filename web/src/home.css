@@ -447,3 +447,19 @@
 .hf-axis i .hub{flex:none;width:12px;height:12px;margin:6px 0;border-radius:50%;background:#a21535;box-shadow:0 0 0 4px #f2efeb,0 0 0 5px #a2153555}
 @media(max-width:900px){.hf-core>div{justify-content:flex-start;padding:12px 18px}.hf-core p{padding:16px 18px;font-size:16px}}
 @media(prefers-reduced-motion:reduce){.hf-axis i .fu,.hf-axis i .fd{animation:none}}
+/* 研究框架 · 技术主题：与首页其他卡片一致的素白面板 */
+.hf-core{margin:6px 0;grid-template-columns:auto minmax(0,1fr);gap:0;background:#fff;border:1px solid #e3ddd7;border-radius:4px;box-shadow:0 18px 40px -32px rgba(80,20,35,.45)}
+.hf-core>div{display:flex;align-items:center;gap:14px;padding:22px 30px 22px 26px;background:none;border-right:1px solid #ece5e1}
+.hf-core>div b{color:#a21535;font-size:22px;font-weight:800;letter-spacing:3px}
+.hf-core-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fbeef1}
+.hf-core-ic .home-icon{width:24px;height:24px;color:#a21535}
+.hf-core p{padding:22px 30px;font-size:18px;font-weight:600;color:#232930}
+/* 轴线：加粗，水流式流动 */
+.hf-axis i .fu,.hf-axis i .fd{width:5px;border-radius:3px;background-size:5px 64px}
+.hf-axis i .fu{background-color:#f0d6dc;background-image:linear-gradient(to top,rgba(162,21,53,0) 0%,rgba(162,21,53,.85) 45%,rgba(162,21,53,.35) 70%,rgba(162,21,53,0) 100%);animation:hf-water-up 2.2s linear infinite}
+.hf-axis i .fd{background-color:#e2dcda;background-image:linear-gradient(to bottom,rgba(70,60,64,0) 0%,rgba(70,60,64,.8) 45%,rgba(70,60,64,.3) 70%,rgba(70,60,64,0) 100%);animation:hf-water-down 2.2s linear infinite}
+@keyframes hf-water-up{from{background-position:0 0}to{background-position:0 -64px}}
+@keyframes hf-water-down{from{background-position:0 0}to{background-position:0 64px}}
+.hf-axis i::before,.hf-axis i::after{width:14px;height:14px;border-width:3px}
+.hf-axis i .hub{width:14px;height:14px}
+@media(max-width:900px){.hf-core{grid-template-columns:1fr}.hf-core>div{border-right:0;border-bottom:1px solid #ece5e1;padding:16px 18px}.hf-core p{padding:16px 18px}}
