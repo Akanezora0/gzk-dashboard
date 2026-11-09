@@ -70,7 +70,7 @@ AI 保留 **7 类／29 组／70 技术点纵向技术树**，基础模型与架�
 | 模块 | 入口参数 | 内容要求 |
 |---|---|---|
 | 关联与依据 | `/chain?domain=ai`，或 `module=evidence` | 证据构建流程、可交互证据图（`EvidenceGraph.vue`）及原始依据 |
-| 投入与产出 | `module=investment` | 基金投入、论文与专利、70 技术点、七类曲线、基金贡献度（`analysis=contribution`） |
+| 投入与产出 | `module=investment` | 三个视图：方向与技术点布局（`analysis=layout`，总览动画 → 份额结构 → 70 技术点）、投入产出对照（`analysis=compare`，七大方向双向图与逐年指标）、基金贡献度（`analysis=contribution`）；旧参数 funding/outputs/terms/curves 自动跳转 |
 | 研究团队总体格局 | `module=strength&view=overview` | 已建立关系（全库与 AI 双层数字）、机构参与、研究团队版图 |
 | 研究团队接续与证据 | `module=strength&view=continuity` | 负责人项目接续、代表案例、机构／负责人／项目／论文逐层下钻 |
 
