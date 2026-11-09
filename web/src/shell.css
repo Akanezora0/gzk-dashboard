@@ -66,3 +66,16 @@ body{background:radial-gradient(ellipse at 50% 0,#ae0d2808,transparent 52%),line
 @media(max-width:1280px){.site-brand small{display:none}.site-nav a{padding:9px 12px}}
 @media(max-width:1180px){.site-inner{width:calc(100% - 40px)}.site-bar .site-inner{flex-direction:column;align-items:stretch;height:auto;gap:8px;padding:12px 0 10px}.site-nav{overflow-x:auto;scrollbar-width:none}.site-nav a{flex:1;justify-content:center}}
 @media(max-width:700px){.site-strip .site-inner>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.site-org{display:none}.site-brand b{font-size:19px;letter-spacing:1px}.site-brand i{height:22px}.site-nav a{flex-direction:column;gap:2px;padding:7px 8px;font-size:12px}.site-nav svg{width:16px;height:16px}}
+/* 导航：图标在上、文字在下，选中底色滑动切换 */
+.site-nav{position:relative;display:grid;grid-template-columns:repeat(var(--n,7),96px);gap:0;padding:0;background:none;border-radius:0}
+.site-ind{position:absolute;left:0;top:0;bottom:0;width:calc(100% / var(--n,7));border-radius:4px;background:#f8ecee;transition:transform .42s cubic-bezier(.22,.68,0,1);z-index:0}
+.site-ind.off{opacity:0}
+.site-nav a{position:relative;z-index:1;flex-direction:column;justify-content:center;gap:5px;padding:9px 0 8px;font-size:13.5px;font-weight:600;color:#5d575b;border-radius:4px;background:none!important;box-shadow:none!important}
+.site-nav a:hover{color:#a21535}
+.site-nav a.active{color:#a21535}
+.site-nav svg{width:21px;height:21px;transition:transform .3s}
+.site-nav a:hover svg{transform:translateY(-1px)}
+@media(max-width:1180px){.site-nav{grid-template-columns:repeat(var(--n,7),minmax(0,1fr))}.site-nav a{flex:none}}
+@media(max-width:700px){.site-nav a{padding:7px 0;font-size:11.5px;gap:3px}.site-nav svg{width:18px;height:18px}}
+@media(prefers-reduced-motion:reduce){.site-ind{transition:none}}
+@media(max-width:700px){.site-nav{grid-template-columns:repeat(var(--n,7),66px);overflow-x:auto;scrollbar-width:none}.site-nav::-webkit-scrollbar{display:none}.site-ind{width:66px}}
