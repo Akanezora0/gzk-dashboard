@@ -61,11 +61,12 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
             <g v-if="sankey.posR[t]"><rect :x="RX" :y="sankey.posR[t].y" :width="NW" :height="sankey.posR[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
               <text v-if="sankey.posR[t].h>10" :x="RX+NW+16" :y="sankey.posR[t].y+sankey.posR[t].h/2+6" font-size="16" font-weight="500" fill="#2a2a2a">{{t==='重点等'?'联合·重大等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
           </template>
-          <g v-if="link('青年','面上')" pointer-events="none"><text :x="link('青年','面上').mx" :y="(link('青年','面上').y0+link('青年','面上').y1)/2+link('青年','面上').h/2+4" font-size="28" font-weight="700" text-anchor="middle" fill="#7a0a1c">{{pct('青年','面上')}}%</text>
-            <text :x="link('青年','面上').mx" :y="(link('青年','面上').y0+link('青年','面上').y1)/2+link('青年','面上').h/2+26" font-size="14" text-anchor="middle" fill="#7a0a1c">{{flowN('青年','面上')}} / {{out('青年')}} 位青年项目负责人</text></g>
-          <g v-if="link('面上','面上')" pointer-events="none"><text :x="link('面上','面上').mx" :y="(link('面上','面上').y0+link('面上','面上').y1)/2+link('面上','面上').h/2+6" font-size="15" font-weight="700" text-anchor="middle" fill="#7a0a1c">面上 → 面上 {{flowN('面上','面上')}}</text></g>
-          <g v-if="link('面上','重点等')" pointer-events="none"><text :x="link('面上','重点等').mx" :y="(link('面上','重点等').y0+link('面上','重点等').y1)/2+link('面上','重点等').h/2" font-size="28" font-weight="700" text-anchor="middle" fill="#fff">{{pct('面上','重点等')}}%</text>
-            <text :x="link('面上','重点等').mx" :y="(link('面上','重点等').y0+link('面上','重点等').y1)/2+link('面上','重点等').h/2+22" font-size="14" text-anchor="middle" fill="#fff">{{flowN('面上','重点等')}} / {{out('面上')}}</text></g>
+          <template v-for="pair in [['青年','面上'],['面上','面上'],['面上','重点等']]" :key="pair.join('-')">
+            <g v-if="link(...pair)" class="flow-label" pointer-events="none" :fill="pair[1]==='重点等'?'#fff':'#7a0a1c'">
+              <text :x="link(...pair).mx" :y="(link(...pair).y0+link(...pair).y1)/2+link(...pair).h/2" font-size="28" font-weight="700" text-anchor="middle">{{pct(...pair)}}%</text>
+              <text :x="link(...pair).mx" :y="(link(...pair).y0+link(...pair).y1)/2+link(...pair).h/2+22" font-size="13" text-anchor="middle">{{flowN(...pair)}} / {{out(pair[0])}} 条{{pair[0]}}项目接续</text>
+            </g>
+          </template>
         </svg>
         <div class="rs-keys">
           <div><strong>{{pct('青年','面上')}}%</strong><span>青年项目接续到面上项目<small>{{flowN('青年','面上')}} / {{out('青年')}}</small></span></div>

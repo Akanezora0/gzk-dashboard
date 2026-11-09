@@ -8,8 +8,8 @@
   "assets": [
     {
       "file": "snapshot/public/chain-analysis/v1/research.json",
-      "bytes": 10691034,
-      "sha256": "f9e91b54e1c4ebecb500f45130f2903a84cbacfec202ac8cd4c96efde0ccb943"
+      "bytes": 11282219,
+      "sha256": "84bb14309c480e5486a65634d4418d7e9da5a0d439c732a6877dfeeed635a457"
     },
     {
       "file": "snapshot/public/chain-analysis/v1/outputs.html",

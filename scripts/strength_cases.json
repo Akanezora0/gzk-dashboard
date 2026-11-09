@@ -1,5 +1,6 @@
 {
   "institutions": [
+    "中国人民大学",
     "清华大学",
     "浙江大学",
     "上海交通大学",
@@ -12,6 +13,16 @@
     "兰州理工大学"
   ],
   "cases": [
+    {
+      "person_name": "金琴",
+      "institution": "中国人民大学",
+      "group": "多模态智能",
+      "headline": "视频内容描述 → 多模态情感识别",
+      "summary": "围绕多模态智能计算，项目由融合视频与语言的内容描述生成，推进至交互情境下的鲁棒多模态情感识别。",
+      "profile_url": "https://info.ruc.edu.cn/jsky/szdw/ajxjgcx/jsjkxyjsx1/js2/260ab5295d334a67beb7620e931268b1.htm",
+      "selection_basis": "人大官方研究方向与基金库同一负责人两期面上项目接续",
+      "source_checked": "2026-11-09"
+    },
     {
       "person_name": "黄民烈",
       "institution": "清华大学",
