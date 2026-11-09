@@ -8,8 +8,8 @@
   "assets": [
     {
       "file": "snapshot/public/chain-analysis/v1/research.json",
-      "bytes": 3559434,
-      "sha256": "c49ebe48988acb60b18499d0fd9044ae4a554a81d96112753e98c8248a45f491"
+      "bytes": 10691034,
+      "sha256": "f9e91b54e1c4ebecb500f45130f2903a84cbacfec202ac8cd4c96efde0ccb943"
     },
     {
       "file": "snapshot/public/chain-analysis/v1/outputs.html",
@@ -47,5 +47,6 @@
       "sha256": "58aa2e4685162d9754add73d12244590252a5e9e0fb1ef6933399f29f7613e90"
     }
   ],
-  "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。"
+  "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。",
+  "research_evidence_version": "curated-cases-20261109"
 }

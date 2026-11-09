@@ -29,7 +29,7 @@ const dataset=ref(null),loadError=ref(''),loading=ref(false)
 function choose(id){router.push({path:route.path,query:{...route.query,domain:'ai',module:id,view:undefined}})}
 function toEvidence(chain){router.push({path:route.path,query:{domain:'ai',module:'evidence',chain}})}
 function chooseView(view){router.replace({query:{...route.query,view}})}
-function explore(name){evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
+async function explore(name){evidencePerson.value='';await nextTick();evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
 async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究团队数据暂时无法读取，请重试。'}finally{loading.value=false}}
 watch(active,v=>{if(v==='strength')load()},{immediate:true})
 </script>

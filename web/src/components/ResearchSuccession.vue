@@ -1,4 +1,5 @@
 <script setup>
+import ProjectTimeline from './ProjectTimeline.vue'
 import {useSurface} from '../helpers/useSurface'
 import {computed,ref} from 'vue'
 import {useTip,fmt,emph,typeGroup,TYPE_NAME,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
@@ -31,12 +32,14 @@ const sankey=computed(()=>{const posL={},posR={};let yl=TOP,yr=TOP
 const link=(a,b)=>sankey.value.links.find(l=>l.a===a&&l.b===b)
 // Representative cases joined to verified records (years, types, institution come from the data)
 const cases=computed(()=>{const list=props.dataset?.strength?.cases||[];const groups=[]
-  for(const c of list){const r=records.value.find(x=>x.person_name===c.person_name&&Number(x.earlier_approval_year)===c.earlier_year&&Number(x.later_approval_year)===c.later_year);if(!r)continue
+  for(const c of list){const r=records.value.find(x=>x.person_id===c.person_id&&Number(x.earlier_approval_year)===c.earlier_year&&Number(x.later_approval_year)===c.later_year);if(!r)continue
     let g=groups.find(z=>z.name===c.group);if(!g){g={name:c.group,rows:[]};groups.push(g)}
-    let row=g.rows.find(z=>z.person===c.person_name);if(!row){row={person:c.person_name,org:r.earlier_institution,steps:[],records:[]};g.rows.push(row)}
+    let row=g.rows.find(z=>z.person===c.person_name);if(!row){row={person:c.person_name,personId:c.person_id,org:r.earlier_institution,summary:c.summary,headline:c.headline,profileUrl:c.profile_url,steps:[],records:[]};g.rows.push(row)}
     if(!row.steps.length)row.steps.push({t:typeGroup(r.earlier_project_type),y:r.earlier_approval_year,topic:c.earlier_topic,title:r.earlier_project_title,grant:r.earlier_grant_no})
     row.steps.push({t:typeGroup(r.later_project_type),y:r.later_approval_year,topic:c.later_topic,title:r.later_project_title,grant:r.later_grant_no});row.records.push(r)}
   return groups})
+const pickedProjects=computed(()=>{if(!picked.value)return [];const ids=new Set(picked.value.records.flatMap(r=>[r.earlier_project_id,r.later_project_id]));return (props.dataset?.graph?.project_nodes||[]).filter(p=>ids.has(p.project_id))})
+const pickedPapers=computed(()=>{const ids=new Set(pickedProjects.value.map(p=>p.project_id));const papers=new Set((props.dataset?.graph?.project_paper_edges||[]).filter(e=>ids.has(e.project_id)).map(e=>e.paper_id));return (props.dataset?.graph?.paper_nodes||[]).filter(p=>papers.has(p.paper_id))})
 const takeText=computed(()=>`青年项目负责人 ${pct('青年','面上')}% 接到面上项目，面上项目 ${pct('面上','重点等')}% 转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，${sameInst.value}% 的接续发生在原机构，研究团队沿“人—机构”稳定延续。`)
 function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_project_type)===l.a&&typeGroup(r.later_project_type)===l.b).slice(0,4).map(r=>r.person_name).join('、')
   show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条接续（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>${l.a==='重点等'||l.b==='重点等'?'<br><span style="color:#78716c">联合·重大等含联合基金、重大研究计划、重点项目与数学天元基金</span>':''}`)}
@@ -73,14 +76,14 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
       </div>
       <div class="rs-succ-right">
         <h4>代表案例</h4>
-        <p class="rs-lead">同一位负责人，前后项目围绕同一研究问题深化或拓展</p>
+        <p class="rs-lead">围绕代表团队的研究方向，追踪基金项目如何持续推进</p>
         <div v-for="g in cases" :key="g.name" class="rs-case-group">
           <p class="rs-case-gname">{{g.name}}</p>
           <button v-for="row in g.rows" :key="row.person" class="rs-case" :class="{on:picked===row}" @click="picked=picked===row?null:row">
-            <span class="who"><b :class="{hl:row.person==='李晓旭'}">{{row.person}}</b><small>{{row.org}}</small></span>
+            <span class="who"><b >{{row.person}}</b><small>{{row.org}}</small></span>
             <span class="steps" :class="{three:row.steps.length>2}">
               <template v-for="(s,i) in row.steps" :key="i"><i v-if="i" class="rib" :style="{background:TYPE_COLOR[row.steps[i-1].t]}"></i>
-                <span class="pill"><em :style="{background:TYPE_COLOR[s.t],color:s.t==='青年'?'#7a0a1c':'#fff'}">{{TYPE_SHORT[s.t]}} {{s.y}}</em>{{s.topic}}</span></template>
+                <span class="pill"><em :style="{background:TYPE_COLOR[s.t],color:s.t==='青年'?'#7a0a1c':'#fff'}">{{TYPE_SHORT[s.t]}} {{s.y}}</em><span class="topic" :title="s.topic">{{s.topic}}</span></span></template>
             </span>
           </button>
         </div>
@@ -90,8 +93,10 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
       <div class="rs-modal" ref="dialog" role="dialog" aria-modal="true" :aria-label="`${picked.person}的接续项目`">
         <button class="rs-modal-x" aria-label="关闭" @click="picked=null">×</button>
         <p class="rs-modal-who"><b>{{picked.person}}</b><span>{{picked.org}}</span></p>
+        <p class="case-summary">{{picked.summary}}</p>
+        <ProjectTimeline :projects="pickedProjects" :papers="pickedPapers"/>
         <ol class="rs-modal-steps"><li v-for="(s,i) in picked.steps" :key="i"><em :style="{background:TYPE_COLOR[s.t],color:s.t==='青年'?'#7a0a1c':'#fff'}">{{s.y}} · {{TYPE_NAME[s.t]}}</em><b>{{s.title}}</b><small>批准号 {{s.grant}}</small></li></ol>
-        <button v-if="picked.person==='李晓旭'" class="rs-btn on" @click="picked=null;emit('explore','李晓旭')">查看项目与论文证据 →</button>
+        <div class="case-links"><button class="rs-btn on" @click="emit('explore',picked.person);picked=null">查看项目与论文证据 →</button><a v-if="picked.profileUrl" :href="picked.profileUrl" target="_blank" rel="noopener">团队研究方向 ↗</a></div>
       </div></div></Teleport>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
@@ -108,7 +113,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 .who small{font-size:12.5px;color:var(--rs-muted)}
 .steps{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0}
 .pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--rs-line);background:#fff;border-radius:20px;padding:4px 14px 4px 4px;font-size:15px;color:var(--rs-ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.pill em{font-style:normal;font-size:13px;font-weight:700;border-radius:14px;padding:4px 10px;flex:none}
+.topic{overflow:hidden;text-overflow:ellipsis;min-width:0}.case-summary{font-size:15px;line-height:1.8;color:#57534e}.case-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.case-links .rs-btn.on{background:#ae0d28;border-color:#ae0d28;color:#fff}.case-links a{font-size:14px;color:#ae0d28}.pill em{font-style:normal;font-size:13px;font-weight:700;border-radius:14px;padding:4px 10px;flex:none}
 
 .rib{display:block;width:3px;height:10px;margin-left:34px;opacity:.6}
 
@@ -125,7 +130,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 @media(max-width:1100px){.rs-succ{grid-template-columns:1fr}.rs-succ-right{border-left:0;padding-left:0}}
 @media(max-width:700px){.rs-case{grid-template-columns:1fr}}
 .rs-modal-mask{position:fixed;inset:0;z-index:80;background:rgba(40,30,28,.32);display:grid;place-items:center;padding:16px}
-.rs-modal{position:relative;width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(40,20,20,.25);padding:28px 30px 26px}
+.rs-modal{position:relative;width:min(900px,100%);max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(40,20,20,.25);padding:28px 30px 26px}
 .rs-modal-x{position:absolute;right:14px;top:12px;width:34px;height:34px;border-radius:50%;border:0;background:#f5f3f0;font-size:20px;cursor:pointer;color:#57534e}
 .rs-modal-who{margin:0 0 16px;display:flex;align-items:baseline;gap:12px}.rs-modal-who b{font-size:24px}.rs-modal-who span{color:#78716c;font-size:15px}
 .rs-modal-steps{list-style:none;margin:0 0 18px;padding:0 0 0 18px;border-left:2px solid #f0b7bf;display:grid;gap:16px}

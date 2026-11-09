@@ -1,0 +1,76 @@
+{
+  "institutions": [
+    "清华大学",
+    "浙江大学",
+    "上海交通大学",
+    "中国科学院自动化研究所",
+    "厦门大学",
+    "中国科学技术大学",
+    "北京大学",
+    "北京邮电大学",
+    "南京工业大学",
+    "兰州理工大学"
+  ],
+  "cases": [
+    {
+      "person_name": "黄民烈",
+      "institution": "清华大学",
+      "group": "人机对话",
+      "headline": "开放领域对话 → 对话交互基础理论",
+      "summary": "围绕语言理解与生成开展人机对话研究，项目从开放领域对话拓展至对话交互的基础理论。",
+      "profile_url": "https://www.cs.tsinghua.edu.cn/info/1121/5620.htm",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    },
+    {
+      "person_name": "陈华钧",
+      "institution": "浙江大学",
+      "group": "知识图谱",
+      "headline": "知识图谱引擎 → 可解释知识推理",
+      "summary": "围绕知识图谱构建与推理，项目由引擎关键技术延伸到复杂推理及治理应用。",
+      "profile_url": "https://hic.zju.edu.cn/ibct/2021/0903/c65955a2509758/page.htm",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    },
+    {
+      "person_name": "张伟楠",
+      "institution": "上海交通大学",
+      "group": "强化学习",
+      "headline": "多域深度学习 → 多智能体样本效率",
+      "summary": "围绕深度学习与强化学习，项目由多域数据学习推进到多智能体的样本效率问题。",
+      "profile_url": "https://www.cs.sjtu.edu.cn/jiaoshiml/zhangweinan.html",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    },
+    {
+      "person_name": "张兆翔",
+      "institution": "中国科学院自动化研究所",
+      "group": "类脑视觉",
+      "headline": "视觉场景理解 → 类脑神经网络",
+      "summary": "围绕视觉感知与类脑学习，项目从动态多模态场景理解拓展至类脑网络建模与学习。",
+      "profile_url": "https://www.ia.ac.cn/rcdw/yjy/202404/t20240422_7129877.html",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    },
+    {
+      "person_name": "张长水",
+      "institution": "清华大学",
+      "group": "机器学习基础",
+      "headline": "鲁棒优化与隐私 → 知识驱动学习",
+      "summary": "围绕机器学习基础方法，项目分别研究鲁棒优化、差分隐私和知识结合的学习模型。",
+      "profile_url": "https://www.au.tsinghua.edu.cn/info/1078/3257.htm",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    },
+    {
+      "person_name": "曹刘娟",
+      "institution": "厦门大学",
+      "group": "高效视觉感知",
+      "headline": "小目标检测 → 弱监督学习 → 边缘部署",
+      "summary": "三个项目持续围绕小目标视觉感知，从鲁棒检测、弱监督学习推进至边缘部署与跟踪。",
+      "profile_url": "https://cs.xmu.edu.cn/info/1062/2369.htm",
+      "selection_basis": "官方研究方向与已核验负责人项目接续",
+      "source_checked": "2026-11-09"
+    }
+  ]
+}

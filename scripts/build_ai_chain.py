@@ -314,11 +314,17 @@ def main():
                        strength=strength_data,
                        institutionSummary=institution_analysis['retained_vs_new_2021']))
     (OUT/'research.json').write_text(json.dumps(payload,ensure_ascii=False,separators=(',',':')))
+    # Keep expanded evidence and curated cases reproducible on full regeneration.
+    import subprocess
+    subprocess.run(['/root/anaconda3/bin/python', str(Path(__file__).with_name('build_strength_cases.py')),
+                    '--input', str(OUT/'research.json'), '--output', str(OUT/'research.json')], check=True)
+    payload=json.loads((OUT/'research.json').read_text())
     animation_count=build_animations()
     # Provenance is retained outside the public asset directory.
     manifest=OUT.parents[2]/'analysis_v1_sources.json'
     manifest.write_text(json.dumps({'version':payload['version'],'sources':SOURCES,'checks':{
-        'continuity_edges':286,'continuity_people':278,'projects':242,'papers':2971,
+        'continuity_edges':286,'continuity_people':278,'baseline_projects':242,'baseline_papers':2971,
+        'evidence_scope':payload['evidenceScope'],
         'milestones':len(payload['landscape']['events']),'animations':animation_count,
         'strength_scope_projects':7032,'strength_scope_institutions':727,'entry_cohort':168,
         'original_source_assets_unchanged':True,'animation_data_unchanged':True}},ensure_ascii=False,indent=2))
