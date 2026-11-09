@@ -134,7 +134,7 @@ const uses=[
     <div class="home-wrap home-section">
       <div class="home-section-heading reveal"><div><p class="home-eyebrow">研究框架</p><h2>以技术主题连接<br/>科研供给与产业需求。</h2></div><p>以共同技术词表组织技术主题，向上追溯科研支撑，向下追踪产品与产业应用，把分散的数据连成可核查的发展脉络。</p></div>
       <div class="home-frame2 reveal">
-        <div class="hf-axis" aria-hidden="true"><span class="up"><b>向上追溯</b>科研支撑</span><i><em class="fu"></em><em class="fd"></em></i><span class="down"><b>向下追踪</b>产品与产业应用</span></div>
+        <div class="hf-axis" aria-hidden="true"><span class="up"><b>向上追溯</b>科研支撑</span><i><em class="fu"></em><em class="hub"></em><em class="fd"></em></i><span class="down"><b>向下追踪</b>产品与产业应用</span></div>
         <div class="hf-tiers">
           <div class="hf-tier supply"><p class="hf-k">科研供给</p><ul><li v-for="t in frameSupply" :key="t.n"><span class="hf-ic"><HomeIcon :name="t.icon"/></span><b>{{t.n}}</b><small>{{t.d}}</small></li></ul></div>
           <div class="hf-core"><div><b>技术主题</b></div><p>以技术点为单元，把基金、论文、专利与企业、产品、产业数据对齐到同一坐标</p><span class="hf-pulse" aria-hidden="true"></span></div>
