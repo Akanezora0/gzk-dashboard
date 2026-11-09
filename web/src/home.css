@@ -427,3 +427,8 @@
 @media(prefers-reduced-motion:reduce){.hf-pulse{display:none}}
 .hf-axis i{background:linear-gradient(#a21535,#7a5560 50%,#5d575b)}
 .hf-tier,.hf-core{grid-template-columns:150px minmax(0,1fr)}
+/* 首屏下方保留白色留白，与顶栏呼应 */
+.project-home{--home-scroll-cue-height:64px}
+.home-scroll-cue{margin-top:0;background:#faf9f6;pointer-events:auto}
+.home-scroll-cue .home-scroll-button{color:#9c6874}
+.home-scroll-cue .home-scroll-button:hover{color:#a21535}

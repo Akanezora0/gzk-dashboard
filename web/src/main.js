@@ -10,7 +10,7 @@ import '../../shared/surfaces.css'
 import './page-hero.css'
 const Empty={template:'<div />'}
 const domainPages=['data','evolution','chain','cases']
-const router=createRouter({history:createWebHistory(),routes:[{path:'/',redirect:'/home'},{path:'/case',redirect:to=>({path:'/cases',query:to.query})},{path:'/foundation',redirect:to=>({path:'/overview',query:to.query,hash:'#sources'})},...['home','overview',...domainPages].map(name=>({path:`/${name}`,name,component:Empty})),{path:'/:pathMatch(.*)*',redirect:'/home'}],scrollBehavior:(to,from)=>to.hash?{el:to.hash,top:100}:to.path===from.path&&to.query.domain===from.query.domain?false:{top:0}})
+const router=createRouter({history:createWebHistory(),routes:[{path:'/',redirect:'/home'},{path:'/case',redirect:to=>({path:'/cases',query:to.query})},{path:'/foundation',redirect:to=>({path:'/overview',query:to.query,hash:'#sources'})},...['home','overview','assess',...domainPages].map(name=>({path:`/${name}`,name,component:Empty})),{path:'/:pathMatch(.*)*',redirect:'/home'}],scrollBehavior:(to,from)=>to.hash?{el:to.hash,top:100}:to.path===from.path&&to.query.domain===from.query.domain?false:{top:0}})
 router.beforeEach((to,from)=>{
  if(to.path==='/data'&&to.query.view==='catalog')return {path:'/overview',query:{kind:to.query.kind,source:to.query.source},hash:'#sources'}
  if(to.path==='/chain'&&['tech_tree','evolution'].includes(to.query.tab))return {path:'/evolution',query:{...to.query,tab:undefined}}
@@ -20,5 +20,5 @@ router.beforeEach((to,from)=>{
    sessionStorage.setItem('gzk-research-domain',current)
  }
 })
-router.afterEach(to=>{const labels={home:'首页',overview:'数据总览',data:'领域数据',evolution:'技术演进',chain:'创新链分析',cases:'案例专题'};document.title=`${labels[to.name]||'首页'} · 基础研究数据与评估系统`})
+router.afterEach(to=>{const labels={home:'首页',overview:'数据总览',data:'领域数据',evolution:'技术演进',chain:'创新链分析',cases:'案例专题',assess:'评估'};document.title=`${labels[to.name]||'首页'} · 基础研究数据与评估系统`})
 createApp(App).use(router).mount('#app')
