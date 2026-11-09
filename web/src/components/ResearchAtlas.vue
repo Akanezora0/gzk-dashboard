@@ -37,13 +37,13 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
 </script>
 <template>
   <section class="rs-page" ref="root" @keydown.esc="picked=null">
-    <header class="rs-head"><span class="rs-no">03</span><h3>研究力量版图</h3>
+    <header class="rs-head"><span class="rs-no">03</span><h3>研究团队版图</h3>
       <div class="rs-tools">
         <div class="rs-seg" role="group" aria-label="机构范围"><button :class="{on:region==='all'}" @click="region='all'">全部</button><button :class="{on:region==='cn'}" @click="region='cn'">中国</button><button :class="{on:region==='intl'}" @click="region='intl'">国际</button></div>
         <button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':year>=2026?'▶ 重播':'▶ 播放'}}</button>
         <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026"  :value="year" @input="seek($event.target.value)" aria-label="显示到年份"></label></div></header>
     <p class="rs-lead soft">前沿成果由企业研究院与高校并行，逐步转向<b>少数企业实验室</b>主导，人才外溢催生了 Anthropic、Mistral 等新力量；国内以清华等高校和国家实验室为源头，衍生企业与开源模型在 <b>2023 年后</b>快速跟进。</p>
-    <div v-if="!L.groups" class="rs-empty">版图数据为旧格式，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
+    <div v-if="!L.groups" class="rs-empty">版图数据为旧格式，请在服务器运行 build_ai_chain.py 更新研究团队数据。</div>
     <template v-else>
     <div class="rs-legend">
       <span><i class="dot" style="background:#ae0d28"></i>中国机构</span><span><i class="dot" style="background:#2f5f7a"></i>国际机构</span>

@@ -1,4 +1,4 @@
-/* ===== 证据链页面：三层导航 =====
+/* ===== 创新链分析页面：三层导航 =====
    第一层  研究领域（页面顶部，与其他页面一致）
    第二层  分析模块：嵌在首屏底部的大号模块切换，带编号与说明
    第三层  模块内视图：统一的下划线标签
@@ -20,7 +20,7 @@
 .chain-modules button:not(.active) b{color:#3d3a3c}
 .chain-modules small{font-size:13px;color:#8a8286;line-height:1.4}
 
-/* 第三层：模块内视图标签（原始证据链 / 投入与产出 / 研究力量统一） */
+/* 第三层：模块内视图标签（关联与依据 / 投入与产出 / 研究团队统一） */
 .ai-chain-workspace .view-tabs{display:flex;align-items:flex-end;gap:32px;margin:6px 0 22px;padding:0 2px;border-bottom:1px solid #e3dcd7}
 .ai-chain-workspace .view-tabs nav{display:flex;gap:32px;flex-wrap:wrap}
 .ai-chain-workspace .view-tabs button{position:relative;margin:0;padding:12px 0 13px;border:0;border-radius:0;background:none;box-shadow:none;font:inherit;font-size:16px;font-weight:600;color:#7a7378;cursor:pointer;transition:color .2s}
@@ -43,7 +43,7 @@
  .ai-chain-workspace .view-caption b{display:block;margin:0 0 2px}
 }
 
-/* ===== 原始证据链：证据构建流程（数字并入流程） ===== */
+/* ===== 关联与依据：证据构建流程（数字并入流程） ===== */
 .evidence-v2{display:flex;flex-direction:column;gap:24px}
 .ev-flow{background:#fff;border:1px solid #e6dfdb;border-radius:4px;padding:26px 28px 24px}
 .ev-flow>header,.ev-graph-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:22px}

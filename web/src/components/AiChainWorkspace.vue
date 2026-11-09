@@ -16,15 +16,13 @@ const props=defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 // Additional analysis modules are registered here after their data are ready.
 const modules=[
- {id:'evidence',label:'原始证据链',caption:'基金、论文、专利与技术的关联依据',title:'创新链证据<br/>与基金贡献',lead:'连接基金成果、论文方法与专利技术，追溯基础研究对人工智能技术的支撑作用。'},
- {id:'investment',label:'投入与产出',caption:'经费布局与论文、专利产出',title:'基金投入<br/>与成果产出',lead:'按年份观察在研项目经费与论文、专利成果在七大技术方向上的分布与变化。'},
- {id:'strength',label:'研究力量',caption:'机构格局与负责人接续',title:'研究力量<br/>与人员接续',lead:'从机构、项目负责人与成果关系出发，观察人工智能基础研究力量的格局与接续。'}]
+ {id:'evidence',label:'关联与依据',caption:'基金、论文、专利与技术的关联依据',title:'基金、成果与技术的关联依据',lead:'以项目编号和原文片段连接基金项目、论文、专利与技术主题，每条关系都可追溯到来源。'},
+ {id:'investment',label:'投入与产出',caption:'经费布局与论文、专利产出',title:'基金投入与成果产出',lead:'按年份和技术方向，观察人工智能基金项目的经费投入，以及论文、专利成果的积累与基金贡献。'},
+ {id:'strength',label:'研究团队',caption:'承担机构与负责人接续',title:'研究团队的格局与接续',lead:'从承担机构、项目负责人与成果关系出发，观察人工智能基础研究团队如何形成、扩展与延续。'}]
 const active=computed(()=>modules.some(x=>x.id===route.query.module)?route.query.module:'evidence')
 const activeModule=computed(()=>modules.find(m=>m.id===active.value))
-const fundPapers=computed(()=>props.data?.currentInventory?.counts.ai_fund_papers??props.data?.study?.contribution?.source_metrics?.fund_paper_edges)
-const heroStats=computed(()=>[{value:fundPapers.value!=null?fmt(fundPapers.value):'—',label:'基金—论文关联'},{value:'7',label:'技术方向'},{value:'70',label:'技术点'}])
-// 研究力量：先总体（数据底座、机构参与、版图），再人员接续，最后可下钻到项目与论文证据
-const strengthViews=[{id:'overview',label:'总体格局',caption:'已建立关系 · 机构参与 · 研究力量版图'},{id:'continuity',label:'接续与证据',caption:'负责人接续 · 项目与论文证据'}]
+// 研究团队：先总体（数据底座、机构参与、版图），再人员接续，最后可下钻到项目与论文证据
+const strengthViews=[{id:'overview',label:'总体格局',caption:'已建立关系 · 机构参与 · 研究团队版图'},{id:'continuity',label:'接续与证据',caption:'负责人接续 · 项目与论文证据'}]
 const strengthView=computed(()=>['continuity','evidence'].includes(route.query.view)?'continuity':'overview')
 const evidencePerson=ref('')
 const dataset=ref(null),loadError=ref(''),loading=ref(false)
@@ -32,12 +30,12 @@ function choose(id){router.push({path:route.path,query:{...route.query,domain:'a
 function toEvidence(chain){router.push({path:route.path,query:{domain:'ai',module:'evidence',chain}})}
 function chooseView(view){router.replace({query:{...route.query,view}})}
 function explore(name){evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
-async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究力量数据暂时无法读取，请重试。'}finally{loading.value=false}}
+async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究团队数据暂时无法读取，请重试。'}finally{loading.value=false}}
 watch(active,v=>{if(v==='strength')load()},{immediate:true})
 </script>
 <template>
   <section class="ai-chain-workspace" :data-module="active">
-    <PageHero eyebrow="证据链" :title="activeModule.title" :lead="activeModule.lead" :stats="heroStats" :action="{label:'技术演进'}" @action="router.push('/evolution')">
+    <PageHero eyebrow="创新链分析" :title="activeModule.title" :lead="activeModule.lead">
       <template #tabs><nav class="chain-modules" role="tablist" aria-label="分析模块">
         <button v-for="(m,i) in modules" :key="m.id" role="tab" :aria-selected="active===m.id" :class="{active:active===m.id}" @click="choose(m.id)">
           <i>{{String(i+1).padStart(2,'0')}}</i>
@@ -54,7 +52,7 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
     <EvidenceHub v-if="active==='evidence'" :data="data"/>
     <InvestmentOutcomes v-else-if="active==='investment'" :data="data" @explore="toEvidence"/>
     <template v-else>
-      <nav class="strength-views view-tabs" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
+      <nav class="strength-views view-tabs" role="tablist" aria-label="研究团队视图"><template v-for="(v,i) in strengthViews" :key="v.id"><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
       <div v-else-if="strengthView==='overview'" class="strength-stack pane-swap" :key="strengthView"><StrengthBase :dataset="dataset" :inventory="data?.currentInventory"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>

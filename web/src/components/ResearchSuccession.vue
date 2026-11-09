@@ -37,7 +37,7 @@ const cases=computed(()=>{const list=props.dataset?.strength?.cases||[];const gr
     if(!row.steps.length)row.steps.push({t:typeGroup(r.earlier_project_type),y:r.earlier_approval_year,topic:c.earlier_topic,title:r.earlier_project_title,grant:r.earlier_grant_no})
     row.steps.push({t:typeGroup(r.later_project_type),y:r.later_approval_year,topic:c.later_topic,title:r.later_project_title,grant:r.later_grant_no});row.records.push(r)}
   return groups})
-const takeText=computed(()=>`青年项目负责人 ${pct('青年','面上')}% 接到面上项目，面上项目 ${pct('面上','重点等')}% 转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，${sameInst.value}% 的接续发生在原机构，研究力量沿“人—机构”稳定延续。`)
+const takeText=computed(()=>`青年项目负责人 ${pct('青年','面上')}% 接到面上项目，面上项目 ${pct('面上','重点等')}% 转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，${sameInst.value}% 的接续发生在原机构，研究团队沿“人—机构”稳定延续。`)
 function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_project_type)===l.a&&typeGroup(r.later_project_type)===l.b).slice(0,4).map(r=>r.person_name).join('、')
   show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条接续（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>${l.a==='重点等'||l.b==='重点等'?'<br><span style="color:#78716c">联合·重大等含联合基金、重大研究计划、重点项目与数学天元基金</span>':''}`)}
 </script>

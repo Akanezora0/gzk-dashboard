@@ -1,4 +1,4 @@
-/* 研究力量模块：素色卡片、人大红点缀；与 Dashboard 现有背景一致，不使用渐变。 */
+/* 研究团队模块：素色卡片、人大红点缀；与 Dashboard 现有背景一致，不使用渐变。 */
 .rs-page{--rs-red:#ae0d28;--rs-red-deep:#7a0a1c;--rs-red-mid:#d9737f;--rs-red-soft:#f0b7bf;--rs-red-wash:#fbeef0;--rs-blue:#2f5f7a;--rs-blue-2:#5b8aa5;--rs-blue-3:#9dbdd0;--rs-blue-4:#d3e2ec;--rs-ink:#2a2a2a;--rs-ink-2:#57534e;--rs-muted:#78716c;--rs-faint:#a8a29e;--rs-line:#e8e4df;--rs-grid:#efebe6;--rs-paper:#fff;--rs-bg:#f7f5f2;
   background:var(--rs-paper);border:1px solid var(--rs-line);border-radius:16px;padding:30px 34px 28px;color:var(--rs-ink);position:relative}
 .rs-page:fullscreen{overflow:auto;border-radius:0;padding:36px 48px}

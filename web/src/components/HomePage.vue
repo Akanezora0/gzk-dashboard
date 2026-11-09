@@ -51,13 +51,13 @@ const chain=[
   {label:'产业应用',sub:'企业、产品与市场',icon:'industry',tone:tones.gold},
   {label:'经济社会价值',sub:'增长、就业与公共服务',icon:'society',tone:tones.teal},
 ]
-const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','证据链'],['/cases','案例专题']]
+const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','创新链分析'],['/cases','案例专题']]
 const platformLinks=[['平台简介','https://brain.ruc.edu.cn/jggk/ptjj/index.htm'],['交叉研究','https://brain.ruc.edu.cn/jcyj/index.htm'],['云端平台','https://brain.ruc.edu.cn/ydpt/index.htm'],['学术交流','https://brain.ruc.edu.cn/xsjl/index.htm'],['联系我们','https://brain.ruc.edu.cn/lxwm/index.htm']]
 const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'grant',tone:'#f2c4cc'},{title:'关键成果',text:'方法、论文与专利',icon:'paper',tone:'#f2c4cc'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#f2c4cc'},{title:'发展表现',text:'产业与社会影响',icon:'growth',tone:'#f2c4cc'}]
 const uses=[
   {num:'01',title:'科学价值',icon:'science',tone:tones.red,question:'哪些基础研究成为后续创新的源头？',text:'追踪代表成果、引用联系与方法复用，刻画知识积累与技术突破。',tags:['研究贡献','学术影响','技术扩散']},
   {num:'02',title:'经济效益',icon:'growth',tone:tones.red,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
-  {num:'03',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究力量与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
+  {num:'03',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究团队与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
   {num:'04',title:'社会影响',icon:'society',tone:tones.red,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
 ]
 </script>
@@ -139,7 +139,7 @@ const uses=[
   </section>
 
   <section class="home-case-section"><div class="home-case-glow" aria-hidden="true"></div><svg class="home-case-art" viewBox="0 0 800 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path v-for="i in 14" :key="i" :d="`M ${-40+i*6} ${420} C ${260+i*10} ${330-i*14}, ${470+i*8} ${40+i*10}, 860 ${-20+i*26}`"/></svg><div class="home-wrap home-case-content">
-    <div class="reveal"><p class="home-eyebrow light">案例研究</p><h2>批量抽取优质案例，<br/>呈现基础研究的贡献路径。</h2><p>以技术、企业或产品为线索，按统一结构组织科研支持、关键成果、技术应用与发展表现，实现优质案例的批量抽取、核查与比较。</p><router-link class="home-cta outline" to="/chain?domain=ai">查看证据链 <span aria-hidden="true">↗</span></router-link></div>
+    <div class="reveal"><p class="home-eyebrow light">案例研究</p><h2>批量抽取优质案例，<br/>呈现基础研究的贡献路径。</h2><p>以技术、企业或产品为线索，按统一结构组织科研支持、关键成果、技术应用与发展表现，实现优质案例的批量抽取、核查与比较。</p><router-link class="home-cta outline" to="/chain?domain=ai">查看创新链分析 <span aria-hidden="true">↗</span></router-link></div>
     <div class="home-case-panel reveal">
       <p class="home-case-kicker">一个案例的四个层次</p>
       <ol class="home-case-path"><li v-for="(item,i) in casePath" :key="item.title" :style="{'--i':i,'--tone':item.tone}"><span class="home-case-node"><HomeIcon :name="item.icon"/></span><em>0{{i+1}}</em><h3>{{item.title}}</h3><p>{{item.text}}</p></li></ol>
@@ -147,7 +147,7 @@ const uses=[
   </div></section>
 
   <section id="evaluation" class="home-wrap home-section home-evaluation">
-    <div class="home-section-heading reveal"><div><p class="home-eyebrow">评估维度</p><h2>面向多维评估，<br/>回答基础研究的价值之问。</h2></div><p>以统一的数据底座与证据链为基础，围绕具体问题组织样本、指标与证据。</p></div>
+    <div class="home-section-heading reveal"><div><p class="home-eyebrow">评估维度</p><h2>面向多维评估，<br/>回答基础研究的价值之问。</h2></div><p>以统一的数据底座与创新链分析为基础，围绕具体问题组织样本、指标与证据。</p></div>
     <div class="home-evaluation-grid"><article v-for="(use,i) in uses" :key="use.num" class="reveal" :style="{'--i':i,'--tone':use.tone}">
       <div class="home-use-head"><span class="home-use-icon"><HomeIcon :name="use.icon"/></span><span class="home-use-num">{{use.num}}</span></div>
       <h3>{{use.title}}</h3><h4>{{use.question}}</h4><p>{{use.text}}</p>
