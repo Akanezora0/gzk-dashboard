@@ -12,17 +12,17 @@ const wan=n=>n==null?'—':n>=1e8?(n/1e8).toFixed(2).replace(/0$/,'')+' 亿':n>=
 const Y=170
 const tones={org:'#6b5a52',per:'#8c6a3a',fund:'#a21535',pap:'#2c64a0',pat:'#23806e'}
 const nodes=computed(()=>[
- {k:'org',n:'机构',x:110,r:54,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`},
- {k:'per',n:'人员',x:395,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目接续'},
- {k:'fund',n:'基金项目',x:680,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
- {k:'pap',n:'论文',x:965,r:54,all:C.value.papers?wan(C.value.papers)+'篇':'',ai:C.value.ai_papers?wan(C.value.ai_papers)+'篇':'',aiN:'AI 论文'},
- {k:'pat',n:'专利',x:1250,r:54,all:C.value.national_patents?wan(C.value.national_patents)+'件':'',ai:C.value.ai_patents?wan(C.value.ai_patents)+'件':'',aiN:'AI 专利'}])
+ {k:'org',n:'机构',x:100,r:54,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`},
+ {k:'per',n:'人员',x:365,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目接续'},
+ {k:'fund',n:'基金项目',x:645,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
+ {k:'pap',n:'论文',x:990,r:54,all:C.value.papers?wan(C.value.papers)+'篇':'',ai:C.value.ai_papers?wan(C.value.ai_papers)+'篇':'',aiN:'AI 论文'},
+ {k:'pat',n:'专利',x:1265,r:54,all:C.value.national_patents?wan(C.value.national_patents)+'件':'',ai:C.value.ai_patents?wan(C.value.ai_patents)+'件':'',aiN:'AI 专利'}])
 const links=computed(()=>{const N=nodes.value;return [
  {id:'fp',a:2,b:1,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录'},
  {id:'po',a:1,b:0,n:metric('人员—机构观察'),u:'条',name:'人员—机构',how:'人员署名单位的来源观察'},
  {id:'fl',a:2,b:3,n:metric('基金—论文关系'),u:'对',name:'基金—论文',how:'成果登记与论文资助标注',ai:metric('AI基金登记成果关系')},
  {id:'pp',a:3,b:4,n:metric('已接通专利—论文关系'),u:'对',name:'专利引用论文',how:'规范化匹配专利引用的论文'},
-].map(l=>{const A=N[l.a],B=N[l.b],dir=B.x>A.x?1:-1,x0=A.x+dir*(A.r+2),x1=B.x-dir*(B.r+2);return {...l,dir,x0,x1,mx:(x0+x1)/2,ca:tones[A.k],cb:tones[B.k]}})})
+].map(l=>{const A=N[l.a],B=N[l.b],dir=B.x>A.x?1:-1,x0=A.x+dir*(A.r+3),x1=B.x-dir*(B.r+4),xe=x1-dir*16;return {...l,dir,x0,x1,xe,mx:(x0+x1)/2,ca:tones[A.k],cb:tones[B.k]}})})
 const cite=computed(()=>metric('论文引用关系'))
 const pillW=t=>[...String(t)].reduce((w,c)=>w+(/[\x00-\xff]/.test(c)?10.5:18),0)+40
 function linkTip(e,l){active.value=l.id;show(e,`<b>${l.name}</b>　${fmt(l.n)} ${l.u}<br>建立方式：${l.how}${l.ai?`<br>其中 AI 项目登记成果 ${fmt(l.ai)} 条`:''}`)}
@@ -35,7 +35,7 @@ function off(){active.value='';hide()}
     <template v-else>
     <div class="sb-legend"><span><i class="all"></i>全库</span><span><i class="ai"></i>人工智能领域 · 本页研究对象</span></div>
     <div class="rs-scroll"><svg class="rs-svg sb-svg" viewBox="0 0 1360 380" role="img" aria-label="基金、人员、机构、论文、专利之间的关联关系，全库与人工智能领域">
-      <defs><linearGradient v-for="l in links" :key="'g'+l.id" :id="'sbg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".6"/></linearGradient></defs>
+      <defs><linearGradient v-for="l in links" :key="'g'+l.id" :id="'sbg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".85"/></linearGradient></defs>
       <!-- 论文引用环 -->
       <g class="rs-hit" @mouseenter="show($event,`<b>论文引用</b>　${fmt(cite)} 对<br>关联库中的论文引用对`)" @mousemove="move" @mouseleave="hide">
         <path :d="`M${nodes[3].x-22},${Y-50} C${nodes[3].x-62},${Y-148} ${nodes[3].x+62},${Y-148} ${nodes[3].x+22},${Y-50}`" fill="none" stroke="#2c64a0" stroke-opacity=".26" stroke-width="10" stroke-linecap="round"/>
@@ -45,13 +45,13 @@ function off(){active.value='';hide()}
       </g>
       <g v-for="l in links" :key="l.id" class="rs-hit" :opacity="active&&active!==l.id?.4:1" @mouseenter="linkTip($event,l)" @mousemove="move" @mouseleave="off">
         <rect :x="Math.min(l.x0,l.x1)" :y="Y-26" :width="Math.abs(l.x1-l.x0)" height="52" fill="transparent"/>
-        <rect :x="Math.min(l.x0,l.x1)" :y="Y-7" :width="Math.abs(l.x1-l.x0)" height="14" rx="7" :fill="`url(#sbg${l.id})`"/>
-        <line class="rs-flow sb-flow" :x1="l.dir>0?l.x0+8:l.x0-8" :x2="l.dir>0?l.x1-14:l.x1+14" :y1="Y" :y2="Y" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 22"/>
-        <path :d="`M${l.x1-l.dir*16},${Y-11} L${l.x1-l.dir*2},${Y} L${l.x1-l.dir*16},${Y+11}`" fill="none" :stroke="l.cb" stroke-width="2.6" stroke-linejoin="round"/>
+        <path :d="`M${l.x0},${Y-7} L${l.xe},${Y-7} L${l.xe},${Y-12} L${l.x1},${Y} L${l.xe},${Y+12} L${l.xe},${Y+7} L${l.x0},${Y+7} Z`" :fill="`url(#sbg${l.id})`" stroke-linejoin="round"/>
+        <line class="rs-flow sb-flow" :x1="l.x0+l.dir*10" :x2="l.xe-l.dir*6" :y1="Y" :y2="Y" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 22"/>
         <text :x="l.mx" :y="Y-40" font-size="25" font-weight="750" text-anchor="middle" fill="#2a2a2a">{{fmt(l.n)}}</text>
         <text :x="l.mx" :y="Y-19" font-size="13" text-anchor="middle" fill="#78716c">{{l.u}} · {{l.name}}</text>
-        <g v-if="l.ai"><rect :x="l.mx-48-pillW(`AI ${fmt(l.ai)} 条登记成果`)/2" :y="Y-120" :width="pillW(`AI ${fmt(l.ai)} 条登记成果`)" height="34" rx="17" fill="#a21535"/>
-          <text :x="l.mx-48" :y="Y-97" font-size="17" font-weight="800" text-anchor="middle" fill="#fff">AI {{fmt(l.ai)}} 条登记成果</text></g>
+        <g v-if="l.ai"><rect :x="l.mx-pillW(`AI ${fmt(l.ai)} 条`)/2" :y="Y+20" :width="pillW(`AI ${fmt(l.ai)} 条`)" height="34" rx="17" fill="#a21535"/>
+          <text :x="l.mx" :y="Y+43" font-size="17" font-weight="800" text-anchor="middle" fill="#fff">AI {{fmt(l.ai)}} 条</text>
+          <text :x="l.mx" :y="Y+72" font-size="12.5" text-anchor="middle" fill="#8a8286">AI 项目登记成果</text></g>
       </g>
       <circle class="rs-pulse sb-pulse" :cx="nodes[2].x" :cy="Y" r="84" fill="none" stroke="#a21535" stroke-width="2" pointer-events="none"/>
       <g v-for="n in nodes" :key="n.k">
