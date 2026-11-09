@@ -29,6 +29,7 @@ const strengthView=computed(()=>['continuity','evidence'].includes(route.query.v
 const evidencePerson=ref('')
 const dataset=ref(null),loadError=ref(''),loading=ref(false)
 function choose(id){router.push({path:route.path,query:{...route.query,domain:'ai',module:id,view:undefined}})}
+function toEvidence(chain){router.push({path:route.path,query:{domain:'ai',module:'evidence',chain}})}
 function chooseView(view){router.replace({query:{...route.query,view}})}
 function explore(name){evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
 async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究力量数据暂时无法读取，请重试。'}finally{loading.value=false}}
@@ -51,7 +52,7 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
     </PageHero>
     <div :key="active" class="pane-swap">
     <EvidenceHub v-if="active==='evidence'" :data="data"/>
-    <InvestmentOutcomes v-else-if="active==='investment'"/>
+    <InvestmentOutcomes v-else-if="active==='investment'" :data="data" @explore="toEvidence"/>
     <template v-else>
       <nav class="strength-views view-tabs" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>

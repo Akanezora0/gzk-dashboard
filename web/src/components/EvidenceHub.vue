@@ -1,15 +1,12 @@
 <script setup>
-import {ref,computed,watch,onMounted,nextTick} from 'vue'
+import {ref,computed,watch,onMounted,onBeforeUnmount,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
-import FundContribution from './FundContribution.vue'
 import Chart from './Chart.vue'
 import {api,fmt,colors,kindLabel,safeUrl,escape} from '../shared'
 const props=defineProps({data:Object}),route=useRoute()
 const chain=ref(route.query.chain||({fund_paper:'fund_paper',patent:'patent_tech',contribution:'paper_tech'})[route.query.tab]||'mixed'),scope=ref('ai'),limit=ref(20),summary=ref(null),summaryError=ref(''),graph=ref(null),loading=ref(false),error=ref(''),selected=ref(null),step=ref(0),chart=ref(null),graphShell=ref(null),allLabels=ref(false)
-const section=ref(route.query.tab==='contribution'?'contribution':'evidence')
-watch(()=>route.query.tab,v=>section.value=v==='contribution'?'contribution':'evidence')
-watch(()=>route.query.chain,v=>{if(v){chain.value=v;section.value='evidence'}})
-function explore(id){section.value='evidence';chain.value=id;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}
+watch(()=>route.query.chain,v=>{if(v){chain.value=v;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}})
+function explore(id){chain.value=id;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}
 const chainTabs=[['mixed','多链关系'],['fund_paper','基金—论文—技术'],['paper_tech','论文—技术'],['patent_tech','专利—技术'],['fund_patent','基金—专利—技术'],['paper_network','论文间方法关联']]
 const typeLabels={...kindLabel,fund:'基金项目',paper:'论文',patent:'专利',tech_point:'技术主题',technology:'技术主题',tech:'技术主题',institution:'机构',company:'企业'}
 const typeColor={fund:'#AE0D28',paper:'#2877B0',patent:'#278771',tech_point:'#8B63AA',technology:'#8B63AA',tech:'#8B63AA',institution:'#D18A23',company:'#D18A23'}
@@ -21,8 +18,57 @@ watch([chain,scope,limit],fetchGraph)
 watch(scope,fetchSummary)
 onMounted(()=>{fetchSummary();fetchGraph()})
 const nodeTypes=computed(()=>[...new Set((graph.value?.nodes||[]).map(n=>n.type))])
-const graphOption=computed(()=>({animationDurationUpdate:350,tooltip:{confine:true,formatter:p=>p.dataType==='edge'?escape(p.data.label||'关系'):escape(p.data.fullLabel||p.data.name)},legend:{top:0,data:nodeTypes.value.map(t=>typeLabels[t]||t),textStyle:{fontSize:14,color:'#3D4859'},icon:'circle',itemWidth:14,itemHeight:14},series:[{type:'graph',layout:'force',labelLayout:{hideOverlap:true},roam:true,draggable:true,focusNodeAdjacency:true,zoom:(graph.value?.nodes?.length||0)>80?.66:.85,force:{repulsion:160,edgeLength:[65,105],gravity:.18,friction:.65},left:65,right:65,top:85,bottom:65,categories:nodeTypes.value.map(t=>({name:typeLabels[t]||t,itemStyle:{color:typeColor[t]||'#64748b'}})),data:(graph.value?.nodes||[]).map(n=>({id:n.id,name:n.label,fullLabel:n.label,raw:n,category:nodeTypes.value.indexOf(n.type),symbolSize:['technology','tech_point','tech'].includes(n.type)?34:30,label:{show:allLabels.value||['technology','tech','tech_point'].includes(n.type)||chain.value==='paper_network',color:'#344154',fontSize:13,position:'bottom',formatter:p=>p.name.length>18?p.name.slice(0,16)+'…':p.name},itemStyle:{color:typeColor[n.type]||'#64748b',borderColor:'#fff',borderWidth:2},emphasis:{label:{show:true,fontSize:15,fontWeight:700},itemStyle:{shadowBlur:12,shadowColor:'#64748b66'}}})),links:(graph.value?.edges||[]).map(e=>({...e,raw:e,lineStyle:{color:e.kind==='source_project_id'?'#AE0D28':'#8d9aae',width:2,curveness:.12},label:{show:false},emphasis:{label:{show:true,fontSize:13,color:'#394355',formatter:()=>e.label}}})),edgeSymbol:['none','arrow'],edgeSymbolSize:[4,8],emphasis:{focus:'adjacency'},lineStyle:{opacity:.65}}]}))
-function onSelect(p){selected.value=p.dataType==='edge'?{kind:'edge',item:p.data.raw}:{kind:'node',item:p.data.raw}}
+/* 证据图：按“基金 → 论文 → 技术主题 ← 专利”分栏排布，栏内按相邻节点位置排序以减少交叉 */
+const columnsOf={mixed:['fund','paper','technology','patent'],fund_paper:['fund','paper','technology'],paper_tech:['paper','technology'],patent_tech:['technology','patent'],fund_patent:['fund','patent','technology']}
+const colTitle={fund:'基金项目',paper:'论文',technology:'技术主题',patent:'专利'}
+const normType=t=>['tech','tech_point','technology'].includes(t)?'technology':t
+const canvasW=ref(900),canvasEl=ref(null),PADL=196,PADR=206,PADT=20,PADB=20
+let canvasRO
+onMounted(()=>{canvasRO=new ResizeObserver(([e])=>{if(e.contentRect.width)canvasW.value=e.contentRect.width});watch(canvasEl,el=>{canvasRO.disconnect();if(el)canvasRO.observe(el)},{immediate:true})})
+onBeforeUnmount(()=>canvasRO?.disconnect())
+const layered=computed(()=>{
+ const g=graph.value;if(!g?.nodes?.length)return null
+ const cols=columnsOf[chain.value];if(!cols||canvasW.value<640)return null
+ const rows=Math.max(...cols.map(c=>g.nodes.filter(n=>normType(n.type)===c).length))
+ const W=Math.max(300,canvasW.value-PADL-PADR),H=Math.max(380,rows*34)
+ const by=Object.fromEntries(cols.map(c=>[c,g.nodes.filter(n=>normType(n.type)===c)]))
+ if(Object.values(by).reduce((s,l)=>s+l.length,0)<g.nodes.length*.8)return null
+ const adj=new Map();g.edges.forEach(e=>{(adj.get(e.source)||adj.set(e.source,[]).get(e.source)).push(e.target);(adj.get(e.target)||adj.set(e.target,[]).get(e.target)).push(e.source)})
+ const pos=new Map();cols.forEach(c=>by[c].forEach((n,i)=>pos.set(n.id,(i+.5)/by[c].length)))
+ for(let it=0;it<6;it++)cols.forEach(c=>{
+  const bc=n=>{const nb=(adj.get(n.id)||[]).filter(id=>pos.has(id));return nb.length?nb.reduce((s,id)=>s+pos.get(id),0)/nb.length:pos.get(n.id)}
+  by[c].sort((a,b)=>bc(a)-bc(b)).forEach((n,i)=>pos.set(n.id,(i+.5)/by[c].length))
+ })
+ const xs=cols.map((_,i)=>cols.length===1?W/2:i*W/(cols.length-1))
+ const coords=new Map();cols.forEach((c,i)=>by[c].forEach(n=>coords.set(n.id,[xs[i],pos.get(n.id)*H])))
+ // 固定两个角点，保证图形按实际像素铺满画布、各栏与栏标题对齐
+ const anchors=[[0,0],[W,H]]
+ return {cols,xs,W,H,coords,anchors,count:Object.fromEntries(cols.map(c=>[c,by[c].length]))}
+})
+const graphHeight=computed(()=>layered.value?layered.value.H+PADT+PADB+12:460)
+const short=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t
+const graphOption=computed(()=>{
+ const g=graph.value,L=layered.value,cols=L?.cols||[]
+ const side=t=>{const i=cols.indexOf(normType(t));return i<=0?'left':i===cols.length-1?'right':normType(t)==='technology'?'inside':'top'}
+ return {animationDurationUpdate:400,
+  tooltip:{confine:true,backgroundColor:'#fff',borderColor:'#e4dcd8',textStyle:{color:'#2f2b2d',fontSize:13},extraCssText:'box-shadow:0 10px 28px -14px rgba(60,28,38,.35);max-width:320px;white-space:normal',formatter:p=>p.dataType==='edge'?`<b>${escape(p.data.label||'关系')}</b>`:`<span style="color:${typeColor[p.data.raw.type]||'#64748b'};font-size:12px">${escape(typeLabels[p.data.raw.type]||p.data.raw.type)}${p.data.raw.year?' · '+p.data.raw.year:''}</span><br/><b>${escape(p.data.fullLabel)}</b>`},
+  series:[{type:'graph',layout:L?'none':'force',roam:true,draggable:!L,scaleLimit:{min:.5,max:3},
+   left:L?PADL:40,right:L?PADR:40,top:L?PADT:30,bottom:L?PADB:20,
+   force:{repulsion:220,edgeLength:[70,120],gravity:.12,friction:.6},
+   data:(g?.nodes||[]).map(n=>{
+    const t=normType(n.type),tech=t==='technology'&&!!L,c=L?.coords.get(n.id),color=typeColor[n.type]||'#64748b',pos=L?side(n.type):'bottom'
+    const label=tech?short(n.label,12):short(n.label,pos==='left'||pos==='right'?13:12)
+    return {id:n.id,name:n.label,fullLabel:n.label,raw:n,x:c?.[0],y:c?.[1],
+     symbol:tech?'roundRect':'circle',symbolSize:tech?[Math.max(64,label.length*13+22),26]:t==='technology'?16:t==='fund'?14:11,
+     itemStyle:tech?{color:'#f6f1f9',borderColor:color,borderWidth:1}:{color,borderColor:'#fff',borderWidth:2,shadowBlur:6,shadowColor:color+'55'},
+     label:{position:pos,distance:8,color:tech?'#5b3f78':'#4a4448',fontSize:tech?12.5:12,show:tech||t==='technology'||allLabels.value||pos==='left'||pos==='right'||chain.value==='paper_network',fontWeight:tech?650:400,formatter:()=>label},
+     emphasis:{scale:tech?1.04:1.6,label:{show:true,color:tech?'#3e2a55':'#232930',fontWeight:650}}}
+   }).concat(L?L.anchors.map((p,i)=>({id:'__a'+i,name:'',x:p[0],y:p[1],symbolSize:0,label:{show:false},tooltip:{show:false},silent:true,itemStyle:{opacity:0}})):[]),
+   links:(g?.edges||[]).map(e=>{const src=(g.nodes.find(n=>n.id===e.source)||{}).type;const color=e.kind==='source_project_id'?'#a21535':(typeColor[src]||'#9aa3b2');return {...e,raw:e,lineStyle:{color,width:e.kind==='source_project_id'?1.8:1.3,opacity:.42,curveness:L?.18:.12}}}),
+   edgeSymbol:['none','arrow'],edgeSymbolSize:[0,6],
+   emphasis:{focus:'adjacency',lineStyle:{width:2.4,opacity:.9}},blur:{itemStyle:{opacity:.18},lineStyle:{opacity:.06},label:{opacity:.25}}}]}
+})
+function onSelect(p){if(!p.data?.raw)return;selected.value=p.dataType==='edge'?{kind:'edge',item:p.data.raw}:{kind:'node',item:p.data.raw}}
 const neighbors=computed(()=>selected.value?.kind==='node'?(graph.value?.edges||[]).filter(e=>e.source===selected.value.item.id||e.target===selected.value.item.id):[])
 const nodeName=id=>graph.value?.nodes?.find(n=>n.id===id)?.label||id
 const selectedFields=computed(()=>selected.value?.kind==='node'?Object.entries(selected.value.item.fields||{}).filter(([k,v])=>['批准号','依托单位','负责人','作者','机构','DOI','申请号','主IPC分类号','申请人','论文','作者（节选）','论文署名机构','技术组','技术编号','批准年','申请年','proj_no','proj_school','proj_author'].includes(k)&&v!==null&&v!==''&&v!==undefined):[])
@@ -32,6 +78,14 @@ const selectedStep=computed(()=>summary.value?.pipeline?.[step.value])
 const chainDescription=c=>({fund_paper:`项目编号关联成果论文 · ${fmt(c.triples||0)} 组基金—论文—技术组合`,paper_tech:'从论文标题、摘要连接技术主题',patent_tech:'从专利公开文本连接技术主题',fund_patent:'基金与专利成果关联研究'})[c.id]
 const currentEdges=computed(()=>props.data.currentInventory?.counts.ai_fund_papers??props.data.study.contribution.source_metrics.fund_paper_edges)
 const displayedChains=computed(()=>(summary.value?.chains||[]).map(c=>c.id==='fund_paper'?{...c,count:currentEdges.value}:c))
+const counts=computed(()=>props.data.currentInventory?.counts||{})
+const chainCount=id=>summary.value?.chains?.find(c=>c.id===id)?.count
+const flowSteps=computed(()=>[
+ {title:'多源汇聚',text:'基金项目、成果论文与专利汇入研究底座，保留来源与时间。',stats:[{v:fmt(counts.value.ai_funds),u:'AI 基金项目'},{v:counts.value.ai_papers?(counts.value.ai_papers/1e4).toFixed(1)+'万':'—',u:'AI 论文'},{v:counts.value.ai_patents?(counts.value.ai_patents/1e4).toFixed(1)+'万':'—',u:'AI 专利'}]},
+ {title:'直接映射',text:'以原始项目编号连接基金与成果论文，形成资助关联。',stats:[{v:fmt(currentEdges.value),u:'基金—论文资助关联',big:true,chain:'fund_paper'}]},
+ {title:'技术识别',text:'从题名、摘要及公开文本识别技术内容，连接到共同技术词表。',stats:[{v:fmt(chainCount('paper_tech')),u:'论文—技术',chain:'paper_tech'},{v:fmt(chainCount('patent_tech')),u:'专利—技术',chain:'patent_tech'}]},
+ {title:'核对与汇流',text:'核对实体与原文依据，让多条成果链在共同技术主题中交汇。',stats:[{v:'交互证据图',u:'查看多链关系 ↓',chain:'mixed',link:true}]},
+ {title:'贡献研究',text:'结合成果、引用与技术覆盖，研究基金的支撑范围与影响。',stats:[{v:'基金贡献度',u:'投入与产出 →',to:{query:{domain:'ai',module:'investment',analysis:'contribution'}},link:true}]}])
 const processSteps=computed(()=>[
  {title:'多源汇聚',text:'基金项目、成果论文与专利资料汇入研究底座，保留来源与时间。',sourceLabel:'成果来源',source:'基金 · 论文 · 专利'},
  {title:'直接映射',text:'以原始项目编号连接基金与成果论文，形成资助关联。',sourceLabel:'已建关系',source:fmt(currentEdges.value)+' 条资助关联'},
@@ -43,4 +97,63 @@ async function fullScreen(){if(!document.fullscreenElement)await graphShell.valu
 const activeTitle=computed(()=>chainTabs.find(c=>c[0]===chain.value)?.[1]||chain.value)
 const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context:'前史 / 语境关联'})[scope.value])
 </script>
-<template><div class="evidence-page-tabs view-tabs"><button :class="{active:section==='evidence'}" @click="section='evidence'">多链证据探索</button><button :class="{active:section==='contribution'}" @click="section='contribution'">基金贡献度</button></div><div v-if="section==='contribution'" key="contribution" class="pane-swap"><FundContribution :data="data" @explore="explore"/></div><div v-else key="evidence" class="pane-swap"><div v-if="summaryError" class="notice error">{{summaryError}} <button @click="fetchSummary">重试</button></div><div v-if="summary" class="evidence-compact-metrics"><button v-for="(c,i) in displayedChains.filter(c=>c.count!=null)" :key="c.id" :style="{'--tone':colors[i]}" @click="chain=c.id"><span>{{c.label}}</span><strong>{{fmt(c.count)}}<small>{{c.id==='fund_paper'?'AI资助关联':'技术样本关联'}}</small></strong></button></div><section class="evidence-process"><div class="study-heading"><h3>证据构建过程</h3><span>从多源成果到技术影响研究</span></div><div class="process-cards"><article v-for="(p,i) in processSteps" :key="p.title"><span class="process-number">{{i+1}}</span><h4>{{p.title}}</h4><p>{{p.text}}</p><footer><small>{{p.sourceLabel}}</small><b>{{p.source}}</b></footer></article></div></section><section ref="graphShell" class="panel evidence-panel"><div class="panel-heading"><h3>交互证据图</h3><div class="graph-actions"><button @click="allLabels=!allLabels">{{allLabels?'收起详细标签':'展开全部标签'}}</button><button @click="chart?.reset()">重置视图</button><button @click="fullScreen">全屏 / 退出</button></div></div><div class="compact-tabs graph-chain-tabs"><button v-for="[id,label] in chainTabs" :key="id" :class="{active:chain===id}" @click="chain=id">{{label}}</button></div><div class="graph-toolbar"><span>{{graph?.meta?.nodes??0}} 节点 · {{graph?.meta?.edges??0}} 条关系</span><span>人工智能 · 关系样本</span></div><div class="graph-layout"><div class="graph-canvas"><div v-if="loading" class="empty-chart">正在读取 {{activeTitle}} …</div><div v-else-if="error" class="empty-chart"><p>{{error}}</p><button class="button" @click="fetchGraph">重试</button></div><Chart v-else-if="graph?.nodes?.length" ref="chart" :option="graphOption" :height="440" @select="onSelect"/><div v-else class="empty-chart"><b>当前范围暂无可展示的已建立关系</b><p>{{scopeLabel}} · {{activeTitle}}</p><p v-if="chain==='fund_paper'&&scope==='llm'">切换 AI 宽口径或前史 / 语境，探索已有关系。</p><p v-if="chain==='fund_patent'">基金—专利关系已接入统一库，本视图展示其中的技术关联样例。</p></div><div class="graph-hint">悬停查看名称 · 拖动节点 · 滚轮缩放 · 点击节点或连线查看证据</div></div><aside class="graph-inspector"><template v-if="selected"><div class="inspector-title"><span class="type-tag">{{selected.kind==='node'?(typeLabels[selected.item.type]||selected.item.type):'关系证据'}}</span><button @click="selected=null" aria-label="关闭节点详情">×</button></div><h4>{{selected.item.label}}</h4><template v-if="selected.kind==='node'"><dl><dt v-if="selected.item.year">年份</dt><dd v-if="selected.item.year">{{selected.item.year}}</dd><dt v-if="selected.item.url">原始文献</dt><dd v-if="selected.item.url"><a :href="safeUrl(selected.item.url)" target="_blank" rel="noopener">查看原文 ↗</a></dd><dt v-if="readableSource(selected.item.source)">来源</dt><dd v-if="readableSource(selected.item.source)">{{selected.item.source}}</dd><template v-for="[k,v] in selectedFields" :key="k"><dt>{{fieldLabels[k]||k}}</dt><dd><a v-if="k==='url'" :href="safeUrl(v)" target="_blank" rel="noopener">查看原文 ↗</a><span v-else>{{display(v)}}</span></dd></template></dl><h5 v-if="neighbors.length">相邻关系 {{neighbors.length}}</h5><button v-for="e in neighbors.slice(0,10)" :key="e.id" class="edge-choice" @click="selected={kind:'edge',item:e}">{{e.label}} →</button></template><template v-else><dl><dt>源节点</dt><dd>{{nodeName(selected.item.source)}}</dd><dt>目标节点</dt><dd>{{nodeName(selected.item.target)}}</dd><dt>关系状态</dt><dd>{{({snippet_reviewed:'题名 / 原文片段已核对',rule_candidate:'关键词规则候选',source_link:'来源项目ID关联',primary_source_checked_demo_seed:'代表论文原文已核对'})[selected.item.status]||selected.item.status}}</dd></dl><div v-for="(e,i) in selected.item.evidence||[]" :key="i" class="graph-evidence"><strong>{{fieldLabels[e.field]||e.field||'原文依据'}}</strong><p>{{e.snippet||(readableSource(e.source)?e.source:'原文依据')}}</p><p v-if="readableSource(e.source)" class="graph-source">{{e.source}}</p><a v-if="e.url" :href="safeUrl(e.url)" target="_blank" rel="noopener">查看依据原文 ↗</a></div></template></template><template v-else><h4>节点与关系详情</h4><p>点击左侧图中的节点或连线，查看来源、匹配字段与原文依据。</p><div class="entity-legend"><span v-for="t in nodeTypes" :key="t"><i :style="{background:typeColor[t]||'#64748b'}"></i>{{typeLabels[t]||t}}</span></div></template></aside></div><p class="chart-note"><b>{{graph?.meta?.scope_label||scopeLabel}}</b> · {{graph?.meta?.sample_records??0}} 条源记录样本</p></section></div></template>
+<template><div class="evidence-v2">
+<div v-if="summaryError" class="notice error">{{summaryError}} <button @click="fetchSummary">重试</button></div>
+<section class="ev-flow">
+ <header><h3>证据构建流程</h3><span>从多源成果到基金贡献研究</span></header>
+ <ol>
+  <li v-for="(f,i) in flowSteps" :key="f.title">
+   <div class="ev-step-head"><b>{{String(i+1).padStart(2,'0')}}</b><h4>{{f.title}}</h4></div>
+   <p>{{f.text}}</p>
+   <div class="ev-step-stats">
+    <template v-for="st in f.stats" :key="st.u">
+     <router-link v-if="st.to" class="ev-stat link" :to="st.to"><strong>{{st.v}}</strong><span>{{st.u}}</span></router-link>
+     <button v-else-if="st.chain" type="button" class="ev-stat" :class="{big:st.big,link:st.link}" @click="explore(st.chain)"><strong>{{st.v}}</strong><span>{{st.u}}</span></button>
+     <div v-else class="ev-stat"><strong>{{st.v}}</strong><span>{{st.u}}</span></div>
+    </template>
+   </div>
+  </li>
+ </ol>
+</section>
+<section ref="graphShell" class="ev-graph">
+ <header class="ev-graph-head">
+  <div><h3>交互证据图</h3><p>{{graph?.meta?.scope_label||'人工智能 · 关系样本'}} · {{graph?.meta?.nodes??0}} 个节点 · {{graph?.meta?.edges??0}} 条关系</p></div>
+  <div class="ev-graph-actions"><button @click="allLabels=!allLabels">{{allLabels?'收起标签':'显示全部标签'}}</button><button @click="chart?.reset()">重置视图</button><button @click="fullScreen">全屏</button></div>
+ </header>
+ <nav class="ev-chains" role="tablist" aria-label="证据链类型">
+  <button v-for="[id,label] in chainTabs" :key="id" role="tab" :aria-selected="chain===id" :class="{active:chain===id,pending:id==='fund_patent'}" @click="chain=id">{{label}}<small v-if="id==='fund_patent'">待补充</small></button>
+ </nav>
+ <div class="ev-graph-body">
+  <div ref="canvasEl" class="ev-canvas">
+   <div v-if="graph?.nodes?.length" class="ev-legend"><span v-for="t in nodeTypes" :key="t"><i :class="{rect:normType(t)==='technology'}" :style="{'--c':typeColor[t]||'#64748b'}"></i>{{typeLabels[t]||t}}</span><span class="ev-legend-edge"><i class="line red"></i>项目编号资助关系</span><span class="ev-legend-edge"><i class="line"></i>原文识别关系</span></div>
+   <div v-if="loading" class="ev-empty"><span class="ev-spin"></span>正在读取 {{activeTitle}}…</div>
+   <div v-else-if="error" class="ev-empty"><p>{{error}}</p><button class="button" @click="fetchGraph">重试</button></div>
+   <template v-else-if="graph?.nodes?.length"><div v-if="layered" class="ev-cols" aria-hidden="true"><span v-for="(c,i) in layered.cols" :key="c" :style="{left:`calc(${PADL}px + ${layered.cols.length>1?i/(layered.cols.length-1):.5} * (100% - ${PADL+PADR}px))`,'--c':typeColor[c]}">{{colTitle[c]}}<b>{{layered.count[c]}}</b></span></div>
+   <Chart ref="chart" :option="graphOption" :height="graphHeight" @select="onSelect"/></template>
+   <div v-else class="ev-empty pending"><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="16" cy="30" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="46" r="7"/><rect x="88" y="21" width="28" height="18" rx="4"/><path d="M23 30 53 15M23 30 53 45M67 14 88 28M67 46 88 32"/></svg><b>{{activeTitle}}关联整理中</b><p v-if="chain==='fund_patent'">以基金项目编号、负责人与专利申请人、发明人对应，建立基金—专利—技术三段链路。</p><p v-else>该链路的样本关系正在补充。</p></div>
+   <p class="ev-hint">悬停查看名称 · 滚轮缩放 · 点击节点或连线查看原文依据</p>
+  </div>
+  <aside class="ev-inspector">
+   <template v-if="selected">
+    <div class="ev-insp-top"><span :style="{'--c':selected.kind==='node'?(typeColor[selected.item.type]||'#64748b'):'#a21535'}">{{selected.kind==='node'?(typeLabels[selected.item.type]||selected.item.type):'关系依据'}}</span><button @click="selected=null" aria-label="关闭详情">×</button></div>
+    <h4>{{selected.item.label}}</h4>
+    <template v-if="selected.kind==='node'">
+     <dl><template v-if="selected.item.year"><dt>年份</dt><dd>{{selected.item.year}}</dd></template><template v-if="readableSource(selected.item.source)"><dt>来源</dt><dd>{{selected.item.source}}</dd></template><template v-for="[k,v] in selectedFields" :key="k"><dt>{{fieldLabels[k]||k}}</dt><dd>{{display(v)}}</dd></template><template v-if="selected.item.url"><dt>原文</dt><dd><a :href="safeUrl(selected.item.url)" target="_blank" rel="noopener">查看原文 ↗</a></dd></template></dl>
+     <h5 v-if="neighbors.length">相邻关系 · {{neighbors.length}}</h5>
+     <button v-for="e in neighbors.slice(0,10)" :key="e.id" class="ev-edge" @click="selected={kind:'edge',item:e}"><span>{{e.label}}</span><small>{{nodeName(e.source===selected.item.id?e.target:e.source)}}</small></button>
+    </template>
+    <template v-else>
+     <div class="ev-pair"><span>{{nodeName(selected.item.source)}}</span><i>↓</i><span>{{nodeName(selected.item.target)}}</span></div>
+     <dl><dt>核对状态</dt><dd>{{({snippet_reviewed:'题名 / 原文片段已核对',rule_candidate:'关键词规则识别',source_link:'来源项目编号关联',primary_source_checked_demo_seed:'代表论文原文已核对'})[selected.item.status]||selected.item.status}}</dd></dl>
+     <div v-for="(e,i) in selected.item.evidence||[]" :key="i" class="ev-quote"><strong>{{fieldLabels[e.field]||e.field||'原文依据'}}<em v-if="e.keyword">{{e.keyword}}</em></strong><p>{{e.snippet||'原文依据'}}</p><a v-if="e.url" :href="safeUrl(e.url)" target="_blank" rel="noopener">查看依据原文 ↗</a></div>
+    </template>
+   </template>
+   <template v-else>
+    <h4 class="ev-insp-title">节点与关系详情</h4>
+    <p class="ev-insp-lead">点击图中的节点或连线，查看来源、匹配字段与原文片段。</p>
+    <ul class="ev-insp-tips"><li><b>基金项目</b>来自 NSFC 项目原件，以项目编号连接成果论文</li><li><b>论文 / 专利</b>从题名、摘要与公开文本识别技术主题</li><li><b>技术主题</b>沿用人工智能共同技术词表</li></ul>
+   </template>
+  </aside>
+ </div>
+</section>
+</div></template>

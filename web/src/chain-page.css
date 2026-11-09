@@ -42,3 +42,87 @@
  .ai-chain-workspace .view-tabs button{font-size:14.5px}
  .ai-chain-workspace .view-caption b{display:block;margin:0 0 2px}
 }
+
+/* ===== 原始证据链：证据构建流程（数字并入流程） ===== */
+.evidence-v2{display:flex;flex-direction:column;gap:24px}
+.ev-flow{background:#fff;border:1px solid #e6dfdb;border-radius:4px;padding:26px 28px 24px}
+.ev-flow>header,.ev-graph-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:22px}
+.ev-flow h3,.ev-graph h3{margin:0;font-size:21px;font-weight:700;color:#232930;padding-left:14px;border-left:4px solid #a21535;line-height:1.2}
+.ev-flow>header span{font-size:13.5px;color:#8a8286}
+.ev-flow ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);counter-reset:s}
+.ev-flow li{position:relative;display:flex;flex-direction:column;padding:0 20px 0 0}
+.ev-flow li+li{padding-left:20px;border-left:1px solid #efe8e4}
+.ev-step-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ev-step-head b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#a21535;color:#fff;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.ev-flow li:nth-child(n+2) .ev-step-head b{background:#fff;color:#a21535;border:1.5px solid #a21535}
+.ev-step-head h4{margin:0;font-size:17px;font-weight:700;color:#232930}
+.ev-flow li>p{margin:0 0 16px;font-size:13.5px;line-height:1.75;color:#6a6468;min-height:4.6em}
+.ev-step-stats{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.ev-stat{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:9px 12px;border:0;border-radius:3px;background:#f9f5f4;font:inherit;text-align:left;color:inherit;text-decoration:none}
+.ev-stat strong{font-size:19px;font-weight:750;color:#2f2b2d;font-variant-numeric:tabular-nums;line-height:1.3}
+.ev-stat.big strong{font-size:26px;color:#a21535}
+.ev-stat span{font-size:12.5px;color:#8a8286}
+button.ev-stat,a.ev-stat{cursor:pointer;transition:background .2s}
+button.ev-stat:hover,a.ev-stat:hover{background:#f3e9eb}
+.ev-stat.link strong{font-size:16px;color:#a21535}
+.ev-stat.link span{color:#a21535;opacity:.8}
+
+/* ===== 交互证据图 ===== */
+.ev-graph{background:#fff;border:1px solid #e6dfdb;border-radius:4px;padding:26px 28px 24px}
+.ev-graph:fullscreen{overflow:auto;padding:30px 40px}
+.ev-graph-head{margin-bottom:16px;align-items:flex-start}
+.ev-graph-head p{margin:8px 0 0 18px;font-size:13.5px;color:#8a8286}
+.ev-graph-actions{display:flex;gap:6px}
+.ev-graph-actions button{padding:7px 13px;border:1px solid #e4dcd8;border-radius:3px;background:#fff;font:inherit;font-size:13.5px;color:#5d575b;cursor:pointer;transition:border-color .2s,color .2s}
+.ev-graph-actions button:hover{border-color:#c99aa4;color:#a21535}
+.ev-chains{display:flex;flex-wrap:wrap;gap:0;margin:0 0 18px;border:1px solid #e6dfdb;border-radius:3px;width:fit-content;max-width:100%;overflow:hidden}
+.ev-chains button{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:0;border-left:1px solid #e6dfdb;background:#fff;font:inherit;font-size:14px;color:#5d575b;cursor:pointer;transition:background .2s,color .2s}
+.ev-chains button:first-child{border-left:0}
+.ev-chains button:hover:not(.active){background:#faf6f5;color:#2f2b2d}
+.ev-chains button.active{background:#a21535;color:#fff;font-weight:650}
+.ev-chains small{font-size:11px;padding:1px 5px;border-radius:2px;background:#f1ebe9;color:#9a9296}
+.ev-chains button.active small{background:rgba(255,255,255,.2);color:#fff}
+.ev-graph-body{display:grid;grid-template-columns:minmax(0,1fr) 320px;border:1px solid #ece5e1;border-radius:3px;overflow:hidden}
+.ev-canvas{position:relative;min-width:0;background:radial-gradient(circle at 1px 1px,#ece6e3 1px,transparent 0) 0 0/22px 22px,#fdfcfb}
+.ev-legend{display:flex;flex-wrap:wrap;gap:6px 18px;padding:14px 18px 0;font-size:12.5px;color:#6a6468}
+.ev-legend span{display:inline-flex;align-items:center;gap:6px}
+.ev-legend i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.ev-legend i.rect{width:16px;height:10px;border-radius:3px;background:#f4eff8;border:1.2px solid var(--c)}
+.ev-legend i.line{width:18px;height:0;border-radius:0;border-top:1.6px solid #9aa3b2}
+.ev-legend i.line.red{border-top-color:#a21535}
+.ev-legend-edge:first-of-type{margin-left:auto}
+.ev-cols{position:relative;height:22px;margin-top:10px}
+.ev-cols span{position:absolute;top:0;transform:translateX(-50%);display:inline-flex;align-items:baseline;gap:6px;font-size:13px;font-weight:650;color:var(--c);white-space:nowrap}
+.ev-cols b{font-size:12px;font-weight:600;color:#9a9296}
+.ev-hint{margin:0;padding:10px 18px 12px;font-size:12.5px;color:#9a9296;text-align:center;border-top:1px solid #f0eae7;background:rgba(255,255,255,.7)}
+.ev-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:440px;padding:30px;text-align:center;color:#6a6468;font-size:14px}
+.ev-empty.pending svg{width:150px;height:76px;fill:#fff;stroke:#cfc4c7;stroke-width:1.5;stroke-dasharray:4 3;margin-bottom:8px}
+.ev-empty b{font-size:17px;color:#2f2b2d}
+.ev-empty p{margin:0;max-width:420px;line-height:1.7;color:#7a7378}
+.ev-spin{width:22px;height:22px;border-radius:50%;border:2px solid #ead9dd;border-top-color:#a21535;animation:evspin .8s linear infinite}
+@keyframes evspin{to{transform:rotate(360deg)}}
+.ev-inspector{padding:20px 22px;border-left:1px solid #ece5e1;background:#fff;max-height:720px;overflow:auto}
+.ev-insp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ev-insp-top span{font-size:12.5px;font-weight:700;color:var(--c);padding:2px 8px;border-radius:2px;background:color-mix(in srgb,var(--c) 9%,#fff)}
+.ev-insp-top button{width:28px;height:28px;border:1px solid #e4dcd8;border-radius:3px;background:#fff;font-size:17px;line-height:1;color:#6a6468;cursor:pointer}
+.ev-inspector h4{margin:0 0 14px;font-size:16.5px;font-weight:700;line-height:1.5;color:#232930}
+.ev-inspector dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:0 0 16px;font-size:13px}
+.ev-inspector dt{color:#9a9296}.ev-inspector dd{margin:0;color:#3d3a3c;word-break:break-word}
+.ev-inspector dd a,.ev-quote a{color:#a21535;text-decoration:none;font-weight:600}
+.ev-inspector h5{margin:4px 0 8px;font-size:13px;font-weight:700;color:#5d575b}
+.ev-edge{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin-bottom:6px;padding:8px 10px;border:1px solid #efe8e4;border-radius:3px;background:#fcfaf9;font:inherit;text-align:left;cursor:pointer;transition:border-color .2s}
+.ev-edge:hover{border-color:#d7b8bf}
+.ev-edge span{font-size:13px;color:#a21535;font-weight:600}.ev-edge small{font-size:12px;color:#7a7378;line-height:1.5}
+.ev-pair{display:flex;flex-direction:column;gap:4px;margin:0 0 14px;padding:10px 12px;background:#faf7f6;border-radius:3px;font-size:13px;color:#3d3a3c}
+.ev-pair i{font-style:normal;color:#a21535}
+.ev-quote{margin-bottom:10px;padding:10px 12px;border-left:3px solid #a21535;background:#faf7f6;font-size:13px}
+.ev-quote strong{display:flex;gap:8px;align-items:baseline;font-size:12.5px;color:#5d575b}
+.ev-quote em{font-style:normal;padding:0 6px;border-radius:2px;background:#f3e3e7;color:#a21535}
+.ev-quote p{margin:6px 0;line-height:1.7;color:#3d3a3c}
+.ev-insp-title{margin-top:4px!important}
+.ev-insp-lead{margin:0 0 18px;font-size:13.5px;line-height:1.8;color:#7a7378}
+.ev-insp-tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.ev-insp-tips li{padding-left:12px;border-left:2px solid #efe3e6;font-size:13px;line-height:1.7;color:#6a6468}
+.ev-insp-tips b{display:block;color:#2f2b2d;font-size:13.5px}
+@media(max-width:1100px){.ev-flow ol{grid-template-columns:repeat(2,1fr);gap:22px 0}.ev-flow li:nth-child(odd){padding-left:0;border-left:0}.ev-graph-body{grid-template-columns:1fr}.ev-inspector{border-left:0;border-top:1px solid #ece5e1}}
+@media(max-width:600px){.ev-flow,.ev-graph{padding:20px 16px}.ev-flow ol{grid-template-columns:1fr}.ev-flow li{padding:0!important;border-left:0!important}.ev-flow li>p{min-height:0}.ev-graph-head{flex-direction:column}.ev-chains{width:100%}.ev-chains button{flex:1 1 auto;padding:8px 10px;font-size:13px}.ev-legend-edge:first-of-type{margin-left:0}}
