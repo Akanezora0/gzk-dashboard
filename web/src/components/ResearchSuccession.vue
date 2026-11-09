@@ -107,16 +107,16 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 .rs-succ h4{font-size:22px;margin:0;font-weight:700}
 .rs-lead{font-size:16px;color:var(--rs-red);font-weight:500;margin:6px 0 16px}
 .rs-succ-right{border-left:1px solid var(--rs-line);padding-left:36px;display:flex;flex-direction:column}
-.rs-case-gname{font-size:14px;font-weight:700;color:var(--rs-muted);letter-spacing:1px;margin:14px 0 6px}
-.rs-case{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:8px 8px;cursor:pointer;font-family:inherit}
+.rs-case-gname{font-size:14px;font-weight:700;color:var(--rs-muted);letter-spacing:1px;margin:8px 0 4px}
+.rs-case{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:4px 8px;cursor:pointer;font-family:inherit}
 .rs-case:hover,.rs-case.on{background:#f7f5f2}
 .who b{display:block;font-size:17px;color:var(--rs-ink)}.who b.hl{color:var(--rs-red)}
 .who small{font-size:12.5px;color:var(--rs-muted)}
 .steps{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0}
-.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--rs-line);background:#fff;border-radius:20px;padding:4px 14px 4px 4px;font-size:15px;color:var(--rs-ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.topic{overflow:hidden;text-overflow:ellipsis;min-width:0}.case-summary{font-size:15px;line-height:1.8;color:#57534e}.case-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.case-links .rs-btn.on{background:#ae0d28;border-color:#ae0d28;color:#fff}.case-links a{font-size:14px;color:#ae0d28}.pill em{font-style:normal;font-size:13px;font-weight:700;border-radius:14px;padding:4px 10px;flex:none}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--rs-line);background:#fff;border-radius:20px;padding:3px 14px 3px 4px;font-size:15px;color:var(--rs-ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.topic{overflow:hidden;text-overflow:ellipsis;min-width:0}.case-summary{font-size:15px;line-height:1.8;color:#57534e}.case-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.case-links .rs-btn.on{background:#ae0d28;border-color:#ae0d28;color:#fff}.case-links a{font-size:14px;color:#ae0d28}.pill em{font-style:normal;font-size:13px;font-weight:700;border-radius:14px;padding:3px 10px;flex:none}
 
-.rib{display:block;width:3px;height:10px;margin-left:34px;opacity:.6}
+.rib{display:block;width:3px;height:6px;margin-left:34px;opacity:.6}
 
 .rs-case-detail{margin-top:12px;background:#f7f5f2;border-radius:12px;padding:16px 18px}
 .rs-case-detail ol{margin:6px 0 8px;padding-left:20px}
