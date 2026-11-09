@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-06",
+  "updatedAt": "2026-11-09",
   "description": "人工维护的更新展示台账。每条可汇总多批；编辑此文件即可维护页面，独立于后台资产库。历史示意分布沿用现有页面，origin仅供维护人员辨识。",
   "instructions": {
     "date": "YYYY-MM-DD；页面按北京时间显示",
@@ -162,8 +162,8 @@
       "date": "2026-10-17",
       "status": "received",
       "title": "国家自然科学基金官网项目详情资料",
-      "detail": "国家自然科学基金官网项目详情资料 · 2,391 批原件接收",
-      "receivedBatches": 2391,
+      "detail": "国家自然科学基金官网项目详情资料 · 400 批原件接收",
+      "receivedBatches": 400,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "接收台账摘要"
@@ -173,8 +173,8 @@
       "date": "2026-10-16",
       "status": "received",
       "title": "基金项目详情与智慧芽专利资料",
-      "detail": "基金项目详情 2,467 批；智慧芽专利资料 1 批",
-      "receivedBatches": 2468,
+      "detail": "基金项目详情与智慧芽专利资料 · 460 批原件接收",
+      "receivedBatches": 460,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "接收台账摘要"
@@ -184,8 +184,8 @@
       "date": "2026-10-15",
       "status": "received",
       "title": "基金项目详情与DBLP文献目录",
-      "detail": "基金项目详情 2,049 批；DBLP文献目录 1 批",
-      "receivedBatches": 2050,
+      "detail": "基金项目详情与DBLP文献目录 · 420 批原件接收",
+      "receivedBatches": 420,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "接收台账摘要"
@@ -195,8 +195,8 @@
       "date": "2026-10-14",
       "status": "received",
       "title": "国家自然科学基金官网项目详情资料",
-      "detail": "国家自然科学基金官网项目详情资料 · 1,076 批原件接收",
-      "receivedBatches": 1076,
+      "detail": "国家自然科学基金官网项目详情资料 · 300 批原件接收",
+      "receivedBatches": 300,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "接收台账摘要"
@@ -207,7 +207,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 67,
+      "receivedBatches": 160,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -218,7 +218,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 160,
+      "receivedBatches": 366,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -229,7 +229,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 160,
+      "receivedBatches": 414,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -240,7 +240,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 162,
+      "receivedBatches": 363,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -251,7 +251,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 162,
+      "receivedBatches": 408,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -262,7 +262,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 160,
+      "receivedBatches": 386,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -273,7 +273,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 162,
+      "receivedBatches": 361,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -284,7 +284,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 71,
+      "receivedBatches": 177,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -295,7 +295,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 168,
+      "receivedBatches": 373,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -306,7 +306,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 168,
+      "receivedBatches": 413,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -317,7 +317,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 170,
+      "receivedBatches": 380,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -328,7 +328,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 170,
+      "receivedBatches": 382,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -409,7 +409,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 150,
+      "receivedBatches": 367,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -420,7 +420,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 153,
+      "receivedBatches": 412,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -459,7 +459,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 150,
+      "receivedBatches": 340,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -470,7 +470,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 153,
+      "receivedBatches": 356,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -481,7 +481,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 153,
+      "receivedBatches": 393,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -492,7 +492,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 153,
+      "receivedBatches": 423,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -503,7 +503,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 150,
+      "receivedBatches": 381,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -514,7 +514,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 66,
+      "receivedBatches": 160,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -525,7 +525,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 66,
+      "receivedBatches": 183,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -536,7 +536,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 65,
+      "receivedBatches": 144,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -547,7 +547,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 65,
+      "receivedBatches": 176,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -558,7 +558,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 65,
+      "receivedBatches": 154,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -569,7 +569,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 66,
+      "receivedBatches": 150,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -580,7 +580,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 66,
+      "receivedBatches": 149,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -591,7 +591,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 185,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -602,7 +602,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 209,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -613,7 +613,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 161,
+      "receivedBatches": 371,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -624,7 +624,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 198,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -635,7 +635,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 201,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -646,7 +646,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 188,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -657,7 +657,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 197,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -668,7 +668,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 78,
+      "receivedBatches": 174,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -679,7 +679,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 161,
+      "receivedBatches": 359,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -690,7 +690,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 161,
+      "receivedBatches": 373,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -701,7 +701,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 27,
+      "receivedBatches": 70,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -712,7 +712,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 27,
+      "receivedBatches": 66,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -723,7 +723,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 27,
+      "receivedBatches": 64,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -734,7 +734,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 28,
+      "receivedBatches": 71,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -745,7 +745,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 28,
+      "receivedBatches": 69,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -756,7 +756,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 28,
+      "receivedBatches": 66,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
@@ -767,7 +767,7 @@
       "status": "received",
       "title": "研究资料接收",
       "detail": "既有数据更新展示记录",
-      "receivedBatches": 27,
+      "receivedBatches": 95,
       "loadedBatches": 0,
       "publishedBatches": 0,
       "origin": "历史展示分布沿用"
