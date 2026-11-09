@@ -22,6 +22,7 @@ const nodes=shallowRef([]),links=shallowRef([]),tick=ref(0)
 const view=ref({k:1,x:0,y:0})
 const hover=ref(null),tip=ref(null)
 let sim=null,ro=null
+const buildId=ref(0)
 const uid=Math.random().toString(36).slice(2,8)
 
 const deg=computed(()=>{const d=new Map();links.value.forEach(l=>{d.set(l.source.id,(d.get(l.source.id)||0)+1);d.set(l.target.id,(d.get(l.target.id)||0)+1)});return d})
@@ -44,7 +45,10 @@ function build(){
   .stop()
  for(let i=0;i<360;i++)sim.tick()
  sim.on('tick',()=>tick.value++)
- nodes.value=ns;links.value=ls
+ ns.forEach((n,i)=>{n.delay=(isTech(n)?.1:.35)+i*.012})
+ // 连线在两端节点都弹出后再画出
+ ls.forEach(l=>{l.delay=Math.max(l.source.delay,l.target.delay)+.45})
+ nodes.value=ns;links.value=ls;buildId.value++
  fit()
 }
 function fit(){
@@ -122,16 +126,16 @@ onBeforeUnmount(()=>{sim?.stop();ro?.disconnect()})
   </defs>
   <g :transform="`translate(${view.x},${view.y}) scale(${view.k})`">
    <g class="eg-edges">
-    <g v-for="e in edgeList" :key="'e'+e.i" class="eg-edge" :class="{dim:edgeDim(e.l),on:!!focusId&&!edgeDim(e.l)}" @pointerenter="enterEdge($event,e.l)" @pointerleave="leave" @pointerdown.stop @click.stop="emit('select',{kind:'edge',item:e.l.raw})">
+    <g v-for="e in edgeList" :key="buildId+'e'+e.i" :style="{'--d':e.l.delay+'s'}" class="eg-edge" :class="{dim:edgeDim(e.l),on:!!focusId&&!edgeDim(e.l)}" @pointerenter="enterEdge($event,e.l)" @pointerleave="leave" @pointerdown.stop @click.stop="emit('select',{kind:'edge',item:e.l.raw})">
      <path class="eg-hit" :d="e.g.p"/>
-     <path class="eg-line" :d="e.g.p" :stroke="`url(#eg${uid}${e.i})`" :style="{animationDelay:(e.i*.03)+'s'}"/>
-     <path class="eg-flow" :d="e.g.p" :stroke="e.ct" :style="{animationDelay:(-(e.i%9)*.18)+'s'}"/>
+     <path class="eg-line" :d="e.g.p" pathLength="1" :stroke="`url(#eg${uid}${e.i})`"/>
+     <g class="eg-flow-wrap"><path class="eg-flow" :d="e.g.p" :stroke="e.ct" :style="{animationDelay:(-(e.i%9)*.18)+'s'}"/></g>
      <path class="eg-arrow" d="M0,0 L-8,-4 L-6,0 L-8,4Z" :fill="e.ct" :transform="`translate(${e.g.tx},${e.g.ty}) rotate(${e.g.ang})`"/>
     </g>
    </g>
    <g class="eg-nodes">
-    <g v-for="(n,i) in nodes" :key="n.id" class="eg-node" :class="{dim:nodeDim(n),sel:selectedId===n.id,tech:isTech(n)}" :transform="`translate(${n.x},${n.y})`" @pointerdown="downNode($event,n)" @pointerenter="enterNode($event,n)" @pointerleave="leave">
-     <g class="eg-pop" :style="{animationDelay:(isTech(n)?.1:.35)+i*.012+'s'}">
+    <g v-for="n in nodes" :key="buildId+n.id" class="eg-node" :class="{dim:nodeDim(n),sel:selectedId===n.id,tech:isTech(n)}" :transform="`translate(${n.x},${n.y})`" @pointerdown="downNode($event,n)" @pointerenter="enterNode($event,n)" @pointerleave="leave">
+     <g class="eg-pop" :style="{animationDelay:n.delay+'s'}">
       <circle v-if="isTech(n)" class="eg-ring" :r="rOf(n)+4" :stroke="colorOf(n)"/>
       <circle v-if="selectedId===n.id" :r="rOf(n)+7" fill="none" :stroke="colorOf(n)" stroke-width="2"/>
       <circle class="eg-dot" :r="rOf(n)" :fill="colorOf(n)" :filter="`url(#sh${uid})`"/>
@@ -157,9 +161,10 @@ onBeforeUnmount(()=>{sim?.stop();ro?.disconnect()})
 .egraph:active{cursor:grabbing}
 svg{display:block}
 .eg-hit{fill:none;stroke:transparent;stroke-width:12;cursor:pointer}
-.eg-line{fill:none;stroke-width:2.4;stroke-opacity:.5;transition:stroke-opacity .2s,stroke-width .2s}
+.eg-line{fill:none;stroke-width:2.4;stroke-opacity:.5;stroke-dasharray:1;stroke-dashoffset:1;animation:egdraw .7s cubic-bezier(.4,0,.2,1) var(--d,0s) forwards;transition:stroke-opacity .2s,stroke-width .2s}
+.eg-flow-wrap{opacity:0;animation:egfade .4s ease-out calc(var(--d,0s) + .6s) forwards}
 .eg-flow{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:2 32;stroke-opacity:.9;animation:egflow 1.6s linear infinite;pointer-events:none}
-.eg-arrow{opacity:.8;pointer-events:none}
+.eg-arrow{opacity:0;pointer-events:none;animation:egarrow .3s ease-out calc(var(--d,0s) + .55s) forwards}
 .eg-edge{transition:opacity .2s}
 .eg-edge.dim{opacity:.1}
 .eg-edge.on .eg-line,.eg-edge:hover .eg-line{stroke-opacity:.9;stroke-width:3.2}
@@ -175,6 +180,9 @@ svg{display:block}
 .eg-tip :deep(span){display:block}
 .eg-tip :deep(b){display:block;font-size:13px;color:#2f2b2d;font-weight:650}
 @keyframes egflow{to{stroke-dashoffset:-34}}
+@keyframes egdraw{to{stroke-dashoffset:0}}
+@keyframes egfade{to{opacity:1}}
+@keyframes egarrow{to{opacity:.8}}
 @keyframes egpop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-@media(prefers-reduced-motion:reduce){.eg-flow{animation:none;display:none}.eg-pop{animation:none}}
+@media(prefers-reduced-motion:reduce){.eg-flow{animation:none;display:none}.eg-pop{animation:none}.eg-line{animation:none;stroke-dasharray:none;stroke-dashoffset:0}.eg-arrow{animation:none;opacity:.8}}
 </style>
