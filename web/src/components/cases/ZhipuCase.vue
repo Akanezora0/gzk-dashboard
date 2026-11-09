@@ -129,7 +129,7 @@ const fmt2=v=>v.toFixed(2)
 
 <style scoped>
 .zc{display:flex;flex-direction:column;gap:22px}
-.zc-top{position:sticky;top:76px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px 22px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border:1px solid #e6dfdb;border-radius:4px}
+.zc-top{position:sticky;top:77px;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px 22px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border:1px solid #e6dfdb;border-radius:4px}
 .zc-id{display:flex;align-items:center;gap:14px}
 .zc-logo{display:grid;place-items:center;width:44px;height:44px;border-radius:4px;background:#a21535;color:#fff;font-size:20px;font-weight:800}
 .zc-kicker{margin:0;font-size:12px;color:#8a8286;letter-spacing:.5px}

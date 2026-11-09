@@ -13,7 +13,7 @@ const mastheadHeight=ref(260)
 let mastheadObserver,revealObserver
 const root=ref(null)
 onMounted(()=>{
-  const elements=['.research-header','.research-nav'].map(selector=>document.querySelector(selector)).filter(Boolean)
+  const elements=['.site-strip','.site-bar'].map(selector=>document.querySelector(selector)).filter(Boolean)
   const measure=()=>{mastheadHeight.value=elements.reduce((height,element)=>height+element.getBoundingClientRect().height,0)}
   mastheadObserver=new ResizeObserver(measure)
   elements.forEach(element=>mastheadObserver.observe(element))
@@ -44,6 +44,8 @@ const stages=[{x:330,label:'科学'},{x:540,label:'技术'},{x:750,label:'产业
 
 /* ---------- 内容 ---------- */
 const tones={red:'#a21535',blue:'#2c64a0',plum:'#6f4a94',gold:'#b2772a',teal:'#23806e'}
+const frameSupply=[{n:'基金资助',d:'项目、经费与负责人',icon:'grant'},{n:'论文成果',d:'方法、引用与知识积累',icon:'paper'},{n:'专利技术',d:'技术方案与权利主体',icon:'patent'}]
+const frameDemand=[{n:'企业主体',d:'研发主体与技术承接',icon:'org'},{n:'产品与服务',d:'模型、工具与平台',icon:'industry'},{n:'产业应用',d:'行业任务与经济表现',icon:'growth'}]
 const chain=[
   {label:'基金资助',sub:'资助布局与投入',icon:'fund',tone:tones.red},
   {label:'科学研究',sub:'论文与知识积累',icon:'science',tone:tones.blue},
@@ -95,9 +97,10 @@ const uses=[
       </svg>
     </div>
     <div class="home-wrap home-hero-content">
-      <p class="home-eyebrow light">国家自然科学基金委员会专项项目</p>
-      <h1 id="home-title">从基础研究出发<br/>理解创新的价值</h1>
-      <p class="home-hero-description">贯通创新链、产业链与政策链，构建基础研究全链条数据系统，<br class="desktop-break"/>为评估基础研究的科学、经济与社会价值提供数据与证据。</p>
+      <p class="home-eyebrow light">多源数据 · 全链条证据 · 多维评估</p>
+      <h1 id="home-title">基础研究数据与评估系统</h1>
+      <i class="home-hero-rule" aria-hidden="true"></i>
+      <p class="home-hero-description">追踪基础研究从资助投入到经济社会价值的全过程，<br class="desktop-break"/>汇聚基金、论文、专利、企业、产品与政策数据，为评估其科学、经济与社会价值提供证据。</p>
       <div class="home-hero-actions"><a class="home-cta light" href="#about" @click.prevent="exploreBelow">了解研究详情 <span aria-hidden="true">↓</span></a><router-link class="home-cta outline" to="/overview">进入数据总览 <span aria-hidden="true">↗</span></router-link></div>
       <div class="home-hero-bottom"><span>基础研究全链条数据系统构建与集成</span><span>中国人民大学 · 基础研究与中国式现代化发展战略研究中心</span></div>
     </div>
@@ -112,15 +115,17 @@ const uses=[
   <section id="about" class="home-wrap home-section">
     <div class="home-about">
       <div class="reveal"><p class="home-eyebrow">项目概览</p><h2>让基础研究的价值<br/>可追溯、可度量、可评估。</h2></div>
-      <div class="home-about-copy reveal"><p class="home-lead">基础研究是创新的源头。它的价值往往要经过知识积累、技术突破与产业应用的长链条才逐步显现，相关线索分散在基金、论文、专利、企业、产品与政策之中。</p><p>项目依托国家自然科学基金委员会专项项目《基础研究全链条数据系统构建与集成》，由中国人民大学基础研究与中国式现代化发展战略研究中心联合国家治理大数据和人工智能创新平台建设，打通多源数据，建立从资助投入到经济社会价值的证据链条。</p></div>
+      <div class="home-about-copy reveal"><p class="home-lead">基础研究是科学发现与技术创新的源头。它的作用经由知识积累、技术突破与产业应用逐步显现，相关证据分布在基金、论文、专利、企业、产品与政策等多类数据中。</p><p>项目依托国家自然科学基金委员会专项项目《基础研究全链条数据系统构建与集成》，由中国人民大学基础研究与中国式现代化发展战略研究中心联合国家治理大数据和人工智能创新平台建设，打通多源数据，建立从资助投入到经济社会价值的证据链条。</p></div>
     </div>
     <div class="home-chain reveal" aria-label="全链条：基金资助、科学研究、技术发展、产业应用、经济社会价值">
       <div class="home-chain-head"><span>基础研究全链条</span><span>从资助投入到经济社会价值</span></div>
-      <ol class="home-flow">
+      <ol class="home-flow" :style="{'--n':chain.length}">
         <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i}"><em>{{String(i+1).padStart(2,'0')}}</em><i class="home-flow-dot" aria-hidden="true"></i><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
       </ol>
-      <div class="home-flow-chains">
-        <span class="innovation">创新链</span><span class="industry">产业链</span><span class="policy">政策链贯穿全过程</span>
+      <div class="home-chains" aria-label="三条链路">
+        <div class="hc innovation"><b>创新链</b><span>资助 → 研究 → 技术</span></div>
+        <div class="hc industry"><b>产业链</b><span>技术 → 产品 → 经济社会价值</span></div>
+        <div class="hc policy"><b>政策链</b><span>贯穿全过程，作用于资助、研发与产业各环节</span></div>
       </div>
     </div>
   </section>
@@ -128,12 +133,13 @@ const uses=[
   <section id="approach" class="home-method-section">
     <div class="home-wrap home-section">
       <div class="home-section-heading reveal"><div><p class="home-eyebrow">研究框架</p><h2>以技术主题连接<br/>科研供给与产业需求。</h2></div><p>以共同技术词表组织技术主题，向上追溯科研支撑，向下追踪产品与产业应用，把分散的数据连成可核查的发展脉络。</p></div>
-      <div class="home-frame reveal">
-        <div class="home-frame-row supply"><span class="home-frame-label"><b>科研供给</b><small>向上追溯科研支撑</small></span><ul><li v-for="t in ['基金资助','论文成果','专利技术']" :key="t">{{t}}</li></ul></div>
-        <div class="home-frame-link up" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="home-frame-core"><span class="home-frame-label"><b>技术主题</b><small>共同技术词表 · 技术点</small></span><p>以技术点为单元，汇聚并对齐多源数据</p></div>
-        <div class="home-frame-link down" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="home-frame-row demand"><span class="home-frame-label"><b>产业需求</b><small>向下追踪产品与产业应用</small></span><ul><li v-for="t in ['企业主体','产品与服务','产业应用']" :key="t">{{t}}</li></ul></div>
+      <div class="home-frame2 reveal">
+        <div class="hf-axis" aria-hidden="true"><span class="up"><b>向上追溯</b>科研支撑</span><i></i><span class="down"><b>向下追踪</b>产品与产业应用</span></div>
+        <div class="hf-tiers">
+          <div class="hf-tier supply"><p class="hf-k">科研供给</p><ul><li v-for="t in frameSupply" :key="t.n"><span class="hf-ic"><HomeIcon :name="t.icon"/></span><b>{{t.n}}</b><small>{{t.d}}</small></li></ul></div>
+          <div class="hf-core"><div><b>技术主题</b><small>共同技术词表 · 70 个技术点</small></div><p>以技术点为单元，把基金、论文、专利与企业、产品、产业数据对齐到同一坐标</p><span class="hf-pulse" aria-hidden="true"></span></div>
+          <div class="hf-tier demand"><p class="hf-k">产业需求</p><ul><li v-for="t in frameDemand" :key="t.n"><span class="hf-ic"><HomeIcon :name="t.icon"/></span><b>{{t.n}}</b><small>{{t.d}}</small></li></ul></div>
+        </div>
       </div>
     </div>
   </section>

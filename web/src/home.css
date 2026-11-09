@@ -363,3 +363,67 @@
 }
 @media(max-width:600px){.home-platform-links{grid-template-columns:1fr}}
 .home-platform h2{font-size:clamp(24px,2.1vw,31px)}
+/* ===== 修订：首屏承载系统名称，铺满一屏 ===== */
+.project-home{--home-scroll-cue-height:0px}
+.home-hero h1{font-size:clamp(42px,4.4vw,64px);font-weight:800;letter-spacing:4px;line-height:1.25;margin-bottom:0;text-shadow:0 2px 24px rgba(40,5,15,.35)}
+.home-hero-rule{display:block;width:96px;height:3px;margin:26px 0 24px;background:#e8a0ae}
+.home-hero-description{font-size:18px;line-height:1.9;color:#f0dcdf;max-width:760px;margin-bottom:34px}
+.home-scroll-cue{position:relative;z-index:3;height:62px;margin-top:-62px;background:transparent;pointer-events:none}
+.home-scroll-cue .home-scroll-button{pointer-events:auto;color:#f1d3da}
+.home-scroll-cue .home-scroll-button:hover{color:#fff}
+@media(max-width:700px){.home-hero h1{font-size:30px;letter-spacing:0;white-space:nowrap}.home-hero-rule{margin:18px 0}.home-hero-description{font-size:15px}.home-scroll-cue{display:none}}
+/* ===== 修订：全链条流动动画与三条链路 ===== */
+.home-flow li:first-child .home-flow-dot{background:#faf9f6}
+.home-flow li:hover .home-flow-dot{transform:scale(1.25)}
+.home-chain.in .home-flow-dot{animation:hf-fill .5s ease forwards;animation-delay:calc(.35s + var(--i) * .32s)}
+@keyframes hf-fill{to{background:#a21535}}
+.home-flow:after{transition-duration:1.8s}
+.home-flow li:not(:last-child)::after{content:"";position:absolute;left:0;top:40px;width:100%;height:1px;pointer-events:none}
+.home-flow{--flow-w:160px}
+.home-flow::before{background:#ddd4cf}
+.home-chain.in .home-flow{background:linear-gradient(90deg,transparent,#a21535,transparent) no-repeat;background-size:var(--flow-w) 3px;background-position:-200px 39px;animation:hf-run 5.5s cubic-bezier(.45,0,.35,1) 2.4s infinite}
+@keyframes hf-run{0%{background-position:-200px 39px}70%,100%{background-position:calc(100% + 200px) 39px}}
+.home-chains{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));row-gap:10px;margin-top:44px;padding-top:28px;border-top:1px solid #ebe5e0}
+.hc{position:relative;display:flex;align-items:center;gap:16px;height:46px;padding:0 34px 0 20px;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);transform-origin:left;transform:scaleX(.001);transition:transform 1s var(--home-ease)}
+.home-chain.in .hc{transform:none}
+.home-chain.in .hc.industry{transition-delay:.35s}.home-chain.in .hc.policy{transition-delay:.7s}
+.hc b{font-size:17px;font-weight:750;letter-spacing:2px;white-space:nowrap}
+.hc span{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hc.innovation{grid-column:1/4;background:#a21535;color:#fff}.hc.innovation span{color:#f6d3da}
+.hc.industry{grid-column:3/6;background:#efe1d2;color:#7a4d1c}.hc.industry b{color:#8c5a22}
+.hc.policy{grid-column:1/6;background:repeating-linear-gradient(135deg,#f1ecf3 0 10px,#ebe4ef 10px 20px);color:#5a3d78}.hc.policy b{color:#6f4a94}
+@media(max-width:900px){.home-chains{grid-template-columns:1fr}.hc.innovation,.hc.industry,.hc.policy{grid-column:1}.hc span{white-space:normal;font-size:13px}.home-chain.in .home-flow{animation:none;background:none}}
+@media(prefers-reduced-motion:reduce){.home-chain.in .home-flow{animation:none;background:none}.home-chain .home-flow-dot{animation:none!important;background:#a21535}.hc{transform:none;transition:none}}
+
+/* ===== 修订：研究框架（上下追溯轴） ===== */
+.home-frame2{display:grid;grid-template-columns:180px minmax(0,1fr);gap:36px;align-items:stretch}
+.hf-axis{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 0}
+.hf-axis i{flex:1;width:2px;margin:14px 0;background:linear-gradient(#a21535,#a2153533 50%,#5d575b);position:relative}
+.hf-axis i::before,.hf-axis i::after{content:"";position:absolute;left:50%;width:12px;height:12px;border:2px solid;border-right:0;border-bottom:0;transform:translateX(-50%) rotate(45deg)}
+.hf-axis i::before{top:-4px;border-color:#a21535}
+.hf-axis i::after{bottom:-4px;border-color:#5d575b;transform:translateX(-50%) rotate(225deg)}
+.hf-axis span{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:14px;color:#6a6468;line-height:1.5}
+.hf-axis b{font-size:19px;font-weight:750;letter-spacing:3px;color:#232930}
+.hf-axis .up b{color:#a21535}
+.hf-tiers{display:grid;gap:0}
+.hf-tier{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:20px;padding:26px 0}
+.hf-k{margin:0;font-size:15px;font-weight:750;letter-spacing:3px;color:#7a7378}
+.hf-tier.supply .hf-k{color:#a21535}
+.hf-tier ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;padding:0;list-style:none}
+.hf-tier li{display:grid;grid-template-columns:46px 1fr;column-gap:14px;align-items:center;padding:0 22px;border-left:1px solid #ddd5d0}
+.hf-tier li:first-child{border-left:0;padding-left:0}
+.hf-ic{grid-row:span 2;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid #e3d6d9}
+.hf-ic .home-icon{width:24px;height:24px;color:#a21535}
+.hf-tier.demand .hf-ic .home-icon{color:#5d575b}
+.hf-tier li b{font-size:19px;font-weight:700;color:#232930}
+.hf-tier li small{font-size:13.5px;color:#7a7378}
+.hf-core{position:relative;overflow:hidden;display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;align-items:center;padding:22px 0;border-block:2px solid #a21535}
+.hf-core>div b{display:block;font-size:22px;font-weight:800;color:#a21535;letter-spacing:2px}
+.hf-core>div small{display:block;margin-top:2px;font-size:12.5px;color:#7a7378}
+.hf-core p{margin:0;font-size:18px;font-weight:600;line-height:1.7;color:#232930}
+.hf-pulse{position:absolute;top:-2px;left:0;width:180px;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent);animation:hf-scan 6s linear infinite}
+@keyframes hf-scan{from{transform:translateX(-200px)}to{transform:translateX(1200px)}}
+@media(max-width:900px){.home-frame2{grid-template-columns:1fr}.hf-axis{display:none}.hf-tier,.hf-core{grid-template-columns:1fr;gap:12px}.hf-tier ul{grid-template-columns:1fr;gap:14px}.hf-tier li{border-left:0;padding:0}}
+@media(prefers-reduced-motion:reduce){.hf-pulse{display:none}}
+.hf-axis i{background:linear-gradient(#a21535,#7a5560 50%,#5d575b)}
+.hf-tier,.hf-core{grid-template-columns:150px minmax(0,1fr)}
