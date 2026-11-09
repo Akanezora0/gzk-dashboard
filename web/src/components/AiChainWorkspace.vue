@@ -57,7 +57,7 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
       <nav class="strength-views view-tabs" role="tablist" aria-label="研究力量视图"><template v-for="(v,i) in strengthViews" :key="v.id"><button role="tab" :aria-selected="strengthView===v.id" :class="{active:strengthView===v.id}" :title="v.caption" @click="chooseView(v.id)">{{v.label}}</button></template></nav>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
-      <div v-else-if="strengthView==='overview'" class="strength-stack pane-swap" :key="strengthView"><StrengthBase :dataset="dataset"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>
+      <div v-else-if="strengthView==='overview'" class="strength-stack pane-swap" :key="strengthView"><StrengthBase :dataset="dataset" :inventory="data?.currentInventory"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/></div>
       <div v-else class="strength-stack pane-swap" :key="strengthView"><ResearchSuccession :dataset="dataset" @explore="explore"/><EvidenceExplorer id="rs-evidence" :dataset="dataset" :person="evidencePerson"/></div>
     </template>
     </div>

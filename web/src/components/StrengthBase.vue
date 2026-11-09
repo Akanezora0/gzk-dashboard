@@ -1,85 +1,78 @@
 <script setup>
+/* 01 已建立关系：以基金项目为中心向两侧展开；每个节点与关系同时标注全库与人工智能领域 */
 import {computed,ref} from 'vue'
-import {useTip,fmt,emph} from '../helpers/strengthTip.js'
-const props=defineProps({dataset:Object})
+import {useTip,fmt} from '../helpers/strengthTip.js'
+const props=defineProps({dataset:Object,inventory:Object})
 const {tip,show,move,hide}=useTip()
-const root=ref(null),active=ref('')
+const active=ref('')
 const S=computed(()=>props.dataset?.strength||{})
+const C=computed(()=>props.inventory?.counts||{})
 const metric=label=>(S.value.metrics||[]).find(m=>m.label===label)?.value
-const Y=230
-const nodes=[{k:'机构',x:100,r:56},{k:'人员',x:400,r:56},{k:'基金项目',x:720,r:84,hl:true},{k:'论文',x:1040,r:62},{k:'专利',x:1340,r:56}]
-const links=computed(()=>[
-  {id:'po',a:0,b:1,n:metric('人员—机构观察'),u:'条',name:'人员—机构',how:'人员署名单位的来源观察',note:'来源观察条数，不等于独立人数'},
-  {id:'fp',a:1,b:2,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录',note:'来源记录条数，不等于独立人数'},
-  {id:'fl',a:2,b:3,n:metric('基金—论文关系'),u:'对',name:'基金—论文',how:'成果登记与论文资助标注',note:'全库关系，包含 AI 子集'},
-  {id:'pp',a:3,b:4,n:metric('已接通专利—论文关系'),u:'对',name:'专利—论文',how:'规范化匹配专利引用的论文',note:'规范化匹配关系'},
-].map(l=>{const A=nodes[l.a],B=nodes[l.b];const w=l.n?Math.max(4,(Math.log10(l.n)-3.6)*7):4;return {...l,x0:A.x+A.r,x1:B.x-B.r,w,mx:(A.x+A.r+B.x-B.r)/2}}))
+const wan=n=>n==null?'—':n>=1e8?(n/1e8).toFixed(2).replace(/0$/,'')+' 亿':n>=1e7?Math.round(n/1e4).toLocaleString('en-US')+' 万':(n/1e4).toFixed(1)+' 万'
+const Y=170
+const tones={org:'#6b5a52',per:'#8c6a3a',fund:'#a21535',pap:'#2c64a0',pat:'#23806e'}
+const nodes=computed(()=>[
+ {k:'org',n:'机构',x:110,r:54,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`},
+ {k:'per',n:'人员',x:395,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目接续'},
+ {k:'fund',n:'基金项目',x:680,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
+ {k:'pap',n:'论文',x:965,r:54,all:C.value.papers?wan(C.value.papers)+'篇':'',ai:C.value.ai_papers?wan(C.value.ai_papers)+'篇':'',aiN:'AI 论文'},
+ {k:'pat',n:'专利',x:1250,r:54,all:C.value.national_patents?wan(C.value.national_patents)+'件':'',ai:C.value.ai_patents?wan(C.value.ai_patents)+'件':'',aiN:'AI 专利'}])
+const links=computed(()=>{const N=nodes.value;return [
+ {id:'fp',a:2,b:1,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录'},
+ {id:'po',a:1,b:0,n:metric('人员—机构观察'),u:'条',name:'人员—机构',how:'人员署名单位的来源观察'},
+ {id:'fl',a:2,b:3,n:metric('基金—论文关系'),u:'对',name:'基金—论文',how:'成果登记与论文资助标注',ai:metric('AI基金登记成果关系')},
+ {id:'pp',a:3,b:4,n:metric('已接通专利—论文关系'),u:'对',name:'专利引用论文',how:'规范化匹配专利引用的论文'},
+].map(l=>{const A=N[l.a],B=N[l.b],dir=B.x>A.x?1:-1,x0=A.x+dir*(A.r+2),x1=B.x-dir*(B.r+2);return {...l,dir,x0,x1,mx:(x0+x1)/2,ca:tones[A.k],cb:tones[B.k]}})})
 const cite=computed(()=>metric('论文引用关系'))
-const citeW=computed(()=>cite.value?(Math.log10(cite.value)-3.6)*7:4)
-const citePath=computed(()=>{const n=nodes[3];return `M${n.x-30},${Y+n.r-6} C${n.x-125},${Y+245} ${n.x+125},${Y+245} ${n.x+30},${Y+n.r-6}`})
-const funnel=computed(()=>[
-  {k:'项目',n:metric('AI基金项目'),u:'项',t:'AI 基金项目'},
-  {k:'成果',n:metric('AI基金登记成果关系'),u:'条',t:'AI 项目登记成果关系'},
-  {k:'机构',n:S.value.scope?.projects,u:`项 · ${fmt(S.value.scope?.institutions)} 家`,t:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年机构分析`},
-  {k:'人员',n:(props.dataset?.continuity||[]).length,u:'条',t:'官方身份核验的负责人接续'}])
-function linkTip(e,l){active.value=l.id;show(e,`<b>${l.name}</b>　${fmt(l.n)} ${l.u}<br>建立方式：${l.how}<br><span style="color:#78716c">${l.note}</span>`)}
+const pillW=t=>[...String(t)].reduce((w,c)=>w+(/[\x00-\xff]/.test(c)?10.5:18),0)+40
+function linkTip(e,l){active.value=l.id;show(e,`<b>${l.name}</b>　${fmt(l.n)} ${l.u}<br>建立方式：${l.how}${l.ai?`<br>其中 AI 项目登记成果 ${fmt(l.ai)} 条`:''}`)}
 function off(){active.value='';hide()}
 </script>
 <template>
-  <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3></header>
+  <section class="rs-page">
+    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3><span class="rs-sub">以基金项目为中心，向人员、机构与论文、专利两侧展开</span></header>
     <div v-if="!S.metrics" class="rs-empty">关系指标尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <template v-else>
-    <div class="rs-scroll"><svg class="rs-svg" viewBox="0 125 1440 370" role="img" aria-label="基金、人员、机构、论文、专利之间的关联关系与条数">
-      <g v-for="l in links" :key="l.id" class="rs-hit" @mouseenter="linkTip($event,l)" @mousemove="move" @mouseleave="off">
-        <rect :x="l.x0" :y="Y-Math.max(l.w,26)/2" :width="l.x1-l.x0" :height="Math.max(l.w,26)" fill="transparent"/>
-        <rect :x="l.x0" :y="Y-l.w/2" :width="l.x1-l.x0" :height="l.w" :fill="l.a===1||l.a===2?'#d9737f':'#c9c1b9'" :opacity="active&&active!==l.id?.35:.95"/>
-        <line class="rs-flow" :x1="l.x0+4" :x2="l.x1-4" :y1="Y" :y2="Y" stroke="#fff" :stroke-width="Math.max(2,l.w*.38)" stroke-linecap="round" stroke-dasharray="2 22" :opacity="l.a===1||l.a===2?.75:.85" pointer-events="none"/>
-        <text :x="l.mx" :y="Y-l.w/2-46" font-size="30" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(l.n)}}</text>
-        <text :x="l.mx" :y="Y-l.w/2-20" font-size="16" text-anchor="middle" fill="#57534e">{{l.u}} · {{l.name}}</text>
-        <text :x="l.mx" :y="Y+l.w/2+32" font-size="15" text-anchor="middle" fill="#78716c">{{l.how}}</text>
-      </g>
+    <div class="sb-legend"><span><i class="all"></i>全库</span><span><i class="ai"></i>人工智能领域 · 本页研究对象</span></div>
+    <div class="rs-scroll"><svg class="rs-svg sb-svg" viewBox="0 0 1360 380" role="img" aria-label="基金、人员、机构、论文、专利之间的关联关系，全库与人工智能领域">
+      <defs><linearGradient v-for="l in links" :key="'g'+l.id" :id="'sbg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".6"/></linearGradient></defs>
+      <!-- 论文引用环 -->
       <g class="rs-hit" @mouseenter="show($event,`<b>论文引用</b>　${fmt(cite)} 对<br>关联库中的论文引用对`)" @mousemove="move" @mouseleave="hide">
-        <path :d="citePath" fill="none" stroke="#c9c1b9" :stroke-width="citeW" opacity=".6" stroke-linecap="round"/>
-        <path class="rs-flow" :d="citePath" fill="none" stroke="#fff" :stroke-width="citeW*.38" stroke-dasharray="2 22" stroke-linecap="round" opacity=".85" pointer-events="none"/>
-        <text :x="nodes[3].x+100" :y="Y+170" font-size="30" font-weight="700" fill="#2a2a2a">{{fmt(cite)}}</text>
-        <text :x="nodes[3].x+100" :y="Y+196" font-size="16" fill="#57534e">对 · 论文引用</text>
+        <path :d="`M${nodes[3].x-22},${Y-50} C${nodes[3].x-62},${Y-148} ${nodes[3].x+62},${Y-148} ${nodes[3].x+22},${Y-50}`" fill="none" stroke="#2c64a0" stroke-opacity=".26" stroke-width="10" stroke-linecap="round"/>
+        <path class="rs-flow" :d="`M${nodes[3].x-22},${Y-50} C${nodes[3].x-62},${Y-148} ${nodes[3].x+62},${Y-148} ${nodes[3].x+22},${Y-50}`" fill="none" stroke="#fff" stroke-width="3.5" stroke-dasharray="2 22" stroke-linecap="round"/>
+        <text :x="nodes[3].x+64" :y="Y-104" font-size="22" font-weight="750" fill="#2a2a2a">{{fmt(cite)}}</text>
+        <text :x="nodes[3].x+64" :y="Y-84" font-size="13" fill="#78716c">对 · 论文引用</text>
       </g>
-      <circle class="rs-pulse" :cx="nodes[2].x" :cy="Y" r="84" fill="none" stroke="#ae0d28" stroke-width="2" pointer-events="none"/>
+      <g v-for="l in links" :key="l.id" class="rs-hit" :opacity="active&&active!==l.id?.4:1" @mouseenter="linkTip($event,l)" @mousemove="move" @mouseleave="off">
+        <rect :x="Math.min(l.x0,l.x1)" :y="Y-26" :width="Math.abs(l.x1-l.x0)" height="52" fill="transparent"/>
+        <rect :x="Math.min(l.x0,l.x1)" :y="Y-7" :width="Math.abs(l.x1-l.x0)" height="14" rx="7" :fill="`url(#sbg${l.id})`"/>
+        <line class="rs-flow sb-flow" :x1="l.dir>0?l.x0+8:l.x0-8" :x2="l.dir>0?l.x1-14:l.x1+14" :y1="Y" :y2="Y" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 22"/>
+        <path :d="`M${l.x1-l.dir*16},${Y-11} L${l.x1-l.dir*2},${Y} L${l.x1-l.dir*16},${Y+11}`" fill="none" :stroke="l.cb" stroke-width="2.6" stroke-linejoin="round"/>
+        <text :x="l.mx" :y="Y-40" font-size="25" font-weight="750" text-anchor="middle" fill="#2a2a2a">{{fmt(l.n)}}</text>
+        <text :x="l.mx" :y="Y-19" font-size="13" text-anchor="middle" fill="#78716c">{{l.u}} · {{l.name}}</text>
+        <g v-if="l.ai"><rect :x="l.mx-48-pillW(`AI ${fmt(l.ai)} 条登记成果`)/2" :y="Y-120" :width="pillW(`AI ${fmt(l.ai)} 条登记成果`)" height="34" rx="17" fill="#a21535"/>
+          <text :x="l.mx-48" :y="Y-97" font-size="17" font-weight="800" text-anchor="middle" fill="#fff">AI {{fmt(l.ai)}} 条登记成果</text></g>
+      </g>
+      <circle class="rs-pulse sb-pulse" :cx="nodes[2].x" :cy="Y" r="84" fill="none" stroke="#a21535" stroke-width="2" pointer-events="none"/>
       <g v-for="n in nodes" :key="n.k">
-        <circle :cx="n.x" :cy="Y" :r="n.r" :fill="n.hl?'#ae0d28':'#fff'" :stroke="n.hl?'#ae0d28':'#2a2a2a'" stroke-width="2"/>
-        <text :x="n.x" :y="Y+8" :font-size="n.hl?26:22" font-weight="700" text-anchor="middle" :fill="n.hl?'#fff':'#2a2a2a'">{{n.k}}</text>
+        <circle v-if="n.hub" :cx="n.x" :cy="Y" :r="n.r+14" fill="#a21535" opacity=".07"/>
+        <circle :cx="n.x" :cy="Y" :r="n.r" :fill="n.hub?'#a21535':'#fff'" :stroke="n.hub?'none':tones[n.k]" stroke-width="2.5"/>
+        <text :x="n.x" :y="n.all?Y-2:Y+8" :font-size="n.hub?25:21" font-weight="750" text-anchor="middle" :fill="n.hub?'#fff':'#2a2a2a'">{{n.n}}</text>
+        <text v-if="n.all" :x="n.x" :y="Y+22" font-size="13" text-anchor="middle" :fill="n.hub?'#ffd9e0':'#78716c'">全库 {{n.all}}</text>
+        <g v-if="n.ai"><rect :x="n.x-pillW('AI '+n.ai)/2" :y="Y+n.r+16" :width="pillW('AI '+n.ai)" height="36" rx="18" :fill="n.hub?'#7e0f28':'#fbeef1'" stroke="#a21535" :stroke-opacity="n.hub?0:.5" stroke-width="1.5"/>
+          <text :x="n.x" :y="Y+n.r+41" font-size="18" font-weight="800" text-anchor="middle" :fill="n.hub?'#fff':'#a21535'">AI {{n.ai}}</text>
+          <text :x="n.x" :y="Y+n.r+72" font-size="12.5" text-anchor="middle" fill="#8a8286">{{n.aiN}}</text></g>
       </g>
     </svg></div>
-    <div class="rs-scope">
-      <p class="rs-scope-title"><span>AI 领域分析范围</span><i></i></p>
-      <div class="rs-scope-row">
-        <template v-for="(f,i) in funnel" :key="i">
-          <div class="rs-scope-card" :class="'s'+i"><span class="k">{{f.k}}</span><div class="v"><strong>{{fmt(f.n)}}</strong><em>{{f.u}}</em></div><span class="t">{{f.t}}</span></div>
-          <span v-if="i<funnel.length-1" class="rs-scope-arrow" aria-hidden="true">›</span>
-        </template>
-      </div>
-    </div>
-    <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph('以基金项目为枢纽，人员、机构、论文、专利之间的每一条关系都可追溯到来源；AI 领域 21,078 项基金项目及其成果，是研究力量分析的数据基础。')"></p></div>
     </template>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
 </template>
 <style scoped>
-.rs-scope{border-top:1px solid var(--rs-line);margin-top:8px;padding-top:22px}
-.rs-scope-title{display:flex;align-items:center;gap:14px;margin:0 0 16px}
-.rs-scope-title span{font-size:16px;font-weight:700;color:var(--rs-red);letter-spacing:1px}
-.rs-scope-title i{flex:1;height:1px;background:linear-gradient(90deg,#f0b7bf,transparent)}
-.rs-scope-row{display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);align-items:center}
-.rs-scope-card{position:relative;background:#faf7f5;border:1px solid #efe8e4;border-radius:14px;padding:18px 22px 16px;overflow:hidden}
-.rs-scope-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--rs-red)}
-.rs-scope-card.s1::before{opacity:.75}.rs-scope-card.s2::before{opacity:.5}.rs-scope-card.s3::before{opacity:.3}
-.rs-scope-card .k{font-size:13px;font-weight:700;color:var(--rs-muted);letter-spacing:2px}
-.rs-scope-card .v{display:flex;align-items:baseline;gap:6px;margin:4px 0 2px;white-space:nowrap}
-.rs-scope-card strong{font-size:40px;font-weight:750;color:var(--rs-red);line-height:1.15;font-variant-numeric:tabular-nums}
-.rs-scope-card em{font-style:normal;font-size:15px;color:var(--rs-muted)}
-.rs-scope-card .t{display:block;font-size:15px;color:var(--rs-ink-2)}
-.rs-scope-arrow{justify-self:center;font-size:28px;color:#d6c9c4;line-height:1}
-@media(max-width:1100px){.rs-scope-card strong{font-size:32px}}
-@media(max-width:900px){.rs-scope-row{grid-template-columns:1fr 1fr;gap:12px}.rs-scope-arrow{display:none}}
+.sb-legend{display:flex;gap:24px;margin:-4px 0 6px;font-size:13.5px;color:var(--rs-muted)}
+.sb-legend i{display:inline-block;width:22px;height:13px;margin-right:8px;vertical-align:-2px;border-radius:2px}
+.sb-legend i.all{background:#2a2a2a}.sb-legend i.ai{background:#a21535;border-radius:7px}
+.sb-flow{animation-duration:1.4s}
+.sb-pulse{animation-name:sb-pulse}
+@keyframes sb-pulse{0%{r:80;opacity:.35}100%{r:112;opacity:0}}
 </style>

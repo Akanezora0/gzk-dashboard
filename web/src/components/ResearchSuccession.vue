@@ -44,6 +44,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
 <template>
   <section class="rs-page" ref="root">
     <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3></header>
+    <p v-if="records.length" class="rs-lead soft" v-html="emph(takeText)"></p>
     <div v-if="!records.length" class="rs-empty">接续记录暂未读取。</div>
     <div v-else class="rs-succ">
       <div class="rs-succ-left">
@@ -85,7 +86,6 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
         </div>
       </div>
     </div>
-    <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
     <Teleport to="body"><div v-if="picked" class="rs-modal-mask" @click.self="picked=null">
       <div class="rs-modal" ref="dialog" role="dialog" aria-modal="true" :aria-label="`${picked.person}的接续项目`">
         <button class="rs-modal-x" aria-label="关闭" @click="picked=null">×</button>

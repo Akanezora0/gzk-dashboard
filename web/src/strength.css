@@ -33,3 +33,9 @@
 @keyframes rs-pulse{0%{r:84;opacity:.35}100%{r:118;opacity:0}}
 .rs-pulse{animation:rs-pulse 2.4s ease-out infinite}
 @media(prefers-reduced-motion:reduce){.rs-flow,.rs-pulse{animation:none}}
+
+/* 每节要点：标题下方的说明句（取代“结论”框） */
+.rs-lead{margin:-2px 0 22px;font-size:20px;font-weight:650;line-height:1.7;color:var(--rs-ink);max-width:1180px}
+.rs-lead b{color:var(--rs-red);font-weight:750}
+.rs-lead.soft{font-size:17px;font-weight:500;color:var(--rs-ink-2)}
+@media(max-width:700px){.rs-lead{font-size:16.5px}.rs-lead.soft{font-size:15px}}

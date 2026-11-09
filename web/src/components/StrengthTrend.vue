@@ -1,106 +1,123 @@
 <script setup>
+/* 02 机构参与：机构与项目双向流图共用一条年份轴，经费并入年份轴；下方为首次承担机构的后续论文产出 */
 import {useYearPlayback} from '../helpers/useYearPlayback'
-import {computed,ref,onBeforeUnmount} from 'vue'
-import {useTip,fmt,emph} from '../helpers/strengthTip.js'
+import {computed} from 'vue'
+import {useTip,fmt} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object})
 const {tip,show,move,hide}=useTip()
-const root=ref(null)
 const S=computed(()=>props.dataset?.strength||{})
 const split=computed(()=>S.value.split||[])
 const annual=computed(()=>S.value.annual||[])
-const years=computed(()=>split.value.map(r=>r.year))
-const AX=290,X=y=>200+(y-2017)*170,KO=0.6,KP=0.13,G=16
-const {year:shown,playing,play,pause}=useYearPlayback(2017,2021)
-const clipW=computed(()=>X(shown.value)+(shown.value>=2021?90:85))
-function band(inner,outer,dir){
-  const pts=split.value.map((r,i)=>[X(r.year),inner[i],outer[i]])
-  if(!pts.length)return ''
-  const ex=[[X(2017)-40,pts[0][1],pts[0][2]],...pts,[X(2021)+40,pts.at(-1)[1],pts.at(-1)[2]]]
-  let d=`M${ex[0][0]},${AX+dir*ex[0][1]}`
-  for(let i=1;i<ex.length;i++){const m=(ex[i-1][0]+ex[i][0])/2;d+=` C${m},${AX+dir*ex[i-1][1]} ${m},${AX+dir*ex[i][1]} ${ex[i][0]},${AX+dir*ex[i][1]}`}
-  d+=` L${ex.at(-1)[0]},${AX+dir*ex.at(-1)[2]}`
-  for(let i=ex.length-2;i>=0;i--){const m=(ex[i+1][0]+ex[i][0])/2;d+=` C${m},${AX+dir*ex[i+1][2]} ${m},${AX+dir*ex[i][2]} ${ex[i][0]},${AX+dir*ex[i][2]}`}
-  return d+' Z'}
-const oOld=computed(()=>split.value.map(r=>r.retained_institutions*KO)),oNew=computed(()=>split.value.map(r=>r.entered_institutions*KO))
-const pOld=computed(()=>split.value.map(r=>r.retained_projects*KP)),pNew=computed(()=>split.value.map(r=>r.entered_projects*KP))
-const paths=computed(()=>({
-  b1:band(split.value.map(()=>G),oOld.value.map(v=>v+G),-1),
-  b2:band(oOld.value.map(v=>v+G+2),oOld.value.map((v,i)=>v+G+2+oNew.value[i]),-1),
-  b3:band(split.value.map(()=>G),pOld.value.map(v=>v+G),1),
-  b4:band(pOld.value.map(v=>v+G+2),pOld.value.map((v,i)=>v+G+2+pNew.value[i]),1)}))
-const last=computed(()=>split.value.at(-1)||{}),first=computed(()=>split.value[0]||{})
-const lastI=computed(()=>split.value.length-1)
+const {year:shown,playing,play}=useYearPlayback(2017,2021)
+
+const X=y=>270+(y-2017)*190
+const IT=50,IH=160,AXY=250,PT=290,PH=170
 const tot=r=>(r.retained_institutions||0)+(r.entered_institutions||0),totP=r=>(r.retained_projects||0)+(r.entered_projects||0)
+const first=computed(()=>split.value[0]||{}),last=computed(()=>split.value.at(-1)||{})
+const maxI=computed(()=>Math.max(...split.value.map(tot),1)*1.06),maxP=computed(()=>Math.max(...split.value.map(totP),1)*1.06)
+function smooth(p){let d=`M${p[0][0]},${p[0][1]}`;for(let i=1;i<p.length;i++){const [a,b]=p[i-1],[c,e]=p[i],m=(a+c)/2;d+=` C${m},${b} ${m},${e} ${c},${e}`}return d}
+function area(top,base){return smooth(top)+` L${top.at(-1)[0]},${base} L${top[0][0]},${base} Z`}
+const P=computed(()=>{
+ const r=split.value;if(!r.length)return null
+ const iBase=IT+IH,pBase=PT
+ const ik=r.map(x=>[X(x.year),iBase-x.retained_institutions/maxI.value*IH]),it=r.map(x=>[X(x.year),iBase-tot(x)/maxI.value*IH])
+ const pk=r.map(x=>[X(x.year),pBase+x.retained_projects/maxP.value*PH]),pt=r.map(x=>[X(x.year),pBase+totP(x)/maxP.value*PH])
+ return {ik,it,pk,pt,iBase,pBase,iKeep:area(ik,iBase),iAll:area(it,iBase),pKeep:area(pk,pBase),pAll:area(pt,pBase)}
+})
+const clipW=computed(()=>X(shown.value)+(shown.value>=2021?60:95))
+const pct=(a,b)=>b?Math.round(a/b*100):0
+const growthI=computed(()=>pct(tot(last.value)-tot(first.value),tot(first.value)))
+const growthP=computed(()=>pct(totP(last.value)-totP(first.value),totP(first.value)))
+const fund0=computed(()=>annual.value[0]?.amount_yi),fund1=computed(()=>annual.value.at(-1)?.amount_yi)
+const growthF=computed(()=>fund0.value?Math.round((fund1.value/fund0.value-1)*100):0)
 const funding=computed(()=>S.value.retained_2021||[])
 const fundShare=computed(()=>{const a=funding.value.find(r=>r.present_2017),s=funding.value.reduce((x,r)=>x+r.amount_yi,0);return a&&s?Math.round(a.amount_yi/s*100):null})
-const projShare=computed(()=>totP(last.value)?Math.round(last.value.retained_projects/totP(last.value)*100):null)
-const growth=computed(()=>tot(first.value)?Math.round((tot(last.value)/tot(first.value)-1)*100):null)
+const projShare=computed(()=>pct(last.value.retained_projects,totP(last.value)))
+const top10=computed(()=>[annual.value[0]?.top10_amount_pct,annual.value.at(-1)?.top10_amount_pct].map(v=>v==null?null:Math.round(v)))
+
+/* 首次承担 AI 项目的机构：按首次年份分组，统计窗口内有相关论文的年数 */
 const C=computed(()=>S.value.cohort||{})
-const steps=computed(()=>[[C.value.institutions,'首次进入的机构'],[C.value.with_any,'后续有相关论文'],[C.value.at_least_two,'至少两年有论文'],[C.value.all_four,'四年都有论文']])
-const takeText=computed(()=>`资助呈现“稳定主体＋持续扩面”：参与机构增加 ${growth.value!==null?growth.value+'%':'六成'}，${last.value.year} 年 ${projShare.value}% 的项目、${fundShare.value}% 的经费仍由既有机构承担；首次进入的 ${C.value.institutions} 家机构中，${C.value.at_least_two} 家在后续至少两年持续产出论文。`)
-function yearTip(e,r,i){const a=annual.value.find(x=>x.year===r.year);show(e,`<b>${r.year} 年</b><br>机构 ${fmt(tot(r))} 家（既有 ${r.retained_institutions} · 新进入 ${r.entered_institutions}）<br>项目 ${fmt(totP(r))} 项（既有 ${fmt(r.retained_projects)} · 新进入 ${r.entered_projects}）${a?`<br>批准经费 ${a.amount_yi.toFixed(2)} 亿元 · 前十机构份额 ${a.top10_amount_pct}%`:''}`)}
+const cohortYears=computed(()=>{
+ const ci=props.dataset?.focus?.cohort_institutions||{},w=C.value.window||[2022,2025],out={}
+ for(const v of Object.values(ci)){const n=Object.entries(v.years||{}).filter(([y,c])=>c>0&&+y>=w[0]&&+y<=w[1]).length;const k=v.first;(out[k]=out[k]||[0,0,0,0,0])[4-Math.min(4,n)]++}
+ return Object.entries(out).map(([y,v])=>({year:+y,v,n:v.reduce((a,b)=>a+b,0),two:v[0]+v[1]+v[2]})).sort((a,b)=>a.year-b.year)
+})
+const CC=['#1f4f80','#4f7fae','#8fb0d0','#cfdcea','#ebe6e3'],CL=['4 年都有','3 年','2 年','1 年','暂无']
+const BH=2.7,CB=735
+function yearTip(e,r){const a=annual.value.find(x=>x.year===r.year);show(e,`<b>${r.year} 年</b><br>机构 ${fmt(tot(r))} 家（既有 ${r.retained_institutions} · 新进入 ${r.entered_institutions}）<br>项目 ${fmt(totP(r))} 项（既有 ${fmt(r.retained_projects)} · 新进入 ${r.entered_projects}）${a?`<br>批准经费 ${a.amount_yi.toFixed(2)} 亿元 · 前十机构经费占比 ${a.top10_amount_pct}%`:''}`)}
+function cohortTip(e,c){show(e,`<b>${c.year} 年首次承担 AI 项目 · ${c.n} 家</b><br>${(C.value.window||[2022,2025]).join('—')} 年有相关论文的年数：<br>${c.v.map((n,i)=>`${CL[i]} ${n} 家`).join(' · ')}`)}
 </script>
 <template>
-  <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3><span class="rs-sub">AI 基金项目，2017—2021 年批准</span>
+  <section class="rs-page">
+    <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3><span class="rs-sub">AI 基金项目 · 2017—2021 年批准</span>
       <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':shown>=2021?'▶ 重播':'▶ 播放'}}</button></div></header>
-    <div v-if="!split.length" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
-    <div v-else class="rs-trend">
-      <div class="rs-scroll rs-fit"><svg class="rs-svg" viewBox="0 0 1100 660" role="img" aria-label="既有机构与新进入机构的机构数和项目数">
-        <defs><clipPath id="rs-trend-clip"><rect x="0" y="0" :width="clipW" height="660"/></clipPath></defs>
-        <text x="0" :y="AX-140" font-size="26" font-weight="700" fill="#2a2a2a">机构</text>
-        <text x="0" :y="AX-114" font-size="15" fill="#78716c">每年承担项目</text><text x="0" :y="AX-95" font-size="15" fill="#78716c">的机构数</text>
-        <text x="0" :y="AX+120" font-size="26" font-weight="700" fill="#2a2a2a">项目</text>
-        <text x="0" :y="AX+146" font-size="15" fill="#78716c">每年批准的</text><text x="0" :y="AX+165" font-size="15" fill="#78716c">项目数</text>
-        <g clip-path="url(#rs-trend-clip)">
-          <path :d="paths.b1" fill="#ae0d28"/><path :d="paths.b2" fill="#f0b7bf"/>
-          <path :d="paths.b3" fill="#ae0d28"/><path :d="paths.b4" fill="#f0b7bf"/>
-          <text :x="X(2017)" :y="AX-oOld[0]-G-14" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(first)}} 家</text>
-          <text :x="X(2017)" :y="AX+pOld[0]+G+32" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(first))}} 项</text>
-        </g>
-        <template v-if="shown>=2021">
-          <text :x="X(2021)" :y="AX-oOld[lastI]-oNew[lastI]-G-14" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{tot(last)}} 家</text>
-          <text :x="X(2021)" :y="AX+pOld[lastI]+pNew[lastI]+G+32" font-size="26" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{fmt(totP(last))}} 项</text>
-          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]/2+6" font-size="19" font-weight="700" fill="#ae0d28">既有机构 {{last.retained_institutions}} 家</text>
-          <text :x="X(2021)+52" :y="AX-G-oOld[lastI]-oNew[lastI]/2+6" font-size="19" font-weight="700" fill="#d9737f">新进入 {{last.entered_institutions}} 家</text>
-          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+6" font-size="19" font-weight="700" fill="#ae0d28">既有机构 {{fmt(last.retained_projects)}} 项</text>
-          <text :x="X(2021)+52" :y="AX+G+pOld[lastI]+pNew[lastI]/2+6" font-size="19" font-weight="700" fill="#d9737f">新进入 {{last.entered_projects}} 项</text>
-          <text v-if="fundShare" :x="X(2021)+52" :y="AX+G+pOld[lastI]/2+30" font-size="18" fill="#57534e">经费占 {{fundShare}}%</text>
-        </template>
-        <text v-for="r in split" :key="'y'+r.year" :x="X(r.year)" :y="AX+6" font-size="17" font-weight="700" text-anchor="middle" :fill="r.year<=shown?'#57534e':'#d6d0c9'">{{r.year}}</text>
-        <text x="0" y="640" font-size="18" fill="#78716c">年度批准经费</text>
-        <text v-for="a in annual" :key="'a'+a.year" :x="X(a.year)" y="640" font-size="20" font-weight="700" text-anchor="middle" :fill="a.year<=shown?'#57534e':'#d6d0c9'">{{a.amount_yi.toFixed(2)}} 亿</text>
-        <rect v-for="(r,i) in split" :key="'h'+r.year" class="rs-hit" :x="X(r.year)-80" y="20" width="160" height="600" fill="transparent" @mouseenter="yearTip($event,r,i)" @mousemove="move" @mouseleave="hide"/>
-      </svg></div>
-      <aside class="rs-stay">
-        <h4 title="“首次进入”按全部历史 AI 项目确定；左图“既有”指 2017 年已有 AI 项目的机构，两种口径不同。">新进入的机构留下来了吗</h4>
-        <p>{{C.entry_years?.[0]}}—{{C.entry_years?.[1]}} 年首次进入的 {{C.institutions}} 家机构，{{C.window?.[0]}}—{{C.window?.[1]}} 年的相关论文</p>
-        <div v-for="(s,i) in steps" :key="i" class="rs-stay-row">
-          <div class="rs-stay-bar"><i :style="{width:(s[0]/(C.institutions||1)*100)+'%',background:i===0?'#d3e2ec':i===2?'#2f5f7a':'#5b8aa5'}"></i><em v-if="i>0">{{Math.round(s[0]/(C.institutions||1)*100)}}%</em></div>
-          <div class="rs-stay-num"><strong :class="{first:i===0}">{{s[0]}}</strong><span>家</span><b>{{s[1]}}</b></div>
-        </div>
-      </aside>
+    <div v-if="!P" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
+    <template v-else>
+    <p class="rs-lead">机构数增加 <b>{{growthI}}%</b>，项目与经费增加约 <b>{{(Math.min(growthP,growthF)/100).toFixed(1)}} 倍</b>：资助在持续扩面的同时，<b>既有机构承担更多项目</b>，新进入机构大多保持产出。</p>
+    <div class="st-kpis">
+      <div><span>承担机构</span><strong>{{tot(first)}} → {{tot(last)}}</strong><small>家 · 增加 {{growthI}}%</small></div>
+      <div><span>年度项目 · 经费</span><strong>+{{growthP}}% · +{{growthF}}%</strong><small>{{fmt(totP(first))}} → {{fmt(totP(last))}} 项 · {{fund0?.toFixed(2)}} → {{fund1?.toFixed(2)}} 亿元</small></div>
+      <div><span>既有机构承担 · {{last.year}} 年</span><strong>{{projShare}}% · {{fundShare}}%</strong><small>项目 · 经费</small></div>
+      <div><span>首次承担机构后续产出</span><strong class="blue">{{C.at_least_two}} / {{C.institutions}}</strong><small>家至少两年有相关论文</small></div>
     </div>
-    <div class="rs-take"><span class="rs-take-tag">结论</span><p v-html="emph(takeText)"></p></div>
+    <div class="rs-scroll"><svg class="rs-svg st-svg" viewBox="0 0 1300 770" role="img" aria-label="既有机构与新进入机构的机构数、项目数、年度经费，以及首次承担机构的后续论文产出">
+      <defs><clipPath id="st-clip"><rect x="0" y="0" :width="clipW" height="480"/></clipPath></defs>
+      <line v-for="r in split" :key="'v'+r.year" :x1="X(r.year)" :x2="X(r.year)" y1="30" y2="740" stroke="#efe9e6" stroke-dasharray="3 4"/>
+      <text x="0" :y="IT+80" font-size="18" font-weight="750" fill="#2a2a2a">机构</text><text x="0" :y="IT+101" font-size="12.5" fill="#8a8286">每年承担项目的机构数</text>
+      <text x="0" :y="AXY-4" font-size="18" font-weight="750" fill="#2a2a2a">经费</text><text x="0" :y="AXY+17" font-size="12.5" fill="#8a8286">年度批准经费</text>
+      <text x="0" :y="PT+90" font-size="18" font-weight="750" fill="#2a2a2a">项目</text><text x="0" :y="PT+111" font-size="12.5" fill="#8a8286">每年批准的项目数</text>
+      <g clip-path="url(#st-clip)">
+        <path :d="P.iAll" fill="#efc3cc"/><path :d="P.iKeep" fill="#a21535"/>
+        <path :d="P.pAll" fill="#efc3cc"/><path :d="P.pKeep" fill="#a21535"/>
+        <text v-for="(r,i) in split" :key="'avg'+r.year" :x="i===0?X(r.year)+10:i===split.length-1?X(r.year)-10:X(r.year)" :y="PT+28" font-size="13" font-weight="700" fill="#fff" fill-opacity=".92" :text-anchor="i===0?'start':i===split.length-1?'end':'middle'">机构均 {{(totP(r)/tot(r)).toFixed(1)}} 项</text>
+      </g>
+      <text :x="X(2017)" :y="P.it[0][1]-12" font-size="18" font-weight="750" fill="#2a2a2a">{{tot(first)}} 家</text>
+      <text :x="X(2017)" :y="P.pt[0][1]+24" font-size="18" font-weight="750" fill="#2a2a2a">{{fmt(totP(first))}} 项</text>
+      <g v-if="shown>=2021" class="st-end">
+        <text :x="X(2021)" :y="P.it.at(-1)[1]-12" font-size="18" font-weight="750" text-anchor="end" fill="#2a2a2a">{{tot(last)}} 家</text>
+        <text :x="X(2021)" :y="P.pt.at(-1)[1]+24" font-size="18" font-weight="750" text-anchor="end" fill="#2a2a2a">{{fmt(totP(last))}} 项</text>
+        <text :x="X(2021)+16" :y="(P.ik.at(-1)[1]+P.iBase)/2+5" font-size="14" font-weight="700" fill="#a21535">既有机构 {{last.retained_institutions}} 家</text>
+        <text :x="X(2021)+16" :y="(P.ik.at(-1)[1]+P.it.at(-1)[1])/2+5" font-size="14" font-weight="700" fill="#c76b80">新进入 {{last.entered_institutions}} 家</text>
+        <text :x="X(2021)+16" :y="(P.pk.at(-1)[1]+P.pBase)/2+5" font-size="14" font-weight="700" fill="#a21535">既有机构 {{fmt(last.retained_projects)}} 项</text>
+        <text :x="X(2021)+16" :y="(P.pk.at(-1)[1]+P.pt.at(-1)[1])/2+5" font-size="14" font-weight="700" fill="#c76b80">新进入 {{last.entered_projects}} 项</text>
+      </g>
+      <!-- 年份 + 经费轴 -->
+      <line :x1="X(2017)+52" :x2="X(2021)-52" :y1="AXY" :y2="AXY" stroke="#a21535" stroke-opacity=".22" stroke-width="2" stroke-dasharray="2 4"/>
+      <g v-for="(a,i) in annual" :key="'f'+a.year" :opacity="a.year<=shown?1:.35">
+        <rect :x="X(a.year)-50" :y="AXY-21" width="100" height="42" rx="21" fill="#fff" stroke="#a21535" :stroke-opacity=".25+i*.15" stroke-width="1.5"/>
+        <text :x="X(a.year)" :y="AXY-4" font-size="12" font-weight="700" text-anchor="middle" fill="#7a7378">{{a.year}}</text>
+        <text :x="X(a.year)" :y="AXY+14" font-size="15.5" font-weight="800" text-anchor="middle" fill="#a21535">{{a.amount_yi.toFixed(2)}} 亿</text>
+      </g>
+      <g v-if="top10[0]!=null"><text :x="X(2021)+70" :y="AXY-6" font-size="12.5" fill="#7a7378">前十机构经费占比</text><text :x="X(2021)+70" :y="AXY+15" font-size="16" font-weight="800" fill="#2a2a2a">{{top10[0]}}% → {{top10[1]}}%</text></g>
+      <rect v-for="r in split" :key="'h'+r.year" class="rs-hit" :x="X(r.year)-90" y="30" width="180" height="440" fill="transparent" @mouseenter="yearTip($event,r)" @mousemove="move" @mouseleave="hide"/>
+      <!-- 首次承担机构的后续论文 -->
+      <line x1="0" x2="1300" y1="500" y2="500" stroke="#ece5e1"/>
+      <text x="0" y="550" font-size="18" font-weight="750" fill="#2a2a2a">首次承担机构</text>
+      <text x="0" y="571" font-size="12.5" fill="#8a8286">当年首次承担 AI 项目的机构</text>
+      <text x="0" y="589" font-size="12.5" fill="#8a8286">{{(C.window||[2022,2025]).join('—')}} 年有相关论文的年数</text>
+      <text :x="X(2017)" :y="CB-6" font-size="12.5" text-anchor="middle" fill="#b0a7aa">基准年</text>
+      <g v-for="c in cohortYears" :key="'c'+c.year" class="rs-hit" @mouseenter="cohortTip($event,c)" @mousemove="move" @mouseleave="hide">
+        <template v-for="(n,k) in c.v" :key="k"><rect :x="X(c.year)-46" :y="CB-c.v.slice(0,k+1).reduce((a,b)=>a+b,0)*BH" width="92" :height="n*BH" :fill="CC[k]"/>
+          <text v-if="n>=8" :x="X(c.year)" :y="CB-c.v.slice(0,k).reduce((a,b)=>a+b,0)*BH-n*BH/2+4" font-size="11.5" font-weight="700" text-anchor="middle" :fill="k<2?'#fff':'#3d4c5c'">{{n}}</text></template>
+        <text :x="X(c.year)" :y="CB-c.n*BH-28" font-size="24" font-weight="800" text-anchor="middle" fill="#1f4f80">{{Math.round(c.two/c.n*100)}}%</text>
+        <text :x="X(c.year)" :y="CB-c.n*BH-10" font-size="12" text-anchor="middle" fill="#5d575b">{{c.n}} 家中 {{c.two}} 家至少两年</text>
+      </g>
+      <g v-for="(t,k) in CL" :key="'l'+k"><rect :x="X(2021)+70" :y="CB-118+k*22" width="12" height="12" rx="2" :fill="CC[k]"/><text :x="X(2021)+88" :y="CB-107+k*22" font-size="12.5" fill="#6a6468">{{t}}</text></g>
+    </svg></div>
+    </template>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
 </template>
 <style scoped>
-.rs-fit>.rs-svg{min-width:560px}
-.rs-fit>.rs-svg{min-width:560px}
-.rs-trend{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:stretch}
-.rs-stay{display:flex;flex-direction:column;background:#f7f9fb;border:1px solid #e3ebf0;border-radius:14px;padding:22px 24px}
-.rs-stay h4{font-size:19px;margin:0 0 6px;font-weight:700;white-space:nowrap;color:var(--rs-ink)}
-.rs-stay>p{font-size:13.5px;color:var(--rs-muted);margin:0 0 10px;line-height:1.6}
-.rs-stay-row{flex:1;display:flex;flex-direction:column;justify-content:center;border-top:1px dashed #dce5ec;padding:8px 0}
-.rs-stay-row:first-of-type{border-top:0}
-.rs-stay-bar{display:flex;align-items:center;gap:10px;height:14px}
-.rs-stay-bar i{display:block;height:12px;border-radius:6px}
-.rs-stay-bar em{font-style:normal;font-weight:700;font-size:16px;color:var(--rs-blue)}
-.rs-stay-num{margin-top:6px;display:flex;align-items:baseline;gap:6px}
-.rs-stay-num strong{font-size:34px;font-weight:750;color:var(--rs-blue);line-height:1.1;font-variant-numeric:tabular-nums}
-.rs-stay-num strong.first{color:var(--rs-ink)}
-.rs-stay-num span{font-size:15px;color:var(--rs-muted)}
-.rs-stay-num b{font-size:16px;font-weight:500;color:var(--rs-ink-2);margin-left:6px}
-@media(max-width:1100px){.rs-trend{grid-template-columns:1fr}.rs-stay{border-left:0;padding-left:0;border-top:1px solid var(--rs-line);padding-top:20px}}
+.st-kpis{display:grid;grid-template-columns:repeat(4,1fr);margin:0 0 18px;border:1px solid #ece5e1;border-radius:6px;background:#fcfaf9}
+.st-kpis>div{padding:16px 22px;border-left:1px solid #ece5e1}.st-kpis>div:first-child{border-left:0}
+.st-kpis span{display:block;font-size:13px;color:var(--rs-muted)}
+.st-kpis strong{display:block;margin:2px 0;font-size:28px;font-weight:800;line-height:1.25;color:#a21535;font-variant-numeric:tabular-nums;white-space:nowrap}
+.st-kpis strong.blue{color:#1f4f80}
+.st-kpis small{font-size:12.5px;color:var(--rs-ink-2)}
+.st-svg{min-width:760px}
+.st-end{animation:st-in .5s ease both}
+@keyframes st-in{from{opacity:0}to{opacity:1}}
+@media(max-width:1100px){.st-kpis{grid-template-columns:repeat(2,1fr)}.st-kpis>div:nth-child(3){border-left:0}.st-kpis>div:nth-child(n+3){border-top:1px solid #ece5e1}}
+@media(max-width:600px){.st-kpis{grid-template-columns:1fr}.st-kpis>div{border-left:0!important;border-top:1px solid #ece5e1}.st-kpis>div:first-child{border-top:0}.st-kpis strong{font-size:23px}}
 </style>

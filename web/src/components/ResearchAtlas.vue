@@ -28,7 +28,7 @@ const flows=computed(()=>(L.value.connections||[]).filter(c=>laneById.value[c.so
   const merge=c.kind==='merge',x=XT(c.year)-(merge?6:0),y0=laneById.value[c.source].y,y1=laneById.value[c.target].y,span=Math.abs(y1-y0)>LH*1.5?36:(merge?64:84),x0=x-span
   return {...c,merge,d:`M${x0},${y0} C${x0+span*.6},${y0} ${x-span*.5},${y1} ${x},${y1}`,x0,y0,x,y1}}))
 const notes=computed(()=>(L.value.notes||[]).filter(n=>laneById.value[n.org]).map(n=>({...n,x:XT(n.year),y:laneById.value[n.org].y,pill:n.org==='brain'})))
-const H=computed(()=>layout.value.end+130)
+const H=computed(()=>layout.value.end+86)
 const yearsAxis=Array.from({length:10},(_,i)=>2017+i)
 const nsfc=computed(()=>annual.value.map(a=>({...a,h:a.amount_yi/Math.max(...annual.value.map(z=>z.amount_yi),1)*42})))
 const visible=e=>e.year+(e.month||6)/12<=year.value+1
@@ -42,6 +42,7 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
         <div class="rs-seg" role="group" aria-label="机构范围"><button :class="{on:region==='all'}" @click="region='all'">全部</button><button :class="{on:region==='cn'}" @click="region='cn'">中国</button><button :class="{on:region==='intl'}" @click="region='intl'">国际</button></div>
         <button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':year>=2026?'▶ 重播':'▶ 播放'}}</button>
         <label class="rs-year">至 <b>{{year}}</b> 年<input type="range" min="2017" max="2026"  :value="year" @input="seek($event.target.value)" aria-label="显示到年份"></label></div></header>
+    <p class="rs-lead soft">前沿成果由企业研究院与高校并行，逐步转向<b>少数企业实验室</b>主导，人才外溢催生了 Anthropic、Mistral 等新力量；国内以清华等高校和国家实验室为源头，衍生企业与开源模型在 <b>2023 年后</b>快速跟进。</p>
     <div v-if="!L.groups" class="rs-empty">版图数据为旧格式，请在服务器运行 build_ai_chain.py 更新研究力量数据。</div>
     <template v-else>
     <div class="rs-legend">
@@ -81,17 +82,13 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
       <g v-for="(n,i) in notes" :key="'n'+i">
         <template v-if="n.pill"><rect :x="n.x" :y="n.y-15" :width="XT(2027)-12-n.x" height="30" rx="15" fill="#fbeef0"/><text :x="n.x+14" :y="n.y+5" :textLength="XT(2027)-40-n.x" lengthAdjust="spacingAndGlyphs" font-size="13.5" font-weight="500" fill="#ae0d28">{{n.text.replace('OpenAI 人才外溢：','OpenAI 人才外溢 → ')}}</text></template>
         <text v-else :x="n.x-8" :y="n.y+5" font-size="12.5" fill="#ae0d28" text-anchor="end">{{n.text}}</text></g>
-      <g v-if="nsfc.length" :transform="`translate(0,${layout.end+22})`">
-        <rect x="84" y="0" width="1276" height="84" rx="10" fill="#fbeef0"/>
-        <text x="96" y="30" font-size="15" font-weight="700" fill="#ae0d28">本项目数据</text>
-        <text x="96" y="50" font-size="12" fill="#57534e">NSFC 人工智能项目</text>
-        <text x="96" y="66" font-size="12" fill="#57534e">年度批准经费（亿元）</text>
-        <g v-for="a in nsfc" :key="a.year" class="rs-hit" @mouseenter="show($event,`<b>${a.year} 年 NSFC AI 项目</b><br>批准经费 ${a.amount_yi.toFixed(2)} 亿元 · ${fmt(a.projects)} 项 · ${a.institutions} 家机构`)" @mousemove="move" @mouseleave="hide">
-          <rect :x="XT(a.year)+20" :y="74-a.h" :width="YW-40" :height="a.h" rx="4" fill="#ae0d28" opacity=".85"/>
-          <text :x="XT(a.year)+YW/2" :y="68-a.h" font-size="13" font-weight="700" fill="#7a0a1c" text-anchor="middle">{{a.amount_yi.toFixed(2)}}</text></g>
-        <text :x="XT(2022)+10" y="70" font-size="12" fill="#a8a29e">2022 年后补录中</text>
-        <text :x="XT(2023.3)" y="34" font-size="14.5" font-weight="700" fill="#ae0d28">承担机构 {{nsfc[0].institutions}} → {{nsfc.at(-1).institutions}} 家 · 项目 {{fmt(nsfc[0].projects)}} → {{fmt(nsfc.at(-1).projects)}} 项</text>
-        <text :x="XT(2023.3)" y="56" font-size="12.5" fill="#57534e">清华、中科院自动化所、鹏城实验室均在资助名单中</text>
+      <g :transform="`translate(0,${layout.end+18})`" class="rs-callouts">
+        <rect x="84" y="0" width="360" height="54" rx="8" fill="#fff" stroke="#efd3d8"/>
+        <text x="102" y="23" font-size="14.5" font-weight="700" fill="#ae0d28">高校与实验室 → 企业</text>
+        <text x="102" y="42" font-size="12.5" fill="#57534e">红色虚线为人才流动与成果转化</text>
+        <rect :x="XT(2023)" y="0" :width="XT(2026.6)-XT(2023)" height="54" rx="8" fill="#fff" stroke="#efd3d8"/>
+        <text :x="XT(2023)+18" y="23" font-size="14.5" font-weight="700" fill="#ae0d28">2023 年后国内衍生企业与开源模型密集发布</text>
+        <text :x="XT(2023)+18" y="42" font-size="12.5" fill="#57534e">智谱、月之暗面、DeepSeek 等以开源模型追赶前沿</text>
       </g>
     </svg></div>
     <aside v-if="picked" class="rs-atlas-card" ref="detailSurface" role="dialog" aria-label="成果详情">
@@ -102,7 +99,7 @@ function evTip(ev,e){show(ev,`<b>${e.label}</b> · ${e.lane}<br>${e.year}.${e.mo
       <p v-if="!picked.flow" class="k">{{picked.open?'开源 / 开放权重':'闭源 / 论文 / 事件'}}</p>
       <a v-if="picked.url" :href="picked.url" target="_blank" rel="noopener">查看来源 ↗</a>
     </aside>
-    <div class="rs-take"><span class="rs-take-tag">结论</span><p>前沿成果的产出从企业研究院与高校并行，转向少数企业实验室主导，人才外溢催生了 Anthropic、Mistral 等新力量；中国以清华等高校和国家实验室为源头，经衍生企业与开源模型在 2023 年后快速跟进。</p></div>
+
     </template>
     <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
   </section>
