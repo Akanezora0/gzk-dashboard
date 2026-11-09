@@ -126,3 +126,9 @@ button.ev-stat:hover,a.ev-stat:hover{background:#f3e9eb}
 .ev-insp-tips b{display:block;color:#2f2b2d;font-size:13.5px}
 @media(max-width:1100px){.ev-flow ol{grid-template-columns:repeat(2,1fr);gap:22px 0}.ev-flow li:nth-child(odd){padding-left:0;border-left:0}.ev-graph-body{grid-template-columns:1fr}.ev-inspector{border-left:0;border-top:1px solid #ece5e1}}
 @media(max-width:600px){.ev-flow,.ev-graph{padding:20px 16px}.ev-flow ol{grid-template-columns:1fr}.ev-flow li{padding:0!important;border-left:0!important}.ev-flow li>p{min-height:0}.ev-graph-head{flex-direction:column}.ev-chains{width:100%}.ev-chains button{flex:1 1 auto;padding:8px 10px;font-size:13px}.ev-legend-edge:first-of-type{margin-left:0}}
+/* 修订：流程卡只保留步骤说明；证据图恢复力导向布局 */
+.ev-flow li>p{min-height:0;margin:0}
+.ev-flow li+li::before{content:"";position:absolute;left:-5px;top:10px;width:8px;height:8px;border-top:1.5px solid #d4b9bf;border-right:1.5px solid #d4b9bf;background:#fff;transform:rotate(45deg)}
+.ev-legend i.big{width:13px;height:13px;background:radial-gradient(circle at 35% 35%,#a98bc4,var(--c))}
+@media(max-width:1100px){.ev-flow li:nth-child(odd)::before{display:none}}
+@media(max-width:600px){.ev-flow li::before{display:none}}

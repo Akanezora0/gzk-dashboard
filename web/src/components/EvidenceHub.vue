@@ -1,5 +1,5 @@
 <script setup>
-import {ref,computed,watch,onMounted,onBeforeUnmount,nextTick} from 'vue'
+import {ref,computed,watch,onMounted,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
 import Chart from './Chart.vue'
 import {api,fmt,colors,kindLabel,safeUrl,escape} from '../shared'
@@ -18,55 +18,31 @@ watch([chain,scope,limit],fetchGraph)
 watch(scope,fetchSummary)
 onMounted(()=>{fetchSummary();fetchGraph()})
 const nodeTypes=computed(()=>[...new Set((graph.value?.nodes||[]).map(n=>n.type))])
-/* 证据图：按“基金 → 论文 → 技术主题 ← 专利”分栏排布，栏内按相邻节点位置排序以减少交叉 */
-const columnsOf={mixed:['fund','paper','technology','patent'],fund_paper:['fund','paper','technology'],paper_tech:['paper','technology'],patent_tech:['technology','patent'],fund_patent:['fund','patent','technology']}
-const colTitle={fund:'基金项目',paper:'论文',technology:'技术主题',patent:'专利'}
+/* 证据图：力导向布局；节点按类型着色、按连接数调整大小，连线随来源类型着色并带弧度 */
 const normType=t=>['tech','tech_point','technology'].includes(t)?'technology':t
-const canvasW=ref(900),canvasEl=ref(null),PADL=196,PADR=206,PADT=20,PADB=20
-let canvasRO
-onMounted(()=>{canvasRO=new ResizeObserver(([e])=>{if(e.contentRect.width)canvasW.value=e.contentRect.width});watch(canvasEl,el=>{canvasRO.disconnect();if(el)canvasRO.observe(el)},{immediate:true})})
-onBeforeUnmount(()=>canvasRO?.disconnect())
-const layered=computed(()=>{
- const g=graph.value;if(!g?.nodes?.length)return null
- const cols=columnsOf[chain.value];if(!cols||canvasW.value<640)return null
- const rows=Math.max(...cols.map(c=>g.nodes.filter(n=>normType(n.type)===c).length))
- const W=Math.max(300,canvasW.value-PADL-PADR),H=Math.max(380,rows*34)
- const by=Object.fromEntries(cols.map(c=>[c,g.nodes.filter(n=>normType(n.type)===c)]))
- if(Object.values(by).reduce((s,l)=>s+l.length,0)<g.nodes.length*.8)return null
- const adj=new Map();g.edges.forEach(e=>{(adj.get(e.source)||adj.set(e.source,[]).get(e.source)).push(e.target);(adj.get(e.target)||adj.set(e.target,[]).get(e.target)).push(e.source)})
- const pos=new Map();cols.forEach(c=>by[c].forEach((n,i)=>pos.set(n.id,(i+.5)/by[c].length)))
- for(let it=0;it<6;it++)cols.forEach(c=>{
-  const bc=n=>{const nb=(adj.get(n.id)||[]).filter(id=>pos.has(id));return nb.length?nb.reduce((s,id)=>s+pos.get(id),0)/nb.length:pos.get(n.id)}
-  by[c].sort((a,b)=>bc(a)-bc(b)).forEach((n,i)=>pos.set(n.id,(i+.5)/by[c].length))
- })
- const xs=cols.map((_,i)=>cols.length===1?W/2:i*W/(cols.length-1))
- const coords=new Map();cols.forEach((c,i)=>by[c].forEach(n=>coords.set(n.id,[xs[i],pos.get(n.id)*H])))
- // 固定两个角点，保证图形按实际像素铺满画布、各栏与栏标题对齐
- const anchors=[[0,0],[W,H]]
- return {cols,xs,W,H,coords,anchors,count:Object.fromEntries(cols.map(c=>[c,by[c].length]))}
-})
-const graphHeight=computed(()=>layered.value?layered.value.H+PADT+PADB+12:460)
+const graphHeight=520
 const short=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t
+const degree=computed(()=>{const d=new Map();(graph.value?.edges||[]).forEach(e=>{d.set(e.source,(d.get(e.source)||0)+1);d.set(e.target,(d.get(e.target)||0)+1)});return d})
+const baseSize={technology:22,fund:15,paper:12,patent:12}
 const graphOption=computed(()=>{
- const g=graph.value,L=layered.value,cols=L?.cols||[]
- const side=t=>{const i=cols.indexOf(normType(t));return i<=0?'left':i===cols.length-1?'right':normType(t)==='technology'?'inside':'top'}
- return {animationDurationUpdate:400,
-  tooltip:{confine:true,backgroundColor:'#fff',borderColor:'#e4dcd8',textStyle:{color:'#2f2b2d',fontSize:13},extraCssText:'box-shadow:0 10px 28px -14px rgba(60,28,38,.35);max-width:320px;white-space:normal',formatter:p=>p.dataType==='edge'?`<b>${escape(p.data.label||'关系')}</b>`:`<span style="color:${typeColor[p.data.raw.type]||'#64748b'};font-size:12px">${escape(typeLabels[p.data.raw.type]||p.data.raw.type)}${p.data.raw.year?' · '+p.data.raw.year:''}</span><br/><b>${escape(p.data.fullLabel)}</b>`},
-  series:[{type:'graph',layout:L?'none':'force',roam:true,draggable:!L,scaleLimit:{min:.5,max:3},
-   left:L?PADL:40,right:L?PADR:40,top:L?PADT:30,bottom:L?PADB:20,
-   force:{repulsion:220,edgeLength:[70,120],gravity:.12,friction:.6},
-   data:(g?.nodes||[]).map(n=>{
-    const t=normType(n.type),tech=t==='technology'&&!!L,c=L?.coords.get(n.id),color=typeColor[n.type]||'#64748b',pos=L?side(n.type):'bottom'
-    const label=tech?short(n.label,12):short(n.label,pos==='left'||pos==='right'?13:12)
-    return {id:n.id,name:n.label,fullLabel:n.label,raw:n,x:c?.[0],y:c?.[1],
-     symbol:tech?'roundRect':'circle',symbolSize:tech?[Math.max(64,label.length*13+22),26]:t==='technology'?16:t==='fund'?14:11,
-     itemStyle:tech?{color:'#f6f1f9',borderColor:color,borderWidth:1}:{color,borderColor:'#fff',borderWidth:2,shadowBlur:6,shadowColor:color+'55'},
-     label:{position:pos,distance:8,color:tech?'#5b3f78':'#4a4448',fontSize:tech?12.5:12,show:tech||t==='technology'||allLabels.value||pos==='left'||pos==='right'||chain.value==='paper_network',fontWeight:tech?650:400,formatter:()=>label},
-     emphasis:{scale:tech?1.04:1.6,label:{show:true,color:tech?'#3e2a55':'#232930',fontWeight:650}}}
-   }).concat(L?L.anchors.map((p,i)=>({id:'__a'+i,name:'',x:p[0],y:p[1],symbolSize:0,label:{show:false},tooltip:{show:false},silent:true,itemStyle:{opacity:0}})):[]),
-   links:(g?.edges||[]).map(e=>{const src=(g.nodes.find(n=>n.id===e.source)||{}).type;const color=e.kind==='source_project_id'?'#a21535':(typeColor[src]||'#9aa3b2');return {...e,raw:e,lineStyle:{color,width:e.kind==='source_project_id'?1.8:1.3,opacity:.42,curveness:L?.18:.12}}}),
+ const g=graph.value,n=g?.nodes?.length||0
+ return {animationDurationUpdate:500,
+  tooltip:{confine:true,backgroundColor:'#fff',borderColor:'#e4dcd8',padding:[8,12],textStyle:{color:'#2f2b2d',fontSize:13},extraCssText:'box-shadow:0 10px 28px -14px rgba(60,28,38,.35);max-width:320px;white-space:normal',formatter:p=>p.dataType==='edge'?`<b>${escape(p.data.label||'关系')}</b>`:`<span style="color:${typeColor[p.data.raw.type]||'#64748b'};font-size:12px">${escape(typeLabels[p.data.raw.type]||p.data.raw.type)}${p.data.raw.year?' · '+p.data.raw.year:''}</span><br/><b>${escape(p.data.fullLabel)}</b>`},
+  series:[{type:'graph',layout:'force',roam:true,draggable:true,scaleLimit:{min:.4,max:3},zoom:n>60?.75:n>30?.88:1,labelLayout:{hideOverlap:true},
+   left:40,right:40,top:56,bottom:30,
+   force:{repulsion:n>60?150:n>30?190:300,edgeLength:[60,105],gravity:.14,friction:.55,layoutAnimation:true},
+   data:(g?.nodes||[]).map(node=>{
+    const t=normType(node.type),color=typeColor[node.type]||'#64748b',deg=degree.value.get(node.id)||1
+    const size=(baseSize[t]||12)+Math.min(14,(deg-1)*(t==='technology'?3:2))
+    const showLabel=t==='technology'||allLabels.value||chain.value==='paper_network'
+    return {id:node.id,name:node.label,fullLabel:node.label,raw:node,symbolSize:size,
+     itemStyle:{color:t==='technology'?{type:'radial',x:.35,y:.35,r:.75,colorStops:[{offset:0,color:'#a98bc4'},{offset:1,color:color}]}:color,borderColor:'#fff',borderWidth:t==='technology'?2.5:2,shadowBlur:t==='technology'?14:8,shadowColor:color+(t==='technology'?'66':'44')},
+     label:{show:showLabel,position:'bottom',distance:5,color:t==='technology'?'#4b3a63':'#4a4448',fontSize:t==='technology'?12.5:11.5,fontWeight:t==='technology'?650:400,textBorderColor:'#fdfcfb',textBorderWidth:3,formatter:()=>short(node.label,t==='technology'?12:16)},
+     emphasis:{scale:1.25,label:{show:true,color:'#232930',fontWeight:650,formatter:()=>short(node.label,24)}}}
+   }),
+   links:(g?.edges||[]).map(e=>{const src=(g.nodes.find(x=>x.id===e.source)||{}).type;const fundEdge=e.kind==='source_project_id';const color=fundEdge?'#a21535':(typeColor[src]||'#9aa3b2');return {...e,raw:e,lineStyle:{color,width:fundEdge?1.8:1.3,opacity:fundEdge?.6:.45,curveness:.2}}}),
    edgeSymbol:['none','arrow'],edgeSymbolSize:[0,6],
-   emphasis:{focus:'adjacency',lineStyle:{width:2.4,opacity:.9}},blur:{itemStyle:{opacity:.18},lineStyle:{opacity:.06},label:{opacity:.25}}}]}
+   emphasis:{focus:'adjacency',lineStyle:{width:2.6,opacity:.95}},blur:{itemStyle:{opacity:.15},lineStyle:{opacity:.05},label:{opacity:.2}}}]}
 })
 function onSelect(p){if(!p.data?.raw)return;selected.value=p.dataType==='edge'?{kind:'edge',item:p.data.raw}:{kind:'node',item:p.data.raw}}
 const neighbors=computed(()=>selected.value?.kind==='node'?(graph.value?.edges||[]).filter(e=>e.source===selected.value.item.id||e.target===selected.value.item.id):[])
@@ -105,13 +81,6 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
   <li v-for="(f,i) in flowSteps" :key="f.title">
    <div class="ev-step-head"><b>{{String(i+1).padStart(2,'0')}}</b><h4>{{f.title}}</h4></div>
    <p>{{f.text}}</p>
-   <div class="ev-step-stats">
-    <template v-for="st in f.stats" :key="st.u">
-     <router-link v-if="st.to" class="ev-stat link" :to="st.to"><strong>{{st.v}}</strong><span>{{st.u}}</span></router-link>
-     <button v-else-if="st.chain" type="button" class="ev-stat" :class="{big:st.big,link:st.link}" @click="explore(st.chain)"><strong>{{st.v}}</strong><span>{{st.u}}</span></button>
-     <div v-else class="ev-stat"><strong>{{st.v}}</strong><span>{{st.u}}</span></div>
-    </template>
-   </div>
   </li>
  </ol>
 </section>
@@ -124,12 +93,11 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
   <button v-for="[id,label] in chainTabs" :key="id" role="tab" :aria-selected="chain===id" :class="{active:chain===id,pending:id==='fund_patent'}" @click="chain=id">{{label}}<small v-if="id==='fund_patent'">待补充</small></button>
  </nav>
  <div class="ev-graph-body">
-  <div ref="canvasEl" class="ev-canvas">
-   <div v-if="graph?.nodes?.length" class="ev-legend"><span v-for="t in nodeTypes" :key="t"><i :class="{rect:normType(t)==='technology'}" :style="{'--c':typeColor[t]||'#64748b'}"></i>{{typeLabels[t]||t}}</span><span class="ev-legend-edge"><i class="line red"></i>项目编号资助关系</span><span class="ev-legend-edge"><i class="line"></i>原文识别关系</span></div>
+  <div class="ev-canvas">
+   <div v-if="graph?.nodes?.length" class="ev-legend"><span v-for="t in nodeTypes" :key="t"><i :class="{big:normType(t)==='technology'}" :style="{'--c':typeColor[t]||'#64748b'}"></i>{{typeLabels[t]||t}}</span><span class="ev-legend-edge"><i class="line red"></i>项目编号资助关系</span><span class="ev-legend-edge"><i class="line"></i>原文识别关系</span></div>
    <div v-if="loading" class="ev-empty"><span class="ev-spin"></span>正在读取 {{activeTitle}}…</div>
    <div v-else-if="error" class="ev-empty"><p>{{error}}</p><button class="button" @click="fetchGraph">重试</button></div>
-   <template v-else-if="graph?.nodes?.length"><div v-if="layered" class="ev-cols" aria-hidden="true"><span v-for="(c,i) in layered.cols" :key="c" :style="{left:`calc(${PADL}px + ${layered.cols.length>1?i/(layered.cols.length-1):.5} * (100% - ${PADL+PADR}px))`,'--c':typeColor[c]}">{{colTitle[c]}}<b>{{layered.count[c]}}</b></span></div>
-   <Chart ref="chart" :option="graphOption" :height="graphHeight" @select="onSelect"/></template>
+   <template v-else-if="graph?.nodes?.length"><Chart ref="chart" :option="graphOption" :height="graphHeight" @select="onSelect"/></template>
    <div v-else class="ev-empty pending"><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="16" cy="30" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="46" r="7"/><rect x="88" y="21" width="28" height="18" rx="4"/><path d="M23 30 53 15M23 30 53 45M67 14 88 28M67 46 88 32"/></svg><b>{{activeTitle}}关联整理中</b><p v-if="chain==='fund_patent'">以基金项目编号、负责人与专利申请人、发明人对应，建立基金—专利—技术三段链路。</p><p v-else>该链路的样本关系正在补充。</p></div>
    <p class="ev-hint">悬停查看名称 · 滚轮缩放 · 点击节点或连线查看原文依据</p>
   </div>
