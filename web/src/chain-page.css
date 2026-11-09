@@ -132,3 +132,5 @@ button.ev-stat:hover,a.ev-stat:hover{background:#f3e9eb}
 .ev-legend i.big{width:13px;height:13px;background:radial-gradient(circle at 35% 35%,#a98bc4,var(--c))}
 @media(max-width:1100px){.ev-flow li:nth-child(odd)::before{display:none}}
 @media(max-width:600px){.ev-flow li::before{display:none}}
+.ev-legend i.multi{background:conic-gradient(#ad2344,#397da3,#348873,#be8831,#9871aa,#ad2344)}
+.ev-canvas .egraph{background:transparent}
