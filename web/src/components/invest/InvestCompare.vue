@@ -17,22 +17,30 @@ const PAPER='#3f6f9e',PATENT='#b2772a'
 function niceMax(v){if(!(v>0))return 1;const e=10**Math.floor(Math.log10(v)),n=v/e;return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*e}
 const short=v=>v>=1e4?`${+(v/1e4).toFixed(v>=1e5?0:1)}万`:fmt(v)
 /* 上：在研经费（面积，万元）与在研项目数（点线，项）；下：论文、专利两个区带，浅色为全库同方向、深色为其中的基金关联成果，同一平方根刻度 */
+const wan=v=>v>=1e4?`${+(v/1e4).toFixed(2)}亿`:`${fmt(Math.round(v))}万`
+const pow=v=>v>=1e4?`${v/1e4}万`:fmt(v)
+/* 每个方向单独定标。上：在研经费面积（左轴）与在研项目数点线（右轴），项目线峰值置顶、经费峰值约八成高，避免互相压盖；
+   下：论文（左轴，浅色全库同方向、深色基金关联）与专利（右轴，虚线全库同方向、实线基金关联）各用一条对数轴 */
+function logAxis(vals,y0,y1){const pos=vals.filter(v=>v>0),lo=Math.max(1,10**Math.floor(Math.log10(Math.min(...pos)))),hi=Math.max(...pos,lo*10)*1.12
+ const Y=v=>y0+Math.max(0,Math.log10(Math.max(v||0,lo))-Math.log10(lo))/Math.max(1e-9,Math.log10(hi)-Math.log10(lo))*(y1-y0)
+ const ticks=[];for(let v=lo*10;v<=hi;v*=10)ticks.push({v,y:Y(v)});return {Y,ticks}}
 function chart(id,w,h,big){
- const l=L.value[id],s=l.series,x0=big?58:6,x1=w-(big?50:6)
+ const l=L.value[id],s=l.series,x0=big?54:6,x1=w-(big?54:6)
  const X=i=>x0+i*(x1-x0)/Math.max(1,Y.value.length-1)
- const Z=big?{top:30,base:170,axis:183,out:[198,400]}:{top:6,base:72,axis:81,out:[90,166]}
- const mf=niceMax(peak(s.active_funding_wan)),mj=niceMax(peak(s.active_projects))
- const fy=v=>Z.base-(v||0)/mf*(Z.base-Z.top),jy=v=>Z.base-(v||0)/mj*(Z.base-Z.top)
+ const Z=big?{top:34,base:176,axis:190,out:[206,416]}:{top:10,base:74,axis:83,out:[92,166]}
+ const pf=peak(s.active_funding_wan),pj=peak(s.active_projects),sf=(pf||1)/.8,sj=pj||1,H=Z.base-Z.top
+ const fy=v=>Z.base-(v||0)/sf*H,jy=v=>Z.base-(v||0)/sj*H
  const f=s.active_funding_wan.map((v,i)=>[X(i),fy(v)]),j=s.active_projects.map((v,i)=>[X(i),jy(v)])
- const [o0,o1]=Z.out,om=niceMax(Math.max(peak(s.all_papers),peak(s.all_patents))),OY=v=>o0+Math.sqrt(Math.max(0,v||0)/om)*(o1-o0)
- const pts=a=>a.map((v,i)=>[X(i),OY(v)]),area=a=>`${smooth(pts(a))} L${x1},${o0} L${x0},${o0}Z`
- const out={y0:o0,y1:o1,papAll:area(s.all_papers),papFund:area(s.funded_papers),patAll:smooth(pts(s.all_patents)),patFund:smooth(pts(s.funded_patents)),ticks:[om,om/4,om/25].map(v=>({v,y:OY(v)}))}
- const pk=Math.max(0,s.active_funding_wan.indexOf(peak(s.active_funding_wan)))
- const anchor=i=>X(i)<w*.25?'start':X(i)>w*.75?'end':'middle'
+ const tk=(m,lim,y)=>[m/2,m].filter(v=>v<=lim).map(v=>({v,y:y(v)}))
+ const [o0,o1]=Z.out,PA=logAxis([...s.all_papers,...s.funded_papers],o0,o1),PT=logAxis([...s.all_patents,...s.funded_patents],o0,o1)
+ const area=(a,A)=>`${smooth(a.map((v,i)=>[X(i),A.Y(v)]))} L${x1},${o0} L${x0},${o0}Z`,line=(a,A)=>smooth(a.map((v,i)=>[X(i),A.Y(v)]))
+ const anchor=x=>x<x0+40?'start':x>x1-40?'end':'middle'
+ const fi=s.active_funding_wan.indexOf(pf),ji=s.active_projects.indexOf(pj)
  return {w,h,x0,x1,Z,fund:`${smooth(f)} L${x1},${Z.base} L${x0},${Z.base}Z`,proj:smooth(j),dots:j,
-  fTicks:[mf,mf/2].map(v=>({v,y:fy(v)})),jTicks:[mj,mj/2].map(v=>({v,y:jy(v)})),
-  out,
-  ticks:Y.value.map((y,i)=>({x:X(i),y})),pk:{x:X(pk),y:f[pk][1],v:peak(s.active_funding_wan),yr:Y.value[pk],anchor:anchor(pk)}}
+  fTicks:tk(niceMax(pf),sf,fy),jTicks:tk(niceMax(pj),sj,jy),
+  out:{y0:o0,papAll:area(s.all_papers,PA),papFund:area(s.funded_papers,PA),patAll:line(s.all_patents,PT),patFund:line(s.funded_patents,PT),pTicks:PA.ticks,tTicks:PT.ticks},
+  ticks:Y.value.map((y,i)=>({x:X(i),y})),
+  fpk:{x:X(fi),y:fy(pf)+17,v:wan(pf),a:anchor(X(fi))},jpk:{x:X(ji),y:jy(pj)-10,v:`${fmt(pj)}项`,a:anchor(X(ji))}}
 }
 const rows=computed(()=>{const out=[];for(let i=0;i<ORDER.length;i+=2)out.push(ORDER.slice(i,i+2));return out})
 const big=computed(()=>sel.value?chart(sel.value,620,436,true):null)
@@ -81,22 +89,23 @@ function toggle(id){sel.value=sel.value===id?'':id}
     <div class="ic-big"><div class="ic-dh"><b>{{L[sel].name}}</b></div>
      <div class="ic-legend"><span><i class="a"></i>在研经费</span><span><i class="pj"></i>在研项目数</span><span><i class="pa"></i>全库同方向论文</span><span><i class="pf"></i>基金关联论文</span><span><i class="ta"></i>全库同方向专利</span><span><i class="tf"></i>基金关联专利</span></div>
      <svg :viewBox="`0 0 ${big.w} ${big.h}`" width="100%" role="img" :aria-label="`${L[sel].name}的基金投入与论文专利产出`">
-      <g font-size="10.5" fill="#9a9296">
-       <template v-for="t in big.fTicks" :key="'f'+t.v"><line :x1="big.x0" :x2="big.x1" :y1="t.y" :y2="t.y" stroke="#efe8e4" stroke-dasharray="3 3"/><text :x="big.x0-6" :y="t.y" text-anchor="end" dominant-baseline="middle">{{t.v>=1e4?`${+(t.v/1e4).toFixed(2)}亿`:`${fmt(t.v)}万`}}</text></template>
+      <g font-size="10.5">
+       <template v-for="t in big.fTicks" :key="'f'+t.v"><line :x1="big.x0" :x2="big.x1" :y1="t.y" :y2="t.y" stroke="#efe8e4" stroke-dasharray="3 3"/><text :x="big.x0-6" :y="t.y" text-anchor="end" dominant-baseline="middle" :fill="PALETTE[sel]">{{wan(t.v)}}</text></template>
        <text v-for="t in big.jTicks" :key="'j'+t.v" :x="big.x1+6" :y="t.y" dominant-baseline="middle" :fill="PALETTE[sel]">{{fmt(t.v)}}项</text>
-       <template v-for="t in big.out.ticks" :key="'o'+t.v"><line :x1="big.x0" :x2="big.x1" :y1="t.y" :y2="t.y" stroke="#efe8e4" stroke-dasharray="3 3"/><text :x="big.x0-6" :y="t.y" text-anchor="end" dominant-baseline="middle">{{short(t.v)}}</text></template>
+       <template v-for="t in big.out.pTicks" :key="'p'+t.v"><line :x1="big.x0" :x2="big.x1" :y1="t.y" :y2="t.y" stroke="#efe8e4" stroke-dasharray="3 3"/><text :x="big.x0-6" :y="t.y" text-anchor="end" dominant-baseline="middle" :fill="PAPER">{{pow(t.v)}}</text></template>
+       <text v-for="t in big.out.tTicks" :key="'t'+t.v" :x="big.x1+6" :y="t.y" dominant-baseline="middle" :fill="PATENT">{{pow(t.v)}}</text>
+       <text :x="big.x0-6" :y="big.Z.top-18" text-anchor="end" fill="#9a9296">经费</text><text :x="big.x1+6" :y="big.Z.top-18" fill="#9a9296">项目</text>
+       <text :x="big.x0-6" :y="big.h-4" text-anchor="end" :fill="PAPER">论文</text><text :x="big.x1+6" :y="big.h-4" :fill="PATENT">专利</text>
       </g>
-      <path :d="big.fund" :fill="PALETTE[sel]" opacity=".8"/>
+      <path :d="big.fund" :fill="PALETTE[sel]" opacity=".78"/>
       <path :d="big.proj" fill="none" :stroke="PALETTE[sel]" stroke-width="2"/><circle v-for="(d,k) in big.dots" :key="k" :cx="d[0]" :cy="d[1]" r="3.4" fill="#fff" :stroke="PALETTE[sel]" stroke-width="2"/>
-      <path :d="big.out.papAll" :fill="PAPER" opacity=".18"/><path :d="big.out.papFund" :fill="PAPER" opacity=".85"/>
+      <path :d="big.out.papAll" :fill="PAPER" opacity=".2"/><path :d="big.out.papFund" :fill="PAPER" opacity=".8"/>
       <path :d="big.out.patAll" fill="none" :stroke="PATENT" stroke-width="2" stroke-dasharray="6 4"/><path :d="big.out.patFund" fill="none" :stroke="PATENT" stroke-width="2.6"/>
       <line :x1="big.x0" :x2="big.x1" :y1="big.Z.base" :y2="big.Z.base" stroke="#cfc6c2"/>
       <text v-for="t in big.ticks" :key="t.y" :x="t.x" :y="big.Z.axis" font-size="11.5" font-weight="700" fill="#7a7378" text-anchor="middle" dominant-baseline="middle">{{t.y}}</text>
-      <text x="0" :y="big.Z.top+8" font-size="13" font-weight="750" :fill="PALETTE[sel]">投入</text>
-      <text x="0" :y="big.out.y0+16" font-size="13" font-weight="750" fill="#5d575b">产出</text>
-      <text :x="big.pk.x" :y="Math.max(12,big.pk.y-9)" font-size="12.5" font-weight="750" :text-anchor="big.pk.anchor" :fill="PALETTE[sel]">经费峰值 {{(big.pk.v/1e4).toFixed(2)}} 亿元 · {{big.pk.yr}}</text>
-     </svg>
-     <p class="ic-note">经费与项目数按执行年份统计；产出区论文与专利共用平方根刻度：面积为论文（浅色全库同方向、深色基金关联），虚线、实线分别为全库同方向专利与基金关联专利。</p></div>
+      <text :x="big.fpk.x" :y="big.fpk.y" font-size="12.5" font-weight="750" :text-anchor="big.fpk.a" fill="#fff">{{big.fpk.v}}</text>
+      <text :x="big.jpk.x" :y="big.jpk.y" font-size="12.5" font-weight="750" :text-anchor="big.jpk.a" :fill="PALETTE[sel]" paint-order="stroke" stroke="#fffafa" stroke-width="4">{{big.jpk.v}}</text>
+     </svg></div>
     <div class="ic-table" tabindex="0" aria-label="逐年指标，可横向滚动"><div class="ic-dh"><b>逐年指标</b></div>
      <table><thead><tr><th></th><th></th><th><div class="ic-yrs"><span v-for="y in Y" :key="y">{{String(y).slice(2)}}</span></div></th><th class="r">期间汇总 / 峰值</th></tr></thead>
       <tbody><template v-for="g in metricRows" :key="g.g"><tr v-for="(m,k) in g.items" :key="m.n">

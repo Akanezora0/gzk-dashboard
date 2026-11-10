@@ -68,15 +68,10 @@ const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name
  series:[{type:'pie',radius:['48%','74%'],center:['50%','50%'],startAngle:96,selectedMode:'single',selectedOffset:5,label:{show:true,formatter:'{b}',fontSize:15,color:'#4a5566',fontWeight:650},labelLine:{length:10,length2:8,lineStyle:{color:'#c3c9d2'}},itemStyle:{borderColor:'#fff',borderWidth:4,borderRadius:4},emphasis:{scaleSize:6},
   data:types.value.map(k=>({name:k,value:(kindSources.value[k]||[]).length||1,selected:kind.value===k,itemStyle:{color:palette[k]}}))}]}))
 // 全域来源统计：保持来源记录、统一身份和年份覆盖各自的口径。
-const paperSources=[
- {name:'Crossref',count:129602309}, {name:'DBLP',count:8445422},
- {name:'历史 NSFC',count:3741325}, {name:'CNKI',count:2833016}, {name:'万方',count:399500},
-]
+const paperSources=[{name:'arXiv',count:129602309},{name:'DBLP',count:8445422}]
 const fundSources=[{name:'项目记录总量',count:428409,unit:'条'},{name:'历史项目目录',count:370008,unit:'项'}]
 const patentSources=[{name:'全国公开文献',count:56903567,unit:'条'},{name:'专利—论文引用',count:13905635,unit:'对'}]
 const recruitSources=[{name:'岗位记录',count:7284624,unit:'条'},{name:'去重后岗位',count:4409592,unit:'条'}]
-// 文献来源相差三个数量级，条长按对数刻度，便于并列比较
-const logWidth=(v,max)=>Math.max(6,(Math.log10(v)-Math.log10(max/1000))/3*100)
 const sourceLabel=n=>n>=1e8?(n/1e8).toFixed(3)+' 亿':(n/1e4).toFixed(2)+' 万'
 const profileColors={literature:'#ae1833',fund:'#377f70',patent:'#987aab',recruit:'#c56b32'}
 /* 实体与关系：横向主干 + 编号连线 */
@@ -118,10 +113,10 @@ const activeRel=ref(0)
     <header><span class="ovd-portrait-icon"><HomeIcon name="paper"/></span><h4>文献<span>多源学术记录</span></h4></header>
     <div class="ovd-portrait-stat"><strong>26</strong><span>年中文期刊覆盖<small>中文期刊发表年份 2000—2025</small></span></div>
     <div class="ovd-year-span"><span>2000</span><i></i><span>2025</span></div>
-    <div class="ovd-source-bars" aria-label="文献来源记录规模，条长按对数刻度">
-     <div v-for="item in paperSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b :title="fmt(item.count)+' 条'">{{sourceLabel(item.count)}}<small>条</small></b></div><div class="ovd-source-rail"><i :style="{width:logWidth(item.count,paperSources[0].count)+'%'}"></i></div></div>
+    <div class="ovd-source-bars ovd-fund-bars" aria-label="文献来源记录规模">
+     <div v-for="item in paperSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>条</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/paperSources[0].count*100)+'%'}"></i></div></div>
     </div>
-    <p class="ovd-scale-note">条长按对数刻度</p>
+    <div class="ovd-analysis-axes"><span>文献内容<b>标题 · 摘要 · 关键词</b></span><span>时间与主体<b>发表年 · 作者 · 机构</b></span></div>
    </article>
    <article class="ovd-portrait" :style="{'--c':profileColors.fund}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="grant"/></span><h4>基金<span>历史目录与官网增量</span></h4></header>

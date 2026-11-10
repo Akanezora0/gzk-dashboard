@@ -128,3 +128,8 @@ AI 保留 **7 类／29 组／70 技术点纵向技术树**，基础模型与架�
 ## 案例专题
 
 `/cases?domain=ai`，首屏底部两个专题：产业链 · 企业与产品（`topic=industry`）、政策链 · 政策工具与影响（`topic=policy`）。产业链先显示四家企业（智谱、生数科技、科大讯飞、紫东太初）的六环节总览（基金→论文→专利承接→产品→应用→经济效益，`components/cases/IndustryCases.vue`），点击一行进入详情（`case=zhipu|vidu|spark|zidong`），详情上下各有返回总览按钮和其他案例切换。智谱详情沿用 `ZhipuCase.vue` + `helpers/caseZhipu.js`；其余三家用 `IndustryCaseDetail.vue`（核心链条、主体与数据、应用与经营、案例资料），数据在 `helpers/caseIndustry.js`，来源 Markdown 原样放在 `web/content/cases/`，详情页可展开阅读和下载。数据来自同事交付的《产业案例展示_20261110》（材料采集 2026-11-09）。新增企业时在 `caseIndustry.js` 中补一行总览与一份详情数据。
+
+
+### 研究团队 05 项目参与人成长为负责人（2026-11-10）
+
+`components/MemberGrowth.vue`：左侧“参与项目类型 → 首次负责项目类型”流向与四项指标，右侧代表案例；数据 `snapshot/public/chain-analysis/v1/member-growth.json`（`scripts/build_member_growth.py` 由基金中心关联库 innovation_relations_20261102_v1 生成，参与后首次担任人工智能基金项目负责人，每人取最早一次）。06 全部案例新增“参与人成长案例”标签页（`GrowthCases.vue`），可按首次负责项目类型筛选、搜索与翻页。

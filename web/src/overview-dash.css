@@ -203,4 +203,3 @@
 .ovd-pending-content>span{font-size:34px;font-weight:300}.ovd-pending-content p{font-size:12px;color:#a29a94;margin:6px 0}
 @media(max-width:1100px){.ovd-portrait-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.ovd-portrait-grid{grid-template-columns:1fr}.ovd-portrait{padding:18px}.ovd-pending-content{min-height:95px}.ovd-portrait-stat{margin-top:16px}}
-.ovd-scale-note{margin:10px 0 0;font-size:11.5px;color:#9a9296;text-align:right}

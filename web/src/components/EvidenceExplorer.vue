@@ -1,9 +1,12 @@
 <script setup>
 import ProjectTimeline from './ProjectTimeline.vue'
+import GrowthCases from './GrowthCases.vue'
 import {useSurface} from '../helpers/useSurface'
 import {computed,ref,watch,nextTick} from 'vue'
 import {useTip,fmt,toggleFullscreen,typeGroup,TYPE_NAME,BASIS} from '../helpers/strengthTip.js'
-const props=defineProps({dataset:Object,person:{type:String,default:''}})
+const props=defineProps({dataset:Object,person:{type:String,default:''},tab:{type:String,default:'projects'}})
+const view=ref(props.tab)
+watch(()=>props.tab,v=>{if(v)view.value=v})
 const {tip,show,move,hide}=useTip()
 const root=ref(null),closeBtn=ref(null),drawerSurface=ref(null)
 const graph=computed(()=>props.dataset?.graph||{})
@@ -55,8 +58,10 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
 </script>
 <template>
   <section class="rs-page" ref="root" @keydown.esc="drawer=''">
-    <header class="rs-head"><span class="rs-no">05</span><h3>全部案例</h3></header>
-    <div v-if="!projects.length" class="rs-empty">机构项目与论文关系暂未读取。</div>
+    <header class="rs-head"><span class="rs-no">06</span><h3>全部案例</h3></header>
+    <nav class="rs-ev-tabs" role="tablist" aria-label="案例类型"><button role="tab" class="rs-btn" :class="{on:view==='projects'}" :aria-selected="view==='projects'" @click="view='projects'">机构项目与论文</button><button role="tab" class="rs-btn" :class="{on:view==='growth'}" :aria-selected="view==='growth'" @click="view='growth'">参与人成长案例</button></nav>
+    <GrowthCases v-if="view==='growth'"/>
+    <div v-else-if="!projects.length" class="rs-empty">机构项目与论文关系暂未读取。</div>
     <template v-else>
     <div class="rs-ev-bar">
       <div class="rs-ev-orgs"><button v-for="o in institutions" :key="o.name" class="rs-chip" :class="{on:org===o.name}" @click="changeOrg(o.name)">{{o.name}} {{o.count}} 项</button></div>

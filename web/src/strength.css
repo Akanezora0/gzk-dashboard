@@ -39,3 +39,7 @@
 .rs-lead b{color:var(--rs-red);font-weight:750}
 .rs-lead.soft{font-size:17px;font-weight:500;color:var(--rs-ink-2)}
 @media(max-width:700px){.rs-lead{font-size:16.5px}.rs-lead.soft{font-size:15px}}
+.rs-chip{border:1px solid var(--rs-line);background:#fff;border-radius:18px;padding:6px 16px;font-size:14px;color:var(--rs-ink-2);cursor:pointer;font-family:inherit}
+.rs-chip.on{background:var(--rs-ink);color:#fff;border-color:var(--rs-ink)}
+.rs-ev-search{border:1px solid var(--rs-line);border-radius:18px;padding:7px 14px;font-size:14px;width:200px;font-family:inherit}
+.rs-ev-tabs{display:flex;gap:8px;margin:0 0 18px}

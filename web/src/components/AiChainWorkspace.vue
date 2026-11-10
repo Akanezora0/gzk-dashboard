@@ -6,6 +6,7 @@ import StrengthBase from './StrengthBase.vue'
 import StrengthTrend from './StrengthTrend.vue'
 import ResearchAtlas from './ResearchAtlas.vue'
 import ResearchSuccession from './ResearchSuccession.vue'
+import MemberGrowth from './MemberGrowth.vue'
 const EvidenceExplorer=defineAsyncComponent(()=>import('./EvidenceExplorer.vue'))
 import '../strength.css'
 import '../chain-page.css'
@@ -22,7 +23,9 @@ const active=computed(()=>modules.some(x=>x.id===route.query.module)?route.query
 const evidencePerson=ref('')
 const dataset=ref(null),loadError=ref(''),loading=ref(false)
 function choose(id){router.push({path:route.path,query:{...route.query,domain:'ai',module:id,view:undefined}})}
-async function explore(name){evidencePerson.value='';await nextTick();evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
+const evidenceTab=ref('projects')
+async function showGrowth(){evidenceTab.value='';await nextTick();evidenceTab.value='growth';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
+async function explore(name){evidenceTab.value='';await nextTick();evidenceTab.value='projects';evidencePerson.value='';await nextTick();evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
 async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究团队数据暂时无法读取，请重试。'}finally{loading.value=false}}
 watch(()=>route.query.module,m=>{if(m==='investment')router.replace({path:'/evolution',query:{domain:'ai'}})},{immediate:true})
 watch(active,v=>{if(v==='strength')load()},{immediate:true})
@@ -46,7 +49,7 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
     <template v-else>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
-      <div v-else class="strength-stack"><StrengthBase :dataset="dataset" :inventory="data?.currentInventory"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/><ResearchSuccession :dataset="dataset" @explore="explore"/><EvidenceExplorer id="rs-evidence" :dataset="dataset" :person="evidencePerson"/></div>
+      <div v-else class="strength-stack"><StrengthBase :dataset="dataset" :inventory="data?.currentInventory"/><StrengthTrend :dataset="dataset"/><ResearchAtlas :dataset="dataset"/><ResearchSuccession :dataset="dataset" @explore="explore"/><MemberGrowth @all="showGrowth"/><EvidenceExplorer id="rs-evidence" :dataset="dataset" :person="evidencePerson" :tab="evidenceTab"/></div>
     </template>
     </div>
   </section>
