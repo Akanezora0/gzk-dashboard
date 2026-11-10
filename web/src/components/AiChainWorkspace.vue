@@ -29,7 +29,7 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
 </script>
 <template>
   <section class="ai-chain-workspace" :data-module="active">
-    <PageHero eyebrow="创新链分析" :title="hero.title" :lead="hero.lead">
+    <PageHero :title="hero.title" :lead="hero.lead">
       <template #tabs><nav class="chain-modules two" role="tablist" aria-label="分析模块">
         <button v-for="(m,i) in modules" :key="m.id" role="tab" :aria-selected="active===m.id" :class="{active:active===m.id}" @click="choose(m.id)">
           <i>{{String(i+1).padStart(2,'0')}}</i>

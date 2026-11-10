@@ -58,8 +58,8 @@
     },
     {
       "file": "snapshot/public/evolution/v1/evolution.json",
-      "bytes": 282125,
-      "sha256": "8a9b0d24a2cc924137e1def3d948f7b06841813bc9a828aaeaf2224d3f91eac1"
+      "bytes": 304386,
+      "sha256": "61b9fd7dd9062fa828c5e27a3cbb2be577f2ae147f7a38c3667e65b5a14b39f6"
     },
     {
       "file": "snapshot/public/evolution-surveys/v1/AI1.10/dashboard_bundle.json",
@@ -110,10 +110,15 @@
       "file": "snapshot/public/evolution-surveys/v1/AI6.08/dashboard_bundle.json",
       "bytes": 55893,
       "sha256": "6358741ccedce9ac3c332727257b94768c32a724f865d242ba02b0728b2bf8d4"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/contribution-detail.json",
+      "bytes": 28873,
+      "sha256": "53c58800237b446befef1f005dba32e3f89f1c7b50dd62428c93978f64179917"
     }
   ],
   "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。",
   "research_evidence_version": "curated-cases-20261109",
   "innovation_analysis_version": "chain-fill-20261110-v1",
-  "evolution_version": "evolution80-20261110-v2"
+  "evolution_version": "evolution80-20261110-v3"
 }

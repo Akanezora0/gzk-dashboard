@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "version": "evolution80-20261110-v3",
+  "topics": 80,
+  "new_topics": [
+    "AI1.10",
+    "AI1.11",
+    "AI1.12",
+    "AI1.13",
+    "AI2.16",
+    "AI2.17",
+    "AI3.15",
+    "AI4.06",
+    "AI5.19",
+    "AI6.08"
+  ],
+  "surveys_added": 10,
+  "chronology_events": 119,
+  "old_events_preserved": 71,
+  "old_relations_preserved": 25,
+  "new_relations": 38,
+  "total_relations": 63,
+  "featured_added": 5,
+  "last_year": 2026,
+  "deduplicated": [
+    {
+      "source_id": "R44",
+      "existing_event": "deepseekr1_2025"
+    },
+    {
+      "source_id": "R35",
+      "existing_event": "chronology_AI4.05"
+    }
+  ],
+  "output_sha256": "61b9fd7dd9062fa828c5e27a3cbb2be577f2ae147f7a38c3667e65b5a14b39f6"
+}

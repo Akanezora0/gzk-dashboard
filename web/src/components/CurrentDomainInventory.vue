@@ -38,7 +38,7 @@ const panels=computed(()=>[{key:'years',title:config.value.year+'分布',option:
  </section>
  <div class="ai-kpi-strip fit" :style="{'--n':strip.length}"><article v-for="(k,i) in strip" :key="k.label" :class="{lead:i===0}"><strong v-if="k.text" class="text">{{k.value}}</strong><strong v-else><CountValue :value="Number(k.value)"/><small v-if="k.unit">{{k.unit}}</small></strong><span>{{k.label}}<em v-if="k.scope" class="kpi-scope">{{k.scope}}</em></span></article></div>
  <div class="charts-grid equal domain-main-charts domain-chart-grid" :class="{'has-expanded':expanded}">
-  <section v-for="p in panels" :key="type+p.key" class="panel" :class="{'chart-expanded':expanded===p.key}"><div class="panel-heading"><h3>{{p.title}}</h3><button class="chart-expand" @click="expanded=expanded===p.key?'':p.key">{{expanded===p.key?'收起':'展开'}}</button></div><Chart :option="p.option" :height="expanded===p.key?350:280" :label="p.title"/><p class="chart-note">{{p.note}}</p></section>
+  <section v-for="p in panels" :key="type+p.key" class="panel" :class="{'chart-expanded':expanded===p.key}"><div class="panel-heading"><h3>{{p.title}}</h3><button class="chart-expand" @click="expanded=expanded===p.key?'':p.key">{{expanded===p.key?'收起':'展开'}}</button></div><Chart :option="p.option" :height="expanded===p.key?350:280" :label="p.title"/></section>
  </div>
 </div></template>
 <style scoped>

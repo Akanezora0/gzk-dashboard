@@ -79,6 +79,27 @@ def build(lexicon_path,tree_path,chronology_path,survey_index_path,output):
   for seed in terms[tid].get('seed_metadata',[]):
    sid=seed['evidence_id']
    if sid not in by_source:add(sid,{},[tid])
+ # Resolve curated relationship endpoints against preserved events and source IDs.
+ relation_path=Path(__file__).with_name('evolution_recent_relations.json')
+ curated=read(relation_path)
+ event_by_id={e['id']:e for e in events}
+ # A source may have several release events; prefer its first publication.
+ source_first={}
+ for event in sorted(events,key=lambda e:e.get('first_public_date','')):
+  if event.get('source_id'):source_first.setdefault(event['source_id'],event['id'])
+ pairs={(e['source'],e['target']) for e in edges}
+ for index,spec in enumerate(curated['relations'],1):
+  src=source_first.get(spec['source'],spec['source']);dst=source_first.get(spec['target'],spec['target'])
+  assert src in event_by_id and dst in event_by_id, spec
+  assert src!=dst and (src,dst) not in pairs, spec
+  assert event_by_id[src]['year']<=event_by_id[dst]['year'], spec
+  evidence=lex['sources'][spec['evidence_source']]
+  edges.append(dict(id=f'recent_relation_{index:02d}',source=src,target=dst,
+   kind=spec['kind'],label=spec['label'],source_url=evidence['url'],
+   evidence_note=spec['evidence_note'],evidence_source=spec['evidence_source'],
+   interpretation='research_direction_synthesis' if spec['kind']=='research_direction' else 'source_supported',
+   relation_version=curated['version']))
+  pairs.add((src,dst))
  events.sort(key=lambda e:(e.get('first_public_date') or str(e['year']),e['id']))
  additions=[];stories={}
  for sid,(name,note,innovation,impact) in FEATURED.items():
@@ -93,13 +114,13 @@ def build(lexicon_path,tree_path,chronology_path,survey_index_path,output):
  assert all(0 < e['year'] <= 2026 for e in events)
  assert [n for n in tree['nodes'] if n['id'] not in added]==old_tree['nodes']
  assert all(next(x for x in events if x['id']==e['id'])==e for e in old_chron['events'])
- version='evolution80-20261110-v2'
+ version='evolution80-20261110-v3'
  result=dict(version=version,tree=tree,chronology=chron,survey_additions=entries,
    source_versions=dict(lexicon=lex['version'],survey=surveys['batch_id']),
-   input_sha256={str(p):sha(p) for p in [lexicon_path,tree_path,chronology_path,survey_index_path]})
+   input_sha256={str(p):sha(p) for p in [lexicon_path,tree_path,chronology_path,survey_index_path,relation_path]})
  write(output/'evolution.json',result)
  quality=dict(passed=True,version=version,topics=len(terms),new_topics=sorted(added),surveys_added=len(entries),
-   chronology_events=len(events),old_events_preserved=len(old_chron['events']),old_relations_preserved=len(edges),
+   chronology_events=len(events),old_events_preserved=len(old_chron['events']),old_relations_preserved=len(old_chron['edges']),new_relations=len(curated['relations']),total_relations=len(edges),
    featured_added=len(additions),last_year=max(e['year'] for e in events),deduplicated=merges,
    output_sha256=sha(output/'evolution.json'))
  write(output/'quality.json',quality)

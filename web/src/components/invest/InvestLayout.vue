@@ -58,7 +58,7 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
 
 <template><div class="il">
  <section ref="root" class="il-sec">
-  <header><b>01</b><h3>总览：经费与成果投向哪些方向</h3><span>2017—2022 年立项项目 · 跨方向分摊计入</span></header>
+  <header><b>01</b><h3>总览：经费与成果投向哪些方向</h3></header>
   <p class="il-lead"><em>模型训练、适配与推理</em>和<em>知识增强与 AI 应用</em>是投入与产出最集中的两个方向，合计约占经费的 <em>{{lead1.f}}%</em>、论文的 <em>{{lead1.p}}%</em>。</p>
   <div class="il-two">
    <div v-for="(pn,k) in [{p:fundPanel,key:'funding'},{p:outPanel,key:outKind}]" :key="k" class="il-panel">
@@ -73,13 +73,13 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
     </TransitionGroup>
    </div>
   </div>
-  <div class="il-play"><button class="il-pbtn" :aria-label="A.on.value?'暂停':'播放'" @click="A.play">{{A.on.value?'❚❚':'▶'}}</button>
+  <div class="il-play"><button class="il-pbtn" :aria-label="A.on.value?'暂停':'播放'" @click="A.play"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="A.on.value" d="M7 5h4v14H7zM14 5h4v14h-4z"/><path v-else d="M7 4L21 12L7 20Z"/></svg></button>
    <div class="il-track"><i :style="{width:A.i.value/last*100+'%'}"></i><button v-for="(y,k) in Y" :key="y" :class="{on:k===A.i.value,past:k<A.i.value}" :style="{left:k/last*100+'%'}" @click="A.seek(k)"><em></em><span>{{y}}</span></button></div></div>
-  <p class="il-note">两图共用一条时间轴、同步推进；色块越深，该方向当年占比越高。</p>
+  
  </section>
 
  <section class="il-sec">
-  <header><b>02</b><h3>结构：各方向份额如何变化</h3><span>每行一年，条宽为该方向占当年的比例</span></header>
+  <header><b>02</b><h3>结构：各方向份额如何变化</h3></header>
   <p class="il-lead">经费结构基本稳定；成果结构中，<em>基础模型与架构</em>的论文占比由 2021 年的 {{lead2.a0}}% 升至 <em>{{lead2.a1}}%</em>，<em>数据与知识服务</em>由 {{lead2.d0}}% 升至 <em>{{lead2.d1}}%</em>。</p>
   <div class="il-three">
    <div v-for="s in struct" :key="s.k" class="il-panel white">
@@ -97,8 +97,8 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
  </section>
 
  <section ref="termEl" class="il-sec last">
-  <header><b>03</b><h3>细节：70 个技术点的{{termKind==='funding'?'投入':'产出'}}</h3><span>按七大方向分列 · 每个技术点按自身峰值着色</span></header>
-  <p class="il-lead">在研经费中，<em>上下文学习</em>、<em>AI 芯片与 GPU</em>等技术点较早获得支持；<em>Transformer</em>、<em>混合专家</em>、<em>视觉语言模型</em>等在 2023 年后集中出现。</p>
+  <header><b>03</b><h3>细节：70 个技术点的{{termKind==='funding'?'投入':'产出'}}</h3></header>
+  <p class="il-lead">在研经费中，<em>上下文学习</em>、<em>AI 芯片与 GPU</em>等技术点较早获得支持；<em>混合专家</em>、<em>视觉语言模型</em>等在 2023 年后集中出现。</p>
   <div class="il-panel white">
    <div class="il-ph"><div class="il-seg big"><button :class="{on:termKind==='funding'}" @click="termKind='funding'">经费</button><button :class="{on:termKind==='papers'}" @click="termKind='papers'">论文</button><button :class="{on:termKind==='patents'}" @click="termKind='patents'">专利</button></div>
     <div class="il-yr"><strong>{{Y[T.i.value]}}</strong><span>{{termKind==='funding'?'执行年份 · 在研经费':'当年新增'+(termKind==='papers'?'论文':'专利')}}</span></div></div>
@@ -106,7 +106,7 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
     <div v-for="c in cols" :key="c.id" class="il-col"><h5 :style="{color:PALETTE[c.id],borderColor:PALETTE[c.id]}">{{c.name}}</h5>
      <div v-for="t in c.items" :key="t.id" class="il-term" :class="{dark:t.a>.55}" :style="{background:t.a>0?PALETTE[c.id]+hex(t.a):'#f4efed'}" :title="`${t.full} · ${Y[T.i.value]} 年 ${fmt(t.v)} ${termUnit}`">{{t.name}}</div></div>
    </div>
-   <div class="il-play inner"><button class="il-pbtn" :aria-label="T.on.value?'暂停':'播放'" @click="T.play">{{T.on.value?'❚❚':'▶'}}</button>
+   <div class="il-play inner"><button class="il-pbtn" :aria-label="T.on.value?'暂停':'播放'" @click="T.play"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="T.on.value" d="M7 5h4v14H7zM14 5h4v14h-4z"/><path v-else d="M7 4L21 12L7 20Z"/></svg></button>
     <div class="il-track"><i :style="{width:T.i.value/last*100+'%'}"></i><button v-for="(y,k) in Y" :key="y" :class="{on:k===T.i.value,past:k<T.i.value}" :style="{left:k/last*100+'%'}" @click="T.seek(k)"><em></em><span>{{y}}</span></button></div></div>
   </div>
  </section>
@@ -128,9 +128,9 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
 .il-ph h4{margin:0;font-size:16px;font-weight:750;display:flex;align-items:center;gap:8px}
 .il-ph small{display:block;margin-top:3px;font-size:12px;color:#8a8286}
 .il-yr{text-align:right}.il-yr strong{font-size:30px;font-weight:800;color:#a21535;line-height:1;font-variant-numeric:tabular-nums}.il-yr span{display:block;margin-top:4px;font-size:12px;color:#7a7378}
-.il-seg{display:inline-flex;border:1px solid #e3dad6;border-radius:3px;overflow:hidden;background:#fff}
-.il-seg button{padding:3px 10px;border:0;border-left:1px solid #e3dad6;background:none;font:inherit;font-size:12.5px;font-weight:500;color:#5d575b;cursor:pointer}
-.il-seg button:first-child{border-left:0}.il-seg button.on{background:#a21535;color:#fff}
+.il-seg{display:inline-flex;gap:6px;border:0;background:transparent}
+.il-seg button{padding:3px 10px;border:1px solid #e3dad6;border-radius:8px;background:#fff;font:inherit;font-size:12.5px;font-weight:500;color:#5d575b;cursor:pointer}
+.il-seg button:first-child{border-left:1px solid #e3dad6}.il-seg button.on{background:#a21535;color:#fff}
 .il-seg.big button{padding:5px 14px;font-size:13px}
 .il-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(64px,auto);gap:6px}
 .il-tile{display:flex;flex-direction:column;justify-content:space-between;padding:9px 11px;border-radius:3px;color:#2f2b2d;transition:background .6s}
@@ -141,7 +141,8 @@ const termUnit=computed(()=>({funding:'万元',papers:'篇',patents:'件'})[term
 .il-tile-move{transition:transform .6s cubic-bezier(.4,0,.2,1)}
 .il-play{display:flex;align-items:center;gap:14px;margin-top:16px}
 .il-play.inner{margin-top:14px}
-.il-pbtn{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#a21535;color:#fff;font-size:11px;cursor:pointer}
+.il-pbtn{display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1;flex:none;width:30px;height:30px;border:0;border-radius:50%;background:#a21535;color:#fff;font-size:11px;cursor:pointer}
+.il-pbtn svg{width:14px;height:14px;display:block;fill:currentColor}
 .il-track{position:relative;flex:1;height:30px;margin:0 8px}
 .il-track::before{content:"";position:absolute;left:0;right:0;top:7px;height:3px;border-radius:2px;background:#eadfe1}
 .il-track>i{position:absolute;left:0;top:7px;height:3px;border-radius:2px;background:#a21535;transition:width .4s}

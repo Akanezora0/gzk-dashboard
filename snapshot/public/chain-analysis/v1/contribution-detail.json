@@ -1,0 +1,1009 @@
+{
+  "categories": {
+    "all": {
+      "papers": 33129,
+      "high_papers": 3483,
+      "paper_share": 10.5,
+      "citation_share": 76.3,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 1482,
+          "high": 162,
+          "threshold": 10,
+          "citations": 7097,
+          "high_citations": 5665,
+          "share": 79.8
+        },
+        {
+          "year": 2019,
+          "papers": 3569,
+          "high": 377,
+          "threshold": 11,
+          "citations": 16344,
+          "high_citations": 13040,
+          "share": 79.8
+        },
+        {
+          "year": 2020,
+          "papers": 5739,
+          "high": 588,
+          "threshold": 11,
+          "citations": 23893,
+          "high_citations": 18646,
+          "share": 78.0
+        },
+        {
+          "year": 2021,
+          "papers": 8671,
+          "high": 895,
+          "threshold": 12,
+          "citations": 39416,
+          "high_citations": 30106,
+          "share": 76.4
+        },
+        {
+          "year": 2022,
+          "papers": 13668,
+          "high": 1461,
+          "threshold": 12,
+          "citations": 64373,
+          "high_citations": 47848,
+          "share": 74.3
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/jproc.2020.3004555",
+          "title": "A Comprehensive Survey on Transfer Learning",
+          "year": 2021,
+          "citations_3y": 1977,
+          "grants": [
+            {
+              "number": "61773361",
+              "title": "基于深度学习的推荐算法研究",
+              "institution": "中国科学院计算技术研究所",
+              "year": 2017
+            },
+            {
+              "number": "61836013",
+              "title": "面向领域大数据的知识图谱构建",
+              "institution": "中国科学院计算机网络信息中心",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/tnnls.2018.2876865",
+          "title": "Object Detection With Deep Learning: A Review",
+          "year": 2019,
+          "citations_3y": 1056,
+          "grants": [
+            {
+              "number": "91746209",
+              "title": "管理与决策大数据的模式识别与敏感内容挖掘研究",
+              "institution": "合肥工业大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1609/aaai.v35i12.17325",
+          "title": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
+          "year": 2021,
+          "citations_3y": 930,
+          "grants": [
+            {
+              "number": "61872022",
+              "title": "大规模网络中异常子图分析理论与算法研究",
+              "institution": "北京航空航天大学",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1007/s11263-021-01453-z",
+          "title": "Knowledge Distillation: A Survey",
+          "year": 2021,
+          "citations_3y": 858,
+          "grants": [
+            {
+              "number": "61976107",
+              "title": "深度图约束特征表示学习理论与方法研究",
+              "institution": "江苏大学",
+              "year": 2019
+            }
+          ]
+        }
+      ]
+    },
+    "AI1": {
+      "papers": 4419,
+      "high_papers": 460,
+      "paper_share": 10.4,
+      "citation_share": 59.5,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 154,
+          "high": 17,
+          "threshold": 33,
+          "citations": 1950,
+          "high_citations": 1209,
+          "share": 62.0
+        },
+        {
+          "year": 2019,
+          "papers": 393,
+          "high": 42,
+          "threshold": 38,
+          "citations": 5634,
+          "high_citations": 3476,
+          "share": 61.7
+        },
+        {
+          "year": 2020,
+          "papers": 700,
+          "high": 71,
+          "threshold": 21,
+          "citations": 5469,
+          "high_citations": 3046,
+          "share": 55.7
+        },
+        {
+          "year": 2021,
+          "papers": 1109,
+          "high": 112,
+          "threshold": 22,
+          "citations": 10459,
+          "high_citations": 6215,
+          "share": 59.4
+        },
+        {
+          "year": 2022,
+          "papers": 2063,
+          "high": 218,
+          "threshold": 23,
+          "citations": 19930,
+          "high_citations": 11894,
+          "share": 59.7
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/tnnls.2018.2876865",
+          "title": "Object Detection With Deep Learning: A Review",
+          "year": 2019,
+          "citations_3y": 1056,
+          "grants": [
+            {
+              "number": "91746209",
+              "title": "管理与决策大数据的模式识别与敏感内容挖掘研究",
+              "institution": "合肥工业大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1609/aaai.v35i12.17325",
+          "title": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
+          "year": 2021,
+          "citations_3y": 930,
+          "grants": [
+            {
+              "number": "61872022",
+              "title": "大规模网络中异常子图分析理论与算法研究",
+              "institution": "北京航空航天大学",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/cvpr52688.2022.01181",
+          "title": "CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows",
+          "year": 2022,
+          "citations_3y": 529,
+          "grants": [
+            {
+              "number": "U20B2047",
+              "title": "针对深度学习模型的攻防分析基础理论与关键技术研究",
+              "institution": "中国科学技术大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/tgrs.2021.3130716",
+          "title": "SpectralFormer: Rethinking Hyperspectral Image Classification With Transformers",
+          "year": 2022,
+          "citations_3y": 376,
+          "grants": [
+            {
+              "number": "42030111",
+              "title": "基于深度学习的小麦植被参量高光谱遥感反演研究",
+              "institution": "中国科学院空天信息创新研究院",
+              "year": 2020
+            }
+          ]
+        }
+      ]
+    },
+    "AI2": {
+      "papers": 8163,
+      "high_papers": 821,
+      "paper_share": 10.1,
+      "citation_share": 60.9,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 227,
+          "high": 23,
+          "threshold": 33,
+          "citations": 2866,
+          "high_citations": 2001,
+          "share": 69.8
+        },
+        {
+          "year": 2019,
+          "papers": 686,
+          "high": 71,
+          "threshold": 29,
+          "citations": 8325,
+          "high_citations": 5787,
+          "share": 69.5
+        },
+        {
+          "year": 2020,
+          "papers": 1302,
+          "high": 131,
+          "threshold": 23,
+          "citations": 10700,
+          "high_citations": 6246,
+          "share": 58.4
+        },
+        {
+          "year": 2021,
+          "papers": 2220,
+          "high": 223,
+          "threshold": 22,
+          "citations": 19671,
+          "high_citations": 12085,
+          "share": 61.4
+        },
+        {
+          "year": 2022,
+          "papers": 3728,
+          "high": 373,
+          "threshold": 19,
+          "citations": 28011,
+          "high_citations": 16275,
+          "share": 58.1
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/jproc.2020.3004555",
+          "title": "A Comprehensive Survey on Transfer Learning",
+          "year": 2021,
+          "citations_3y": 1977,
+          "grants": [
+            {
+              "number": "61773361",
+              "title": "基于深度学习的推荐算法研究",
+              "institution": "中国科学院计算技术研究所",
+              "year": 2017
+            },
+            {
+              "number": "61836013",
+              "title": "面向领域大数据的知识图谱构建",
+              "institution": "中国科学院计算机网络信息中心",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/tnnls.2018.2876865",
+          "title": "Object Detection With Deep Learning: A Review",
+          "year": 2019,
+          "citations_3y": 1056,
+          "grants": [
+            {
+              "number": "91746209",
+              "title": "管理与决策大数据的模式识别与敏感内容挖掘研究",
+              "institution": "合肥工业大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1016/j.cell.2018.02.010",
+          "title": "Identifying Medical Diagnoses and Treatable Diseases by Image-Based Deep Learning",
+          "year": 2018,
+          "citations_3y": 780,
+          "grants": [
+            {
+              "number": "81700882",
+              "title": "基于深度学习的糖尿病视网膜病变计算机辅助诊断技术研究",
+              "institution": "首都医科大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1007/s11263-019-01247-4",
+          "title": "Deep Learning for Generic Object Detection: A Survey",
+          "year": 2019,
+          "citations_3y": 588,
+          "grants": [
+            {
+              "number": "61872379",
+              "title": "紧致高效图像纹理特征表达与学习方法研究",
+              "institution": "中国人民解放军国防科技大学",
+              "year": 2018
+            }
+          ]
+        }
+      ]
+    },
+    "AI3": {
+      "papers": 218,
+      "high_papers": 26,
+      "paper_share": 11.9,
+      "citation_share": 58.9,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 2,
+          "high": 1,
+          "threshold": 57,
+          "citations": 58,
+          "high_citations": 57,
+          "share": 98.3
+        },
+        {
+          "year": 2019,
+          "papers": 11,
+          "high": 2,
+          "threshold": 13,
+          "citations": 80,
+          "high_citations": 67,
+          "share": 83.8
+        },
+        {
+          "year": 2020,
+          "papers": 35,
+          "high": 4,
+          "threshold": 25,
+          "citations": 306,
+          "high_citations": 164,
+          "share": 53.6
+        },
+        {
+          "year": 2021,
+          "papers": 64,
+          "high": 7,
+          "threshold": 27,
+          "citations": 585,
+          "high_citations": 289,
+          "share": 49.4
+        },
+        {
+          "year": 2022,
+          "papers": 106,
+          "high": 12,
+          "threshold": 41,
+          "citations": 1833,
+          "high_citations": 1110,
+          "share": 60.6
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1038/s41467-022-29763-x",
+          "title": "Communication-efficient federated learning via knowledge distillation",
+          "year": 2022,
+          "citations_3y": 273,
+          "grants": [
+            {
+              "number": "U1936208",
+              "title": "面向网络民意调研的知识库体系构建及应用技术",
+              "institution": "清华大学",
+              "year": 2019
+            },
+            {
+              "number": "U1936216",
+              "title": "数据驱动和知识引导的APT事件画像与检测",
+              "institution": "北京邮电大学",
+              "year": 2019
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.18653/v1/2022.acl-long.499",
+          "title": "UniXcoder: Unified Cross-Modal Pre-training for Code Representation",
+          "year": 2022,
+          "citations_3y": 170,
+          "grants": [
+            {
+              "number": "U2001211",
+              "title": "大规模数据驱动的机器学习理论与方法",
+              "institution": "北京理工大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/tpds.2021.3096076",
+          "title": "Decentralized Edge Intelligence: A Dynamic Resource Allocation Framework for Hierarchical Federated Learning",
+          "year": 2022,
+          "citations_3y": 151,
+          "grants": [
+            {
+              "number": "62071343",
+              "title": "基于分布式机器学习的下一代通信网络资源市场化协同优化分配",
+              "institution": "南京航空航天大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/mci.2022.3180932",
+          "title": "When Federated Learning Meets Blockchain: A New Distributed Learning Paradigm",
+          "year": 2022,
+          "citations_3y": 97,
+          "grants": [
+            {
+              "number": "62002170",
+              "title": "基于联邦学习的数据隐私保护与框架安全防护研究",
+              "institution": "南京理工大学",
+              "year": 2020
+            }
+          ]
+        }
+      ]
+    },
+    "AI4": {
+      "papers": 36,
+      "high_papers": 7,
+      "paper_share": 19.4,
+      "citation_share": 76.3,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 1,
+          "high": 1,
+          "threshold": 18,
+          "citations": 18,
+          "high_citations": 18,
+          "share": 100.0
+        },
+        {
+          "year": 2019,
+          "papers": 2,
+          "high": 1,
+          "threshold": 36,
+          "citations": 49,
+          "high_citations": 36,
+          "share": 73.5
+        },
+        {
+          "year": 2020,
+          "papers": 3,
+          "high": 1,
+          "threshold": 33,
+          "citations": 34,
+          "high_citations": 33,
+          "share": 97.1
+        },
+        {
+          "year": 2021,
+          "papers": 14,
+          "high": 2,
+          "threshold": 32,
+          "citations": 129,
+          "high_citations": 75,
+          "share": 58.1
+        },
+        {
+          "year": 2022,
+          "papers": 16,
+          "high": 2,
+          "threshold": 32,
+          "citations": 222,
+          "high_citations": 183,
+          "share": 82.4
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/tpds.2021.3096076",
+          "title": "Decentralized Edge Intelligence: A Dynamic Resource Allocation Framework for Hierarchical Federated Learning",
+          "year": 2022,
+          "citations_3y": 151,
+          "grants": [
+            {
+              "number": "62071343",
+              "title": "基于分布式机器学习的下一代通信网络资源市场化协同优化分配",
+              "institution": "南京航空航天大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.3390/rs13214387",
+          "title": "Boost Precision Agriculture with Unmanned Aerial Vehicle Remote Sensing and Edge Intelligence: A Survey",
+          "year": 2021,
+          "citations_3y": 43,
+          "grants": [
+            {
+              "number": "41901376",
+              "title": "基于深度网络模型压缩与加速的高分辨率遥感图像在轨目标检测",
+              "institution": "中国地质大学（武汉）",
+              "year": 2019
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1136/bjophthalmol-2019-314729",
+          "title": "Universal artificial intelligence platform for collaborative management of cataracts",
+          "year": 2019,
+          "citations_3y": 36,
+          "grants": [
+            {
+              "number": "91846109",
+              "title": "大数据驱动的婴幼儿视力智能评估系统的研发和应用",
+              "institution": "中山大学",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1145/3394486.3403344",
+          "title": "Controllable Multi-Interest Framework for Recommendation",
+          "year": 2020,
+          "citations_3y": 33,
+          "grants": [
+            {
+              "number": "61836013",
+              "title": "面向领域大数据的知识图谱构建",
+              "institution": "中国科学院计算机网络信息中心",
+              "year": 2018
+            }
+          ]
+        }
+      ]
+    },
+    "AI5": {
+      "papers": 4393,
+      "high_papers": 450,
+      "paper_share": 10.2,
+      "citation_share": 71.2,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 159,
+          "high": 17,
+          "threshold": 19,
+          "citations": 1195,
+          "high_citations": 802,
+          "share": 67.1
+        },
+        {
+          "year": 2019,
+          "papers": 421,
+          "high": 44,
+          "threshold": 15,
+          "citations": 4598,
+          "high_citations": 3740,
+          "share": 81.3
+        },
+        {
+          "year": 2020,
+          "papers": 810,
+          "high": 81,
+          "threshold": 22,
+          "citations": 5935,
+          "high_citations": 4025,
+          "share": 67.8
+        },
+        {
+          "year": 2021,
+          "papers": 1191,
+          "high": 124,
+          "threshold": 19,
+          "citations": 8529,
+          "high_citations": 5840,
+          "share": 68.5
+        },
+        {
+          "year": 2022,
+          "papers": 1812,
+          "high": 184,
+          "threshold": 21,
+          "citations": 17192,
+          "high_citations": 12252,
+          "share": 71.3
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/tnnls.2018.2876865",
+          "title": "Object Detection With Deep Learning: A Review",
+          "year": 2019,
+          "citations_3y": 1056,
+          "grants": [
+            {
+              "number": "91746209",
+              "title": "管理与决策大数据的模式识别与敏感内容挖掘研究",
+              "institution": "合肥工业大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1007/s11263-019-01247-4",
+          "title": "Deep Learning for Generic Object Detection: A Survey",
+          "year": 2019,
+          "citations_3y": 588,
+          "grants": [
+            {
+              "number": "61872379",
+              "title": "紧致高效图像纹理特征表达与学习方法研究",
+              "institution": "中国人民解放军国防科技大学",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/cvpr52688.2022.01181",
+          "title": "CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows",
+          "year": 2022,
+          "citations_3y": 529,
+          "grants": [
+            {
+              "number": "U20B2047",
+              "title": "针对深度学习模型的攻防分析基础理论与关键技术研究",
+              "institution": "中国科学技术大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1016/j.isprsjprs.2019.11.023",
+          "title": "Object detection in optical remote sensing images: A survey and a new benchmark",
+          "year": 2020,
+          "citations_3y": 488,
+          "grants": [
+            {
+              "number": "61772425",
+              "title": "基于判别和旋转不变卷积神经网络的高分遥感图像目标检测",
+              "institution": "西北工业大学",
+              "year": 2017
+            }
+          ]
+        }
+      ]
+    },
+    "AI6": {
+      "papers": 622,
+      "high_papers": 67,
+      "paper_share": 10.8,
+      "citation_share": 58.5,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 13,
+          "high": 2,
+          "threshold": 24,
+          "citations": 115,
+          "high_citations": 59,
+          "share": 51.3
+        },
+        {
+          "year": 2019,
+          "papers": 32,
+          "high": 5,
+          "threshold": 25,
+          "citations": 322,
+          "high_citations": 158,
+          "share": 49.1
+        },
+        {
+          "year": 2020,
+          "papers": 85,
+          "high": 9,
+          "threshold": 26,
+          "citations": 957,
+          "high_citations": 517,
+          "share": 54.0
+        },
+        {
+          "year": 2021,
+          "papers": 154,
+          "high": 16,
+          "threshold": 32,
+          "citations": 1875,
+          "high_citations": 909,
+          "share": 48.5
+        },
+        {
+          "year": 2022,
+          "papers": 338,
+          "high": 35,
+          "threshold": 48,
+          "citations": 6861,
+          "high_citations": 4278,
+          "share": 62.4
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/cvpr52688.2022.01181",
+          "title": "CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows",
+          "year": 2022,
+          "citations_3y": 529,
+          "grants": [
+            {
+              "number": "U20B2047",
+              "title": "针对深度学习模型的攻防分析基础理论与关键技术研究",
+              "institution": "中国科学技术大学",
+              "year": 2020
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1007/s13042-022-01647-y",
+          "title": "A survey on federated learning: challenges and applications",
+          "year": 2022,
+          "citations_3y": 401,
+          "grants": [
+            {
+              "number": "61976212",
+              "title": "面向精准医学大数据的认知计算与应用研究",
+              "institution": "中国科学院自动化研究所",
+              "year": 2019
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1038/s41467-022-29763-x",
+          "title": "Communication-efficient federated learning via knowledge distillation",
+          "year": 2022,
+          "citations_3y": 273,
+          "grants": [
+            {
+              "number": "U1936208",
+              "title": "面向网络民意调研的知识库体系构建及应用技术",
+              "institution": "清华大学",
+              "year": 2019
+            },
+            {
+              "number": "U1936216",
+              "title": "数据驱动和知识引导的APT事件画像与检测",
+              "institution": "北京邮电大学",
+              "year": 2019
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1049/ipr2.12419",
+          "title": "Medical image segmentation using deep learning: A survey",
+          "year": 2022,
+          "citations_3y": 264,
+          "grants": [
+            {
+              "number": "61871259",
+              "title": "低维与高维数学形态学理论框架的统一及应用研究",
+              "institution": "陕西科技大学",
+              "year": 2018
+            }
+          ]
+        }
+      ]
+    },
+    "AI7": {
+      "papers": 565,
+      "high_papers": 60,
+      "paper_share": 10.6,
+      "citation_share": 53.8,
+      "annual": [
+        {
+          "year": 2017,
+          "papers": 0,
+          "high": 0,
+          "threshold": 0,
+          "citations": 0,
+          "high_citations": 0,
+          "share": null
+        },
+        {
+          "year": 2018,
+          "papers": 12,
+          "high": 2,
+          "threshold": 41,
+          "citations": 176,
+          "high_citations": 84,
+          "share": 47.7
+        },
+        {
+          "year": 2019,
+          "papers": 45,
+          "high": 5,
+          "threshold": 49,
+          "citations": 1027,
+          "high_citations": 557,
+          "share": 54.2
+        },
+        {
+          "year": 2020,
+          "papers": 79,
+          "high": 9,
+          "threshold": 27,
+          "citations": 1047,
+          "high_citations": 661,
+          "share": 63.1
+        },
+        {
+          "year": 2021,
+          "papers": 153,
+          "high": 16,
+          "threshold": 31,
+          "citations": 2062,
+          "high_citations": 1163,
+          "share": 56.4
+        },
+        {
+          "year": 2022,
+          "papers": 276,
+          "high": 28,
+          "threshold": 28,
+          "citations": 2806,
+          "high_citations": 1368,
+          "share": 48.8
+        }
+      ],
+      "cases": [
+        {
+          "paper_id": "doi:10.1109/access.2019.2939201",
+          "title": "A Survey of Deep Learning-Based Object Detection",
+          "year": 2019,
+          "citations_3y": 297,
+          "grants": [
+            {
+              "number": "61836009",
+              "title": "类脑认知机器学习与遥感解译应用",
+              "institution": "西安电子科技大学",
+              "year": 2018
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/jstars.2020.3005403",
+          "title": "Remote Sensing Image Scene Classification Meets Deep Learning: Challenges, Methods, Benchmarks, and Opportunities",
+          "year": 2020,
+          "citations_3y": 212,
+          "grants": [
+            {
+              "number": "61772425",
+              "title": "基于判别和旋转不变卷积神经网络的高分遥感图像目标检测",
+              "institution": "西北工业大学",
+              "year": 2017
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1109/tmi.2020.3035253",
+          "title": "CA-Net: Comprehensive Attention Convolutional Neural Networks for Explainable Medical Image Segmentation",
+          "year": 2021,
+          "citations_3y": 185,
+          "grants": [
+            {
+              "number": "81771921",
+              "title": "放疗规划中基于机器学习的肿瘤区域自动分割方法研究",
+              "institution": "电子科技大学",
+              "year": 2017
+            },
+            {
+              "number": "61901084",
+              "title": "基于深度学习的医学图像交互式分割方法研究",
+              "institution": "电子科技大学",
+              "year": 2019
+            }
+          ]
+        },
+        {
+          "paper_id": "doi:10.1145/3442381.3450133",
+          "title": "Learning Intents behind Interactions with Knowledge Graph for Recommendation",
+          "year": 2021,
+          "citations_3y": 159,
+          "grants": [
+            {
+              "number": "61972372",
+              "title": "会话场景下个性化推荐方法研究",
+              "institution": "中国科学技术大学",
+              "year": 2019
+            },
+            {
+              "number": "U19A2079",
+              "title": "基于图神经网络的可推理个性化推荐理论与方法",
+              "institution": "中国科学技术大学",
+              "year": 2019
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "method": "Within each publication year and selected funded-paper cohort, rank by citations in years 1–3; retain top decile with tied positive counts. Not a worldwide top-decile ranking. Cases ordered by observed 3-year citations; fund links are registered/matched relationships, not causal attribution."
+}

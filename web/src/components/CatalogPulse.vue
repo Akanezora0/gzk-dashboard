@@ -81,7 +81,7 @@ onBeforeUnmount(()=>{generation++})
      <div class="activity-days"><button v-for="day in series.calendar" :key="day.date" class="activity-square" :class="['level-'+cellLevel(day),{padding:day.padding,selected:selectedDate===day.date,today:day.date===endDate}]" :disabled="day.padding" :tabindex="day.padding?-1:0" :style="{gridColumn:day.week+1,gridRow:day.weekday+1}" :title="`${day.date} · 接收 ${day.count} 批`" :aria-label="`${day.date} 接收 ${day.count} 批，查看明细`" :aria-pressed="selectedDate===day.date" @click="pickDate(day.date)"></button></div>
     </div>
    </div>
-   <p class="activity-hint">点击查看更新明细</p>
+   
   </section>
   <section class="activity-trend" aria-label="接收批次趋势"><div class="activity-viz-heading"><h4>接收批次趋势</h4><div class="activity-controls"><button v-for="[id,label] in [['daily','每日'],['weekly','每周'],['cumulative','累计']]" :key="id" :class="{active:mode===id}" :aria-pressed="mode===id" @click="mode=id">{{label}}</button></div></div><Chart :option="trend" :height="215" label="按展示台账日期汇总的批次趋势"/></section>
  </div>

@@ -46,7 +46,7 @@ export function horizontalLayout(tree,chronology,opts={}){
  const years=[...new Set(events.map(e=>yk(e.year)))].sort((a,b)=>a-b)
  // 普通模式紧凑排布（同年同类较多时两行多列）；全屏模式按可用高度增加行数并拉伸泳道
  const full=!!opts.full
- const left=180,nodeW=164,nodeH=full?40:34,gapX=10,gapY=full?8:6,padX=26,padY=full?14:12,minLane=54,axisH=42
+ const left=180,nodeW=164,nodeH=full?40:34,gapX=10,gapY=full?12:10,padX=26,padY=full?22:20,minLane=54,axisH=42
  const cell={};events.forEach(e=>{const k=e.category_id+'|'+yk(e.year);(cell[k]=cell[k]||[]).push(e)})
  const most=id=>Math.max(1,...years.map(yr=>(cell[id+'|'+yr]||[]).length))
  const laneH=R=>Math.max(minLane,R*nodeH+(R-1)*gapY+padY*2)
@@ -72,7 +72,7 @@ export function horizontalLayout(tree,chronology,opts={}){
   const list=(cell[l.id+'|'+col.year]||[]).sort((a,b)=>a.year-b.year||a.topic_id.localeCompare(b.topic_id));if(!list.length)return
   const R=Math.min(l.rows,list.length),C=Math.ceil(list.length/R)
   const bw=C*nodeW+(C-1)*gapX,bh=R*nodeH+(R-1)*gapY,x0=col.x+(col.w-bw)/2,y0=l.y+(l.h-bh)/2
-  list.forEach((e,j)=>{const cc=Math.floor(j/R),rr=j%R;points.push({...e,col:i,x:x0+cc*(nodeW+gapX),y:y0+rr*(nodeH+gapY),w:nodeW,h:nodeH,tone:l.tone,yearKey:col.year})})
+  list.forEach((e,j)=>{const cc=Math.floor(j/R),rr=j%R;points.push({...e,col:i,x:x0+cc*(nodeW+gapX),y:y0+rr*(nodeH+gapY),w:nodeW,h:nodeH,tone:l.tone,yearKey:col.year,laneTop:l.y,laneBottom:l.y+l.h})})
  }))
  const byId=new Map(points.map(p=>[p.id,p]))
  const edges=(chronology?.edges||[]).map(e=>({...e,from:byId.get(e.source),to:byId.get(e.target)})).filter(e=>e.from&&e.to)
@@ -80,7 +80,21 @@ export function horizontalLayout(tree,chronology,opts={}){
 }
 export function horizontalCurve(e){
  const a=e.from,b=e.to
- if(a.col===b.col){const r1=a.x+a.w,r2=b.x+b.w,mx=Math.max(r1,r2)+24,y1=a.y+a.h/2,y2=b.y+b.h/2;return `M ${r1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${r2} ${y2}`}
+ if(a.col===b.col){
+  const ax=a.x+a.w/2,bx=b.x+b.w/2
+  if(a.category_id===b.category_id&&Math.abs(a.y-b.y)<1){
+   // Route same-row links through the lane margin, not through intervening cards.
+   const y=Math.min(a.y,b.y)-12
+   return `M ${ax} ${a.y} C ${ax} ${y}, ${bx} ${y}, ${bx} ${b.y}`
+  }
+  if(Math.abs(ax-bx)<a.w*.6){
+   const down=b.y>a.y,sy=down?a.y+a.h:a.y,ty=down?b.y:b.y+b.h,my=(sy+ty)/2
+   return `M ${ax} ${sy} C ${ax} ${my}, ${bx} ${my}, ${bx} ${ty}`
+  }
+  const right=bx>ax,x1=right?a.x+a.w:a.x,x2=right?b.x:b.x+b.w
+  const y1=a.y+a.h/2,y2=b.y+b.h/2,mx=(x1+x2)/2
+  return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`
+ }
  const fwd=b.x>=a.x,x1=fwd?a.x+a.w:a.x,x2=fwd?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2,dx=Math.max(36,Math.abs(x2-x1)*.45)*(fwd?1:-1)
  return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`
 }

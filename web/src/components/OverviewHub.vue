@@ -61,12 +61,20 @@ const previousName=computed(()=>history.value.previous_release?.match(/\d{8}/)?.
 import HomeIcon from './HomeIcon.vue'
 const cur=computed(()=>props.data.currentInventory||{})
 const cc=computed(()=>cur.value.counts||{})
-const heroSub={literature:'跨来源去重论文',fund:'基金项目记录',patent:'全国公开文献 · 按公开号去重',recruit:'企业招聘信息'}
+const heroSub={literature:'跨来源去重论文',fund:'基金项目记录',patent:'全国公开文献',recruit:'企业招聘信息'}
 const kindSources=computed(()=>{const m={};[...datasets.value,...additions].forEach(d=>{(m[d.kind]||(m[d.kind]=[])).push(d)});return m})
 const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name)}<br/>${p.value} 项来源 · 点击筛选`},
  graphic:[{type:'text',left:'center',top:'38%',style:{text:String(types.value.length),fontSize:64,fontWeight:800,fill:'#9c1c38',align:'center'}},{type:'text',left:'center',top:'56%',style:{text:'类数据',fontSize:20,fontWeight:600,fill:'#5d6878',align:'center'}}],
  series:[{type:'pie',radius:['48%','74%'],center:['50%','50%'],startAngle:96,selectedMode:'single',selectedOffset:5,label:{show:true,formatter:'{b}',fontSize:15,color:'#4a5566',fontWeight:650},labelLine:{length:10,length2:8,lineStyle:{color:'#c3c9d2'}},itemStyle:{borderColor:'#fff',borderWidth:4,borderRadius:4},emphasis:{scaleSize:6},
   data:types.value.map(k=>({name:k,value:(kindSources.value[k]||[]).length||1,selected:kind.value===k,itemStyle:{color:palette[k]}}))}]}))
+// 全域来源统计：保持来源记录、统一身份和年份覆盖各自的口径。
+const paperSources=[
+ {name:'Crossref',count:129602309}, {name:'DBLP',count:8445422},
+ {name:'历史 NSFC',count:3741325}, {name:'CNKI',count:2833016}, {name:'万方',count:399500},
+]
+const fundSources=[{name:'项目记录总量',count:428409},{name:'历史项目目录',count:370008}]
+const sourceLabel=n=>n>=1e8?(n/1e8).toFixed(3)+' 亿':(n/1e4).toFixed(2)+' 万'
+const profileColors={literature:'#ae1833',fund:'#377f70',patent:'#987aab',recruit:'#c56b32'}
 /* 实体与关系：横向主干 + 编号连线 */
 /* 布局按阅读顺序：上方回环为 1，第一行 2、3，其下 4、5，底部 6 */
 const SW=800,SH=400,NR=40
@@ -92,18 +100,46 @@ const relWidth=v=>1.2+Math.log10(Math.max(10,v||10))/2
 const activeRel=ref(0)
 </script>
 <template><div class="data-overview">
-<div class="domain-switch ovd-switch" aria-label="数据总览内容"><span>数据视图</span><div role="tablist" aria-label="数据总览内容" @keydown="moveTab"><button v-for="[id,label] in tabs" :id="'overview-tab-'+id" :key="id" role="tab" :aria-selected="view===id" :aria-controls="'overview-panel-'+id" :tabindex="view===id?0:-1" :class="{active:view===id}" @click="selectView(id)">{{label}}</button></div><small>{{types.length}} 类数据 · {{datasets.length}} 项来源 · 统计更新 {{data.currentInventory.as_of}}</small></div>
+<div class="domain-switch ovd-switch" aria-label="数据总览内容"><div role="tablist" aria-label="数据总览内容" @keydown="moveTab"><button v-for="[id,label] in tabs" :id="'overview-tab-'+id" :key="id" role="tab" :aria-selected="view===id" :aria-controls="'overview-panel-'+id" :tabindex="view===id?0:-1" :class="{active:view===id}" @click="selectView(id)">{{label}}</button></div></div>
 <div v-if="view==='scale'" key="scale" class="pane-swap ovd hero-light" id="overview-panel-scale" role="tabpanel" aria-labelledby="overview-tab-scale">
-<section class="ovd-hero"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} ${330} C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div>
- <div class="ovd-hero-head"><div><p class="ovd-eyebrow">多源数据总览</p><h2>全领域、多来源的<br/>基础研究数据底座</h2><p class="ovd-hero-lead">汇聚论文、基金、专利、企业、政策等多源数据，持续规范入库与更新</p></div><div class="ovd-hero-meta"><div><strong>{{types.length}}</strong><span>类数据</span></div><div><strong>{{datasets.length}}</strong><span>项来源</span></div><div><strong class="date">{{data.currentInventory.as_of}}</strong><span>统计更新</span></div><a href="#updates" class="ovd-hero-link" @click.prevent="selectView('updates')">查看更新动态 <span aria-hidden="true">→</span></a></div></div>
- 
-</section>
-
-<section class="ovd-card ovd-composition"><header class="ovd-card-head"><div><h3>核心数据与来源构成</h3><p>四类核心数据规模，以及 {{types.length}} 类数据的主要来源，点击类别筛选来源</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
- <div class="ovd-core"><div v-for="d in headline" :key="d.id" class="ovd-core-item" :style="{'--c':d.color}"><span>{{d.name}}</span><strong :title="d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
+<section class="ovd-card ovd-composition"><header class="ovd-card-head ovd-unified-heading"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} 330 C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div><div><p class="ovd-eyebrow">多源数据总览</p><h3>核心数据与来源构成—多源全域数据底座</h3><p>涵盖 {{types.length}} 类数据、{{datasets.length}} 项来源，以论文、基金、专利、招聘为核心，汇集企业、政策、新闻、产品等资料</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
+ <div class="ovd-core"><div v-for="d in headline" :key="d.id" class="ovd-core-item" :style="{'--c':d.color}"><span>{{d.name}}</span><strong :title="d.id==='patent'?'全国公开文献':d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
  <div class="ovd-comp-grid"><div class="ovd-ring"><Chart :option="ring2" :height="480" label="多源数据类别构成" @select="p=>pick(p.name)"/></div>
  <div class="ovd-rows"><div class="ovd-rows-head"><h4>{{kind==='全部'?'主要来源与规模':kind+' · 来源与规模'}}</h4><button class="overview-text-button" :aria-pressed="balanced" @click="balanced=!balanced">{{balanced?'均衡显示':'按数量显示'}} ⇄</button></div>
   <a v-for="d in rows" :key="d.id" class="ovd-row" :href="additions.some(item=>item.id===d.id)?undefined:'#source-'+encodeURIComponent(d.id)" :title="shownTitle(d)" :style="{'--c':color(d)}"><span class="ovd-row-name"><i></i>{{d.name}}</span><span class="ovd-row-track"><b :style="{width:width(d)+'%'}"></b></span><strong>{{concise(shownCount(d))}}<small>{{unit(d)}}</small></strong></a></div></div>
+ <section class="ovd-portraits" aria-label="四类核心数据统计画像">
+  <h4 class="ovd-portraits-title">四类核心数据画像</h4>
+  <div class="ovd-portrait-grid">
+   <article class="ovd-portrait" :style="{'--c':profileColors.literature}">
+    <header><span class="ovd-portrait-icon"><HomeIcon name="paper"/></span><h4>文献<span>多源学术记录</span></h4></header>
+    <div class="ovd-portrait-stat"><strong>5</strong><span>个主要来源<small>国际目录与中文文献相互补充</small></span></div>
+    <div class="ovd-source-bars" aria-label="文献来源记录规模，条形按数量同比例展示">
+     <div v-for="item in paperSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b :title="fmt(item.count)+' 条'">{{sourceLabel(item.count)}}<small>条</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/paperSources[0].count*100)+'%'}"></i></div></div>
+    </div>
+    <footer><div class="ovd-quality"><span>万方 · 摘要完整率</span><b>99.10%</b></div><div class="ovd-quality-track"><i style="width:99.1%"></i></div><p>CNKI 2000—2025 · 万方 2025<br>Crossref 截至2026年快照；各来源交叉收录。</p></footer>
+   </article>
+   <article class="ovd-portrait" :style="{'--c':profileColors.fund}">
+    <header><span class="ovd-portrait-icon"><HomeIcon name="grant"/></span><h4>基金<span>历史目录与官网增量</span></h4></header>
+    <div class="ovd-portrait-stat"><strong>41</strong><span>年批准年份覆盖<small>项目批准年份 1986—2026</small></span></div>
+    <div class="ovd-year-span"><span>1986</span><i></i><span>2026</span></div>
+    <div class="ovd-source-bars ovd-fund-bars"><div v-for="item in fundSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>{{item.name==='项目记录总量'?'条':'项'}}</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/fundSources[0].count*100)+'%'}"></i></div></div></div>
+    <div class="ovd-analysis-axes"><span>投入规模<b>资助金额 · 项目类型</b></span><span>承担力量<b>负责人 · 依托单位</b></span></div>
+    <footer><p>历史目录覆盖1986—2019年，官网增量延伸至2026年。批准号连接项目与成果，支持长期跟踪。</p></footer>
+   </article>
+   <article class="ovd-portrait" :style="{'--c':profileColors.patent}">
+    <header><span class="ovd-portrait-icon"><HomeIcon name="patent"/></span><h4>专利<span>全国公开文献</span></h4></header>
+    <div class="ovd-portrait-stat"><strong>41</strong><span>年申请覆盖<small>全国包申请年份 1985—2025</small></span></div>
+    <div class="ovd-year-span"><span>1985</span><i></i><span>2025</span></div>
+    <div class="ovd-completeness"><div class="ovd-completeness-ring" role="img" aria-label="全国包已画像记录申请人字段完整率99.999%"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="43"/><circle class="value" cx="50" cy="50" r="43" pathLength="100" stroke-dasharray="99.999 100"/></svg><span>99.999<small>%</small></span></div><div><b>申请人字段完整率</b><span>全国包已画像记录</span></div></div>
+    <div class="ovd-analysis-axes"><span>技术内容<b>名称 · 摘要 · IPC分类</b></span><span>时间与主体<b>申请日 · 公开日 · 申请人</b></span></div>
+    <footer><p>申请号与公开号连接专利不同版本，支持技术分布、申请趋势与主体分析。</p></footer>
+   </article>
+   <article class="ovd-portrait ovd-portrait-pending" :style="{'--c':profileColors.recruit}">
+    <header><span class="ovd-portrait-icon"><HomeIcon name="org"/></span><h4>招聘<span>企业招聘信息</span></h4></header>
+    <div class="ovd-pending-content"><span aria-hidden="true">—</span><p>统计分析待补充</p></div>
+   </article>
+  </div>
+ </section>
 </section>
 
 

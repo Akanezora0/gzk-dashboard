@@ -32,7 +32,7 @@ const fmt2=v=>v.toFixed(2)
 <template><div class="zc">
  <!-- 案例头部 -->
  <header class="zc-top">
-  <div class="zc-id"><span class="zc-logo" aria-hidden="true">智</span><div><p class="zc-kicker">产业链案例 · 人工智能 · 模型研发与平台供给</p><h3>智谱：从基础研究到产业应用</h3><p class="zc-entity">北京智谱华章科技股份有限公司 · 资料整理 2026-11-06</p></div></div>
+  <div class="zc-id"><span class="zc-logo" aria-hidden="true">智</span><div><h3>智谱：从基础研究到产业应用</h3><p class="zc-entity">北京智谱华章科技股份有限公司 · 资料整理 2026-11-06</p></div></div>
   <nav class="zc-nav" aria-label="案例章节"><button v-for="([id,l],i) in sections" :key="id" :class="{on:activeSec===id}" @click="go(id)"><i>{{String(i+1).padStart(2,'0')}}</i>{{l}}</button></nav>
  </header>
 
@@ -61,10 +61,10 @@ const fmt2=v=>v.toFixed(2)
 
  <!-- 02 科研承接 -->
  <section id="zc-research" class="zc-sec">
-  <header class="zc-sh"><b>02</b><div><h4>科研承接：方法进入企业研发</h4><p>从论文致谢回溯基金，在专利说明书与官方代码中找到方法的使用位置</p></div></header>
+  <header class="zc-sh"><b>02</b><div><h4>科研承接：方法进入企业研发</h4></div></header>
   <div class="zc-seg" role="tablist" aria-label="研究方法"><button v-for="r in routes" :key="r.id" role="tab" :aria-selected="route.id===r.id" :class="{on:route.id===r.id}" @click="route=r"><b>{{r.label}}</b><small>{{r.sub}}</small></button></div>
   <div :key="route.id" class="zc-route pane-swap">
-   <div class="zc-route-head"><div><h5>{{route.title}}</h5><p>{{route.lead}}</p></div><span class="zc-tag">{{route.tag}}</span></div>
+   <div class="zc-route-head"><div><h5>{{route.title}}</h5><p v-if="route.id!=='glm'">{{route.lead}}</p></div><span class="zc-tag">{{route.tag}}</span></div>
    <div class="zc-flow">
     <button class="zc-node fund" @click="show(route.fundEv)"><small>国家自然科学基金</small><strong>{{route.fund.join(' · ')}}</strong><span>论文致谢列示</span><i>↗</i></button>
     <span class="zc-arrow"><em>资助</em></span>
@@ -78,7 +78,7 @@ const fmt2=v=>v.toFixed(2)
 
  <!-- 03 产品应用 -->
  <section id="zc-products" class="zc-sec">
-  <header class="zc-sh"><b>03</b><div><h4>产品应用：模型能力进入具体任务</h4><p>智谱提供模型与平台能力，应用软件与开发工具完成集成，办公、编程与金融用户在具体任务中使用</p></div></header>
+  <header class="zc-sh"><b>03</b><div><h4>产品应用：模型能力进入具体任务</h4></div></header>
   <div class="zc-products">
    <article v-for="p in products" :key="p.id" class="zc-prod">
     <div class="zc-prod-top"><span class="zc-icon" :class="p.icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path v-if="p.icon==='chat'" d="M5 4H19V16H10L5 20V4ZM8 8H16M8 12H13"/><path v-else-if="p.icon==='code'" d="M8 7L3 12L8 17M16 7L21 12L16 17M14 4L10 20"/><path v-else-if="p.icon==='doc'" d="M6 3H18V21H6ZM9 8H15M9 12H15M9 16H13"/><path v-else d="M3 9L12 4L21 9M4 10H20M5 20H19M7 11V17M12 11V17M17 11V17"/></svg></span><span class="zc-tag soft">{{p.tag}}</span></div>
@@ -92,7 +92,7 @@ const fmt2=v=>v.toFixed(2)
 
  <!-- 04 经营观察 -->
  <section id="zc-economics" class="zc-sec">
-  <header class="zc-sh"><b>04</b><div><h4>经营观察：付费服务与持续研发</h4><p>智谱集团 · 人民币亿元 · {{F.note}}</p></div>
+  <header class="zc-sh"><b>04</b><div><h4>经营观察：付费服务与持续研发</h4></div>
    <div class="zc-period" role="group" aria-label="观察期"><button v-for="(v,k) in finance" :key="k" :class="{on:period===k}" :aria-pressed="period===k" @click="period=k">{{v.label}}</button></div></header>
   <p class="zc-elead" v-html="F.lead"></p>
   <div class="zc-fin">

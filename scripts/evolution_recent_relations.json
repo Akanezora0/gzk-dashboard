@@ -1,0 +1,310 @@
+{
+  "version": "recent-relations-20261110-v1",
+  "description": "实线为原文明确的方法、系列、评测或互补关系；虚线为基于来源内容整理的研究方向联系。",
+  "relations": [
+    {
+      "source": "R01",
+      "target": "R02",
+      "label": "架构演进：选择性状态空间模型 → Mamba-2",
+      "evidence_source": "R02",
+      "evidence_note": "Mamba-2在选择性状态空间模型基础上研究结构化状态空间对偶，并改进核心计算。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "R04",
+      "target": "R03",
+      "label": "研究路线：线性注意力 → 混合注意力架构",
+      "evidence_source": "R03",
+      "evidence_note": "两项工作连接线性注意力研究方向；Kimi Linear融合线性与其他注意力层，不将此边解释为直接引用或代码继承。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R05",
+      "target": "R06",
+      "label": "研究路线：环境建模 → 可交互生成环境",
+      "evidence_source": "R06",
+      "evidence_note": "World Models与Genie均研究环境动态表示，Genie进一步从视频学习可交互环境。此边为研究方向演进。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R06",
+      "target": "R07",
+      "label": "世界模型系列：Genie → Genie 3",
+      "evidence_source": "R07",
+      "evidence_note": "同一Genie研究系列发展到实时、可交互世界模型。",
+      "kind": "work_series"
+    },
+    {
+      "source": "R08",
+      "target": "R09",
+      "label": "研究路线：掩码扩散 → 扩散语言模型",
+      "evidence_source": "R09",
+      "evidence_note": "两项工作均以掩码扩散组织文本生成，表示方法方向延展，不声明LLaDA直接继承MDLM。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "deepseekmoe_2024",
+      "target": "R46",
+      "label": "架构演进：细粒度专家 → DeepSeek-V2",
+      "evidence_source": "R46",
+      "evidence_note": "DeepSeek-V2采用DeepSeekMoE架构并结合MLA。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "R46",
+      "target": "R18",
+      "label": "模型系列：DeepSeek-V2 → V3",
+      "evidence_source": "R18",
+      "evidence_note": "DeepSeek-V3沿用MLA与DeepSeekMoE架构并改进训练。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "R18",
+      "target": "deepseekr1_2025",
+      "label": "以V3-Base为基础开展推理强化学习",
+      "evidence_source": "R44",
+      "evidence_note": "DeepSeek-R1系列以DeepSeek-V3-Base为基础模型。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "R43",
+      "target": "deepseekr1_2025",
+      "label": "训练方法：GRPO用于推理强化学习",
+      "evidence_source": "R44",
+      "evidence_note": "DeepSeek-R1使用DeepSeekMath提出的GRPO进行强化学习。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "deepseekr1_2025",
+      "target": "R13",
+      "label": "研究路线：推理强化学习 → 多轮智能体强化学习",
+      "evidence_source": "R13",
+      "evidence_note": "RAGEN研究多轮智能体轨迹级强化学习，将单轮推理与多轮环境交互的问题并置，不声明模型继承。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R43",
+      "target": "R15",
+      "label": "训练方法：GRPO用于软件工程强化学习",
+      "evidence_source": "R15",
+      "evidence_note": "SWE-RL采用GRPO在软件工程任务上进行强化学习。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "chronology_AI2.14",
+      "target": "R16",
+      "label": "研究路线：测试时计算 → 可调思考预算",
+      "evidence_source": "R16",
+      "evidence_note": "Qwen3提供思考/非思考模式与思考预算，展示测试时计算路线的应用延展。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "chronology_AI4.05",
+      "target": "R36",
+      "label": "框架应用：AutoGen支持多智能体协作",
+      "evidence_source": "R36",
+      "evidence_note": "Magentic-One基于AutoGen组织协调者和专业智能体。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "chronology_AI4.05",
+      "target": "R14",
+      "label": "训练接入：兼容AutoGen智能体",
+      "evidence_source": "R14",
+      "evidence_note": "Agent Lightning说明可与AutoGen等现有智能体框架集成，解耦执行与训练。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "react_2022",
+      "target": "R33",
+      "label": "研究路线：推理与行动 → 软件工程智能体",
+      "evidence_source": "R33",
+      "evidence_note": "SWE-agent以交互接口组织代码环境中的工具行动，属于推理与行动路线的任务化延展。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R33",
+      "target": "R15",
+      "label": "研究路线：代码任务执行 → 强化学习优化",
+      "evidence_source": "R15",
+      "evidence_note": "两项工作共同覆盖软件工程智能体，从交互执行拓展至学习优化；不声明直接继承。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R37",
+      "target": "R38",
+      "label": "研究路线：跨会话记忆 → 可更新的关联记忆",
+      "evidence_source": "R38",
+      "evidence_note": "MemGPT与A-MEM均面向智能体持久记忆，后者组织动态关联记忆；表示研究路线而非直接采用。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R37",
+      "target": "R39",
+      "label": "研究路线：跨会话记忆 → 记忆提取与整合",
+      "evidence_source": "R39",
+      "evidence_note": "Mem0提取、整合和检索对话记忆，与MemGPT构成持久记忆研究路线。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "chronology_AI2.11",
+      "target": "R12",
+      "label": "方法延展：提示工程 → 上下文工程",
+      "evidence_source": "R12",
+      "evidence_note": "官方文章将上下文工程描述为提示工程的自然发展，强调完整上下文状态的管理。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R39",
+      "target": "R12",
+      "label": "研究联系：持久记忆与上下文管理",
+      "evidence_source": "R12",
+      "evidence_note": "上下文工程讨论结构化笔记和长期记忆；此边表示记忆管理这一共同方法，不表示采用Mem0。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R12",
+      "target": "R21",
+      "label": "工程延展：上下文管理 → 跨会话运行框架",
+      "evidence_source": "R21",
+      "evidence_note": "长程运行框架针对上下文窗口限制，以初始化、进度文件和增量工作维持跨会话执行。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R21",
+      "target": "R23",
+      "label": "框架迭代：长程运行 → 多智能体应用开发",
+      "evidence_source": "R23",
+      "evidence_note": "文章明确承接此前长程智能体harness研究，采用规划、生成、评估三类智能体。",
+      "kind": "work_series"
+    },
+    {
+      "source": "R21",
+      "target": "R22",
+      "label": "研究路线：长程执行 → Harness工程",
+      "evidence_source": "R22",
+      "evidence_note": "两方工作均围绕运行环境、工具、约束与反馈组织长程智能体；为跨团队的工程方向联系。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R12",
+      "target": "R27",
+      "label": "研究联系：上下文组织与技能按需加载",
+      "evidence_source": "R27",
+      "evidence_note": "Agent Skills将指令与资源组织为可按需加载的技能，连接上下文管理方向。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R27",
+      "target": "evolution_v6_EV5-R27-open",
+      "label": "发布进展：Agent Skills开放标准",
+      "evidence_source": "R27",
+      "evidence_note": "同一Agent Skills技术的开放标准发布事件。",
+      "kind": "work_series"
+    },
+    {
+      "source": "evolution_v6_EV5-R27-open",
+      "target": "R28",
+      "label": "标准治理：Agent Skills进入基金会",
+      "evidence_source": "R28",
+      "evidence_note": "官方记录Agent Skills标准捐赠及治理事件。",
+      "kind": "work_series"
+    },
+    {
+      "source": "R24",
+      "target": "R25",
+      "label": "协议互补：工具连接与智能体互通",
+      "evidence_source": "R25",
+      "evidence_note": "A2A官方介绍说明其与MCP互补；此边为协议协同，不表示A2A由MCP派生。",
+      "kind": "complementary"
+    },
+    {
+      "source": "R25",
+      "target": "R26",
+      "label": "标准治理：A2A进入基金会",
+      "evidence_source": "R26",
+      "evidence_note": "Linux基金会宣布Agent2Agent协议项目。",
+      "kind": "work_series"
+    },
+    {
+      "source": "R24",
+      "target": "R34",
+      "label": "工具接入：Claude Code使用MCP",
+      "evidence_source": "R34",
+      "evidence_note": "Claude Code发布材料说明通过MCP连接外部工具与数据源。",
+      "kind": "paper_method_relation"
+    },
+    {
+      "source": "rag_2020",
+      "target": "R47",
+      "label": "方法延展：检索增强 → 图结构检索与摘要",
+      "evidence_source": "R47",
+      "evidence_note": "GraphRAG以知识图谱及社区摘要处理全局查询，扩展RAG的检索组织方式。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "chronology_AI3.06",
+      "target": "R19",
+      "label": "系统路线：推理服务 → 预填充与解码分离",
+      "evidence_source": "R19",
+      "evidence_note": "DistServe将预填充和解码分离，连接大模型推理服务优化路线；不声明继承vLLM实现。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R19",
+      "target": "R20",
+      "label": "系统路线：分离式推理 → KV缓存中心调度",
+      "evidence_source": "R20",
+      "evidence_note": "Mooncake采用以KV缓存为中心的分离式服务架构，与DistServe共同呈现推理服务优化方向。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "R29",
+      "target": "R30",
+      "label": "评测应用：OSWorld衡量计算机操作能力",
+      "evidence_source": "R30",
+      "evidence_note": "Anthropic计算机使用发布采用OSWorld报告任务表现。",
+      "kind": "evaluation_use"
+    },
+    {
+      "source": "chronology_AI7.05",
+      "target": "R40",
+      "label": "安全研究：对抗攻击 → 工具环境中的提示注入",
+      "evidence_source": "R40",
+      "evidence_note": "AgentDojo评测工具环境中的提示注入，与此前对抗研究形成问题方向联系，不表示攻击方法继承。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "chronology_AI5.14",
+      "target": "R42",
+      "label": "研究路线：视觉语言动作模型 → 通用机器人策略",
+      "evidence_source": "R42",
+      "evidence_note": "π0属于视觉语言动作模型路线，以流匹配生成动作，连接RT-2代表的视觉语言到动作研究。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "chronology_AI2.14",
+      "target": "R48",
+      "label": "研究路线：测试时计算 → 推理模型",
+      "evidence_source": "R48",
+      "evidence_note": "o1发布强调增加思考时间改善推理，与测试时计算研究方向对应。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "transformer_2017",
+      "target": "R11",
+      "label": "架构研究：残差连接 → 受约束的超连接",
+      "evidence_source": "R11",
+      "evidence_note": "mHC针对深层模型中的残差连接扩展，约束超连接以维持稳定性；表示架构研究路线。",
+      "kind": "research_direction"
+    },
+    {
+      "source": "deepseekmoe_2024",
+      "target": "R10",
+      "label": "架构互补：条件计算与条件记忆",
+      "evidence_source": "R10",
+      "evidence_note": "Engram将条件记忆与MoE条件计算并置，探索稀疏模型的互补扩展维度。",
+      "kind": "complementary"
+    }
+  ]
+}

@@ -30,7 +30,7 @@ function off(){active.value='';hide()}
 </script>
 <template>
   <section class="rs-page">
-    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3><span class="rs-sub">以基金项目为中心，向人员、机构与论文、专利两侧展开</span></header>
+    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3></header>
     <div v-if="!S.metrics" class="rs-empty">关系指标尚未生成，请在服务器运行 build_ai_chain.py 更新研究团队数据。</div>
     <template v-else>
     <div class="sb-legend"><span><i class="all"></i>全库</span><span><i class="ai"></i>人工智能领域 · 本页研究对象</span></div>
