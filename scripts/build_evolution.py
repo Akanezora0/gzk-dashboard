@@ -25,10 +25,11 @@ LABELS = {
  'R46':'DeepSeek-V2','R47':'GraphRAG','R48':'OpenAI o1','R49':'Sora','R50':'4o 图像生成',
 }
 FEATURED = {
- 'R06':('Genie','从视频学习交互环境','从视频学习环境表示、潜在动作与动态变化，生成可交互环境。','把视频生成扩展到可行动、可交互的环境建模。'),
- 'R02':('Mamba-2','状态空间与注意力联系','以结构化状态空间对偶性连接状态空间模型与注意力计算。','为高效序列模型提供统一的数学视角和计算方法。'),
- 'R09':('LLaDA','扩散式语言建模','以掩码扩散进行语言模型预训练与指令微调。','提供自回归生成之外的语言模型训练与生成路径。'),
- 'R10':('Engram','条件记忆与查表增强','通过可扩展查表机制提供条件记忆，与模型计算协同。','探索将知识访问与模型计算分工的新型架构设计。'),
+ 'R06':('世界模型','学习环境与交互规律','从视频学习环境表示、潜在动作与动态变化，生成可交互环境。','让模型能够模拟行动带来的环境变化，为交互学习提供支撑。'),
+ 'R22':('Harness','智能体运行环境与反馈','围绕工具、运行环境、任务约束和反馈回路组织智能体执行过程。','把模型能力组织为可持续运行、可检查和可迭代的任务系统。'),
+ 'R13':('智能体强化学习','从多轮交互中学习','通过智能体与环境的多轮交互和奖励反馈，训练任务决策与执行策略。','推动智能体在复杂任务中改进规划、工具使用与执行能力。'),
+ 'R36':('多智能体协作','分工、协调与共同执行','由多个智能体分担任务，通过协调机制组织规划、工具操作与结果核查。','使复杂任务可以由具有不同职责的智能体共同完成。'),
+ 'R38':('智能体长期记忆','积累经验并持续调用','对交互经验进行组织、连接和检索，使记忆随任务过程更新。','支持智能体跨任务复用经验、保持上下文并形成持续积累。'),
 }
 
 def read(p): return json.loads(Path(p).read_text())
@@ -92,7 +93,7 @@ def build(lexicon_path,tree_path,chronology_path,survey_index_path,output):
  assert all(0 < e['year'] <= 2026 for e in events)
  assert [n for n in tree['nodes'] if n['id'] not in added]==old_tree['nodes']
  assert all(next(x for x in events if x['id']==e['id'])==e for e in old_chron['events'])
- version='evolution80-20261110-v1'
+ version='evolution80-20261110-v2'
  result=dict(version=version,tree=tree,chronology=chron,survey_additions=entries,
    source_versions=dict(lexicon=lex['version'],survey=surveys['batch_id']),
    input_sha256={str(p):sha(p) for p in [lexicon_path,tree_path,chronology_path,survey_index_path]})

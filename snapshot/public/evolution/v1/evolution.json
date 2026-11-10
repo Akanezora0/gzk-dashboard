@@ -1,5 +1,5 @@
 {
-  "version": "evolution80-20261110-v1",
+  "version": "evolution80-20261110-v2",
   "tree": {
     "schema_version": "3.0",
     "keyword_version": "ai_keywords_7class_20261109_v6",
@@ -2891,7 +2891,7 @@
   },
   "chronology": {
     "schema_version": "llm-chronology-v1",
-    "created_at": "2026-11-10T03:02:11.694987+00:00",
+    "created_at": "2026-11-10T03:14:46.830051+00:00",
     "keyword_sha256": "33e1f2190fdee6f0d510373c941410694c92f29c975634c23d68c3d3c01decfe",
     "topic_count": 80,
     "work_count": 115,
@@ -5185,7 +5185,7 @@
         "evidence_note": "Mamba-2；研究SSM与结构化注意力之间的联系，不表示两者术语可互换。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": true,
+        "featured": false,
         "primary_for_topic": true
       },
       {
@@ -5398,7 +5398,7 @@
         "evidence_note": "通用复杂任务中的多智能体分工、协调与执行。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": false,
+        "featured": true,
         "primary_for_topic": true
       },
       {
@@ -5576,7 +5576,7 @@
         "evidence_note": "LLaDA，扩散语言模型的规模化预训练与指令微调。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": true,
+        "featured": false,
         "primary_for_topic": false
       },
       {
@@ -5630,7 +5630,7 @@
         "evidence_note": "对经验记忆进行组织和动态连接。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": false,
+        "featured": true,
         "primary_for_topic": true
       },
       {
@@ -5794,7 +5794,7 @@
         "evidence_note": "与环境多轮交互的智能体强化学习，与本词定义直接对应。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": false,
+        "featured": true,
         "primary_for_topic": true
       },
       {
@@ -6124,7 +6124,7 @@
         "evidence_note": "Engram，用可学习查表模块支持条件记忆；不同于智能体会话记忆。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": true,
+        "featured": false,
         "primary_for_topic": false
       },
       {
@@ -6151,7 +6151,7 @@
         "evidence_note": "运行环境、约束和反馈回路的工程实践，采用官方原文代替二手报道。",
         "verification_scope": "题录、摘要或官方发布正文的相关段落",
         "checked_at": "2026-11-09",
-        "featured": false,
+        "featured": true,
         "primary_for_topic": false
       },
       {
@@ -6446,41 +6446,50 @@
     "featured_additions": [
       {
         "id": "evolution_v6_EV5-R06",
-        "name": "Genie",
-        "note": "从视频学习交互环境"
+        "name": "世界模型",
+        "note": "学习环境与交互规律"
       },
       {
-        "id": "evolution_v6_EV5-R02",
-        "name": "Mamba-2",
-        "note": "状态空间与注意力联系"
+        "id": "evolution_v6_EV5-R22",
+        "name": "Harness",
+        "note": "智能体运行环境与反馈"
       },
       {
-        "id": "evolution_v6_EV5-R09",
-        "name": "LLaDA",
-        "note": "扩散式语言建模"
+        "id": "evolution_v6_EV5-R13",
+        "name": "智能体强化学习",
+        "note": "从多轮交互中学习"
       },
       {
-        "id": "evolution_v6_EV5-R10",
-        "name": "Engram",
-        "note": "条件记忆与查表增强"
+        "id": "evolution_v6_EV5-R36",
+        "name": "多智能体协作",
+        "note": "分工、协调与共同执行"
+      },
+      {
+        "id": "evolution_v6_EV5-R38",
+        "name": "智能体长期记忆",
+        "note": "积累经验并持续调用"
       }
     ],
     "featured_stories": {
       "evolution_v6_EV5-R06": {
         "innovation": "从视频学习环境表示、潜在动作与动态变化，生成可交互环境。",
-        "impact": "把视频生成扩展到可行动、可交互的环境建模。"
+        "impact": "让模型能够模拟行动带来的环境变化，为交互学习提供支撑。"
       },
-      "evolution_v6_EV5-R02": {
-        "innovation": "以结构化状态空间对偶性连接状态空间模型与注意力计算。",
-        "impact": "为高效序列模型提供统一的数学视角和计算方法。"
+      "evolution_v6_EV5-R22": {
+        "innovation": "围绕工具、运行环境、任务约束和反馈回路组织智能体执行过程。",
+        "impact": "把模型能力组织为可持续运行、可检查和可迭代的任务系统。"
       },
-      "evolution_v6_EV5-R09": {
-        "innovation": "以掩码扩散进行语言模型预训练与指令微调。",
-        "impact": "提供自回归生成之外的语言模型训练与生成路径。"
+      "evolution_v6_EV5-R13": {
+        "innovation": "通过智能体与环境的多轮交互和奖励反馈，训练任务决策与执行策略。",
+        "impact": "推动智能体在复杂任务中改进规划、工具使用与执行能力。"
       },
-      "evolution_v6_EV5-R10": {
-        "innovation": "通过可扩展查表机制提供条件记忆，与模型计算协同。",
-        "impact": "探索将知识访问与模型计算分工的新型架构设计。"
+      "evolution_v6_EV5-R36": {
+        "innovation": "由多个智能体分担任务，通过协调机制组织规划、工具操作与结果核查。",
+        "impact": "使复杂任务可以由具有不同职责的智能体共同完成。"
+      },
+      "evolution_v6_EV5-R38": {
+        "innovation": "对交互经验进行组织、连接和检索，使记忆随任务过程更新。",
+        "impact": "支持智能体跨任务复用经验、保持上下文并形成持续积累。"
       }
     }
   },
