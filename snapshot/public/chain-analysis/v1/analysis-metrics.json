@@ -1,0 +1,1163 @@
+{
+  "version": "innovation_dashboard_20261110_v1",
+  "as_of": "2026-11-10",
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "cohort": {
+    "label": "2017—2025年立项项目 · 成果观察至2025年",
+    "project_count": 8371,
+    "approved_funding_wan": 398819.7
+  },
+  "all": {
+    "id": "all",
+    "name": "全部方向",
+    "series": {
+      "active_funding_wan": [
+        78.0,
+        34368.5,
+        92178.2,
+        169661.6,
+        249664.6,
+        309860.3,
+        291061.0,
+        212157.1,
+        112943.1
+      ],
+      "active_projects": [
+        2,
+        756,
+        1834,
+        3230,
+        4625,
+        5729,
+        5764,
+        4235,
+        2309
+      ],
+      "funded_papers": [
+        0,
+        1482,
+        3569,
+        5739,
+        8671,
+        13668,
+        14154,
+        12463,
+        8308
+      ],
+      "funded_patents": [
+        0,
+        529,
+        1379,
+        2377,
+        3722,
+        3974,
+        3850,
+        2760,
+        1221
+      ],
+      "all_papers": [
+        67516,
+        87700,
+        117310,
+        149633,
+        201606,
+        281535,
+        348469,
+        462514,
+        589750
+      ],
+      "all_patents": [
+        367478,
+        415945,
+        487397,
+        569105,
+        605051,
+        606633,
+        706043,
+        708796,
+        577334
+      ],
+      "paper_citations": [
+        0,
+        423,
+        2734,
+        7350,
+        16736,
+        33850,
+        54263,
+        83011,
+        112233
+      ],
+      "mean_citations_3y": [
+        null,
+        4.789,
+        4.579,
+        4.163,
+        4.546,
+        4.71,
+        null,
+        null,
+        null
+      ],
+      "enterprise_patents": [
+        0,
+        16,
+        96,
+        221,
+        289,
+        342,
+        329,
+        199,
+        67
+      ]
+    },
+    "totals": {
+      "approved_funding_wan": 398819.7,
+      "project_count": 8371,
+      "funded_papers": 68054,
+      "funded_patents": 19812,
+      "all_papers": 2306033,
+      "all_patents": 5043782,
+      "paper_citations": 310600,
+      "cited_papers": 25514,
+      "mean_citations_3y": 4.562,
+      "enterprise_patents": 1559,
+      "patent_cited_papers": 71,
+      "citing_patent_applications": 82,
+      "papers_cited_after_3y": 5834,
+      "papers_eligible_after_3y": 19461
+    },
+    "coverage": {
+      "citation_eligible_papers": 33129,
+      "projects_with_amount": 8338,
+      "projects_with_execution_years": 8319
+    },
+    "notes": [
+      "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+      "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+    ]
+  },
+  "categories": [
+    {
+      "id": "AI1",
+      "name": "基础模型与架构",
+      "series": {
+        "active_funding_wan": [
+          0.0,
+          3393.392,
+          10003.558,
+          19346.775,
+          27865.567,
+          34628.669,
+          32962.552,
+          23466.252,
+          12633.902
+        ],
+        "active_projects": [
+          0,
+          180,
+          476,
+          854,
+          1224,
+          1506,
+          1537,
+          1105,
+          615
+        ],
+        "funded_papers": [
+          0,
+          154,
+          393,
+          700,
+          1109,
+          2063,
+          2510,
+          2658,
+          2170
+        ],
+        "funded_patents": [
+          0,
+          120,
+          318,
+          529,
+          794,
+          867,
+          883,
+          675,
+          288
+        ],
+        "all_papers": [
+          8000,
+          12100,
+          17551,
+          23301,
+          32848,
+          47077,
+          64546,
+          97823,
+          125104
+        ],
+        "all_patents": [
+          2715,
+          5485,
+          8790,
+          10584,
+          13635,
+          16200,
+          24628,
+          40337,
+          54135
+        ],
+        "paper_citations": [
+          0,
+          85,
+          789,
+          2221,
+          4591,
+          9177,
+          15746,
+          25942,
+          36693
+        ],
+        "mean_citations_3y": [
+          null,
+          12.662,
+          14.336,
+          7.813,
+          9.431,
+          9.661,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          3,
+          15,
+          38,
+          41,
+          52,
+          71,
+          40,
+          14
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 44432.427,
+        "project_count": 2188,
+        "funded_papers": 11757,
+        "funded_patents": 4474,
+        "all_papers": 428350,
+        "all_patents": 176509,
+        "paper_citations": 95244,
+        "cited_papers": 7100,
+        "mean_citations_3y": 9.831,
+        "enterprise_patents": 274,
+        "patent_cited_papers": 32,
+        "citing_patent_applications": 35,
+        "papers_cited_after_3y": 1329,
+        "papers_eligible_after_3y": 2356
+      },
+      "coverage": {
+        "citation_eligible_papers": 4419,
+        "projects_with_amount": 2186,
+        "projects_with_execution_years": 2185
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI2",
+      "name": "模型训练、适配与推理",
+      "series": {
+        "active_funding_wan": [
+          39.0,
+          17155.308,
+          47377.642,
+          86515.175,
+          129821.867,
+          162446.119,
+          151529.502,
+          111211.136,
+          58107.302
+        ],
+        "active_projects": [
+          2,
+          578,
+          1442,
+          2548,
+          3694,
+          4636,
+          4629,
+          3388,
+          1802
+        ],
+        "funded_papers": [
+          0,
+          227,
+          686,
+          1302,
+          2220,
+          3728,
+          4352,
+          3655,
+          2797
+        ],
+        "funded_patents": [
+          0,
+          148,
+          388,
+          732,
+          1198,
+          1296,
+          1253,
+          934,
+          400
+        ],
+        "all_papers": [
+          13708,
+          25385,
+          43254,
+          63857,
+          91720,
+          130002,
+          161171,
+          207282,
+          259239
+        ],
+        "all_patents": [
+          6359,
+          11902,
+          18463,
+          24415,
+          31822,
+          36624,
+          49295,
+          68696,
+          84205
+        ],
+        "paper_citations": [
+          0,
+          128,
+          963,
+          3243,
+          8027,
+          15966,
+          24748,
+          36861,
+          49476
+        ],
+        "mean_citations_3y": [
+          null,
+          12.626,
+          12.136,
+          8.218,
+          8.861,
+          7.514,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          5,
+          18,
+          77,
+          81,
+          111,
+          99,
+          54,
+          26
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 206693.127,
+        "project_count": 6639,
+        "funded_papers": 18967,
+        "funded_patents": 6349,
+        "all_papers": 995618,
+        "all_patents": 331781,
+        "paper_citations": 139412,
+        "cited_papers": 10405,
+        "mean_citations_3y": 8.523,
+        "enterprise_patents": 471,
+        "patent_cited_papers": 36,
+        "citing_patent_applications": 48,
+        "papers_cited_after_3y": 2294,
+        "papers_eligible_after_3y": 4435
+      },
+      "coverage": {
+        "citation_eligible_papers": 8163,
+        "projects_with_amount": 6626,
+        "projects_with_execution_years": 6620
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI3",
+      "name": "AI算力与运行优化",
+      "series": {
+        "active_funding_wan": [
+          0.0,
+          494.933,
+          2216.917,
+          3966.217,
+          5540.383,
+          6940.852,
+          6450.019,
+          4178.969,
+          2201.469
+        ],
+        "active_projects": [
+          0,
+          29,
+          74,
+          138,
+          209,
+          271,
+          274,
+          196,
+          109
+        ],
+        "funded_papers": [
+          0,
+          2,
+          11,
+          35,
+          64,
+          106,
+          126,
+          103,
+          101
+        ],
+        "funded_patents": [
+          0,
+          3,
+          13,
+          35,
+          81,
+          90,
+          112,
+          70,
+          42
+        ],
+        "all_papers": [
+          221,
+          372,
+          751,
+          1246,
+          1910,
+          2869,
+          3384,
+          4670,
+          7791
+        ],
+        "all_patents": [
+          329,
+          651,
+          1277,
+          1969,
+          2618,
+          3043,
+          3924,
+          5776,
+          10756
+        ],
+        "paper_citations": [
+          0,
+          4,
+          25,
+          69,
+          180,
+          430,
+          889,
+          1559,
+          1998
+        ],
+        "mean_citations_3y": [
+          null,
+          29.0,
+          7.273,
+          8.743,
+          9.141,
+          17.292,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          0,
+          0,
+          2,
+          5,
+          7,
+          11,
+          6,
+          4
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 8232.519,
+        "project_count": 373,
+        "funded_papers": 548,
+        "funded_patents": 446,
+        "all_papers": 23214,
+        "all_patents": 30343,
+        "paper_citations": 5154,
+        "cited_papers": 369,
+        "mean_citations_3y": 13.128,
+        "enterprise_patents": 35,
+        "patent_cited_papers": 3,
+        "citing_patent_applications": 6,
+        "papers_cited_after_3y": 68,
+        "papers_eligible_after_3y": 112
+      },
+      "coverage": {
+        "citation_eligible_papers": 218,
+        "projects_with_amount": 373,
+        "projects_with_execution_years": 373
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI4",
+      "name": "AI云与平台服务",
+      "series": {
+        "active_funding_wan": [
+          0.0,
+          391.35,
+          889.417,
+          1687.367,
+          2427.2,
+          2939.086,
+          2586.002,
+          1684.252,
+          1143.052
+        ],
+        "active_projects": [
+          0,
+          15,
+          32,
+          59,
+          88,
+          109,
+          111,
+          73,
+          42
+        ],
+        "funded_papers": [
+          0,
+          1,
+          2,
+          3,
+          14,
+          16,
+          26,
+          21,
+          9
+        ],
+        "funded_patents": [
+          0,
+          5,
+          6,
+          15,
+          27,
+          38,
+          40,
+          24,
+          7
+        ],
+        "all_papers": [
+          118,
+          255,
+          484,
+          770,
+          1229,
+          2011,
+          2516,
+          3563,
+          6822
+        ],
+        "all_patents": [
+          2046,
+          2365,
+          2499,
+          3698,
+          3888,
+          3973,
+          4839,
+          6294,
+          6751
+        ],
+        "paper_citations": [
+          0,
+          1,
+          6,
+          10,
+          40,
+          99,
+          158,
+          237,
+          294
+        ],
+        "mean_citations_3y": [
+          null,
+          18.0,
+          24.5,
+          11.333,
+          9.214,
+          13.875,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          0,
+          0,
+          1,
+          2,
+          6,
+          6,
+          2,
+          0
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 3488.419,
+        "project_count": 151,
+        "funded_papers": 92,
+        "funded_patents": 162,
+        "all_papers": 17768,
+        "all_patents": 36353,
+        "paper_citations": 845,
+        "cited_papers": 66,
+        "mean_citations_3y": 12.556,
+        "enterprise_patents": 17,
+        "patent_cited_papers": 0,
+        "citing_patent_applications": 0,
+        "papers_cited_after_3y": 13,
+        "papers_eligible_after_3y": 20
+      },
+      "coverage": {
+        "citation_eligible_papers": 36,
+        "projects_with_amount": 151,
+        "projects_with_execution_years": 151
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI5",
+      "name": "知识增强与AI应用",
+      "series": {
+        "active_funding_wan": [
+          39.0,
+          7425.292,
+          18569.108,
+          30475.225,
+          41250.833,
+          45892.252,
+          40043.886,
+          28322.769,
+          14080.269
+        ],
+        "active_projects": [
+          2,
+          330,
+          757,
+          1244,
+          1674,
+          1905,
+          1804,
+          1306,
+          670
+        ],
+        "funded_papers": [
+          0,
+          159,
+          421,
+          810,
+          1191,
+          1812,
+          2005,
+          1834,
+          1229
+        ],
+        "funded_patents": [
+          0,
+          164,
+          416,
+          705,
+          1070,
+          1244,
+          1181,
+          876,
+          401
+        ],
+        "all_papers": [
+          8785,
+          11402,
+          16075,
+          20766,
+          28829,
+          41548,
+          50958,
+          65354,
+          76756
+        ],
+        "all_patents": [
+          19644,
+          26646,
+          35915,
+          44267,
+          51619,
+          56081,
+          69638,
+          83237,
+          92824
+        ],
+        "paper_citations": [
+          0,
+          53,
+          500,
+          1687,
+          3968,
+          8225,
+          13739,
+          21079,
+          28346
+        ],
+        "mean_citations_3y": [
+          null,
+          7.516,
+          10.922,
+          7.327,
+          7.161,
+          9.488,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          5,
+          16,
+          55,
+          65,
+          98,
+          94,
+          53,
+          17
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 61444.227,
+        "project_count": 2830,
+        "funded_papers": 9461,
+        "funded_patents": 6057,
+        "all_papers": 320473,
+        "all_patents": 479871,
+        "paper_citations": 77597,
+        "cited_papers": 4802,
+        "mean_citations_3y": 8.525,
+        "enterprise_patents": 403,
+        "patent_cited_papers": 27,
+        "citing_patent_applications": 34,
+        "papers_cited_after_3y": 1061,
+        "papers_eligible_after_3y": 2581
+      },
+      "coverage": {
+        "citation_eligible_papers": 4393,
+        "projects_with_amount": 2822,
+        "projects_with_execution_years": 2823
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI6",
+      "name": "数据与知识服务",
+      "series": {
+        "active_funding_wan": [
+          0.0,
+          1910.725,
+          5446.108,
+          11265.508,
+          17253.95,
+          22501.236,
+          21232.536,
+          15101.469,
+          8320.636
+        ],
+        "active_projects": [
+          0,
+          88,
+          216,
+          420,
+          669,
+          909,
+          934,
+          711,
+          380
+        ],
+        "funded_papers": [
+          0,
+          13,
+          32,
+          85,
+          154,
+          338,
+          446,
+          476,
+          371
+        ],
+        "funded_patents": [
+          0,
+          59,
+          116,
+          288,
+          490,
+          550,
+          565,
+          394,
+          155
+        ],
+        "all_papers": [
+          636,
+          1161,
+          2341,
+          4356,
+          7393,
+          12618,
+          17197,
+          22841,
+          30251
+        ],
+        "all_patents": [
+          2016,
+          3885,
+          6736,
+          9826,
+          13235,
+          15464,
+          21347,
+          29736,
+          39885
+        ],
+        "paper_citations": [
+          0,
+          7,
+          41,
+          171,
+          417,
+          1354,
+          3174,
+          5966,
+          9130
+        ],
+        "mean_citations_3y": [
+          null,
+          8.846,
+          10.062,
+          11.259,
+          12.175,
+          20.299,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          2,
+          10,
+          19,
+          31,
+          38,
+          48,
+          27,
+          9
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 27971.711,
+        "project_count": 1246,
+        "funded_papers": 1915,
+        "funded_patents": 2617,
+        "all_papers": 98794,
+        "all_patents": 142130,
+        "paper_citations": 20260,
+        "cited_papers": 1397,
+        "mean_citations_3y": 16.286,
+        "enterprise_patents": 184,
+        "patent_cited_papers": 16,
+        "citing_patent_applications": 22,
+        "papers_cited_after_3y": 203,
+        "papers_eligible_after_3y": 284
+      },
+      "coverage": {
+        "citation_eligible_papers": 622,
+        "projects_with_amount": 1244,
+        "projects_with_execution_years": 1243
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    },
+    {
+      "id": "AI7",
+      "name": "模型评测与安全",
+      "series": {
+        "active_funding_wan": [
+          0.0,
+          616.5,
+          1398.15,
+          4325.033,
+          7955.5,
+          12597.286,
+          13667.502,
+          10685.252,
+          6048.469
+        ],
+        "active_projects": [
+          0,
+          30,
+          74,
+          191,
+          348,
+          561,
+          639,
+          502,
+          281
+        ],
+        "funded_papers": [
+          0,
+          12,
+          45,
+          79,
+          153,
+          276,
+          401,
+          414,
+          346
+        ],
+        "funded_patents": [
+          0,
+          2,
+          5,
+          30,
+          86,
+          108,
+          131,
+          89,
+          26
+        ],
+        "all_papers": [
+          534,
+          1039,
+          1912,
+          3479,
+          5764,
+          8520,
+          11883,
+          19580,
+          37641
+        ],
+        "all_patents": [
+          99,
+          188,
+          444,
+          802,
+          1201,
+          1580,
+          2452,
+          3684,
+          7517
+        ],
+        "paper_citations": [
+          0,
+          3,
+          91,
+          335,
+          785,
+          1580,
+          2459,
+          4115,
+          6571
+        ],
+        "mean_citations_3y": [
+          null,
+          14.667,
+          22.822,
+          13.253,
+          13.477,
+          10.167,
+          null,
+          null,
+          null
+        ],
+        "enterprise_patents": [
+          0,
+          0,
+          0,
+          0,
+          7,
+          8,
+          13,
+          6,
+          0
+        ]
+      },
+      "totals": {
+        "approved_funding_wan": 15551.969,
+        "project_count": 766,
+        "funded_papers": 1726,
+        "funded_patents": 477,
+        "all_papers": 90352,
+        "all_patents": 17967,
+        "paper_citations": 15939,
+        "cited_papers": 1180,
+        "mean_citations_3y": 12.598,
+        "enterprise_patents": 34,
+        "patent_cited_papers": 12,
+        "citing_patent_applications": 12,
+        "papers_cited_after_3y": 205,
+        "papers_eligible_after_3y": 289
+      },
+      "coverage": {
+        "citation_eligible_papers": 565,
+        "projects_with_amount": 764,
+        "projects_with_execution_years": 764
+      },
+      "notes": [
+        "项目批准经费跨方向等额分摊；成果在方向内去重，可跨方向出现。",
+        "篇均被引：2017—2022年论文发表后1—3年在本地引文库的引用次数，包含零引证论文。"
+      ]
+    }
+  ],
+  "representative_progress": [],
+  "unavailable": {
+    "journal_if": "尚无逐期刊逐年授权影响因子表",
+    "product_links": "尚无可核验的专利—产品关联",
+    "patent_transfers": "尚无结构化转让许可事件"
+  },
+  "methodology": {
+    "projects": 8371,
+    "all_ai_projects": 21246,
+    "unclassified_funding_wan": 31005.3,
+    "unclassified_projects": 643,
+    "unclassified_papers": 34062,
+    "unclassified_patents": 7293,
+    "linked_papers_missing_year": 79675,
+    "supplemental_paper_links": 230,
+    "supplemental_patent_links": 219,
+    "annual_projects": [
+      [
+        2017,
+        764,
+        760
+      ],
+      [
+        2018,
+        1123,
+        1120
+      ],
+      [
+        2019,
+        1451,
+        1451
+      ],
+      [
+        2020,
+        1713,
+        1713
+      ],
+      [
+        2021,
+        1981,
+        1981
+      ],
+      [
+        2022,
+        1243,
+        1243
+      ],
+      [
+        2023,
+        61,
+        51
+      ],
+      [
+        2024,
+        25,
+        16
+      ],
+      [
+        2025,
+        10,
+        3
+      ]
+    ],
+    "paper_link_total": 155805,
+    "project_patent_link_total": 21926,
+    "method": "own title + keywords + first 4000 abstract characters; patent first-claim first 2000; guarded broad rules, not inheritance",
+    "citation_scope": "local canonical citation edges; citing years 2017–2025; publication cohort 2017–2025; 3-year averages only publication2017–2022",
+    "funding_scope": "approved 2017–2025 known-year AI project cohort; active stock uses actual execution years, never completion date as approval year"
+  },
+  "source_versions": {
+    "f": "data/warehouse/shared/nsfc/releases/nsfc_mac_20261105_v1/funds.duckdb",
+    "r": "data/warehouse/shared/innovation/releases/innovation_relations_20261102_v1/relations.duckdb",
+    "p": "data/warehouse/shared/papers/releases/paper_unified_20261030_v1/papers.duckdb",
+    "t": "data/warehouse/shared/patent/releases/patent_unified_20261030_v1/patents.duckdb"
+  },
+  "input_fingerprint": {
+    "contract": "innovation_metrics_v2",
+    "sources": {
+      "f": {
+        "path": "data/warehouse/shared/nsfc/releases/nsfc_mac_20261105_v1/funds.duckdb",
+        "bytes": 546320384,
+        "mtime_ns": 1793871796125382435
+      },
+      "r": {
+        "path": "data/warehouse/shared/innovation/releases/innovation_relations_20261102_v1/relations.duckdb",
+        "bytes": 47772086272,
+        "mtime_ns": 1793670134604566601
+      },
+      "p": {
+        "path": "data/warehouse/shared/papers/releases/paper_unified_20261030_v1/papers.duckdb",
+        "bytes": 147702165504,
+        "mtime_ns": 1793556096795965311
+      },
+      "t": {
+        "path": "data/warehouse/shared/patent/releases/patent_unified_20261030_v1/patents.duckdb",
+        "bytes": 59866624000,
+        "mtime_ns": 1793331327449513025
+      }
+    },
+    "rules_sha256": "e399268ea804bdbe83644ccc7af2bc18af22729525b0e967f124e2e26837c152"
+  }
+}

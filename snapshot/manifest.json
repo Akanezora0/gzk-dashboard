@@ -45,8 +45,19 @@
       "file": "snapshot/reference_serving/authoritative_metrics.json",
       "bytes": 11679,
       "sha256": "58aa2e4685162d9754add73d12244590252a5e9e0fb1ef6933399f29f7613e90"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/evidence-graphs.json",
+      "bytes": 4892750,
+      "sha256": "a988586300b20cb57b55b4adb08cb2e88d743e7bfa21798dfd9ab080f6ce62b3"
+    },
+    {
+      "file": "snapshot/public/chain-analysis/v1/analysis-metrics.json",
+      "bytes": 24266,
+      "sha256": "e3b25894de4d41e238eea8e0a60e260cc16c75d34e2d325e0cc330426486f09b"
     }
   ],
   "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。",
-  "research_evidence_version": "curated-cases-20261109"
+  "research_evidence_version": "curated-cases-20261109",
+  "innovation_analysis_version": "chain-fill-20261110-v1"
 }

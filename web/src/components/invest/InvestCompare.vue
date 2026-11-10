@@ -1,43 +1,60 @@
 <script setup>
-/* 投入产出对照：每个技术大类一张卡片（中线以上投入、以下产出），每行两张；点击展开该方向的完整指标 */
+/* 七类卡片与展开表保留原布局；总额和均值只读取明确口径的统计字段。 */
 import {computed,ref} from 'vue'
 import {ORDER,PALETTE,fmt} from '../../helpers/investData'
 const props=defineProps({curves:Object})
-const Y=computed(()=>props.curves.years),L=computed(()=>props.curves.layers)
+const M=computed(()=>props.curves.metrics)
+const Y=computed(()=>M.value.years)
+const L=computed(()=>Object.fromEntries(M.value.categories.map(c=>[c.id,{...c,funding:c.series.active_funding_wan,papers:c.series.funded_papers,patents:c.series.funded_patents}])))
 const sel=ref('AI2')
-const sum=a=>a.reduce((x,y)=>x+y,0)
-const stat=id=>{const l=L.value[id],f=sum(l.funding),p=sum(l.papers),t=sum(l.patents);return {f,p,t,pp:p/(f/1000),tp:t/(f/1000)}}
-function smooth(p){let d=`M${p[0][0]},${p[0][1]}`;for(let i=1;i<p.length;i++){const [a,b]=p[i-1],[c,e]=p[i],m=(a+c)/2;d+=` C${m},${b} ${m},${e} ${c},${e}`}return d}
+const known=v=>typeof v==='number'&&Number.isFinite(v)
+const show=v=>known(v)?fmt(v):'—'
+const decimal=v=>known(v)?v.toFixed(2):'—'
+const peak=a=>Math.max(0,...a.filter(known))
+const stat=id=>{const t=L.value[id].totals;return {f:t.approved_funding_wan,p:t.funded_papers,t:t.funded_patents,projects:t.project_count}}
+function smooth(p){if(!p.length)return '';let d=`M${p[0][0]},${p[0][1]}`;for(let i=1;i<p.length;i++){const [a,b]=p[i-1],[c,e]=p[i],m=(a+c)/2;d+=` C${m},${b} ${m},${e} ${c},${e}`}return d}
 function chart(id,w,h,big){
  const l=L.value[id],x0=big?46:4,x1=w-(big?16:4),mid=h*(big?.52:.5),up=mid-(big?40:6),dn=h-mid-(big?24:6)
- const X=i=>x0+i*(x1-x0)/(Y.value.length-1)
- const mf=Math.max(...l.funding)||1,mp=Math.max(...l.papers)||1,mt=Math.max(...l.patents)||1
- const f=l.funding.map((v,i)=>[X(i),mid-4-v/mf*up]),p=l.papers.map((v,i)=>[X(i),mid+4+v/mp*dn]),t=l.patents.map((v,i)=>[X(i),mid+4+v/mt*dn*.8])
- const pk=l.funding.indexOf(mf),pp=l.papers.indexOf(mp)
+ const X=i=>x0+i*(x1-x0)/Math.max(1,Y.value.length-1)
+ const mf=peak(l.funding),mp=peak(l.papers),mt=peak(l.patents)
+ const f=l.funding.map((v,i)=>[X(i),mid-4-(v||0)/(mf||1)*up]),p=l.papers.map((v,i)=>[X(i),mid+4+(v||0)/(mp||1)*dn]),t=l.patents.map((v,i)=>[X(i),mid+4+(v||0)/(mt||1)*dn*.8])
+ const pk=Math.max(0,l.funding.indexOf(mf)),pp=Math.max(0,l.papers.indexOf(mp))
+ const anchor=i=>X(i)<w*.25?'start':X(i)>w*.75?'end':'middle'
  return {w,h,mid,x0,x1,up,dn,fund:`${smooth(f)} L${x1},${mid-4} L${x0},${mid-4}Z`,pap:`${smooth(p)} L${x1},${mid+4} L${x0},${mid+4}Z`,pat:smooth(t),
-  ticks:Y.value.map((y,i)=>({x:X(i),y})),pk:{x:X(pk),y:f[pk][1],v:mf,yr:Y.value[pk]},pp:{x:X(pp),y:p[pp][1],v:mp,yr:Y.value[pp]}}
+  ticks:Y.value.map((y,i)=>({x:X(i),y})),pk:{x:X(pk),y:f[pk][1],v:mf,yr:Y.value[pk],anchor:anchor(pk)},pp:{x:X(pp),y:p[pp][1],v:mp,yr:Y.value[pp],anchor:anchor(pp)}}
 }
 const rows=computed(()=>{const out=[];for(let i=0;i<ORDER.length;i+=2)out.push(ORDER.slice(i,i+2));return out})
-const selStat=computed(()=>stat(sel.value))
-const big=computed(()=>chart(sel.value,620,330,true))
-const bars=a=>{const m=Math.max(...a)||1;return a.map(v=>Math.max(2,v/m*24))}
-const metricRows=computed(()=>{const l=L.value[sel.value],c=PALETTE[sel.value],s=selStat.value;return [
- {g:'投入',gc:c,items:[{n:'在研经费',u:'万元',bars:bars(l.funding),c,v:(s.f/1e4).toFixed(2),vu:'亿元'},{n:'在研项目数',u:'项'}]},
- {g:'论文',gc:'#3f6f9e',items:[{n:'基金支持论文',u:'篇',bars:bars(l.papers),c:'#3f6f9e',v:fmt(s.p),vu:'篇'},{n:'篇均被引',u:'次'},{n:'期刊影响因子',u:'中位数'},{n:'全库同方向论文',u:'篇'}]},
- {g:'专利',gc:'#b2772a',items:[{n:'基金支持专利',u:'件',bars:bars(l.patents),c:'#b2772a',v:fmt(s.t),vu:'件'},{n:'企业认领',u:'件'},{n:'关联产品',u:'件'}]}]})
-const lead=computed(()=>{
- const tot=k=>Y.value.map((_,i)=>ORDER.reduce((a,id)=>a+L.value[id][k][i],0))
- const f=tot('funding'),p=tot('papers'),fy=Y.value[f.indexOf(Math.max(...f))],py=Y.value[p.indexOf(Math.max(...p))]
- const eff=ORDER.map(id=>({id,v:stat(id).pp})).sort((a,b)=>b.v-a.v).slice(0,2)
- return {fy,lag:py-fy,eff}
+const big=computed(()=>sel.value?chart(sel.value,620,330,true):null)
+const bars=a=>{const m=peak(a)||1;return a.map(v=>({v,missing:!known(v),height:known(v)?(v>0?Math.max(2,v/m*24):0):0}))}
+const metricRows=computed(()=>{
+ if(!sel.value)return []
+ const l=L.value[sel.value],c=PALETTE[sel.value],s=l.series,t=l.totals
+ const item=(n,u,key,color,total,vu,dec=false)=>({n,u,bars:bars(s[key]),c:color,v:dec?decimal(total):show(total),vu})
+ return [
+  {g:'投入',gc:c,items:[
+   {n:'在研经费',u:'万元',bars:bars(s.active_funding_wan),c,v:decimal(peak(s.active_funding_wan)/1e4),vu:'亿元 · 年度峰值'},
+   item('在研项目数','项','active_projects',c,peak(s.active_projects),'项 · 年度峰值')]},
+  {g:'论文',gc:'#3f6f9e',items:[
+   item('基金支持论文','篇','funded_papers','#3f6f9e',t.funded_papers,'篇'),
+   item('新增引证记录','次 · 按引证年','paper_citations','#3f6f9e',t.paper_citations,'次'),
+   item('三年篇均被引','次 · 按发表年','mean_citations_3y','#3f6f9e',t.mean_citations_3y,'次 · 成熟队列',true),
+   {n:'期刊影响因子',u:'中位数',pending:'待补充'},
+   item('全库同方向论文','篇','all_papers','#8299b0',t.all_papers,'篇')]},
+  {g:'专利',gc:'#b2772a',items:[
+   item('基金支持专利','件','funded_patents','#b2772a',t.funded_patents,'件'),
+   item('企业参与专利','件','enterprise_patents','#b2772a',t.enterprise_patents,'件'),
+   item('全库同方向专利','件','all_patents','#c8a575',t.all_patents,'件'),
+   {n:'关联产品',u:'件',pending:'待补充'}]}
+ ]
 })
+const citationCoverage=computed(()=>L.value[sel.value]?.coverage?.citation_eligible_papers)
 function toggle(id){sel.value=sel.value===id?'':id}
 </script>
 
 <template><div class="ic">
- <header class="ic-head"><h3>七大技术方向的投入与产出</h3><span>2017—2022 年立项项目 · 按执行与发表、申请年份</span></header>
- <p class="ic-lead">在研经费在 <em>{{lead.fy}} 年</em>前后达到峰值，关联论文峰值滞后约 <em>{{lead.lag}} 年</em>；<em>{{L[lead.eff[0].id].name}}</em>、<em>{{L[lead.eff[1].id].name}}</em>每千万元经费的论文产出最高，分别为 {{lead.eff[0].v.toFixed(1)}} 篇和 {{lead.eff[1].v.toFixed(1)}} 篇。</p>
- <div class="ic-legend"><span><i class="a"></i>在研经费（中线以上）</span><span><i class="b"></i>基金支持论文（中线以下）</span><span><i class="c"></i>基金支持专利</span><span><i class="d"></i>在研项目数<em>待补</em></span><span><i class="e"></i>全库同方向论文 / 专利<em>待补</em></span><span class="ic-hint">点击卡片展开该方向的完整指标</span></div>
+ <header class="ic-head"><h3>七大技术方向的投入与产出</h3><span>{{M.cohort.label}} · 按执行与发表、申请年份</span></header>
+ <p class="ic-lead">项目批准经费按项目计入一次；在研经费与论文、专利的年度变化，共同展示各方向的支持规模与成果积累。</p>
+ <div class="ic-legend"><span><i class="a"></i>在研经费（中线以上）</span><span><i class="b"></i>基金支持论文（中线以下）</span><span><i class="c"></i>基金支持专利</span><span class="ic-hint">点击卡片查看项目数、同方向全库规模与引用指标</span></div>
  <div class="ic-grid">
   <template v-for="(r,ri) in rows" :key="ri">
    <button v-for="id in r" :key="id" type="button" class="ic-card" :class="{on:sel===id}" :aria-expanded="sel===id" :style="{'--c':PALETTE[id]}" @click="toggle(id)">
@@ -46,10 +63,10 @@ function toggle(id){sel.value=sel.value===id?'':id}
       <path :d="g.fund" :fill="PALETTE[id]" opacity=".85"/><path :d="g.pap" :fill="PALETTE[id]" opacity=".28"/><path :d="g.pat" fill="none" stroke="#b2772a" stroke-width="1.8"/>
       <line :x1="g.x0" :x2="g.x1" :y1="g.mid" :y2="g.mid" stroke="#cfc6c2"/>
       <text v-for="(t,k) in g.ticks" v-show="k%2===0" :key="t.y" :x="t.x" :y="g.mid+4" font-size="10" font-weight="700" fill="#7a7378" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#fff" stroke-width="4">{{String(t.y).slice(2)}}</text></template></svg></div>
-    <div class="ic-kv"><div><span>在研经费</span><strong>{{(stat(id).f/1e4).toFixed(1)}}<small>亿元</small></strong></div><div><span>基金支持论文</span><strong>{{fmt(stat(id).p)}}<small>篇</small></strong></div><div><span>基金支持专利</span><strong>{{fmt(stat(id).t)}}<small>件</small></strong></div>
-     <div class="eff"><span>每千万元经费产出</span><strong>{{stat(id).pp.toFixed(1)}}<small>篇论文</small>　{{stat(id).tp.toFixed(1)}}<small>件专利</small></strong></div></div>
+    <div class="ic-kv"><div><span>项目批准经费</span><strong>{{(stat(id).f/1e4).toFixed(1)}}<small>亿元</small></strong></div><div><span>基金支持论文</span><strong>{{show(stat(id).p)}}<small>篇</small></strong></div><div><span>基金支持专利</span><strong>{{show(stat(id).t)}}<small>件</small></strong></div>
+     <div class="eff"><span>覆盖项目</span><strong>{{show(stat(id).projects)}}<small>项</small></strong></div></div>
    </button>
-   <div v-if="ri===rows.length-1&&r.length===1" class="ic-card note"><b>读图方式</b><span>横轴为年份，中线以上为投入、以下为产出</span><span>每个方向按自身峰值缩放，看的是变化节奏</span><span>2024 年后回落是因为 2017—2022 年立项项目陆续结题</span></div>
+   <div v-if="ri===rows.length-1&&r.length===1" class="ic-card note"><b>读图方式</b><span>横轴为年份，中线以上为投入、以下为产出</span><span>每条曲线按自身峰值缩放，观察变化节奏</span><span>全库同方向规模用于参照，基金支持成果另行计数</span></div>
    <div v-if="r.includes(sel)" class="ic-detail" :class="{right:r.indexOf(sel)===1}" :style="{'--c':PALETTE[sel]}">
     <div class="ic-big"><div class="ic-dh"><b>{{L[sel].name}}</b><span>再次点击卡片收起</span></div>
      <svg :viewBox="`0 0 ${big.w} ${big.h}`" width="100%" role="img" :aria-label="`${L[sel].name}的投入与产出`">
@@ -57,22 +74,24 @@ function toggle(id){sel.value=sel.value===id?'':id}
       <line :x1="big.x0" :x2="big.x1" :y1="big.mid" :y2="big.mid" stroke="#cfc6c2"/>
       <text v-for="t in big.ticks" :key="t.y" :x="t.x" :y="big.mid+4" font-size="11.5" font-weight="700" fill="#7a7378" text-anchor="middle" dominant-baseline="middle" paint-order="stroke" stroke="#fff" stroke-width="4">{{t.y}}</text>
       <text x="0" :y="big.mid-big.up/2" font-size="13" font-weight="750" :fill="PALETTE[sel]">投入</text><text x="0" :y="big.mid+big.dn/2" font-size="13" font-weight="750" fill="#5d575b">产出</text>
-      <text :x="big.pk.x" :y="big.pk.y-9" font-size="12.5" font-weight="750" text-anchor="middle" :fill="PALETTE[sel]">经费峰值 {{(big.pk.v/1e4).toFixed(2)}} 亿元 · {{big.pk.yr}}</text>
-      <text :x="big.pp.x" :y="big.pp.y+17" font-size="12.5" font-weight="750" text-anchor="middle" fill="#5d575b">论文峰值 {{fmt(big.pp.v)}} 篇 · {{big.pp.yr}}</text>
+      <text :x="big.pk.x" :y="big.pk.y-9" font-size="12.5" font-weight="750" :text-anchor="big.pk.anchor" :fill="PALETTE[sel]">经费峰值 {{(big.pk.v/1e4).toFixed(2)}} 亿元 · {{big.pk.yr}}</text>
+      <text :x="big.pp.x" :y="Math.min(big.h-8,big.pp.y+17)" font-size="12.5" font-weight="750" :text-anchor="big.pp.anchor" fill="#5d575b">论文峰值 {{fmt(big.pp.v)}} 篇 · {{big.pp.yr}}</text>
      </svg></div>
-    <div class="ic-table"><div class="ic-dh"><b>逐年指标</b><span>柱高为该指标在各年的相对大小</span></div>
-     <table><thead><tr><th></th><th></th><th><div class="ic-yrs"><span v-for="y in Y" :key="y">{{String(y).slice(2)}}</span></div></th><th class="r">{{Y[0]}}—{{Y.at(-1)}}</th></tr></thead>
+    <div class="ic-table" tabindex="0" aria-label="逐年指标，可横向滚动"><div class="ic-dh"><b>逐年指标</b><span>柱高为该指标在各年的相对大小</span></div><small class="ic-scroll-hint">左右滑动查看完整指标</small>
+     <table><thead><tr><th></th><th></th><th><div class="ic-yrs"><span v-for="y in Y" :key="y">{{String(y).slice(2)}}</span></div></th><th class="r">期间汇总 / 峰值</th></tr></thead>
       <tbody><template v-for="g in metricRows" :key="g.g"><tr v-for="(m,k) in g.items" :key="m.n">
        <td v-if="k===0" class="g" :rowspan="g.items.length" :style="{background:g.gc}">{{g.g}}</td>
        <td class="l">{{m.n}}<small>{{m.u}}</small></td>
-       <td><div v-if="m.bars" class="ic-sp"><i v-for="(b,j) in m.bars" :key="j" :style="{height:b+'px',background:m.c}"></i></div><div v-else class="ic-sp pend">数据补充中</div></td>
-       <td class="v">{{m.v||'—'}}<small v-if="m.v">{{m.vu}}</small></td></tr></template></tbody></table></div>
+       <td><div v-if="m.bars" class="ic-sp"><i v-for="(b,j) in m.bars" :key="j" :class="{missing:b.missing}" :style="{height:b.height+'px',background:m.c}"></i></div><div v-else class="ic-sp pend">{{m.pending||'待补充'}}</div></td>
+       <td class="v">{{m.v??'—'}}<small v-if="m.v&&m.v!=='—'">{{m.vu}}</small></td></tr></template></tbody></table><p class="ic-data-note">本地引文库 · 三年篇均被引按发表后第 1—3 年统计；2017—2022 年队列分母 {{show(citationCoverage)}} 篇。</p></div>
    </div>
   </template>
  </div>
+ <p class="ic-data-note">专利按申请号计数 · 引证按引用论文年份统计 · 数据截至 {{String(M.as_of).slice(0,10)}}。</p>
 </div></template>
 
 <style scoped>
+.ic-data-note{margin:12px 0 0;font-size:12px;line-height:1.7;color:#8a8286}.ic-sp i.missing{height:5px!important;background:transparent!important;border-bottom:1px dashed #cbbfc2}
 .ic-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 .ic-head h3{margin:0;font-size:21px;font-weight:750;color:#232930;padding-left:14px;border-left:4px solid #a21535;line-height:1.2}
 .ic-head span{font-size:13.5px;color:#8a8286}
@@ -101,15 +120,16 @@ function toggle(id){sel.value=sel.value===id?'':id}
 .ic-detail::before{content:"";position:absolute;top:-9px;left:25%;width:16px;height:16px;background:#fffafa;border-left:1px solid #e9c3cb;border-top:1px solid #e9c3cb;transform:rotate(45deg)}
 .ic-detail.right::before{left:75%}
 .ic-dh{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}.ic-dh b{font-size:16.5px;font-weight:750}.ic-dh span{font-size:12.5px;color:#9a9296}
+.ic-table{min-width:0;overflow-x:auto}.ic-scroll-hint{display:none}
 .ic-table table{width:100%;border-collapse:collapse;font-size:13px}
 .ic-table th{padding:4px 0;font-size:12px;font-weight:500;color:#8a8286}.ic-table th.r{text-align:right}
 .ic-yrs{display:flex;justify-content:space-between;padding:0 10px}
 .ic-table td{padding:5px 0;border-top:1px solid #f1ebe8;vertical-align:middle}
 .ic-table td.g{width:22px;writing-mode:vertical-rl;text-align:center;letter-spacing:2px;font-size:11.5px;font-weight:700;color:#fff}
 .ic-table td.l{width:112px;padding-left:10px;font-weight:650;color:#3d3a3c}.ic-table td.l small{display:block;font-size:11px;font-weight:400;color:#9a9296}
-.ic-table td.v{width:78px;text-align:right;font-weight:750;color:#2f2b2d;font-variant-numeric:tabular-nums}.ic-table td.v small{display:block;font-size:11px;font-weight:500;color:#9a9296}
+.ic-table td.v{width:98px;text-align:right;font-weight:750;color:#2f2b2d;font-variant-numeric:tabular-nums}.ic-table td.v small{display:block;font-size:11px;font-weight:500;color:#9a9296}
 .ic-sp{display:flex;align-items:flex-end;gap:4px;height:26px;padding:0 10px}.ic-sp i{flex:1;border-radius:2px 2px 0 0}
 .ic-sp.pend{align-items:center;justify-content:center;margin:0 10px;padding:0;border:1px dashed #ddd3cf;border-radius:3px;background:repeating-linear-gradient(135deg,#fff 0 6px,#f6f2f1 6px 12px);font-size:11.5px;color:#9a9296}
-@media(max-width:1180px){.ic-card{grid-template-columns:1fr}.ic-detail{grid-template-columns:1fr}}
-@media(max-width:760px){.ic-grid{grid-template-columns:1fr}.ic-detail::before{display:none}.ic-hint{margin-left:0}.ic-lead{font-size:14.5px}}
+@media(max-width:1180px){.ic-card{grid-template-columns:1fr}.ic-detail{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){.ic-table table{min-width:490px}.ic-scroll-hint{display:block;margin:0 0 8px;font-size:11px;color:#9a9296}.ic-grid{grid-template-columns:1fr}.ic-detail::before{display:none}.ic-hint{margin-left:0}.ic-lead{font-size:14.5px}}
 </style>
