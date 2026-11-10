@@ -6,6 +6,7 @@
 
 .page-hero.has-tabs{padding-bottom:0}
 .chain-modules{display:grid;grid-template-columns:repeat(3,1fr);margin:34px -48px 0;border-top:1px solid #ebe3df;background:rgba(255,255,255,.55)}
+.chain-modules.two{grid-template-columns:repeat(2,1fr)}
 .chain-modules button{position:relative;display:flex;align-items:center;gap:14px;padding:20px 28px 22px;border:0;border-left:1px solid #ebe3df;background:transparent;font:inherit;text-align:left;color:#6c666a;cursor:pointer;transition:background .2s,color .2s}
 .chain-modules button:first-child{border-left:0}
 .chain-modules button::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:transparent;transition:background .2s}

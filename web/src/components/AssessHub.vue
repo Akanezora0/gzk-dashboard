@@ -12,7 +12,7 @@ const dims=[
  <section class="as-panel">
   <header><h3>评估维度</h3><span>评估框架与指标体系建设中</span></header>
   <div class="as-grid"><article v-for="d in dims" :key="d.n"><b>{{d.n}}</b><h4>{{d.t}}</h4><p>{{d.d}}</p><div class="as-k"><span v-for="k in d.k" :key="k">{{k}}</span></div></article></div>
-  <div class="as-foot"><span>相关数据可在创新链分析中查看</span><router-link :to="{path:'/chain',query:{domain:'ai',module:'investment'}}">投入与产出 →</router-link><router-link :to="{path:'/chain',query:{domain:'ai',module:'strength'}}">研究团队 →</router-link></div>
+  <div class="as-foot"><span>相关分析</span><router-link :to="{path:'/evolution',query:{domain:'ai'}}">投入与产出 →</router-link><router-link :to="{path:'/chain',query:{domain:'ai',module:'strength'}}">研究团队 →</router-link></div>
  </section>
 </div></template>
 <style scoped>

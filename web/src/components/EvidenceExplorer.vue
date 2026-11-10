@@ -55,7 +55,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
 </script>
 <template>
   <section class="rs-page" ref="root" @keydown.esc="drawer=''">
-    <header class="rs-head"><span class="rs-no">05</span><h3>接续证据</h3></header>
+    <header class="rs-head"><span class="rs-no">05</span><h3>全部案例</h3></header>
     <div v-if="!projects.length" class="rs-empty">机构项目与论文关系暂未读取。</div>
     <template v-else>
     <div class="rs-ev-bar">

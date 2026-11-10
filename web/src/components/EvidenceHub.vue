@@ -48,12 +48,6 @@ const currentEdges=computed(()=>props.data.currentInventory?.counts.ai_fund_pape
 const displayedChains=computed(()=>(summary.value?.chains||[]).map(c=>c.id==='fund_paper'?{...c,count:currentEdges.value}:c))
 const counts=computed(()=>props.data.currentInventory?.counts||{})
 const chainCount=id=>summary.value?.chains?.find(c=>c.id===id)?.count
-const flowSteps=computed(()=>[
- {title:'多源汇聚',text:'基金项目、成果论文与专利汇入研究底座，保留来源与时间。',stats:[{v:fmt(counts.value.ai_funds),u:'AI 基金项目'},{v:counts.value.ai_papers?(counts.value.ai_papers/1e4).toFixed(1)+'万':'—',u:'AI 论文'},{v:counts.value.ai_patents?(counts.value.ai_patents/1e4).toFixed(1)+'万':'—',u:'AI 专利'}]},
- {title:'直接映射',text:'以原始项目编号连接基金与成果论文，形成资助关联。',stats:[{v:fmt(currentEdges.value),u:'基金—论文资助关联',big:true,chain:'fund_paper'}]},
- {title:'技术识别',text:'从题名、摘要及公开文本识别技术内容，连接到共同技术词表。',stats:[{v:fmt(chainCount('paper_tech')),u:'论文—技术',chain:'paper_tech'},{v:fmt(chainCount('patent_tech')),u:'专利—技术',chain:'patent_tech'}]},
- {title:'核对与汇流',text:'核对实体与原文依据，让多条成果链在共同技术主题中交汇。',stats:[{v:'交互证据图',u:'查看多链关系 ↓',chain:'mixed',link:true}]},
- {title:'贡献研究',text:'结合成果、引用与技术覆盖，研究基金的支撑范围与影响。',stats:[{v:'基金贡献度',u:'投入与产出 →',to:{query:{domain:'ai',module:'investment',analysis:'contribution'}},link:true}]}])
 const processSteps=computed(()=>[
  {title:'多源汇聚',text:'基金项目、成果论文与专利资料汇入研究底座，保留来源与时间。',sourceLabel:'成果来源',source:'基金 · 论文 · 专利'},
  {title:'直接映射',text:'以原始项目编号连接基金与成果论文，形成资助关联。',sourceLabel:'已建关系',source:fmt(currentEdges.value)+' 条资助关联'},
@@ -67,15 +61,6 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
 </script>
 <template><div class="evidence-v2">
 <div v-if="summaryError" class="notice error">{{summaryError}} <button @click="fetchSummary">重试</button></div>
-<section class="ev-flow">
- <header><h3>证据构建流程</h3><span>从多源成果到基金贡献研究</span></header>
- <ol>
-  <li v-for="(f,i) in flowSteps" :key="f.title">
-   <div class="ev-step-head"><b>{{String(i+1).padStart(2,'0')}}</b><h4>{{f.title}}</h4></div>
-   <p>{{f.text}}</p>
-  </li>
- </ol>
-</section>
 <section ref="graphShell" class="ev-graph">
  <header class="ev-graph-head">
   <div><h3>交互证据图</h3></div>
