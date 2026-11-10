@@ -72,7 +72,8 @@ const paperSources=[
  {name:'Crossref',count:129602309}, {name:'DBLP',count:8445422},
  {name:'历史 NSFC',count:3741325}, {name:'CNKI',count:2833016}, {name:'万方',count:399500},
 ]
-const fundSources=[{name:'项目记录总量',count:428409},{name:'历史项目目录',count:370008}]
+const fundSources=[{name:'项目记录总量',count:428409,unit:'条'},{name:'历史项目目录',count:370008,unit:'项'},{name:'人工智能领域项目',count:21078,unit:'项'}]
+const patentSources=[{name:'全国公开文献',count:56903567,unit:'条'},{name:'专利—论文引用',count:13905635,unit:'对'},{name:'人工智能领域专利',count:8469646,unit:'条'}]
 const sourceLabel=n=>n>=1e8?(n/1e8).toFixed(3)+' 亿':(n/1e4).toFixed(2)+' 万'
 const profileColors={literature:'#ae1833',fund:'#377f70',patent:'#987aab',recruit:'#c56b32'}
 /* 实体与关系：横向主干 + 编号连线 */
@@ -112,27 +113,25 @@ const activeRel=ref(0)
   <div class="ovd-portrait-grid">
    <article class="ovd-portrait" :style="{'--c':profileColors.literature}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="paper"/></span><h4>文献<span>多源学术记录</span></h4></header>
-    <div class="ovd-portrait-stat"><strong>5</strong><span>个主要来源<small>国际目录与中文文献相互补充</small></span></div>
+    <div class="ovd-portrait-stat"><strong>26</strong><span>年中文期刊覆盖<small>中文期刊发表年份 2000—2025</small></span></div>
+    <div class="ovd-year-span"><span>2000</span><i></i><span>2025</span></div>
     <div class="ovd-source-bars" aria-label="文献来源记录规模，条形按数量同比例展示">
      <div v-for="item in paperSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b :title="fmt(item.count)+' 条'">{{sourceLabel(item.count)}}<small>条</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/paperSources[0].count*100)+'%'}"></i></div></div>
     </div>
-    <footer><div class="ovd-quality"><span>万方 · 摘要完整率</span><b>99.10%</b></div><div class="ovd-quality-track"><i style="width:99.1%"></i></div><p>CNKI 2000—2025 · 万方 2025<br>Crossref 截至2026年快照；各来源交叉收录。</p></footer>
    </article>
    <article class="ovd-portrait" :style="{'--c':profileColors.fund}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="grant"/></span><h4>基金<span>历史目录与官网增量</span></h4></header>
-    <div class="ovd-portrait-stat"><strong>41</strong><span>年批准年份覆盖<small>项目批准年份 1986—2026</small></span></div>
+    <div class="ovd-portrait-stat"><strong>41</strong><span>年批准覆盖<small>项目批准年份 1986—2026</small></span></div>
     <div class="ovd-year-span"><span>1986</span><i></i><span>2026</span></div>
-    <div class="ovd-source-bars ovd-fund-bars"><div v-for="item in fundSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>{{item.name==='项目记录总量'?'条':'项'}}</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/fundSources[0].count*100)+'%'}"></i></div></div></div>
+    <div class="ovd-source-bars ovd-fund-bars"><div v-for="item in fundSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>{{item.unit}}</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/fundSources[0].count*100)+'%'}"></i></div></div></div>
     <div class="ovd-analysis-axes"><span>投入规模<b>资助金额 · 项目类型</b></span><span>承担力量<b>负责人 · 依托单位</b></span></div>
-    <footer><p>历史目录覆盖1986—2019年，官网增量延伸至2026年。批准号连接项目与成果，支持长期跟踪。</p></footer>
    </article>
    <article class="ovd-portrait" :style="{'--c':profileColors.patent}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="patent"/></span><h4>专利<span>全国公开文献</span></h4></header>
-    <div class="ovd-portrait-stat"><strong>41</strong><span>年申请覆盖<small>全国包申请年份 1985—2025</small></span></div>
+    <div class="ovd-portrait-stat"><strong>41</strong><span>年申请覆盖<small>全国专利申请年份 1985—2025</small></span></div>
     <div class="ovd-year-span"><span>1985</span><i></i><span>2025</span></div>
-    <div class="ovd-completeness"><div class="ovd-completeness-ring" role="img" aria-label="全国包已画像记录申请人字段完整率99.999%"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="43"/><circle class="value" cx="50" cy="50" r="43" pathLength="100" stroke-dasharray="99.999 100"/></svg><span>99.999<small>%</small></span></div><div><b>申请人字段完整率</b><span>全国包已画像记录</span></div></div>
+    <div class="ovd-source-bars ovd-fund-bars"><div v-for="item in patentSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>{{item.unit}}</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/patentSources[0].count*100)+'%'}"></i></div></div></div>
     <div class="ovd-analysis-axes"><span>技术内容<b>名称 · 摘要 · IPC分类</b></span><span>时间与主体<b>申请日 · 公开日 · 申请人</b></span></div>
-    <footer><p>申请号与公开号连接专利不同版本，支持技术分布、申请趋势与主体分析。</p></footer>
    </article>
    <article class="ovd-portrait ovd-portrait-pending" :style="{'--c':profileColors.recruit}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="org"/></span><h4>招聘<span>企业招聘信息</span></h4></header>
