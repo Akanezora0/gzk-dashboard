@@ -83,7 +83,7 @@
 .home-chain{margin-top:72px;position:relative;padding:44px 48px 40px;background:linear-gradient(180deg,#fff,#fdfbf9);border:1px solid var(--home-line);border-radius:4px;box-shadow:0 30px 60px -48px rgba(80,20,35,.35)}
 .home-chain-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:40px;padding-bottom:18px;border-bottom:1px solid #eee7e2}
 .home-chain-head span:first-child{font-size:20px;font-weight:700;letter-spacing:1px}
-.home-chain-head span:last-child{font-size:14px;color:#8a8286;letter-spacing:1px}
+.home-chain-head span:nth-child(2){font-size:14px;color:#8a8286;letter-spacing:1px}
 .home-chain-body{position:relative}
 .home-chain-track{position:absolute;left:10%;right:10%;top:51px;height:2px;background:#efe8e4;overflow:hidden}
 .home-chain-track i{position:absolute;inset:0;background:linear-gradient(90deg,#a21535,#2c64a0 25%,#6f4a94 50%,#b2772a 75%,#23806e);transform-origin:left;transform:scaleX(0);transition:transform 1.6s var(--home-ease) .25s}
@@ -180,10 +180,12 @@
 .home-case-path p{font-size:15px;color:#e8cbd1;margin-top:6px;line-height:1.7}
 
 /* ---------- 评估维度 ---------- */
-.home-evaluation{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:56px;align-items:center}
-.home-evaluation-description{margin-top:26px;max-width:390px;font-size:17px;color:var(--home-muted)}
-.home-evaluation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.home-evaluation-grid article{position:relative;background:#fff;border:1px solid var(--home-line);border-radius:4px;padding:22px}
+.home-evaluation{display:block}
+.home-evaluation-intro h2{font-size:clamp(28px,2.7vw,40px);line-height:1.4}
+.home-evaluation-intro .home-eyebrow{margin-bottom:20px}
+.home-evaluation-description{margin-top:16px;max-width:none;font-size:17px;color:var(--home-muted)}
+.home-evaluation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:32px}
+.home-evaluation-grid article{position:relative;background:#fff;border:1px solid var(--home-line);border-radius:4px;padding:24px;display:flex;flex-direction:column}
 .home-evaluation-grid .home-use-head{margin-bottom:16px;align-items:center}
 .home-evaluation-grid .home-use-icon{width:40px;height:40px}
 .home-evaluation-grid .home-use-icon .home-icon{width:22px;height:22px}
@@ -191,7 +193,7 @@
 .home-evaluation-grid h3{font-size:21px;font-weight:700;margin-bottom:8px}
 .home-evaluation-grid h4{font-size:14px;font-weight:650;margin-bottom:8px;color:var(--tone);line-height:1.65}
 .home-evaluation-grid p{font-size:14px;color:var(--home-muted);line-height:1.75}
-.home-evaluation-grid ul{gap:6px;margin-top:16px}
+.home-evaluation-grid ul{gap:6px;padding-top:16px;margin-top:auto}
 .home-evaluation-grid li{font-size:11px;padding:6px 8px}
 @media(max-width:1050px){.home-evaluation{grid-template-columns:1fr;gap:32px}.home-evaluation-description{max-width:620px;margin-top:18px}.home-evaluation-intro h2 br:last-child{display:none}}
 
@@ -280,7 +282,7 @@
 .home-chain{background:none;border:0;box-shadow:none;padding:0;margin-top:80px}
 .home-chain-head{border-bottom:0;margin-bottom:34px;padding-bottom:0}
 .home-chain-head span:first-child{font-size:15px;font-weight:650;letter-spacing:3px;color:#3f383c}
-.home-chain-head span:last-child{font-size:14px;color:#8a8286}
+.home-chain-head span:nth-child(2){font-size:14px;color:#8a8286}
 .home-flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative}
 .home-flow:before{content:"";position:absolute;left:0;right:0;top:40px;height:1px;background:#ddd4cf}
 .home-flow:after{content:"";position:absolute;left:0;right:0;top:40px;height:1px;background:linear-gradient(90deg,#a21535,#a2153566 70%,#a2153522);transform-origin:left;transform:scaleX(0);transition:transform 1.6s var(--home-ease) .2s}
@@ -472,3 +474,9 @@
 .hf-axis i::before,.hf-axis i::after{width:14px;height:14px;border-width:3px}
 .hf-axis i .hub{width:14px;height:14px}
 @media(max-width:900px){.hf-core{grid-template-columns:1fr}.hf-core>div{border-right:0;border-bottom:1px solid #ece5e1;padding:16px 18px}.hf-core p{padding:16px 18px}}
+
+/* 项目概览保持与相邻内容区相称的留白 */
+.home-about-section{display:block;padding-block:100px}
+.home-about-section>.home-about{width:100%}
+@media(max-width:1050px){.home-about-section{padding-block:80px}}
+@media(max-width:700px){.home-about-section{min-height:0;padding-block:76px}}

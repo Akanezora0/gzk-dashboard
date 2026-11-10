@@ -15,7 +15,7 @@ const normType=t=>['tech','tech_point','technology'].includes(t)?'technology':t
 const isTech=n=>normType(n.type)==='technology'
 const colorOf=n=>isTech(n)?(treeColors[String(n.id).slice(0,3)]||typeColor.technology):(typeColor[n.type]||'#64748b')
 const short=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t
-const textW=t=>[...t].reduce((w,c)=>w+(/[\u0000-\u00ff]/.test(c)?7.4:12.8),0)
+const textW=t=>[...t].reduce((w,c)=>w+(/[\u0000-\u00ff]/.test(c)?10:17),0)
 
 const box=ref(null),W=ref(900)
 const nodes=shallowRef([]),links=shallowRef([]),tick=ref(0)
@@ -26,7 +26,7 @@ const buildId=ref(0)
 const uid=Math.random().toString(36).slice(2,8)
 
 const deg=computed(()=>{const d=new Map();links.value.forEach(l=>{d.set(l.source.id,(d.get(l.source.id)||0)+1);d.set(l.target.id,(d.get(l.target.id)||0)+1)});return d})
-const rOf=n=>isTech(n)?9+Math.min(9,(deg.value.get(n.id)||1)*2.2):normType(n.type)==='fund'?7:5.5
+const rOf=n=>isTech(n)?13+Math.min(11,(deg.value.get(n.id)||1)*2.2):normType(n.type)==='fund'?10:8
 
 function build(){
  sim?.stop()
@@ -35,7 +35,7 @@ function build(){
  const ns=g.nodes.map(n=>({...n,raw:n})),byId=new Map(ns.map(n=>[n.id,n]))
  const ls=(g.edges||[]).filter(e=>byId.has(e.source)&&byId.has(e.target)).map(e=>({...e,raw:e,source:byId.get(e.source),target:byId.get(e.target)}))
  const d=new Map();ls.forEach(l=>{d.set(l.source.id,(d.get(l.source.id)||0)+1);d.set(l.target.id,(d.get(l.target.id)||0)+1)})
- const r=n=>isTech(n)?9+Math.min(9,(d.get(n.id)||1)*2.2):normType(n.type)==='fund'?7:5.5
+ const r=n=>isTech(n)?13+Math.min(11,(d.get(n.id)||1)*2.2):normType(n.type)==='fund'?10:8
  const w=W.value,h=props.height
  sim=forceSimulation(ns)
   .force('link',forceLink(ls).id(n=>n.id).distance(l=>isTech(l.source)||isTech(l.target)?64:52).strength(.9))
@@ -54,9 +54,9 @@ function build(){
 function fit(){
  const ns=nodes.value;if(!ns.length)return
  const xs=ns.map(n=>n.x),ys=ns.map(n=>n.y)
- const x0=Math.min(...xs)-70,x1=Math.max(...xs)+70,y0=Math.min(...ys)-40,y1=Math.max(...ys)+60
- const k=Math.min(1.6,W.value/(x1-x0),(props.height-40)/(y1-y0))
- view.value={k,x:(W.value-(x1-x0)*k)/2-x0*k,y:20+((props.height-40)-(y1-y0)*k)/2-y0*k}
+ const x0=Math.min(...xs)-100,x1=Math.max(...xs)+100,y0=Math.min(...ys)-22,y1=Math.max(...ys)+55
+ const k=Math.min(1.6,W.value/(x1-x0),(props.height-16)/(y1-y0))
+ view.value={k,x:(W.value-(x1-x0)*k)/2-x0*k,y:8+((props.height-16)-(y1-y0)*k)/2-y0*k}
 }
 defineExpose({reset:fit})
 
@@ -142,10 +142,10 @@ onBeforeUnmount(()=>{sim?.stop();ro?.disconnect()})
       <circle v-if="isTech(n)" :r="rOf(n)*.36" fill="#fff" opacity=".88"/>
       <template v-if="showLabel(n)">
        <template v-if="isTech(n)">
-        <rect :x="-(textW(short(n.label,12))/2+9)" :y="rOf(n)+6" :width="textW(short(n.label,12))+18" height="20" rx="10" fill="#fff" :stroke="colorOf(n)" stroke-opacity=".35" :filter="`url(#sh${uid})`"/>
-        <text class="eg-label tech" :y="rOf(n)+20" :fill="colorOf(n)">{{short(n.label,12)}}</text>
+        <rect :x="-(textW(short(n.label,12))/2+9)" :y="rOf(n)+6" :width="textW(short(n.label,12))+18" height="27" rx="13.5" fill="#fff" :stroke="colorOf(n)" stroke-opacity=".35" :filter="`url(#sh${uid})`"/>
+        <text class="eg-label tech" :y="rOf(n)+25" :fill="colorOf(n)">{{short(n.label,12)}}</text>
        </template>
-       <text v-else class="eg-label" :y="rOf(n)+15">{{short(n.label,hover===n.id?26:16)}}</text>
+       <text v-else class="eg-label" :y="rOf(n)+20">{{short(n.label,hover===n.id?26:16)}}</text>
       </template>
      </g>
     </g>
@@ -174,8 +174,8 @@ svg{display:block}
 .eg-dot{stroke:#fff;stroke-width:2.2;transition:transform .2s}
 .eg-node:hover .eg-dot{transform:scale(1.18)}
 .eg-pop{transform-box:fill-box;transform-origin:center;animation:egpop .6s cubic-bezier(.3,1.5,.5,1) both}
-.eg-label{font-size:11.5px;fill:#4a4448;text-anchor:middle;paint-order:stroke;stroke:#fdfcfb;stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
-.eg-label.tech{font-size:12.5px;font-weight:650;stroke:none}
+.eg-label{font-size:16px;fill:#4a4448;text-anchor:middle;paint-order:stroke;stroke:#fdfcfb;stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+.eg-label.tech{font-size:17px;font-weight:650;stroke:none}
 .eg-tip{position:absolute;z-index:3;transform:translate(14px,14px);max-width:300px;padding:8px 12px;border:1px solid #e4dcd8;border-radius:4px;background:#fff;box-shadow:0 10px 28px -14px rgba(60,28,38,.35);font-size:12px;line-height:1.5;pointer-events:none}
 .eg-tip :deep(span){display:block}
 .eg-tip :deep(b){display:block;font-size:13px;color:#2f2b2d;font-weight:650}

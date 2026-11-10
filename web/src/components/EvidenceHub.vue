@@ -8,7 +8,8 @@ const props=defineProps({data:Object}),route=useRoute()
 const chain=ref(route.query.chain||({fund_paper:'fund_paper',patent:'patent_tech',contribution:'paper_tech'})[route.query.tab]||'mixed'),scope=ref('ai'),limit=ref(20),summary=ref(null),summaryError=ref(''),graph=ref(null),loading=ref(false),error=ref(''),selected=ref(null),step=ref(0),chart=ref(null),graphShell=ref(null),allLabels=ref(false)
 watch(()=>route.query.chain,v=>{if(v){chain.value=v;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}})
 function explore(id){chain.value=id;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}
-const chainTabs=[['mixed','多链关系'],['fund_paper','基金—论文—技术'],['paper_tech','论文—技术'],['patent_tech','专利—技术'],['fund_patent','基金—专利—技术'],['paper_network','论文间方法关联']]
+if(chain.value==='paper_network') chain.value='mixed'
+const chainTabs=[['mixed','多链关系'],['fund_paper','基金—论文—技术'],['paper_tech','论文—技术'],['patent_tech','专利—技术'],['fund_patent','基金—专利—技术']]
 const typeLabels={...kindLabel,fund:'基金项目',paper:'论文',patent:'专利',tech_point:'技术主题',technology:'技术主题',tech:'技术主题',institution:'机构',company:'企业'}
 const typeColor={fund:'#a21535',paper:'#2c64a0',patent:'#23806e',tech_point:'#8B63AA',technology:'#8B63AA',tech:'#8B63AA',institution:'#D18A23',company:'#D18A23'}
 const fieldLabels={proj_no:'批准号',proj_school:'依托单位',proj_author:'项目负责人',title:'标题',name:'名称',project_id:'项目编号',project_no:'项目编号',fund_id:'基金编号',paper_id:'论文标识',year:'年份',authors:'作者',institution:'机构',applicant:'申请主体',patent_number:'专利号',namespace:'来源类别',term_id:'技术编号',definition:'技术定义',source_row:'来源行',row_number:'来源行',source:'来源',abstract:'摘要',first_claim:'独立权利要求',evidence_excerpt:'原文摘录',review_summary:'既有原文核验摘要',source_file:'来源文件',topic_id:'技术编号',scope:'筛选范围',url:'原文链接',region:'机构地域'}
@@ -68,7 +69,7 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
 <template><div class="evidence-v2">
 <div v-if="summaryError" class="notice error">{{summaryError}} <button @click="fetchSummary">重试</button></div>
 <section class="ev-flow">
- <header><h3>证据构建流程</h3><span>从多源成果到基金贡献研究</span></header>
+ <header><h3>证据构建流程</h3></header>
  <ol>
   <li v-for="(f,i) in flowSteps" :key="f.title">
    <div class="ev-step-head"><b>{{String(i+1).padStart(2,'0')}}</b><h4>{{f.title}}</h4></div>
@@ -100,7 +101,7 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
    <div v-else-if="error" class="ev-empty"><p>{{error}}</p><button class="button" @click="fetchGraph">重试</button></div>
    <template v-else-if="graph?.nodes?.length"><EvidenceGraph ref="chart" :graph="graph" :all-labels="allLabels" :height="540" :type-labels="typeLabels" :selected-id="selected?.kind==='node'?selected.item.id:null" @select="p=>selected=p"/></template>
    <div v-else class="ev-empty pending"><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="16" cy="30" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="46" r="7"/><rect x="88" y="21" width="28" height="18" rx="4"/><path d="M23 30 53 15M23 30 53 45M67 14 88 28M67 46 88 32"/></svg><b>当前筛选暂无关系</b><p>可切换技术大类或查看其他链路。</p></div>
-   <p class="ev-hint">悬停查看名称 · 滚轮缩放 · 点击节点或连线查看原文依据</p>
+   
   </div>
   <aside class="ev-inspector">
    <template v-if="selected">

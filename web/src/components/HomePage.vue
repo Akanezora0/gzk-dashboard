@@ -1,4 +1,6 @@
 <script setup>
+// 首页案例研究展示开关。
+const showCaseStudy = true
 import {computed,ref,onMounted,onBeforeUnmount} from 'vue'
 import {homeIcons} from '../helpers/homeIcons'
 import HomeIcon from './HomeIcon.vue'
@@ -44,16 +46,16 @@ const stages=[{x:330,label:'科学'},{x:540,label:'技术'},{x:750,label:'产业
 
 /* ---------- 内容 ---------- */
 const tones={red:'#a21535',blue:'#2c64a0',plum:'#6f4a94',gold:'#b2772a',teal:'#23806e'}
+const chain=[{label:'基金资助',sub:'资助布局与投入'},{label:'科学研究',sub:'论文与知识积累'},{label:'技术发展',sub:'专利与技术突破'},{label:'产业应用',sub:'企业、产品与市场'},{label:'经济社会价值',sub:'增长、就业与公共服务'}]
 const frameSupply=[{n:'基金资助',d:'项目、经费与负责人',icon:'grant'},{n:'论文成果',d:'方法、引用与知识积累',icon:'paper'},{n:'专利技术',d:'技术方案与权利主体',icon:'patent'}]
 const frameDemand=[{n:'企业主体',d:'研发主体与技术承接',icon:'org'},{n:'产品与服务',d:'模型、工具与平台',icon:'industry'},{n:'产业应用',d:'行业任务与经济表现',icon:'growth'}]
 const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','创新链分析'],['/cases','案例专题']]
 const platformLinks=[['平台简介','https://brain.ruc.edu.cn/jggk/ptjj/index.htm'],['交叉研究','https://brain.ruc.edu.cn/jcyj/index.htm'],['云端平台','https://brain.ruc.edu.cn/ydpt/index.htm'],['学术交流','https://brain.ruc.edu.cn/xsjl/index.htm'],['联系我们','https://brain.ruc.edu.cn/lxwm/index.htm']]
 const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'grant',tone:'#f2c4cc'},{title:'关键成果',text:'方法、论文与专利',icon:'paper',tone:'#f2c4cc'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#f2c4cc'},{title:'经济效应',text:'产业与社会影响',icon:'growth',tone:'#f2c4cc'}]
 const uses=[
-  {num:'01',title:'科学价值',icon:'science',tone:tones.red,question:'哪些基础研究成为后续创新的源头？',text:'追踪代表成果、引用联系与方法复用，刻画知识积累与技术突破。',tags:['研究贡献','学术影响','技术扩散']},
-  {num:'02',title:'经济效应',icon:'growth',tone:tones.red,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
-  {num:'03',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究团队与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
-  {num:'04',title:'社会影响',icon:'society',tone:tones.red,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
+  {num:'01',title:'经济效应',icon:'growth',tone:tones.red,question:'科研成果如何转化为产业动能？',text:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',tags:['产品创新','技术采用','经营表现']},
+  {num:'02',title:'政策与资源配置',icon:'policy',tone:tones.red,question:'资助与政策如何塑造创新格局？',text:'结合资助布局、研究团队与政策实施，比较方向、机构与地区差异。',tags:['资助布局','人才接续','政策作用']},
+  {num:'03',title:'社会影响',icon:'society',tone:tones.red,question:'创新为经济社会带来哪些改变？',text:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',tags:['就业变化','技能需求','公共服务']},
 ]
 </script>
 
@@ -105,10 +107,21 @@ const uses=[
     </button>
   </div>
 
-  <section id="about" class="home-wrap home-section">
+  <section id="about" class="home-wrap home-section home-about-section">
     <div class="home-about">
       <div class="reveal"><p class="home-eyebrow">项目概览</p><h2>让基础研究的价值<br/>可追溯、可度量、可评估。</h2></div>
       <div class="home-about-copy reveal"><p class="home-lead">基础研究是科学发现与技术创新的源头。它的作用经由知识积累、技术突破与产业应用逐步显现，相关证据分布在基金、论文、专利、企业、产品与政策等多类数据中。</p><p>项目依托国家自然科学基金委员会专项项目《基础研究全链条数据系统构建与集成》，由中国人民大学基础研究与中国式现代化发展战略研究中心联合国家治理大数据和人工智能创新平台建设，打通多源数据，建立从资助投入到经济社会价值的证据链条。</p></div>
+    </div>
+    <div class="home-chain reveal" aria-label="全链条：基金资助、科学研究、技术发展、产业应用、经济社会价值">
+      <div class="home-chain-head"><span>基础研究全链条</span></div>
+      <ol class="home-flow" :style="{'--n':chain.length}">
+        <li v-for="(c,i) in chain" :key="c.label" :style="{'--i':i}"><em>{{String(i+1).padStart(2,'0')}}</em><i class="home-flow-dot" aria-hidden="true"></i><strong>{{c.label}}</strong><small>{{c.sub}}</small></li>
+      </ol>
+      <div class="home-chains" aria-label="三条链路">
+        <div class="hc innovation"><b>创新链</b><span>资助 → 研究 → 技术</span></div>
+        <div class="hc industry"><b>产业链</b><span>技术 → 产品 → 经济社会价值</span></div>
+        <div class="hc policy"><b>政策链</b><span>贯穿全过程，作用于资助、研发与产业各环节</span></div>
+      </div>
     </div>
   </section>
 
@@ -126,7 +139,7 @@ const uses=[
     </div>
   </section>
 
-  <section class="home-case-section"><div class="home-case-glow" aria-hidden="true"></div><svg class="home-case-art" viewBox="0 0 800 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path v-for="i in 14" :key="i" :d="`M ${-40+i*6} ${420} C ${260+i*10} ${330-i*14}, ${470+i*8} ${40+i*10}, 860 ${-20+i*26}`"/></svg><div class="home-wrap home-case-content">
+  <section v-if="showCaseStudy" class="home-case-section"><div class="home-case-glow" aria-hidden="true"></div><svg class="home-case-art" viewBox="0 0 800 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><path v-for="i in 14" :key="i" :d="`M ${-40+i*6} ${420} C ${260+i*10} ${330-i*14}, ${470+i*8} ${40+i*10}, 860 ${-20+i*26}`"/></svg><div class="home-wrap home-case-content">
     <div class="reveal"><p class="home-eyebrow light">案例研究</p><h2>批量抽取优质案例，<br/>呈现基础研究的贡献路径。</h2><p>以技术、企业或产品为线索，按统一结构组织科研支持、关键成果、技术应用与经济效应，实现优质案例的批量抽取、核查与比较。</p><router-link class="home-cta outline" to="/chain?domain=ai">查看创新链分析 <span aria-hidden="true">↗</span></router-link></div>
     <div class="home-case-panel reveal">
       <p class="home-case-kicker">一个案例的四个层次</p>
@@ -135,7 +148,7 @@ const uses=[
   </div></section>
 
   <section id="evaluation" class="home-wrap home-section home-evaluation">
-    <div class="home-evaluation-intro reveal"><p class="home-eyebrow">评估维度</p><h2>面向多维评估，<br/>回答基础研究的<br/>价值之问。</h2><p class="home-evaluation-description">以统一的数据底座与创新链分析为基础，围绕具体问题组织样本、指标与证据。</p></div>
+    <div class="home-evaluation-intro reveal"><p class="home-eyebrow">评估维度</p><h2>面向多维评估，回答基础研究的价值之问。</h2><p class="home-evaluation-description">以统一的数据底座与创新链分析为基础，围绕具体问题组织样本、指标与证据。</p></div>
     <div class="home-evaluation-grid"><article v-for="(use,i) in uses" :key="use.num" class="reveal" :style="{'--i':i,'--tone':use.tone}">
       <div class="home-use-head"><span class="home-use-icon"><HomeIcon :name="use.icon"/></span><span class="home-use-num">{{use.num}}</span></div>
       <h3>{{use.title}}</h3><h4>{{use.question}}</h4><p>{{use.text}}</p>

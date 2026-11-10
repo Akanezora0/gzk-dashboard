@@ -54,7 +54,7 @@
 .ev-flow li+li{padding-left:20px;border-left:1px solid #efe8e4}
 .ev-step-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .ev-step-head b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#a21535;color:#fff;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
-.ev-flow li:nth-child(n+2) .ev-step-head b{background:#fff;color:#a21535;border:1.5px solid #a21535}
+.ev-flow li .ev-step-head b{background:#fff;color:#a21535;border:1.5px solid #a21535}
 .ev-step-head h4{margin:0;font-size:17px;font-weight:700;color:#232930}
 .ev-flow li>p{margin:0 0 16px;font-size:13.5px;line-height:1.75;color:#6a6468;min-height:4.6em}
 .ev-step-stats{margin-top:auto;display:flex;flex-direction:column;gap:8px}
@@ -75,9 +75,9 @@ button.ev-stat:hover,a.ev-stat:hover{background:#f3e9eb}
 .ev-graph-actions{display:flex;gap:6px}
 .ev-graph-actions button{padding:7px 13px;border:1px solid #e4dcd8;border-radius:3px;background:#fff;font:inherit;font-size:13.5px;color:#5d575b;cursor:pointer;transition:border-color .2s,color .2s}
 .ev-graph-actions button:hover{border-color:#c99aa4;color:#a21535}
-.ev-chains{display:flex;flex-wrap:wrap;gap:0;margin:0 0 18px;border:1px solid #e6dfdb;border-radius:3px;width:fit-content;max-width:100%;overflow:hidden}
-.ev-chains button{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:0;border-left:1px solid #e6dfdb;background:#fff;font:inherit;font-size:14px;color:#5d575b;cursor:pointer;transition:background .2s,color .2s}
-.ev-chains button:first-child{border-left:0}
+.ev-chains{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;border:0;border-radius:0;width:fit-content;max-width:100%;overflow:hidden}
+.ev-chains button{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid #e6dfdb;border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#5d575b;cursor:pointer;transition:background .2s,color .2s}
+.ev-chains button:first-child{border-left:1px solid #e6dfdb}
 .ev-chains button:hover:not(.active){background:#faf6f5;color:#2f2b2d}
 .ev-chains button.active{background:#a21535;color:#fff;font-weight:650}
 .ev-chains small{font-size:11px;padding:1px 5px;border-radius:2px;background:#f1ebe9;color:#9a9296}

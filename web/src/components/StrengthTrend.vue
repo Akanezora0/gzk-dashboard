@@ -49,7 +49,7 @@ function cohortTip(e,c){show(e,`<b>${c.year} 年首次承担 AI 项目 · ${c.n}
 </script>
 <template>
   <section class="rs-page">
-    <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3><span class="rs-sub">AI 基金项目 · 2017—2021 年批准</span>
+    <header class="rs-head"><span class="rs-no">02</span><h3>机构参与</h3>
       <div class="rs-tools"><button class="rs-btn" :class="{on:playing}" @click="play">{{playing?'Ⅱ 暂停':shown>=2021?'▶ 重播':'▶ 播放'}}</button></div></header>
     <div v-if="!P" class="rs-empty">机构参与数据尚未生成，请在服务器运行 build_ai_chain.py 更新研究团队数据。</div>
     <template v-else>

@@ -148,3 +148,58 @@
 .ovd-core-item em{display:block;font-style:normal;font-size:13px;color:#8a8286;margin-top:8px}
 @media(max-width:1050px){.ovd-core{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}.ovd-core-item:nth-child(3){margin-left:0}}
 @media(max-width:600px){.ovd-core{grid-template-columns:1fr}.ovd-core-item+.ovd-core-item{margin-left:0}.ovd-core-item strong{font-size:32px}}
+
+/* 合并标题保留原总览的眉题与浅红纹理 */
+.ovd-unified-heading{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#fff,#fdf8f8);margin:-34px -40px 28px;padding:34px 40px 30px;min-height:200px;align-items:center}
+.ovd-unified-heading .ovd-hero-art{z-index:-1}
+.ovd-unified-heading .ovd-hero-art svg{stroke:#ac1839;stroke-opacity:.09;mask-image:linear-gradient(90deg,transparent 15%,#000 75%)}
+.ovd-unified-heading h3{font-size:clamp(28px,2.65vw,40px);line-height:1.35;color:#232930;margin:15px 0 16px}
+.ovd-unified-heading p.ovd-eyebrow{color:#ad1839;font-size:14px;letter-spacing:3px;margin:0}
+.ovd-unified-heading p:not(.ovd-eyebrow){font-size:16px;color:#68717b}
+
+@media(max-width:1050px){.ovd-unified-heading{margin:-28px -24px 24px;padding:28px 24px}}
+@media(max-width:600px){.ovd-unified-heading{margin:-22px -18px 22px;padding:24px 18px;min-height:0}.ovd-unified-heading h3{font-size:25px}}
+/* 四类全域统计画像：同高卡片、真实比例、明确的来源年份 */
+.ovd-portraits{margin-top:28px;padding-top:26px;border-top:1px solid #eee6e4}
+.ovd-portraits-title{font-size:18px;color:#303942;margin:0 0 18px;font-weight:650}
+.ovd-portrait-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.ovd-portrait{min-width:0;display:flex;flex-direction:column;border:1px solid #e9e4e2;border-top:3px solid var(--c);border-radius:10px;padding:20px 18px 16px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 4%,white),white 130px)}
+.ovd-portrait header{display:flex;gap:10px;align-items:center}
+.ovd-portrait-icon{width:34px;height:34px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 9%,white);color:var(--c);border-radius:9px;flex-shrink:0}
+.ovd-portrait-icon svg{width:21px;height:21px}
+.ovd-portrait h4{margin:0;font-size:17px;color:#303942;line-height:1.4}
+.ovd-portrait h4 span{display:block;font-weight:400;font-size:11px;color:#80828a;margin-top:2px}
+.ovd-portrait-stat{display:flex;align-items:center;gap:12px;margin:18px 0 15px}
+.ovd-portrait-stat strong{font-size:42px;line-height:1;color:var(--c);font-weight:750;font-variant-numeric:tabular-nums}
+.ovd-portrait-stat>span{font-size:14px;font-weight:600;color:#424851;line-height:1.5}
+.ovd-portrait-stat small{display:block;font-weight:400;font-size:11px;color:#7c8087;margin-top:3px}
+.ovd-source-bars{display:grid;gap:9px}
+.ovd-source-bar>div:first-child{display:flex;justify-content:space-between;gap:6px;align-items:baseline;line-height:1.5;font-size:12px;color:#636b75}
+.ovd-source-bar b{font-weight:650;color:#39434d;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ovd-source-bar small{font-size:10px;font-weight:400;margin-left:4px;color:#858991}
+.ovd-source-rail{height:5px;border-radius:4px;background:#f2efee;margin-top:3px;overflow:hidden}
+.ovd-source-rail i{display:block;height:100%;background:var(--c);border-radius:4px;opacity:.75}
+.ovd-year-span{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--c);font-variant-numeric:tabular-nums;margin:2px 0 22px}
+.ovd-year-span i{flex:1;height:4px;position:relative;background:color-mix(in srgb,var(--c) 45%,white);border-radius:3px}
+.ovd-year-span i:before,.ovd-year-span i:after{content:'';position:absolute;width:7px;height:7px;background:var(--c);border-radius:50%;top:-1.5px}
+.ovd-year-span i:before{left:0}.ovd-year-span i:after{right:0}
+.ovd-fund-bars{gap:17px}
+.ovd-analysis-axes{display:grid;gap:9px;margin:20px 0 15px;font-size:11px;color:#8a8b90}
+.ovd-analysis-axes>span{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:space-between}
+.ovd-analysis-axes b{font-weight:500;color:#555f69}
+.ovd-portrait footer{margin-top:auto;padding-top:16px}
+.ovd-portrait footer p{font-size:11px;line-height:1.7;color:#7e838b;margin:8px 0 0}
+.ovd-quality{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:#69717a;align-items:center}
+.ovd-quality b{color:var(--c);font-size:16px;font-variant-numeric:tabular-nums}
+.ovd-quality-track{height:4px;border-radius:3px;overflow:hidden;background:#f2efee;margin-top:5px}
+.ovd-quality-track i{display:block;height:100%;background:var(--c);opacity:.65}
+.ovd-completeness{display:flex;align-items:center;gap:12px;margin:-5px 0 0}
+.ovd-completeness-ring{width:96px;height:96px;position:relative;flex-shrink:0;display:grid;place-items:center}
+.ovd-completeness-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ovd-completeness-ring circle{fill:none;stroke-width:6}.ovd-completeness-ring .track{stroke:#f1edf3}.ovd-completeness-ring .value{stroke:var(--c);opacity:.8}
+.ovd-completeness-ring>span{font-size:19px;font-weight:700;color:var(--c);font-variant-numeric:tabular-nums}.ovd-completeness-ring small{display:block;text-align:center;font-size:11px}
+.ovd-completeness>div:last-child{font-size:12px;line-height:1.7;color:#535d68}.ovd-completeness>div:last-child span{display:block;font-size:10px;color:#878b91}
+.ovd-pending-content{display:flex;flex:1;min-height:180px;flex-direction:column;align-items:center;justify-content:center;color:#b9aaa0}
+.ovd-pending-content>span{font-size:34px;font-weight:300}.ovd-pending-content p{font-size:12px;color:#a29a94;margin:6px 0}
+@media(max-width:1100px){.ovd-portrait-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.ovd-portrait-grid{grid-template-columns:1fr}.ovd-portrait{padding:18px}.ovd-pending-content{min-height:95px}.ovd-portrait-stat{margin-top:16px}}

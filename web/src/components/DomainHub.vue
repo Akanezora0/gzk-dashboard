@@ -261,7 +261,7 @@ const brief=computed(()=>{
     <section v-for="p in chartPanels" :key="`${type}:${p.key}`" class="panel" :class="{'chart-expanded':expandedChart===p.key,'wide-chart':p.full}">
      <div class="panel-heading"><h3>{{p.title}}</h3><div class="chart-controls"><button class="chart-expand" :aria-label="`${expandedChart===p.key?'收起':'展开'}${p.title}`" @click="expandedChart=expandedChart===p.key?'':p.key">{{expandedChart===p.key?'收起':'展开'}}</button></div></div>
      <Chart :key="`${type}:${namespace}:${p.key}`" :option="p.option" :height="expandedChart===p.key?350:280" :label="p.title" @select="p.topic&&openTopic($event)"/>
-     <p v-if="p.subtitle||p.topic" class="chart-note">{{p.subtitle}}<span v-if="p.topic"> · 点击查看演进</span></p>
+     
     </section>
    </div>
    <section v-if="newsTopics.length" class="panel domain-topic-strip"><div class="panel-heading"><h3>新闻中的技术主题</h3><span>词表匹配</span></div><div class="domain-topic-chips"><button v-for="t in newsTopics" :key="t.id" @click="openTopic({name:t.name,data:{topicId:t.id}})"><span>{{t.name}}</span><b>{{fmt(t.count)}}</b></button></div></section>
