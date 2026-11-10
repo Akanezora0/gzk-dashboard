@@ -42,13 +42,13 @@ const pickedProjects=computed(()=>{if(!picked.value)return [];const ids=new Set(
 const pickedPapers=computed(()=>{const ids=new Set(pickedProjects.value.map(p=>p.project_id));const papers=new Set((props.dataset?.graph?.project_paper_edges||[]).filter(e=>ids.has(e.project_id)).map(e=>e.paper_id));return (props.dataset?.graph?.paper_nodes||[]).filter(p=>papers.has(p.paper_id))})
 const takeText=computed(()=>`青年项目负责人 ${pct('青年','面上')}% 接到面上项目，面上项目 ${pct('面上','重点等')}% 转入联合、重点等项目；代表案例中，前后项目围绕同一研究问题深化或拓展，${sameInst.value}% 的负责人在原依托单位承担后续项目。`)
 function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_project_type)===l.a&&typeGroup(r.later_project_type)===l.b).slice(0,4).map(r=>r.person_name).join('、')
-  show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条接续（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>${l.a==='重点等'||l.b==='重点等'?'<br><span style="color:#78716c">联合·重大等含联合基金、重大研究计划、重点项目与数学天元基金</span>':''}`)}
+  show(e,`<b>${TYPE_NAME[l.a]} → ${TYPE_NAME[l.b]}</b><br>${l.n} 条进阶（占该起点 ${pct(l.a,l.b)}%）<br><span style="color:#78716c">如：${names}</span>${l.a==='重点等'||l.b==='重点等'?'<br><span style="color:#78716c">联合·重大等含联合基金、重大研究计划、重点项目与数学天元基金</span>':''}`)}
 </script>
 <template>
   <section class="rs-page" ref="root">
-    <header class="rs-head"><span class="rs-no">04</span><h3>负责人接续</h3></header>
+    <header class="rs-head"><span class="rs-no">04</span><h3>项目负责人资助进阶</h3></header>
     <p v-if="records.length" class="rs-lead soft" v-html="emph(takeText)"></p>
-    <div v-if="!records.length" class="rs-empty">接续记录暂未读取。</div>
+    <div v-if="!records.length" class="rs-empty">进阶记录暂未读取。</div>
     <div v-else class="rs-succ">
       <div class="rs-succ-left">
         <h4>接到什么项目</h4>
@@ -64,15 +64,15 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
           <template v-for="pair in [['青年','面上'],['面上','面上'],['面上','重点等']]" :key="pair.join('-')">
             <g v-if="link(...pair)" class="flow-label" pointer-events="none" :fill="pair[1]==='重点等'?'#fff':'#7a0a1c'">
               <text :x="link(...pair).mx" :y="(link(...pair).y0+link(...pair).y1)/2+link(...pair).h/2" font-size="28" font-weight="700" text-anchor="middle">{{pct(...pair)}}%</text>
-              <text :x="link(...pair).mx" :y="(link(...pair).y0+link(...pair).y1)/2+link(...pair).h/2+22" font-size="13" text-anchor="middle">{{flowN(...pair)}} / {{out(pair[0])}} 条{{pair[0]}}项目接续</text>
+              <text :x="link(...pair).mx" :y="(link(...pair).y0+link(...pair).y1)/2+link(...pair).h/2+22" font-size="13" text-anchor="middle">{{flowN(...pair)}} / {{out(pair[0])}} 条{{pair[0]}}项目进阶</text>
             </g>
           </template>
         </svg>
         <div class="rs-keys">
-          <div><strong>{{pct('青年','面上')}}%</strong><span>青年项目接续到面上项目<small>{{flowN('青年','面上')}} / {{out('青年')}}</small></span></div>
+          <div><strong>{{pct('青年','面上')}}%</strong><span>青年项目进阶到面上项目<small>{{flowN('青年','面上')}} / {{out('青年')}}</small></span></div>
           <div><strong>{{overlapPct('青年')}}%</strong><span>青年项目与下一项执行期重叠<small>面上项目为 {{overlapPct('面上')}}%</small></span></div>
-          <div><strong>{{pct('面上','重点等')}}%</strong><span>面上项目接续到联合、重大等<small>{{flowN('面上','重点等')}} / {{out('面上')}}</small></span></div>
-          <div><strong>{{sameInst}}%</strong><span>在同一机构内接续<small>同名依托单位</small></span></div>
+          <div><strong>{{pct('面上','重点等')}}%</strong><span>面上项目进阶到联合、重大等<small>{{flowN('面上','重点等')}} / {{out('面上')}}</small></span></div>
+          <div><strong>{{sameInst}}%</strong><span>在同一机构内进阶<small>同名依托单位</small></span></div>
         </div>
       </div>
       <div class="rs-succ-right">
@@ -91,7 +91,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
       </div>
     </div>
     <Teleport to="body"><div v-if="picked" class="rs-modal-mask" @click.self="picked=null">
-      <div class="rs-modal" ref="dialog" role="dialog" aria-modal="true" :aria-label="`${picked.person}的接续项目`">
+      <div class="rs-modal" ref="dialog" role="dialog" aria-modal="true" :aria-label="`${picked.person}的进阶项目`">
         <button class="rs-modal-x" aria-label="关闭" @click="picked=null">×</button>
         <p class="rs-modal-who"><b>{{picked.person}}</b><span>{{picked.org}}</span></p>
         <p class="case-summary">{{picked.summary}}</p>

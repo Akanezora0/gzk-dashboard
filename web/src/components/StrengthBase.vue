@@ -13,7 +13,7 @@ const Y=170
 const tones={org:'#6b5a52',per:'#8c6a3a',fund:'#a21535',pap:'#2c64a0',pat:'#23806e'}
 const nodes=computed(()=>[
  {k:'org',n:'机构',x:100,r:54,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`},
- {k:'per',n:'人员',x:365,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目接续'},
+ {k:'per',n:'人员',x:365,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目进阶'},
  {k:'fund',n:'基金项目',x:645,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
  {k:'pap',n:'论文',x:990,r:54,all:C.value.papers?wan(C.value.papers)+'篇':'',ai:C.value.ai_papers?wan(C.value.ai_papers)+'篇':'',aiN:'AI 论文'},
  {k:'pat',n:'专利',x:1265,r:54,all:C.value.national_patents?wan(C.value.national_patents)+'件':'',ai:C.value.ai_patents?wan(C.value.ai_patents)+'件':'',aiN:'AI 专利'}])

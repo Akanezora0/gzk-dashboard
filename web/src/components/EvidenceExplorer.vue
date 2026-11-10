@@ -77,14 +77,14 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
             <path class="rs-hit" :d="`M${X(r.p.approval_year)+8},${r.y-10} l10,10 l-10,10 l-10,-10 Z`" :fill="r.person.name===hlPerson?'#ae0d28':'#d9737f'" @mouseenter="show($event,`<b>${r.p.title}</b><br>${r.p.grant_no} · ${TYPE_NAME[typeGroup(r.p.project_type)]} · ${r.p.approval_year} 批准`)" @mousemove="move" @mouseleave="hide" @click="pick('project',r.p,r.person.name)"/>
             <circle v-for="(d,k) in dots(r)" :key="k" class="rs-hit" :cx="d.cx" :cy="d.cy" r="4.6" :fill="r.person.name===hlPerson?'#2f5f7a':'#9dbdd0'" @mouseenter="show($event,`<b>${d.q.title}</b><br>${d.q.publication_year}${d.q.venue?' · '+d.q.venue:''}`)" @mousemove="move" @mouseleave="hide" @click="pick('paper',{...d.q,bases:d.e.bases,project:r.p},r.person.name)"/>
           </g>
-          <g v-for="(a,i) in arcs" :key="'a'+i"><path :d="a.d" fill="none" stroke="#ae0d28" stroke-width="2" stroke-dasharray="5 4"/><text :x="a.lx" :y="a.ly" font-size="12.5" font-weight="700" fill="#ae0d28" text-anchor="middle">负责人接续</text></g>
+          <g v-for="(a,i) in arcs" :key="'a'+i"><path :d="a.d" fill="none" stroke="#ae0d28" stroke-width="2" stroke-dasharray="5 4"/><text :x="a.lx" :y="a.ly" font-size="12.5" font-weight="700" fill="#ae0d28" text-anchor="middle">负责人进阶</text></g>
           <g v-for="p in visiblePeople" :key="'n'+p.id" class="rs-hit" @click="openDrawer(p.id)" @mouseenter="show($event,`<b>${p.name}</b> · ${p.projects.length} 个项目<br>${p.verified?'官方负责人身份核验':'按项目负责人字段列示'}<br>点击查看项目与论文`)" @mousemove="move" @mouseleave="hide">
             <rect x="150" :y="mid(p)-16" width="100" height="32" fill="transparent"/>
             <circle cx="162" :cy="mid(p)" r="7" :fill="p.name===hlPerson?'#ae0d28':(p.verified?'#2a2a2a':'#fff')" :stroke="p.name===hlPerson?'#ae0d28':'#57534e'" stroke-width="2"/>
             <text x="176" :y="mid(p)+6" font-size="17" :font-weight="p.name===hlPerson||p.verified?700:400" :fill="p.name===hlPerson?'#ae0d28':'#2a2a2a'">{{p.name}}</text></g>
         </svg></div>
         <div v-if="people.length>PAGE_SIZE" class="people-pages"><button class="rs-chip" :disabled="page===0" @click="page--">上一组</button><span>{{page*PAGE_SIZE+1}}—{{Math.min((page+1)*PAGE_SIZE,people.length)}} / {{people.length}} 位负责人</span><button class="rs-chip" :disabled="(page+1)*PAGE_SIZE>=people.length" @click="page++">下一组</button></div>
-        <div class="rs-ev-legend"><span><i class="dm"></i>项目批准</span><span><i class="bar"></i>执行期</span><span><i class="pd"></i>关联论文（按发表年）</span><span><i class="dash"></i>同一负责人接续</span><span><i class="pv"></i>官方身份核验的负责人</span></div>
+        <div class="rs-ev-legend"><span><i class="dm"></i>项目批准</span><span><i class="bar"></i>执行期</span><span><i class="pd"></i>关联论文（按发表年）</span><span><i class="dash"></i>同一负责人进阶</span><span><i class="pv"></i>官方身份核验的负责人</span></div>
       </div>
       <aside class="rs-ev-panel">
         <template v-if="!selected">
@@ -105,7 +105,7 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
           <a v-if="selected.doi_url||selected.doi" :href="selected.doi_url||`https://doi.org/${selected.doi}`" target="_blank" rel="noopener">DOI ↗</a>
         </template>
       </aside>
-      <div v-if="drawerPerson" class="rs-drawer" ref="drawerSurface" role="dialog" :aria-label="`${drawerPerson.name}的接续详情`">
+      <div v-if="drawerPerson" class="rs-drawer" ref="drawerSurface" role="dialog" :aria-label="`${drawerPerson.name}的进阶详情`">
         <button ref="closeBtn" class="rs-close" aria-label="关闭" @click="drawer=''">×</button>
         <header><b>{{drawerPerson.name}}</b><span>{{org}}<template v-if="drawerCase&&detail.case"> · {{String(detail.case).split('：').at(-1).replace(/研究$/,'')}}</template></span></header>
         <div class="chips"><template v-for="(p,i) in drawerPerson.projects" :key="pid(p)"><i v-if="i">→</i><span :class="typeGroup(p.project_type)==='青年'?'soft':''">{{TYPE_NAME[typeGroup(p.project_type)]}} {{p.grant_no}} · {{p.approval_year}} 批准</span></template></div>
