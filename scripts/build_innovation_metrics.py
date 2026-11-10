@@ -143,7 +143,7 @@ def main():
   means=arr('SELECT year,avg(citations_3y) FROM cited_stats WHERE year<=2022 GROUP BY year',None)
   s={'active_funding_wan':[round(a[0],3) for a in active],'active_projects':[a[1] for a in active],
    'funded_papers':arr('SELECT year,count(*) FROM papers GROUP BY year'),'funded_patents':arr('SELECT year,count(*) FROM patents GROUP BY year'),
-   'all_papers':arr('SELECT year,count(*) FROM paper_reference'+flt+' GROUP BY year'),'all_patents':arr('SELECT year,count(*) FROM patent_reference'+flt+' GROUP BY year'),
+   'all_papers':arr('SELECT year,count(*) FROM (SELECT paper_id,year FROM paper_reference'+flt+' UNION SELECT paper_id,year FROM papers) GROUP BY year'),'all_patents':arr('SELECT year,count(*) FROM patent_reference'+flt+' GROUP BY year'),
    'paper_citations':arr('SELECT citing_year,count(*) FROM cites GROUP BY citing_year'),'mean_citations_3y':[round(v,3) if v is not None else None for v in means],
    'enterprise_patents':arr('SELECT year,count(*) FROM patents WHERE enterprise GROUP BY year')}
   eligible=n('SELECT count(*) FROM cited_stats WHERE year<=2022')

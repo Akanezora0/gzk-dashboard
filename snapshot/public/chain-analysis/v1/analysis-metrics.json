@@ -333,8 +333,8 @@
           63857,
           91720,
           130002,
-          161171,
-          207282,
+          161172,
+          207286,
           259239
         ],
         "all_patents": [
@@ -387,7 +387,7 @@
         "project_count": 6639,
         "funded_papers": 18967,
         "funded_patents": 6349,
-        "all_papers": 995618,
+        "all_papers": 995623,
         "all_patents": 331781,
         "paper_citations": 139412,
         "cited_papers": 10405,

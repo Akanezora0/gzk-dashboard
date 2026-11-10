@@ -54,7 +54,7 @@
     {
       "file": "snapshot/public/chain-analysis/v1/analysis-metrics.json",
       "bytes": 24266,
-      "sha256": "e3b25894de4d41e238eea8e0a60e260cc16c75d34e2d325e0cc330426486f09b"
+      "sha256": "f058cd42fc3520b5528d54b331ea0471db310a1365dbbe5a525a0de9cfcf5576"
     },
     {
       "file": "snapshot/public/evolution/v1/evolution.json",
