@@ -18,7 +18,8 @@ const share=computed(()=>((S.value.people||0)/(S.value.ai_participants||1)*100).
 const laterYouth=computed(()=>pct(cases.value.filter(c=>c.later_group==='青年').length,n.value))
 const laterGeneral=computed(()=>pct(cases.value.filter(c=>c.later_group==='面上').length,n.value))
 const within2=computed(()=>pct(cases.value.filter(c=>c.gap<=2).length,n.value))
-const takeText=computed(()=>`${fmt(S.value.people)} 位人工智能基金项目参与人此后担任项目负责人，占参与人 ${share.value}%；从参与到负责的间隔中位数为 ${S.value.median_gap} 年，${sameInst.value}% 在同一单位成长。`)
+const meanGap=computed(()=>n.value?(cases.value.reduce((t,c)=>t+(c.gap||0),0)/n.value).toFixed(1):'—')
+const takeText=computed(()=>`${fmt(S.value.people)} 位人工智能基金项目参与人此后担任项目负责人，占参与人 ${share.value}%；从参与到负责平均间隔 ${meanGap.value} 年，${sameInst.value}% 在同一单位成长。`)
 // 流向：左侧参与的项目类型，右侧首次负责的项目类型
 const flows=computed(()=>{const m=new Map();for(const c of cases.value){const k=c.early_group+'>'+c.later_group;m.set(k,(m.get(k)||0)+1)}return [...m].map(([k,v])=>{const [a,b]=k.split('>');return {a,b,n:v}})})
 const out=t=>flows.value.filter(f=>f.a===t).reduce((s,f)=>s+f.n,0),inn=t=>flows.value.filter(f=>f.b===t).reduce((s,f)=>s+f.n,0)
@@ -27,20 +28,16 @@ const sankey=computed(()=>{const k=K.value,posL={},posR={};let yl=TOP,yr=TOP
  for(const t of ORDER){const o=out(t),i=inn(t);if(o){posL[t]={y:yl,h:o*k};yl+=o*k+GAP}if(i){posR[t]={y:yr,h:i*k};yr+=i*k+GAP}}
  const ol={},or={};ORDER.forEach(t=>{ol[t]=0;or[t]=0})
  const links=[...flows.value].sort((p,q)=>ORDER.indexOf(p.a)-ORDER.indexOf(q.a)||ORDER.indexOf(p.b)-ORDER.indexOf(q.b)).map(f=>{const h=f.n*k,y0=posL[f.a].y+ol[f.a],y1=posR[f.b].y+or[f.b];ol[f.a]+=h;or[f.b]+=h;const mx=(LX+NW+RX)/2
-  const key=f.n/n.value>=.12
+  const key=f.n/n.value>=.1
   return {...f,h,y0,y1,mx,key,d:`M${LX+NW},${y0} C${mx},${y0} ${mx},${y1} ${RX},${y1} L${RX},${y1+h} C${mx},${y1+h} ${mx},${y0+h} ${LX+NW},${y0+h} Z`,fill:key?TYPE_COLOR[f.b]:'#cfc8c1',op:key?.75:.3}})
  return {posL,posR,links,height:Math.max(yl,yr)+10}})
 const labelL=t=>t==='重点等'?'联合·重大等':TYPE_SHORT[t]+'项目',labelR=labelL
-const top=computed(()=>[...sankey.value.links].sort((a,b)=>b.n-a.n).slice(0,2))
+const top=computed(()=>sankey.value.links.filter(l=>l.key))
 function flowTip(e,l){const names=cases.value.filter(c=>c.early_group===l.a&&c.later_group===l.b).slice(0,4).map(c=>c.person_name).join('、')
  show(e,`<b>参与${TYPE_NAME[l.a]} → 负责${TYPE_NAME[l.b]}</b><br>${l.n} 人（占全部 ${pct(l.n,n.value)}%）<br><span style="color:#78716c">如：${names}</span>`)}
-// 代表案例：首次负责面上及以上项目者优先，参与项目类型与单位各不相同
-const featured=computed(()=>{const pool=[...cases.value].filter(c=>c.person_name&&c.early_title&&c.later_title&&!/天元|讲习班/.test(c.early_type+c.later_type+c.early_title+c.later_title))
- const score=c=>(c.later_group==='面上'||/重点|联合/.test(c.later_type)?3:c.later_group==='青年'?1:0)*10-(c.gap>4?3:0)
- pool.sort((a,b)=>score(b)-score(a)||b.later_year-a.later_year||String(a.person_id).localeCompare(String(b.person_id)))
- const res=[],insts=new Set(),combos=new Map()
- for(const c of pool){const combo=c.early_group+c.later_group;if(insts.has(c.later_inst)||(combos.get(combo)||0)>=2)continue;res.push(c);insts.add(c.later_inst);combos.set(combo,(combos.get(combo)||0)+1);if(res.length>=6)break}
- return res})
+// 代表案例：人工选取有代表性的成长路径（含中国人民大学），按首次负责年份排序
+const FEATURED=['张静','连德富','叶翰嘉','张伟楠','况琨','李戈','苏航','桂韬']
+const featured=computed(()=>FEATURED.map(nm=>cases.value.find(c=>c.person_name===nm)).filter(Boolean))
 const amount=c=>c.later_amount?`${c.later_amount}${c.later_unit||''}`:''
 </script>
 <template>
@@ -63,11 +60,12 @@ const amount=c=>c.later_amount?`${c.later_amount}${c.later_unit||''}`:''
        <g v-if="sankey.posR[t]"><rect :x="RX" :y="sankey.posR[t].y" :width="NW" :height="sankey.posR[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
         <text v-if="sankey.posR[t].h>9" :x="RX+NW+14" :y="sankey.posR[t].y+sankey.posR[t].h/2+5" font-size="15" fill="#2a2a2a">{{labelR(t)}}</text></g>
       </template>
-      <g v-for="l in top" :key="'lb'+l.a+l.b" pointer-events="none" fill="#7a0a1c"><text :x="l.mx" :y="(l.y0+l.y1)/2+l.h/2+6" font-size="24" font-weight="700" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4">{{pct(l.n,n)}}%</text></g>
+      <g v-for="l in top" :key="'lb'+l.a+l.b" pointer-events="none" :fill="l.b==='青年'?'#7a0a1c':'#fff'"><text :x="l.mx" :y="(l.y0+l.y1)/2+l.h/2+(l.h>60?-2:4)" :font-size="l.h>60?28:22" font-weight="700" text-anchor="middle">{{pct(l.n,n)}}%</text>
+       <text v-if="l.h>40" :x="l.mx" :y="(l.y0+l.y1)/2+l.h/2+20" font-size="13" text-anchor="middle">{{fmt(l.n)}} / {{fmt(n)}} 人 · 参与{{labelL(l.a)}}</text></g>
      </svg>
      <div class="rs-keys">
       <div><strong>{{fmt(S.people)}}</strong><span>参与后担任项目负责人<small>人工智能基金参与人 {{fmt(S.ai_participants)}} 人</small></span></div>
-      <div><strong>{{S.median_gap}}<em>年</em></strong><span>从参与到负责的间隔中位数<small>{{within2}}% 在 2 年内</small></span></div>
+      <div><strong>{{meanGap}}<em>年</em></strong><span>从参与到负责的平均间隔<small>{{within2}}% 在 2 年内</small></span></div>
       <div><strong>{{laterYouth}}%</strong><span>首次负责青年科学基金<small>面上项目 {{laterGeneral}}%</small></span></div>
       <div><strong>{{sameInst}}%</strong><span>在同一单位成长<small>{{fmt(S.same_institution)}} 人</small></span></div>
      </div>

@@ -1,62 +1,141 @@
 <script setup>
-/* 06 全部案例 · 成长案例：参与他人项目后担任负责人的全部记录 */
-import {computed,ref,watch} from 'vue'
-import {fmt,TYPE_SHORT,TYPE_COLOR} from '../helpers/strengthTip.js'
+/* 06 全部案例 · 参与人成长案例：按首次负责项目的依托单位分组，与“负责人进阶案例”同一展示方式 */
+import {computed,ref,watch,nextTick} from 'vue'
+import ProjectTimeline from './ProjectTimeline.vue'
+import {useSurface} from '../helpers/useSurface'
+import {useTip,fmt,typeGroup,TYPE_NAME,TYPE_COLOR,BASIS} from '../helpers/strengthTip.js'
 import {useMemberGrowth} from '../helpers/memberGrowth.js'
+const props=defineProps({dataset:Object})
 const {data,error}=useMemberGrowth()
-const query=ref(''),later=ref('全部'),page=ref(0),open=ref('')
-const PAGE=15,GROUPS=['全部','青年','地区','面上','重点等']
-const rows=computed(()=>{const q=query.value.trim();return (data.value?.cases||[]).filter(c=>(later.value==='全部'||c.later_group===later.value)&&(!q||[c.person_name,c.later_inst,c.early_inst,c.later_title,c.early_title].some(v=>String(v||'').includes(q))))})
-const pages=computed(()=>Math.max(1,Math.ceil(rows.value.length/PAGE)))
-const visible=computed(()=>rows.value.slice(page.value*PAGE,(page.value+1)*PAGE))
-watch([query,later],()=>{page.value=0;open.value=''})
-const count=g=>g==='全部'?(data.value?.cases||[]).length:(data.value?.cases||[]).filter(c=>c.later_group===g).length
-const label=g=>g==='全部'?'全部':g==='重点等'?'联合·重大等':TYPE_SHORT[g]+'项目'
-const fg=g=>g==='青年'?'#7a0a1c':'#fff'
+const {tip,show,move,hide}=useTip()
+const cases=computed(()=>data.value?.cases||[])
+// 研究团队数据中已有的项目执行期与关联论文，用于补充时间轴
+const graph=computed(()=>props.dataset?.graph||{})
+const nodes=computed(()=>new Map((graph.value.project_nodes||[]).map(p=>[p.project_id,p])))
+const paperMap=computed(()=>new Map((graph.value.paper_nodes||[]).map(p=>[p.paper_id,p])))
+const edges=computed(()=>{const m=new Map();for(const e of graph.value.project_paper_edges||[]){if(!m.has(e.project_id))m.set(e.project_id,[]);m.get(e.project_id).push(e)}return m})
+const LEAD=['中国人民大学','清华大学','北京大学','中国科学院自动化研究所','浙江大学','上海交通大学','复旦大学','南京大学','中国科学技术大学','中国科学院计算技术研究所']
+const institutions=computed(()=>{const c=new Map();for(const x of cases.value)c.set(x.later_inst,(c.get(x.later_inst)||0)+1);return LEAD.filter(n=>c.has(n)).map(name=>({name,count:c.get(name)}))})
+const org=ref(LEAD[0]),query=ref(''),page=ref(0),selected=ref(null),drawer=ref(null),closeBtn=ref(null),drawerSurface=ref(null)
+const PAGE=10
+const people=computed(()=>{const q=query.value.trim()
+ const list=q?cases.value.filter(c=>[c.person_name,c.later_inst,c.early_inst,c.early_title,c.later_title].some(v=>String(v||'').includes(q))):cases.value.filter(c=>c.later_inst===org.value)
+ return [...list].sort((a,b)=>a.early_year-b.early_year||a.later_year-b.later_year||String(a.person_name).localeCompare(String(b.person_name),'zh-CN'))})
+const pages=computed(()=>Math.max(1,Math.ceil(people.value.length/PAGE)))
+const visible=computed(()=>people.value.slice(page.value*PAGE,(page.value+1)*PAGE))
+watch([org,query],()=>{page.value=0;selected.value=null;drawer.value=null})
+// 项目：参与项目与首次负责项目，可用时补执行期
+const proj=(c,kind)=>{const id=kind==='early'?c.early_id:c.later_id,n=nodes.value.get(id)||{}
+ return {project_id:id,grant_no:c[kind+'_grant'],title:c[kind+'_title'],approval_year:c[kind+'_year'],project_type:c[kind+'_type'],institution:c[kind+'_inst'],
+  principal_investigator:kind==='early'?c.early_pi:c.person_name,start_date:n.start_date,end_date:n.end_date,amount:kind==='later'&&c.later_amount?`${c.later_amount}${c.later_unit||''}`:(n.amount_raw?`${n.amount_raw}${n.amount_unit||''}`:''),role:kind==='early'?'参与':'负责'}}
+const yearsOf=s=>Number(String(s||'').slice(0,4))||null
+// 图形
+const YEARS=Array.from({length:11},(_,i)=>2016+i),YW=56,X=y=>300+(y-2016)*YW,ROW=50,R0=40,PERSON=100
+const rows=computed(()=>visible.value.map((c,i)=>{const y=R0+i*PERSON,e=proj(c,'early'),l=proj(c,'later');return {c,y,mid:y+ROW/2,items:[{p:e,y:y+6},{p:l,y:y+ROW+2}]}}))
+const H=computed(()=>R0+Math.max(1,rows.value.length)*PERSON+10)
+const instY=computed(()=>rows.value.length?(rows.value[0].mid+rows.value.at(-1).mid)/2:R0)
+const hl=computed(()=>drawer.value?.person_id||selected.value?.c?.person_id||'')
+function bar(p){const s=yearsOf(p.start_date),e=yearsOf(p.end_date);return s&&e?{x:X(Math.max(2016,s)),w:Math.max(10,X(Math.min(2026,e)+1)-X(Math.max(2016,s)))}:null}
+function pick(c,p){selected.value={c,p};hide()}
+function openDrawer(c){drawer.value=c;selected.value=null;nextTick(()=>closeBtn.value?.focus())}
+useSurface(computed(()=>!!drawer.value),{element:drawerSurface,close:()=>drawer.value=null})
+const drawerProjects=computed(()=>drawer.value?[proj(drawer.value,'early'),proj(drawer.value,'later')]:[])
+const drawerPapers=computed(()=>drawerProjects.value.flatMap(p=>(edges.value.get(p.project_id)||[]).map(e=>({p,q:paperMap.value.get(e.paper_id),e}))).filter(x=>x.q).sort((a,b)=>a.q.publication_year-b.q.publication_year))
+const stats=computed(()=>({people:people.value.length,same:people.value.filter(c=>c.early_inst===c.later_inst).length,gap:people.value.length?(people.value.reduce((t,c)=>t+c.gap,0)/people.value.length).toFixed(1):'—'}))
 </script>
 <template><div class="gc">
  <div v-if="error" class="rs-empty">{{error}}</div>
  <div v-else-if="!data" class="rs-empty">正在读取成长案例…</div>
  <template v-else>
-  <div class="gc-bar">
-   <div class="gc-chips"><span>首次负责</span><button v-for="g in GROUPS" :key="g" class="rs-chip" :class="{on:later===g}" @click="later=g">{{label(g)}} {{fmt(count(g))}}</button></div>
-   <input v-model="query" class="rs-ev-search" type="search" placeholder="搜索姓名、单位或项目" aria-label="搜索成长案例">
+  <div class="rs-ev-bar">
+   <div class="rs-ev-orgs"><button v-for="o in institutions" :key="o.name" class="rs-chip" :class="{on:!query&&org===o.name}" @click="query='';org=o.name">{{o.name}} {{o.count}} 人</button></div>
+   <input v-model="query" class="rs-ev-search" type="search" placeholder="搜索全部 1,007 人" aria-label="搜索成长案例">
   </div>
-  <div class="gc-head"><span>负责人</span><span>参与的项目</span><span></span><span>首次负责的项目</span><span>间隔</span></div>
-  <div v-for="c in visible" :key="c.person_id" class="gc-row" :class="{on:open===c.person_id}">
-   <button type="button" class="gc-line" :aria-expanded="open===c.person_id" @click="open=open===c.person_id?'':c.person_id">
-    <span class="who"><b>{{c.person_name||'—'}}</b><small>{{c.later_inst}}</small></span>
-    <span class="proj"><em class="part">{{c.early_year}} · 参与</em><span>{{c.early_title}}</span></span>
-    <i aria-hidden="true">→</i>
-    <span class="proj"><em :style="{background:TYPE_COLOR[c.later_group],color:fg(c.later_group)}">{{c.later_year}} · {{TYPE_SHORT[c.later_group]}}</em><span>{{c.later_title}}</span></span>
-    <span class="gap">{{c.gap}} 年</span>
-   </button>
-   <div v-if="open===c.person_id" class="gc-detail">
-    <div><small>参与项目</small><b>{{c.early_title}}</b><p>{{c.early_type}} · 批准号 {{c.early_grant}} · {{c.early_year}} 年批准<br>负责人 {{c.early_pi}} · {{c.early_inst}}</p></div>
-    <div><small>首次负责项目</small><b>{{c.later_title}}</b><p>{{c.later_type}} · 批准号 {{c.later_grant}} · {{c.later_year}} 年批准{{c.later_amount?` · ${c.later_amount}${c.later_unit||''}`:''}}<br>{{c.later_inst}}{{c.early_inst===c.later_inst?' · 同一单位':''}}</p></div>
+  <div class="rs-ev" :style="{minHeight:drawer?'720px':null}">
+   <div class="rs-ev-graph">
+    <div class="rs-ev-axis"><svg class="rs-svg" viewBox="0 0 940 40"><text x="40" y="26" font-size="15" fill="#78716c">机构</text><text x="150" y="26" font-size="15" fill="#78716c">成长人员</text>
+     <text v-for="y in YEARS" :key="y" :x="X(y)+YW/2" y="26" font-size="15" fill="#78716c" text-anchor="middle">{{y}}</text></svg></div>
+    <div class="rs-ev-rows">
+     <svg class="rs-svg" :viewBox="`0 0 940 ${H}`" role="img" :aria-label="`${query?'搜索结果':org}的参与人成长时间线`">
+      <line v-for="y in YEARS" :key="'g'+y" :x1="X(y)" :x2="X(y)" y1="20" :y2="H" stroke="#efebe6"/>
+      <template v-if="!query&&rows.length"><path v-for="r in rows" :key="'t'+r.c.person_id" :d="`M80,${instY} C110,${instY} 110,${r.mid} 140,${r.mid}`" fill="none" :stroke="r.c.person_id===hl?'#ae0d28':'#d6d0c9'" :stroke-width="r.c.person_id===hl?2.5:1.2"/>
+       <circle cx="60" :cy="instY" r="20" fill="#2a2a2a"/><text x="60" :y="instY+44" font-size="14" font-weight="700" text-anchor="middle" fill="#2a2a2a">{{org.length>6?org.slice(0,6)+'…':org}}</text></template>
+      <g v-for="r in rows" :key="r.c.person_id">
+       <g class="rs-hit" @click="openDrawer(r.c)"><text x="150" :y="r.mid+2" font-size="16" font-weight="700" :fill="r.c.person_id===hl?'#ae0d28':'#2a2a2a'">{{r.c.person_name}}</text>
+        <text x="150" :y="r.mid+20" font-size="12" fill="#78716c">{{query?r.c.later_inst.slice(0,9):'查看 →'}}</text></g>
+       <g v-for="(it,k) in r.items" :key="k">
+        <path :d="`M240,${r.mid} C265,${r.mid} 265,${it.y+12} ${X(it.p.approval_year)-4},${it.y+12}`" fill="none" :stroke="r.c.person_id===hl?'#ae0d28':'#d6d0c9'" :stroke-width="r.c.person_id===hl?2:1.1"/>
+        <rect v-if="bar(it.p)" :x="bar(it.p).x" :y="it.y+8" :width="bar(it.p).w" height="8" rx="4" :fill="k?'#f0b7bf':'#ece7e2'"/>
+        <path class="rs-hit" :d="`M${X(it.p.approval_year)+8},${it.y+2} l10,10 l-10,10 l-10,-10 Z`" :fill="k?(r.c.person_id===hl?'#ae0d28':'#d9737f'):'#fff'" :stroke="k?'none':'#a8a29e'" stroke-width="1.6" stroke-dasharray="2 2"
+         @mouseenter="show($event,`<b>${it.p.title}</b><br>${it.p.role} · ${it.p.grant_no} · ${TYPE_NAME[typeGroup(it.p.project_type)]} · ${it.p.approval_year} 批准${k?'':'<br>负责人 '+it.p.principal_investigator}`)" @mousemove="move" @mouseleave="hide" @click="pick(r.c,it.p)"/>
+        <text :x="X(it.p.approval_year)+26" :y="it.y+16" font-size="12.5" paint-order="stroke" stroke="#fbfaf8" stroke-width="4" :fill="k?'#7a0a1c':'#78716c'">{{it.p.role}} · {{TYPE_NAME[typeGroup(it.p.project_type)]}}</text>
+       </g>
+       <path :d="`M${X(r.c.early_year)+8},${r.items[0].y+22} C${X(r.c.early_year)+8},${r.items[1].y+12} ${X(r.c.later_year)-40},${r.items[1].y+12} ${X(r.c.later_year)-2},${r.items[1].y+12}`" fill="none" stroke="#ae0d28" stroke-width="2" stroke-dasharray="5 4"/>
+      </g>
+     </svg>
+    </div>
+    <div class="rs-ev-legend"><span><i class="dm hollow"></i>参与的项目</span><span><i class="dm"></i>首次负责的项目</span><span><i class="bar"></i>项目执行期</span><span><i class="dash"></i>参与 → 负责</span></div>
+    <nav v-if="pages>1" class="people-pages" aria-label="翻页"><button class="rs-btn" :disabled="page===0" @click="page--">上一页</button><span>{{page+1}} / {{pages}} · 共 {{fmt(people.length)}} 人</span><button class="rs-btn" :disabled="page>=pages-1" @click="page++">下一页</button></nav>
+   </div>
+   <aside class="rs-ev-panel">
+    <template v-if="!selected">
+     <span class="tag">{{query?'搜索结果':org}}</span>
+     <p class="rs-ev-stat"><b>{{fmt(stats.people)}}</b> 人参与后担任负责人</p>
+     <p class="k">{{fmt(stats.same)}} 人在同一单位成长 · 平均间隔 {{stats.gap}} 年</p>
+     <p class="k">点击人员姓名查看成长路径与项目介绍，点击菱形查看单个项目。</p>
+    </template>
+    <template v-else>
+     <span class="tag">{{selected.p.role}}的项目</span><h4>{{selected.p.title}}</h4>
+     <dl><dt>批准号</dt><dd>{{selected.p.grant_no}}</dd><dt>类型</dt><dd>{{selected.p.project_type}}</dd><dt>批准年</dt><dd>{{selected.p.approval_year}}</dd><dt>负责人</dt><dd>{{selected.p.principal_investigator}}</dd><dt>单位</dt><dd>{{selected.p.institution}}</dd><dt v-if="selected.p.amount">经费</dt><dd v-if="selected.p.amount">{{selected.p.amount}}</dd></dl>
+     <button class="rs-btn on" @click="openDrawer(selected.c)">查看 {{selected.c.person_name}} 的成长路径 →</button>
+    </template>
+   </aside>
+   <div v-if="drawer" ref="drawerSurface" class="rs-drawer" role="dialog" :aria-label="`${drawer.person_name}的成长路径`">
+    <button ref="closeBtn" class="rs-close" aria-label="关闭" @click="drawer=null">×</button>
+    <header><b>{{drawer.person_name}}</b><span>{{drawer.later_inst}}{{drawer.early_inst===drawer.later_inst?' · 同一单位成长':` · 原参与单位 ${drawer.early_inst}`}}</span></header>
+    <div class="chips"><span class="ghost">{{drawer.early_year}} 参与 {{TYPE_NAME[drawer.early_group]}}</span><i>→</i><span :class="drawer.later_group==='青年'?'soft':''">{{drawer.later_year}} 负责 {{TYPE_NAME[drawer.later_group]}}</span><em>间隔 {{drawer.gap}} 年</em></div>
+    <ProjectTimeline :projects="drawerProjects" :papers="drawerPapers.map(x=>x.q)"/>
+    <div class="plist"><article v-for="p in drawerProjects" :key="p.project_id"><b>{{p.approval_year}} · {{p.role}} · {{p.project_type}}</b><span>{{p.title}}</span><small>批准号 {{p.grant_no}} · 负责人 {{p.principal_investigator}} · {{p.institution}}{{p.amount?' · '+p.amount:''}}{{yearsOf(p.start_date)?` · 执行 ${yearsOf(p.start_date)}—${yearsOf(p.end_date)}`:''}}</small></article></div>
+    <template v-if="drawerPapers.length"><h5 class="ph">关联论文（{{drawerPapers.length}}）</h5>
+     <ul class="papers"><li v-for="x in drawerPapers" :key="x.p.grant_no+x.q.paper_id"><b>{{x.q.publication_year}}</b><span>{{x.q.title}}<small>{{x.q.venue}} · {{x.p.role}}的项目 · {{(x.e.bases||[]).map(b=>BASIS[b]||b).join('；')}}</small></span></li></ul></template>
    </div>
   </div>
-  <p v-if="!rows.length" class="rs-empty">没有符合条件的案例。</p>
-  <nav v-if="pages>1" class="gc-pager" aria-label="翻页"><button class="rs-btn" :disabled="page===0" @click="page--">上一页</button><span>{{page+1}} / {{pages}} · 共 {{fmt(rows.length)}} 人</span><button class="rs-btn" :disabled="page>=pages-1" @click="page++">下一页</button></nav>
  </template>
+ <div v-if="tip.show" class="rs-tip" :style="{left:tip.x+'px',top:tip.y+'px'}" v-html="tip.html"></div>
 </div></template>
 <style scoped>
-.gc-bar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-.gc-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.gc-chips>span{font-size:14px;color:var(--rs-muted);margin-right:4px}
-.gc-head,.gc-line{display:grid;grid-template-columns:130px minmax(0,1fr) 20px minmax(0,1fr) 56px;gap:14px;align-items:center}
-.gc-head{padding:8px 12px;font-size:13px;color:var(--rs-muted);border-bottom:1px solid var(--rs-line)}
-.gc-row{border-bottom:1px solid #f1ede9}
-.gc-line{width:100%;padding:10px 12px;background:none;border:0;text-align:left;font-family:inherit;cursor:pointer;border-radius:8px}
-.gc-line:hover,.gc-row.on .gc-line{background:#f7f5f2}
-.gc-line i{font-style:normal;color:#d9737f;text-align:center}
-.who b{display:block;font-size:15.5px;color:var(--rs-ink)}.who small{display:block;font-size:12px;color:var(--rs-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.proj{display:flex;align-items:center;gap:8px;min-width:0;font-size:14px;color:var(--rs-ink-2)}.proj>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.proj em{flex:none;font-style:normal;font-size:12px;font-weight:700;border-radius:12px;padding:2px 9px}
-em.part{background:#fff;color:#57534e;border:1px dashed #bfb6ae}
-.gap{font-size:14px;font-weight:650;color:var(--rs-ink);text-align:right;font-variant-numeric:tabular-nums}
-.gc-detail{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:6px 12px 16px 156px}
-.gc-detail small{font-size:12px;color:var(--rs-muted)}.gc-detail b{display:block;margin:3px 0;font-size:15px;line-height:1.5;color:var(--rs-ink)}.gc-detail p{margin:0;font-size:13px;line-height:1.7;color:var(--rs-ink-2)}
-.gc-pager{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:16px;font-size:14px;color:var(--rs-muted)}
-.gc-pager button:disabled{opacity:.4;cursor:default}
-@media(max-width:900px){.gc-head{display:none}.gc-line{grid-template-columns:1fr;gap:6px}.gc-line i{display:none}.gap{text-align:left}.gc-detail{grid-template-columns:1fr;padding-left:12px}}
+.people-pages{display:flex;justify-content:center;align-items:center;gap:14px;margin:10px 0;font-size:13px;color:var(--rs-muted)}.people-pages button:disabled{opacity:.4;cursor:default}
+.rs-ev-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.rs-ev-orgs{display:flex;gap:10px;flex-wrap:wrap}
+.rs-ev{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;position:relative}
+.rs-ev-graph{border:1px solid var(--rs-line);border-radius:12px;background:#fbfaf8;padding:6px 10px 10px;min-width:0}
+.rs-ev-rows{max-height:600px;overflow-y:auto}
+.rs-ev-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--rs-ink-2);padding:8px 6px 0}
+.rs-ev-legend span{display:inline-flex;align-items:center;gap:6px}
+.rs-ev-legend .dm{width:10px;height:10px;background:#d9737f;transform:rotate(45deg)}.rs-ev-legend .dm.hollow{background:#fff;border:1.5px dashed #a8a29e}
+.rs-ev-legend .bar{width:24px;height:7px;border-radius:4px;background:#ece7e2}
+.rs-ev-legend .dash{width:26px;border-top:2px dashed #ae0d28}
+.rs-ev-panel{border:1px solid var(--rs-line);border-radius:12px;padding:20px 22px;background:#fff;align-self:start}
+.rs-ev-panel h4{font-size:19px;margin:6px 0 8px;line-height:1.45}
+.rs-ev-panel .k{font-size:13.5px;color:var(--rs-muted);line-height:1.7;margin:6px 0}
+.rs-ev-stat{font-size:16px;margin:18px 0 4px}.rs-ev-stat b{font-size:24px;color:var(--rs-red)}
+.rs-ev-panel dl{display:grid;grid-template-columns:62px 1fr;gap:6px 10px;font-size:14px;margin:10px 0}
+.rs-ev-panel dt{color:var(--rs-muted)}.rs-ev-panel dd{margin:0}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;color:var(--rs-red);background:var(--rs-red-wash);border-radius:12px;padding:2px 10px}
+.rs-drawer{position:absolute;left:250px;right:0;top:0;bottom:0;min-height:600px;overflow-y:auto;background:#fff;border:1px solid var(--rs-line);border-radius:14px;box-shadow:0 14px 40px rgba(40,20,20,.16);padding:26px 30px;z-index:6}
+.rs-drawer header b{font-size:28px}.rs-drawer header span{font-size:16px;color:var(--rs-ink-2);margin-left:14px}
+.rs-drawer .chips{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
+.rs-drawer .chips span{background:var(--rs-red);color:#fff;border-radius:16px;padding:5px 14px;font-size:14px}.rs-drawer .chips span.soft{background:var(--rs-red-soft);color:var(--rs-red-deep)}
+.rs-drawer .chips span.ghost{background:#fff;color:var(--rs-ink-2);border:1px dashed #bfb6ae}
+.rs-drawer .chips i{font-style:normal;color:var(--rs-red);font-size:18px}.rs-drawer .chips em{font-style:normal;font-size:13px;color:var(--rs-muted)}
+.rs-drawer .plist{display:grid;gap:10px;margin:8px 0}
+.rs-drawer .plist article{background:#faf8f6;border:1px solid var(--rs-line);border-radius:12px;padding:14px 16px}
+.rs-drawer .plist article b{display:block;font-size:14px;color:var(--rs-red)}.rs-drawer .plist article span{display:block;font-size:15.5px;margin:3px 0}.rs-drawer .plist article small{color:var(--rs-muted)}
+.rs-drawer .ph{font-size:16px;margin:16px 0 6px}
+.rs-drawer .papers{list-style:none;padding:0;margin:0;font-size:14px}
+.rs-drawer .papers li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--rs-grid)}
+.rs-drawer .papers li b{color:var(--rs-blue)}.rs-drawer .papers li small{display:block;color:var(--rs-muted)}
+.rs-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border-radius:50%;border:0;background:#f5f3f0;font-size:20px;cursor:pointer;color:var(--rs-ink-2)}
+@media(max-width:1200px){.rs-ev{grid-template-columns:1fr}.rs-drawer{left:0}}
+@media(max-width:700px){.rs-ev-search{width:100%}.rs-ev-graph{overflow-x:auto}.rs-ev-graph .rs-svg{min-width:720px}}
 </style>

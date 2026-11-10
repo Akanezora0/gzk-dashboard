@@ -59,8 +59,8 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
 <template>
   <section class="rs-page" ref="root" @keydown.esc="drawer=''">
     <header class="rs-head"><span class="rs-no">06</span><h3>全部案例</h3></header>
-    <nav class="rs-ev-tabs" role="tablist" aria-label="案例类型"><button role="tab" class="rs-btn" :class="{on:view==='projects'}" :aria-selected="view==='projects'" @click="view='projects'">机构项目与论文</button><button role="tab" class="rs-btn" :class="{on:view==='growth'}" :aria-selected="view==='growth'" @click="view='growth'">参与人成长案例</button></nav>
-    <GrowthCases v-if="view==='growth'"/>
+    <nav class="rs-ev-tabs" role="tablist" aria-label="案例类型"><button role="tab" class="rs-btn" :class="{on:view==='projects'}" :aria-selected="view==='projects'" @click="view='projects'">负责人进阶案例</button><button role="tab" class="rs-btn" :class="{on:view==='growth'}" :aria-selected="view==='growth'" @click="view='growth'">参与人成长案例</button></nav>
+    <GrowthCases v-if="view==='growth'" :dataset="dataset"/>
     <div v-else-if="!projects.length" class="rs-empty">机构项目与论文关系暂未读取。</div>
     <template v-else>
     <div class="rs-ev-bar">
