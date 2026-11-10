@@ -3,15 +3,15 @@
 import {computed} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import PageHero from '../PageHero.vue'
-import ZhipuCase from './ZhipuCase.vue'
+import IndustryCases from './IndustryCases.vue'
 import '../../chain-page.css'
 defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 const topics=[
- {id:'industry',label:'产业链 · 企业与产品',caption:'企业研发、产品应用与经营表现',title:'从基础研究到企业与产品',lead:'选取代表性企业，沿基金支持的论文方法追踪企业研发、产品服务、行业应用与经营表现。'},
+ {id:'industry',label:'产业链 · 企业与产品',caption:'企业研发、产品应用与经营表现',title:'从基础研究到企业与产品',lead:'选取智谱、生数科技、科大讯飞、紫东太初四家企业，沿基金、论文、专利、产品、应用与经济效益六个环节，追踪基础研究进入企业与产业的路径。'},
  {id:'policy',label:'政策链 · 政策工具与影响',caption:'政策工具、技术定位与实施影响',title:'政策工具与创新、产业的互动',lead:'结合政策时间、地域与作用对象，研究政策工具如何定位技术方向，并与创新、产业形成互动。'}]
 const active=computed(()=>topics.find(t=>t.id===route.query.topic)||topics[0])
-function choose(id){router.replace({query:{...route.query,topic:id}})}
+function choose(id){router.replace({query:{...route.query,topic:id,case:undefined}})}
 const policyPlan=[
  {n:'01',t:'政策文本解构',d:'按层级、发布时间、地域与作用对象整理政策文本，识别支持、规范与限制类工具。'},
  {n:'02',t:'技术定位',d:'将政策条款对应到人工智能共同技术词表，观察政策关注的技术方向与变化。'},
@@ -27,7 +27,7 @@ const policyPlan=[
    </button></nav></template>
  </PageHero>
  <div :key="active.id" class="pane-swap">
-  <ZhipuCase v-if="active.id==='industry'"/>
+  <IndustryCases v-if="active.id==='industry'"/>
   <section v-else class="policy-plan">
    <header><h3>政策链专题</h3><p>以人工智能领域为示范，围绕政策工具、技术定位与实施影响组织研究。</p></header>
    <div class="pp-grid"><article v-for="p in policyPlan" :key="p.n"><b>{{p.n}}</b><h4>{{p.t}}</h4><p>{{p.d}}</p></article></div>

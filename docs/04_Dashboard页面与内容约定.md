@@ -13,7 +13,7 @@
 | 领域数据 | `/data?domain=ai` 或 `domain=lowalt` | 按数据类型看领域规模、年份、内容结构和记录 |
 | 技术演进 | `/evolution?domain=ai` 或 `domain=lowalt` | 浏览技术分类、代表方法时间节点和可读综述 |
 | 创新链分析 | `/chain?domain=ai` 或 `domain=lowalt` | 关联与依据、基金投入与产出、研究团队和证据下钻 |
-| 案例专题 | `/cases` | 承接产业链与政策链研究，当前保持筹备状态 |
+| 案例专题 | `/cases` | 产业链四家企业案例（六环节总览 + 详情），政策链专题 |
 
 首页是项目级入口，不随领域切换缩成 AI 专题。领域选择从领域数据页开始；切换、标签、研究模块和下钻选择需要保持各自层级。路由参数与旧深链应继续可用，刷新后保留当前视图。
 
@@ -127,4 +127,4 @@ AI 保留 **7 类／29 组／70 技术点纵向技术树**，基础模型与架�
 
 ## 案例专题
 
-`/cases?domain=ai`，首屏底部两个专题：产业链 · 企业与产品（`topic=industry`）、政策链 · 政策工具与影响（`topic=policy`）。产业链目前收录智谱案例（`components/cases/ZhipuCase.vue`，文案与来源集中在 `helpers/caseZhipu.js`），按案例概览、科研承接、产品应用、经营观察、证据索引组织，节点与产品可打开证据抽屉查看原文位置。新增企业案例时按同一结构新增数据文件与组件。
+`/cases?domain=ai`，首屏底部两个专题：产业链 · 企业与产品（`topic=industry`）、政策链 · 政策工具与影响（`topic=policy`）。产业链先显示四家企业（智谱、生数科技、科大讯飞、紫东太初）的六环节总览（基金→论文→专利承接→产品→应用→经济效益，`components/cases/IndustryCases.vue`），点击一行进入详情（`case=zhipu|vidu|spark|zidong`），详情上下各有返回总览按钮和其他案例切换。智谱详情沿用 `ZhipuCase.vue` + `helpers/caseZhipu.js`；其余三家用 `IndustryCaseDetail.vue`（核心链条、主体与数据、应用与经营、案例资料），数据在 `helpers/caseIndustry.js`，来源 Markdown 原样放在 `web/content/cases/`，详情页可展开阅读和下载。数据来自同事交付的《产业案例展示_20261110》（材料采集 2026-11-09）。新增企业时在 `caseIndustry.js` 中补一行总览与一份详情数据。
