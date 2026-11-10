@@ -180,11 +180,20 @@
 .home-case-path p{font-size:15px;color:#e8cbd1;margin-top:6px;line-height:1.7}
 
 /* ---------- 评估维度 ---------- */
-.home-evaluation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.home-evaluation-grid article{position:relative;background:#fff;border:1px solid var(--home-line);border-radius:4px;padding:36px 38px 36px}
-.home-evaluation-grid h3{font-size:27px;font-weight:700;margin-bottom:10px}
-.home-evaluation-grid h4{font-size:18px;font-weight:650;margin-bottom:10px;color:var(--tone)}
-.home-evaluation-grid p{font-size:16px;color:var(--home-muted)}
+.home-evaluation{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:56px;align-items:center}
+.home-evaluation-description{margin-top:26px;max-width:390px;font-size:17px;color:var(--home-muted)}
+.home-evaluation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.home-evaluation-grid article{position:relative;background:#fff;border:1px solid var(--home-line);border-radius:4px;padding:22px}
+.home-evaluation-grid .home-use-head{margin-bottom:16px;align-items:center}
+.home-evaluation-grid .home-use-icon{width:40px;height:40px}
+.home-evaluation-grid .home-use-icon .home-icon{width:22px;height:22px}
+.home-evaluation-grid .home-use-num{font-size:32px;letter-spacing:-1px}
+.home-evaluation-grid h3{font-size:21px;font-weight:700;margin-bottom:8px}
+.home-evaluation-grid h4{font-size:14px;font-weight:650;margin-bottom:8px;color:var(--tone);line-height:1.65}
+.home-evaluation-grid p{font-size:14px;color:var(--home-muted);line-height:1.75}
+.home-evaluation-grid ul{gap:6px;margin-top:16px}
+.home-evaluation-grid li{font-size:11px;padding:6px 8px}
+@media(max-width:1050px){.home-evaluation{grid-template-columns:1fr;gap:32px}.home-evaluation-description{max-width:620px;margin-top:18px}.home-evaluation-intro h2 br:last-child{display:none}}
 
 /* ---------- 响应式 ---------- */
 @media(max-width:1050px){
