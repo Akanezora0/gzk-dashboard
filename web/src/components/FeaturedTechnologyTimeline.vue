@@ -34,7 +34,8 @@ function tone(fy){
 /* 布局：主线为等距连续年份轴，技术点按发布日期落在所属年份区间；
    卡片尽量贴近时间点、上下与远近交替，直角引线分层避免交叉 */
 const wrap=ref(null),stageW=ref(1180)
-const W=computed(()=>Math.max(1080,stageW.value,items.value.length*50))
+// Fit the available desktop width; keep horizontal exploration on narrow screens.
+const W=computed(()=>Math.max(1080,stageW.value))
 const AY=286,NEAR=62,FAR=172,CARD=128
 const layout=computed(()=>{
  const list=items.value,w=W.value;if(!list.length)return {years:[],pts:[],ax0:0,ax1:0,stops:[]}
