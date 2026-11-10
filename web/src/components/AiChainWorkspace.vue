@@ -14,7 +14,7 @@ import {fmt} from '../shared'
 const props=defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 // 创新链前三环：基金资助 → 科学研究 → 技术发展；投入产出对照已并入技术演进页
-const hero={title:'基金、知识创新与技术的关联依据',lead:'从基金资助到科学研究，再到技术发展，追踪基础研究如何形成知识创新、带动技术进步。'}
+const hero={title:'基金、知识创新与技术的关联依据',lead:'从基金资助到科学研究，再到技术发展，追踪基础研究如何形成知识创新、带动技术进步，以及支撑这一过程的研究团队如何形成与接续。'}
 const modules=[
  {id:'evidence',label:'关联与依据',caption:'基金、论文、专利与技术主题的关联'},
  {id:'strength',label:'研究团队',caption:'承担机构、负责人接续与案例'}]
