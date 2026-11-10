@@ -10,7 +10,19 @@ import InvestCompare from './invest/InvestCompare.vue'
 import {useInvestData} from '../helpers/investData'
 import {safeUrl} from '../shared'
 const props=defineProps({bootstrap:Object}),route=useRoute()
-const extension=ref(null),extensionError=ref(''),extensionRequest=new AbortController()
+// 完整技术树（80 个技术点）在 evolution.json；读完再渲染，避免先显示首屏接口里的旧树。结果在模块内缓存，再次进入直接显示。
+let cachedExtension=null,pendingExtension=null
+function fetchExtension(){
+ if(cachedExtension)return Promise.resolve(cachedExtension)
+ pendingExtension??=fetch('/evolution/v1/evolution.json').then(async response=>{
+  if(!response.ok)throw new Error('技术演进更新暂时无法载入，请刷新页面重试。')
+  const extra=await response.json()
+  if(!extra.tree?.nodes||!extra.chronology?.events||!Array.isArray(extra.survey_additions))throw new Error('技术演进更新暂时无法载入，请刷新页面重试。')
+  return cachedExtension=extra
+ }).finally(()=>{pendingExtension=null})
+ return pendingExtension
+}
+const extension=ref(cachedExtension),extensionError=ref(''),extensionReady=ref(!!cachedExtension)
 const data=computed(()=>{
  const base=props.bootstrap,extra=extension.value
  if(!extra)return base
@@ -18,16 +30,13 @@ const data=computed(()=>{
  for(const e of extra.survey_additions)entries.set(e.topic_id+':'+e.route,e)
  return {...base,tree:extra.tree,chronology:extra.chronology,survey:{...base.survey,entries:[...entries.values()]}}
 })
+let alive=true
+onBeforeUnmount(()=>{alive=false})
 async function loadExtension(){
- try{
-  const response=await fetch('/evolution/v1/evolution.json',{signal:extensionRequest.signal})
-  if(!response.ok)throw new Error('技术演进更新暂时无法载入，请刷新页面重试。')
-  const extra=await response.json()
-  if(!extra.tree?.nodes||!extra.chronology?.events||!Array.isArray(extra.survey_additions))throw new Error('技术演进更新暂时无法载入，请刷新页面重试。')
-  extension.value=extra;await nextTick();selectFromRoute()
- }catch(error){if(error.name!=='AbortError')extensionError.value=error.message}
+ try{const extra=await fetchExtension();if(!alive)return;extension.value=extra}
+ catch(error){if(alive)extensionError.value=error.message}
+ finally{if(alive){extensionReady.value=true;await nextTick();selectFromRoute()}}
 }
-onBeforeUnmount(()=>extensionRequest.abort())
 const {curves:investCurves,error:investError,load:investLoad}=useInvestData()
 const topics=computed(()=>data.value.tree.nodes.filter(n=>n.node_type==='technology'))
 const groups=computed(()=>data.value.tree.nodes.filter(n=>n.node_type==='category'))
@@ -66,15 +75,19 @@ function goLibrary(){document.querySelector('.tech-library')?.scrollIntoView({be
 function goSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}
 </script>
 <template><div class="evolution-page">
+<div v-if="!extensionReady" class="empty-state evolution-loading">正在读取技术演进数据…</div>
+<template v-else>
 <PageHero class="evolution-hero" eyebrow="技术演进" title="人工智能技术演进与研究综述" lead="以共同技术词表组织 7 类技术方向，沿时间梳理代表方法与跨方向联系，并为每个技术点提供可读综述" :stats="[{value:groups.length,label:'大类'},{value:topics.length,label:'技术点'},{value:ready,label:'篇综述'}]" :action="{label:'浏览综述库'}" @action="goLibrary"/>
 <p v-if="extensionError" role="status" class="chart-note">{{extensionError}}</p>
 <section class="panel evolution-tree-panel"><div class="panel-heading"><div><h3>人工智能技术演进树</h3></div></div><TechnologyEvolutionTree :tree="data.tree" :chronology="data.chronology" :entries="entries" :selected="selectedTopic" :selected-event="selectedMilestone" @select="pickMilestone" @survey="id=>openSurvey(id,'B')"/></section>
 <section class="panel featured-tech-panel"><div class="panel-heading"><h3>关键技术里程碑</h3></div><FeaturedTechnologyTimeline :tree="data.tree" :chronology="data.chronology" :entries="entries" @survey="id=>openSurvey(id,'B')"/></section>
     <section class="panel tech-library"><div class="panel-title"><div><h3>技术主题与综述</h3></div><label class="search-box"><span>⌕</span><input v-model="topicSearch" placeholder="查找技术词、别名" aria-label="查找技术主题"/></label></div><div class="group-tabs"><button :class="{active:groupFilter==='all'}" @click="groupFilter='all'">全部 {{topics.length}}</button><button v-for="g in groups" :key="g.id" :class="{active:groupFilter===g.id}" @click="groupFilter=g.id">{{g.label}}</button></div><div :key="groupFilter+':'+topicPage" class="topic-grid pane-swap"><article v-for="t in pagedTopics" :key="t.id" class="topic-card" :class="{selected:selectedTopic===t.id}"><button class="topic-title" @click="pickTopic(t)"><span>{{t.id}} · {{t.level2}}</span><h4>{{t.label}}</h4><p>{{short(t.aliases?.join(' · '),75)}}</p></button><div class="topic-routes"><button v-for="which in ['B']" :key="which" :class="{available:entryFor(t.id,which)?.ready_for_dashboard}" :disabled="!entryFor(t.id,which)?.ready_for_dashboard" @click="openSurvey(t.id,which)"><span>{{statusLabel(entryFor(t.id,which))}}</span><small v-if="entryFor(t.id,which)?.actual_references">{{entryFor(t.id,which).actual_references}} 篇引用文献</small><span v-if="entryFor(t.id,which)?.ready_for_dashboard">↗</span></button></div></article></div><div class="pagination" style="justify-content:flex-end"><div><button :disabled="topicPage===1" @click="topicPage--">上一页</button><span>{{topicPage}} / {{Math.max(1,Math.ceil(filteredTopics.length/12))}}</span><button :disabled="topicPage*12>=filteredTopics.length" @click="topicPage++">下一页</button></div></div><p v-if="!filteredTopics.length" class="empty-state">没有找到符合筛选的技术主题。</p></section>
 <section class="panel evolution-invest-panel"><p v-if="investError" class="empty-state">投入与产出数据暂时无法读取 <button @click="investLoad">重新读取</button></p><p v-else-if="!investCurves" class="empty-state">正在读取投入与产出数据…</p><InvestCompare v-else :curves="investCurves"/></section>
+</template>
   <Teleport to="body"><div v-if="surveyOpen" class="survey-overlay" @click.self="closeSurvey"><section class="survey-modal" ref="surveyElement" role="dialog" aria-modal="true" aria-labelledby="survey-title"><header class="survey-modal-header"><div><span class="eyebrow">TECHNICAL SURVEY</span><h2 id="survey-title">{{surveyData?.title||topicDetail?.label+' · 技术演进综述'}}</h2></div><button class="close-button" aria-label="关闭综述" @click="closeSurvey">×</button></header><div class="survey-meta"><span>技术演进综述</span><span v-if="refs.length">{{refs.length}} 篇引用文献</span></div><div class="survey-tabs"><button :class="{active:surveyTab==='article'}" @click="surveyTab='article'">综述正文</button><button :class="{active:surveyTab==='references'}" @click="surveyTab='references'">参考文献 {{refs.length||''}}</button></div><div v-if="surveyLoading" class="empty-state">正在载入完整综述…</div><div v-else-if="surveyError" class="empty-state">{{surveyError}}</div><div v-else-if="surveyTab==='article'" class="survey-reading-layout pane-swap"><aside class="survey-toc"><span>文章目录</span><button v-for="s in articleToc" :key="s.id" @click="goSection(s.id)">{{short(s.text,42)}}</button></aside><article class="survey-prose" @click="onArticleClick" v-html="renderedArticle"></article></div><section v-else class="references-pane"><label class="search-box"><span>⌕</span><input v-model="referenceSearch" placeholder="搜索标题、作者或年份" aria-label="搜索参考文献"/></label><p class="chart-note">{{filteredRefs.length}} / {{refs.length}} 篇引用文献</p><article v-for="r in filteredRefs" :key="r.index" :id="'reference-'+r.index" class="reference-item" :class="{highlighted:highlightedReference===r.index}"><b>{{String(r.index).padStart(2,'0')}}</b><div><h4><a v-if="r.url||r.doi" :href="safeUrl(r.url||(String(r.doi).startsWith('http')?r.doi:'https://doi.org/'+r.doi))" target="_blank" rel="noopener">{{r.title||r.paper_title||'未提供标题'}} ↗</a><span v-else>{{r.title||r.paper_title||'未提供标题'}}</span></h4><p>{{r.year||'年份未提供'}} · {{Array.isArray(r.authors)?r.authors.map(a=>typeof a==='object'?a.name:a).join(', '):r.authors||''}}</p><small>{{r.venue||r.journal||''}}</small></div></article></section></section></div></Teleport>
 </div></template>
 <style scoped>
+.evolution-loading{min-height:60vh;display:grid;place-items:center}
 .evolution-hero :deep(.page-hero-head){flex-wrap:wrap}
 .evolution-hero :deep(.page-hero-head>div:first-child){flex:1 1 700px;min-width:0}
 .evolution-hero :deep(h2){white-space:nowrap}
