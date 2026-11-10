@@ -1,0 +1,612 @@
+{
+  "topic_id": "AI2.16",
+  "route": "B",
+  "title": "上下文工程：技术演进、方法比较与研究进展",
+  "content_md": "# 上下文工程：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文系统梳理了上下文工程的核心机制、方法演进与工程评估，探讨了其在大语言模型长上下文推理中的关键作用。研究范围涵盖提示词压缩、检索增强生成（RAG）的时序协同、结构化上下文组织以及KV缓存管理与多轮任务交接。通过对比提取式压缩、词元剪枝、图结构增强检索及自适应推理期检索等路线，本文分析了不同机制在计算效率、信息保留度与适用条件上的差异。主要认识指出，单纯追求输入端缩减易引发“压缩悖论”与输出膨胀，结构感知与行为对齐是保障系统鲁棒性的关键。最后，本文指出了静态流水线的局限与未来协同优化的开放问题。\n\n## 上下文工程的起源与核心研究问题\n\n上下文工程的核心研究问题聚焦于如何统筹大语言模型（LLM）的指令、资料、工具结果和任务状态，以缓解长上下文推理带来的系统级计算、内存开销以及准确率下降问题[3][8]。在2024至2026年的研究进展中，上下文工程的机制演进主要体现在提示词压缩、检索增强生成（RAG）的时序对齐及多通道记忆控制等方面。\n\n在提示词压缩与效率优化机制方面，现有方法大致可分为硬提示词与软提示词策略[8]。针对长上下文推理中的高昂代价，研究者对多种提示词压缩方法进行了规范化评测，涵盖提取式压缩、基于摘要的抽象式压缩以及词元剪枝（token pruning）[3][9]。研究表明，提取式压缩在长上下文任务中通常优于其他方法，能够在保持最小准确率损失的同时实现高达10倍的压缩比，而词元剪枝的效果往往落后于提取式压缩[3]。在机制分类上，提示词压缩技术依托于注意力优化、参数高效微调（PEFT）、模态融合及新合成语言等视角[8]。不过，压缩策略的适用条件与任务场景密切相关，例如在长文本评测中，适度的压缩甚至能增强模型性能，但在不同基准上的表现差异仍需标准化分析来规范[3][9]。\n\n在检索增强生成（RAG）与推理过程的时序协同机制方面，传统的RAG系统通常在推理开始前提供上下文，而诸如DeepSeek-R1和OpenAI o1等大型推理模型会生成跨越数千个词元的长思维链，这导致了现有检索管线与推理过程在时序上的根本性错配[38]。为此，发展出了自适应的推理期检索框架（如ReaLM-Retrieve），其通过步级不确定性检测器在推理步骤粒度识别知识缺口，并利用学习到的干预策略决定何时注入外部证据，从而实现高效的动态检索集成[38]。此外，在分布式基础设施中服务RAG时，传统的基于单纯语义相似度的检索忽略了内容存储位置，从而推高了尾部延迟与成本[24]。针对地理分布式RAG的选址与重排问题（GRaSP），通过将延迟衰减与可选成本惩罚引入基础重排层，在基数预算和区域上限约束下，其基础选择问题可转化为划分拟阵（partition matroid），并能通过 $O(N \\log N)$ 的贪心算法进行精确求解[24]。该机制的适用条件表明，当相关内容均匀分布或多副本部署时，该方法可在保持极低质量损失的同时降低延迟与成本；而在相关内容集中于远程区域时，延迟与相关性则呈现出本质上的张力[24]。\n\n在底层架构与记忆控制机制的理论发展方面，近期研究将固定、有限精度的因果Transformer建模为转录本管理转导器（TMT），探讨了通过显式通道操作（如入栈和出栈操作 $\\text{PopContext}$）来扩展模型记忆能力的机制[37]。在控制策略和资源增长的约束下，支持显式出栈操作的通道本质上等价于栈结构，若配合Hopcroft–Ullman表述可映射至经典的计算理论层级，其中双通道出栈转录本足以实现计算通用性[37]。这表明，通过规范化的转录本与上下文管理，模型能够在保持有限控制器不变的前提下，通过可控的记忆增长突破传统的长度与表达限制[37]。\n\n## 上下文选择、检索与组织的核心方法与机制\n\n在上下文工程中，智能体面对长文本、多模态记录以及复杂的外部知识库，传统基于固定窗口或独立分块的检索方法容易导致信息碎片化与效用非单调衰减[2][21]。为了突破这些局限，近年的核心方法与机制主要围绕自适应检索优化、图结构增强的上下文组织以及专业领域的定制化检索展开。\n\n在检索优化与策略适应性方面，部分研究关注查询特征与成本约束。例如，CARROT框架利用蒙特卡洛树搜索（MCTS）来优化分块组合顺序并考虑分块相关性，同时通过效用计算策略避免盲目耗尽预算，并结合配置智能体预测不同查询域的最佳配置，从而在基线模型上取得了高达30%的性能提升[2]。针对代码生成和多模态网页历史等特定交互场景，DeepCodeSeek通过轻量级0.6B重排器的后训练流水线实现了低延迟的实时API检索[13]；而在多模态网页交互中，ACGM则通过策略梯度优化构建任务自适应的相关性图，并利用模态特定衰减来捕捉不同的异构时间动态，实现了高效的对数级时间复杂度检索[34]。\n\n在上下文组织与结构化检索机制方面，如何有效组织长跨度或图结构关系成为关键。双有界关系召回（DBRR）策略在相同的检索预算下，将固定预算分配在相关性种子与有界图相邻上下文之间，通过利用证据间的关系来弥补平坦Top-K排名的不足，从而完整恢复支持证据集[29]。在处理历史长视频或医疗纵向电子健康档案时，结构化记忆同样至关重要：Context-as-Memory采用帧格式存储历史上下文，并结合记忆检索模块基于相机位姿的视场（FOV）重叠确定候选帧，在减少计算开销的同时保持场景一致性[11]；EHR-RAGp则针对纵向电子健康档案提出原型引导的检索模块，作为对齐机制动态整合临床事件历史[21]。此外，针对对话式交互和代码仓库审查，PCDR通过个性化密集检索消除了复杂重写流程的黑盒推理限制[32]，而Agent Retrieval Bench则系统评估了代码仓库中基于工作流信号的文件级检索任务[18]。\n\n综合比较而言，不同方法在计算资源、适应条件与适用场景上各有侧重。平坦Top-K及传统独立分块方法计算简单但容易丢失全局语义；基于图结构与关系约束的方法（如DBRR、ACGM）能够显著提升复杂关联任务（如桥接问答和多模态交互历史）的证据恢复率，但需要额外的图构建或策略优化成本；而领域特定检索（如TEIR与EICL在医疗咨询中的应用）则通过术语增强和情感上下文学习进一步扩展了特定任务的上下文效用[16]。这些机制共同表明，现代上下文工程正朝着任务自适应、结构化关联和高效预算分配的方向深入发展。\n\n## 上下文压缩、状态交接与多轮任务机制\n\n在本章中，我们将系统探讨上下文工程中的上下文压缩、状态交接与多轮任务机制。随着大语言模型（LLM）应用场景的不断扩展，长输入上下文带来的高昂计算成本与有限的窗口限制构成了主要挑战[1][4]。为缓解这一瓶颈，研究者提出了多种压缩与状态管理策略，其核心目标是在减少冗余的同时尽可能保留关键语义与推理证据[14][22][25]。\n\n### 压缩方法与底层机制\n当前的提示压缩方法主要分为选择性（抽取式）压缩、生成式压缩以及KV缓存压缩等范式。选择性压缩通常基于信息熵、注意力机制或语言学规则来对文本单元执行“保留或丢弃”的决策[5][7][12][25]。例如，部分研究将提示压缩公式化为标记分类问题，利用Transformer编码器捕获双向上下文以识别关键标记[5]；也有方法结合语法解析树与局部信息熵，通过全局树的传播与递归算法实现结构化修剪[7]。此外，强化学习（RL）被广泛引入以指导压缩策略，如通过图结构强化学习策略在黑盒LLM推理中平衡正确性与压缩率[25]。生成式压缩则通过分块重写或摘要机制将长文本转化为更紧凑的表征，从而避免简单的标记丢失[15]。针对KV缓存，特定方法通过结合提示词动态迭代识别并仅存储高相关的Key-Value对，以在空间受限的窗口内保持长文本的语义完整性[4]。在多代理交互或长序列场景中，中间代理的转换往往会导致语义显著性下降（即语义寄存器压缩），其几何变化高度依赖于特定的转换效价而非单纯的级联阶段[33]。\n\n### 复杂推理与多轮任务的挑战\n在多跳问答及复杂数学推理等任务中，传统压缩方法面临严峻考验。研究指出，困惑度（Perplexity）往往反映语言预测性而非任务重要性，导致代码等表面罕见但结构关键的语法标记被保留，而数学问题中遵循常规模式的数字却常被错误剪枝[36]。为此，诸如IterCOMP等框架通过引入迭代压缩循环、分解证据片段及评估问答充分性，将多跳推理步骤融入压缩过程[27]；同时，针对KV缓存掩码导致的证据丢失，有研究提出了“压缩感知弃权”（Compression-Aware Abstention）机制，通过行为微调训练模型在 surviving 上下文不足以支撑答案时主动拒答，而非盲目自信地编造错误答案[20]。\n\n### 方法比较与适用条件\n不同压缩架构在性能、效率与跨语言表现上存在显著差异。在架构设计上，诸如注意力机制精简（如移除多层感知机层）的专用编码器能够在大幅降低参数量的同时实现高效压缩[10]。然而，跨语言与跨架构的泛化能力表现不一：在英语语境下表现优异的监督压缩器在多语言场景下可能面临严重的“迁移鸿沟”，而基础的确定性词汇方法在多语言预算匹配下则表现得更为稳健[28]。此外，自回归提示压缩策略直接迁移至扩散大模型（DLLMs）时可能会因信息遗漏导致数学推理显著退化[30]。因此，在实际工程中需根据任务特性（如文本类型、多跳逻辑）、语言环境及部署开销选择适用的压缩与状态交接机制[25][28]。\n\n## 上下文工程的评估方法与工程效果比较\n\n在上下文工程的演进中，如何对系统的评估方法与工程效果进行严密且多维的比较，已成为衡量提示词压缩、智能体记忆以及检索增强生成（RAG）系统实用性的核心议题。传统的评估往往局限于单一的输入端指标（如输入标记缩减率），而现代研究表明，工程效果的评判必须综合考量下游任务性能、信息保留度、输入上下文的扎根性以及端到端的计算和能源开销 [17][19][35]。\n\n在评估方法的研究路线方面，针对不同应用场景涌现出了多种创新的评测框架与基准。例如，针对大语言模型提示词压缩技术的全方位评估，PCToolkit 整合了多样化的数据集与任务类型，涵盖重建、摘要、数学问题求解及代码补全等，支持即插即用的性能对照 [6]；同时，亦有研究提出包含下游任务性能、输入上下文扎根性及信息保留度在内的整体评估框架，用以弥补传统单纯关注压缩比的不足 [17]。在检索增强生成（RAG）的多跳推理评估中，针对传统方法多聚焦于单上下文检索的局限，学界提出了上下文感知检索评估（CARE）策略，该策略在处理多跳查询时展现出显著优势，尤其在拥有更大参数规模和更长上下文窗口的模型中表现突出 [23]。此外，在智能体长效记忆与特定专业领域（如建筑信息模型 BIM 信息检索）的评估中，IFCMemoryBench 等基准通过跨会话的多任务设计，实现了对检索相关性、利用率及记忆写入与使用质量的精细化诊断 [26]。\n\n在主要机制与工程效果的比较上，提示词压缩与上下文管理策略暴露出显著的“压缩悖论”与非线性动态。研究表明，“压缩更多”并非可靠的生产启发式策略 [19][31]。通过对指令生存概率（Psi）与压缩鲁棒性指数（CRI）的分析发现，激进的压缩会导致任务关键片段丢失，进而引发严重的“输出长度爆炸”现象 [19]。例如，在特定基准下，部分模型在激进压缩时会出现巨幅输出扩展，导致总推理成本（输入加输出）非但没有下降，反而因高昂的输出定价而大幅上升 [19][31]。在能源效率方面，输入标记的减少并不等同于实际能耗的等比例下降，部分模型在受损上下文下表现出冗长的补偿性输出，从而抵消了压缩带来的能耗收益 [35]。因此，结构感知（如熵自适应、 recency-weighted 或控制压缩粒度）的压缩策略能够更好地平衡成本与相似度，占据经验成本-相似度帕累托前沿 [17][31]。\n\n在适用条件与发展变化维度，各种评估方法与工程优化策略表现出高度的场景依赖性。软提示与序列级训练的结合在优化效果与压缩率权衡上表现优异 [17]，而结构感知策略则适用于对成本和输出稳定性要求严苛的多任务编排生产环境 [31]。同时，评估结果高度依赖于模型提供商的特性与基准的选择，单一基准的评估易导致对压缩安全性和效率的误判 [19][35]。未来的工程实践表明，必须摒弃单纯依赖输入缩减的朴素优化，转而采用多维度的整体评估框架、模型选择、输出长度控制以及提供商特定的监控机制，以实现真正可靠、经济且高效的上下文工程 [17][31][35]。\n\n## 关键路线综合比较与开放问题展望\n\n在上下文工程的研究与实践中，如何平衡长文本推理的准确性、计算开销与系统效率一直是核心议题。当前研究主要围绕提示词压缩、KV缓存优化以及检索增强生成（RAG）的动态演进展开，形成了多条关键技术路线。通过对这些路线的综合比较，可以清晰地识别出其核心机制、适用条件以及在实际部署中面临的失败条件与开放问题。\n\n在提示词压缩路线中，主要方法涵盖提取式压缩、基于摘要的抽象式压缩以及词元剪枝（token pruning）[3][8]。尽管存在多种实现路径，研究表明，提取式压缩在多项任务中通常优于其他方法，在实现高达10倍压缩的同时仅带来极小的准确率下降，而词元剪枝方法的表现往往落后于提取式压缩，仅在摘要任务上展现出边际收益[3]。然而，单纯关注输入词元数量的减少忽视了输出动态对总体成本的影响[19]。在激进压缩条件下，提示词结构的破坏会导致部分模型产生严重的“输出膨胀”现象（例如某些模型在特定基准测试下输出长度暴涨数十倍），从而抵消了输入端节省的开销，甚至导致推理总成本和能耗的大幅上升[19][31][35]。为了形式化评估这一现象，研究引入了指令生存概率（Psi）和压缩鲁棒性指数（CRI），指出提示词结构而非单一供应商属性是决定压缩安全性和效率的主导调节因子[19]。此外，能耗分析表明，简单的输入词元缩减并不等同于线性的焦耳能耗节约，输出长度控制和模型选择往往提供更稳定的能效权衡[35]。\n\n与提示词压缩侧重于静态或准静态输入精简不同，KV缓存压缩则直接作用于推理过程中的内存管理，通过驱逐上下文词元来降低显存占用[20]。然而，当被驱逐的词元恰好包含关键的答案证据时，大语言模型往往不会承认信息不足，而是倾向于编造自信的错误答案（即产生幻觉）[20]。针对这一失效条件，行为层面的补救措施被提出，即训练模型具备“压缩感知放弃”（compression-aware abstention）能力，使其能够识别残存上下文是否足以支持回答，并在证据丢失时诚实地选择拒绝，从而有效缓解KV缓存压缩带来的证据掩盖与幻觉问题[20]。\n\n在大模型与复杂多步推理深度结合的背景下，传统RAG系统在时间维度上面临根本性错配：传统RAG在推理开始前注入上下文，而大型推理模型（如OpenAI o1、DeepSeek-R1）则通过数千个词元的扩展思维链在多步推理中动态产生知识需求[38]。为此，推理感知的动态检索路线（如ReaLM-Retrieve）应运而生。其核心机制包括：采用步级不确定性检测器在推理步粒度（而非传统的词句级别）识别知识缺口、利用学习得到的干预策略决定何时进行外部检索，以及优化集成机制以降低每检索的开销[38]。实验证明，这种“少而精”的适时检索策略显著优于固定间隔的频繁检索，在多跳问答任务中取得了显著的准确率提升，并有效削减了冗余的检索调用[38]。\n\n综上所述，上下文工程的关键路线在机制上各有所长，但也伴随着各自的适用边界与失败条件。提示词压缩与KV缓存优化依赖于严格的结构感知与行为对齐，以防范输出膨胀和证据丢失导致的幻觉；而动态检索则向着适应长思维链演进的方向发展。未来的开放问题在于克服静态流水线的局限，推动端到端联合训练与结构感知的协同优化，从而在真实生产环境中实现兼具低成本、高能效与高鲁棒性的上下文管理[19][31][35][38]。\n\n## 结论\n\n上下文工程通过统筹指令、资料与任务状态，有效缓解了长上下文推理带来的计算、内存开销及准确率下降问题。路线比较表明，提取式压缩在保持高压缩比的同时准确率损失较小，而盲目追求激进压缩易导致输出膨胀与总成本上升；图结构与自适应推理期检索能显著提升复杂关联任务的证据恢复率与时序匹配度。主要认识强调，提示词结构和压缩感知弃权机制是防范模型幻觉、优化能效的核心主导因子。当前的开放问题集中于克服静态流水线局限，推动端到端联合训练与结构感知策略的深度协同，以实现兼具低成本、高鲁棒性与高能效的上下文管理系统。\n\n## 参考文献\n\n[1] Hoyoun Jung, Kyung-Joong Kim. Discrete Prompt Compression with Reinforcement Learning. 2023. https://arxiv.org/abs/2308.08758\n\n[2] Ziting Wang, Haitao Yuan, Wei Dong, Gao Cong, Feifei Li. CARROT: A Learned Cost-Constrained Retrieval Optimization System for RAG. 2024. https://arxiv.org/abs/2411.00744\n\n[3] Siddharth Jha, Lutfi Eren Erdogan, Sehoon Kim, Kurt Keutzer, Amir Gholami. Characterizing Prompt Compression Methods for Long Context Inference. 2024. https://arxiv.org/abs/2407.08892\n\n[4] Giulio Corallo, Paolo Papotti. FINCH: Prompt-guided Key-Value Cache Compression for Large Language Models. 2024. https://doi.org/10.1162/tacl_a_00716\n\n[5] Zhuoshi Pan, Qianhui Wu, Huiqiang Jiang, Menglin Xia, Xufang Luo. LLMLingua-2: Data Distillation for Efficient and Faithful Task-Agnostic Prompt Compression. 2024. https://arxiv.org/abs/2403.12968\n\n[6] Jinyi Li, Yihuai Lan, Lei Wang, Hao Wang. PCToolkit: A Unified Plug-and-Play Prompt Compression Toolkit of Large Language Models. 2024. https://arxiv.org/abs/2403.17411\n\n[7] Wenhao Mao, Chengbin Hou, Tianyu Zhang, Xinyu Lin, Ke Tang. Parse Trees Guided LLM Prompt Compression. 2024. https://arxiv.org/abs/2409.15395\n\n[8] Zongqian Li, Yinhong Liu, Yixuan Su, Nigel Collier. Prompt Compression for Large Language Models: A Survey. 2024. https://arxiv.org/abs/2410.12388\n\n[9] Zheng Zhang, Jinyi Li, Yihuai Lan, Xiang Wang, Hao Wang. An Empirical Study on Prompt Compression for Large Language Models. 2025. https://arxiv.org/abs/2505.00019\n\n[10] Edouardo Honig, Andrew Lizarraga, Zijun Frank Zhang, Ying Nian Wu. Better Prompt Compression Without Multi-Layer Perceptrons. 2025. https://arxiv.org/abs/2501.06730\n\n[11] Jiwen Yu, Jianhong Bai, Yiran Qin, Quande Liu, Xintao Wang. Context as Memory: Scene-Consistent Interactive Long Video Generation with Memory Retrieval. 2025. https://arxiv.org/abs/2506.03141\n\n[12] Yi Zhao, Zuchao Li, Hai Zhao, Baoyuan Qi, Guoming Liu. DAC: A Dynamic Attention-aware Approach for Task-Agnostic Prompt Compression. 2025. https://arxiv.org/abs/2507.11942\n\n[13] Esakkivel Esakkiraja, Denis Akhiyarov, Aditya Shanmugham, Chitra Ganapathy. DeepCodeSeek: Real-Time API Retrieval for Context-Aware Code Generation. 2025. https://arxiv.org/abs/2509.25716\n\n[14] Jinwu Hu, Wei Zhang, Yufeng Wang, Yu Hu, Bin Xiao. Dynamic Compressing Prompts for Efficient Inference of Large Language Models. 2025. https://arxiv.org/abs/2504.11004\n\n[15] Tinghui Zhang, Yifan Wang, Daisy Zhe Wang. SCOPE: A Generative Approach for LLM Prompt Compression. 2025. https://arxiv.org/abs/2508.15813\n\n[16] Kaiwen Zuo, Jing Tang, Hanbing Qin, Binli Luo, Ligang He. Satisfactory Medical Consultation based on Terminology-Enhanced Information Retrieval and Emotional In-Context Learning. 2025. https://arxiv.org/abs/2503.17876\n\n[17] Weronika Łajewska, Momchil Hardalov, Laura Aina, Neha Anna John, Hang Su. Understanding and Improving Information Preservation in Prompt Compression for LLMs. 2025. https://arxiv.org/abs/2503.19114\n\n[18] Bowen Qin, Yi Xie. Agent Retrieval Bench: Evaluating Repository Context Retrieval for Coding Agents. 2026. https://arxiv.org/abs/2607.24882\n\n[19] Warren Johnson. Compression Method Matters: Benchmark-Dependent Output Dynamics in LLM Prompt Compression. 2026. https://arxiv.org/abs/2603.23527\n\n[20] Mohammadali Khodabandehlou, Bhaskar Krishnamachari. Compression-Aware Abstention: Teaching LLMs to Refuse When KV-Compression Masks Remove Answer Evidence. 2026. https://arxiv.org/abs/2608.29934\n\n[21] Saeed Shurrab, Mariam Al-Omari, Dana El Samad, Farah E. Shamout. EHR-RAGp: Prototype-Guided Retrieval of Longitudinal Electronic Health Records for Clinical Prediction Models. 2026. https://arxiv.org/abs/2605.12335\n\n[22] Romtham Tungsununtham, Piyawat Lertvittayakumjorn, Atiwong Suchato, Peerapon Vateekul. EffComp: Efficient Prompt Compression via Hybrid Reinforcement & Supervised Learning. 2026. https://arxiv.org/abs/2611.02766\n\n[23] Lorenz Brehme, Thomas Ströhle, Ruth Breu. Evaluating Multi-Hop Reasoning in RAG Systems: A Comparison of LLM-Based Retriever Evaluation Strategies. 2026. https://arxiv.org/abs/2604.18234\n\n[24] Hardik Ruparel, Raj Kumar Pandey, Pramod Kumar. GRaSP: Latency-Aware Optimization for Geo-Distributed Retrieval-Augmented Generation. 2026. https://arxiv.org/abs/2610.26938\n\n[25] Mehrshad Eskandarpour, Parmida Haddadnejad, Mohammadjavad Jannati. Graph-Aware Reinforcement Learning for Reusable Prompt Compression in Black-Box LLMs. 2026. https://doi.org/10.21203/rs.3.rs-10458568/v1\n\n[26] Changyu Du, Alexander Vosseler, Filippo Mazza, André Borrmann. IFCMemoryBench: Evaluating Long-Term Memory of LLM-Based Agents in BIM Information Retrieval. 2026. https://arxiv.org/abs/2607.26072\n\n[27] JungMin Yun, YoungBin Kim. IterCOMP: Reasoning-aware Adaptive Prompt Compression for Multi-hop Question Answering. 2026. https://arxiv.org/abs/2608.13588\n\n[28] Mantas Lukauskas. Lost in Compression: A Controlled Cross-Lingual Audit of Extractive Prompt Compressors. 2026. https://arxiv.org/abs/2608.26175\n\n[29] Thomson D. Nguy. More Context, Same Budget: Dual-Bounded Relational Recall Beyond Top-K Retrieval. 2026. https://arxiv.org/abs/2608.18448\n\n[30] Sterling Huang, Abigayle Brown, Jiyoo Noh, Jiakang Xu, Wantong Huo. Prompt Compression in Diffusion Large Language Models: Evaluating LLMLingua-2 on LLaDA. 2026. https://arxiv.org/abs/2605.17932\n\n[31] Warren Johnson, Charles Lee. Prompt Compression in Production Task Orchestration: A Pre-Registered Randomized Trial. 2026. https://arxiv.org/abs/2603.23525\n\n[32] Yuchen Hui, Fengran Mo, Jia Ao Sun, Yuxing Tian, Wenhao Xu. RALI@iKAT 2026: Retrieval-aware User Profile Denoising via Personalized Conversational Dense Retrieval. 2026. https://arxiv.org/abs/2610.17673\n\n[33] Manuele Tele Junior Fernandez. Semantic Register Compression in Multi-Agent LLM Cascades. 2026. https://arxiv.org/abs/2607.14119\n\n[34] Saman Forouzandeh, Kamal Berahmand, Mahdi Jalili. Task-Adaptive Retrieval over Agentic Multi-Modal Web Histories via Learned Graph Memory. 2026. https://arxiv.org/abs/2604.07863\n\n[35] Warren Johnson. The Compression Paradox in LLM Inference: Provider-Dependent Energy Effects of Prompt Compression. 2026. https://arxiv.org/abs/2603.23528\n\n[36] Warren Johnson. The Perplexity Paradox: Why Code Compresses Better Than Math in LLM Prompts. 2026. https://arxiv.org/abs/2602.15843\n\n[37] Sergey Salishev. Transcript-Managed Transformers: Monotone Multi-Agent Collapse and Universality with Two Pop-Enabled Transcripts. 2026. https://arxiv.org/abs/2607.29496\n\n[38] Dongxin Guo, Jikun Wu, Siu Ming Yiu. When to Retrieve During Reasoning: Adaptive Retrieval for Large Reasoning Models. 2026. https://arxiv.org/abs/2604.26649\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Discrete Prompt Compression with Reinforcement Learning",
+      "year": 2023,
+      "authors": [
+        "Hoyoun Jung",
+        "Kyung-Joong Kim"
+      ],
+      "doi": "10.1109/access.2024.3403426",
+      "arxiv": "2308.08758",
+      "url": "https://arxiv.org/abs/2308.08758",
+      "work_id": "arxiv:2308.08758"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B003",
+      "title": "CARROT: A Learned Cost-Constrained Retrieval Optimization System for RAG",
+      "year": 2024,
+      "authors": [
+        "Ziting Wang",
+        "Haitao Yuan",
+        "Wei Dong",
+        "Gao Cong",
+        "Feifei Li"
+      ],
+      "doi": null,
+      "arxiv": "2411.00744",
+      "url": "https://arxiv.org/abs/2411.00744",
+      "work_id": "arxiv:2411.00744"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B004",
+      "title": "Characterizing Prompt Compression Methods for Long Context Inference",
+      "year": 2024,
+      "authors": [
+        "Siddharth Jha",
+        "Lutfi Eren Erdogan",
+        "Sehoon Kim",
+        "Kurt Keutzer",
+        "Amir Gholami"
+      ],
+      "doi": null,
+      "arxiv": "2407.08892",
+      "url": "https://arxiv.org/abs/2407.08892",
+      "work_id": "arxiv:2407.08892"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B005",
+      "title": "FINCH: Prompt-guided Key-Value Cache Compression for Large Language Models",
+      "year": 2024,
+      "authors": [
+        "Giulio Corallo",
+        "Paolo Papotti"
+      ],
+      "doi": "10.1162/tacl_a_00716",
+      "arxiv": null,
+      "url": "https://doi.org/10.1162/tacl_a_00716",
+      "work_id": "doi:10.1162/tacl_a_00716"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B007",
+      "title": "LLMLingua-2: Data Distillation for Efficient and Faithful Task-Agnostic Prompt Compression",
+      "year": 2024,
+      "authors": [
+        "Zhuoshi Pan",
+        "Qianhui Wu",
+        "Huiqiang Jiang",
+        "Menglin Xia",
+        "Xufang Luo",
+        "Jue Zhang",
+        "Qingwei Lin",
+        "Victor Rühle",
+        "Yuqing Yang",
+        "Chin-Yew Lin",
+        "H. Vicky Zhao",
+        "Lili Qiu",
+        "Dongmei Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2403.12968",
+      "url": "https://arxiv.org/abs/2403.12968",
+      "work_id": "arxiv:2403.12968"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B008",
+      "title": "PCToolkit: A Unified Plug-and-Play Prompt Compression Toolkit of Large Language Models",
+      "year": 2024,
+      "authors": [
+        "Jinyi Li",
+        "Yihuai Lan",
+        "Lei Wang",
+        "Hao Wang"
+      ],
+      "doi": null,
+      "arxiv": "2403.17411",
+      "url": "https://arxiv.org/abs/2403.17411",
+      "work_id": "arxiv:2403.17411"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B009",
+      "title": "Parse Trees Guided LLM Prompt Compression",
+      "year": 2024,
+      "authors": [
+        "Wenhao Mao",
+        "Chengbin Hou",
+        "Tianyu Zhang",
+        "Xinyu Lin",
+        "Ke Tang",
+        "Hairong Lv"
+      ],
+      "doi": null,
+      "arxiv": "2409.15395",
+      "url": "https://arxiv.org/abs/2409.15395",
+      "work_id": "arxiv:2409.15395"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B010",
+      "title": "Prompt Compression for Large Language Models: A Survey",
+      "year": 2024,
+      "authors": [
+        "Zongqian Li",
+        "Yinhong Liu",
+        "Yixuan Su",
+        "Nigel Collier"
+      ],
+      "doi": null,
+      "arxiv": "2410.12388",
+      "url": "https://arxiv.org/abs/2410.12388",
+      "work_id": "arxiv:2410.12388"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B014",
+      "title": "An Empirical Study on Prompt Compression for Large Language Models",
+      "year": 2025,
+      "authors": [
+        "Zheng Zhang",
+        "Jinyi Li",
+        "Yihuai Lan",
+        "Xiang Wang",
+        "Hao Wang"
+      ],
+      "doi": null,
+      "arxiv": "2505.00019",
+      "url": "https://arxiv.org/abs/2505.00019",
+      "work_id": "arxiv:2505.00019"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B015",
+      "title": "Better Prompt Compression Without Multi-Layer Perceptrons",
+      "year": 2025,
+      "authors": [
+        "Edouardo Honig",
+        "Andrew Lizarraga",
+        "Zijun Frank Zhang",
+        "Ying Nian Wu"
+      ],
+      "doi": null,
+      "arxiv": "2501.06730",
+      "url": "https://arxiv.org/abs/2501.06730",
+      "work_id": "arxiv:2501.06730"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B016",
+      "title": "Context as Memory: Scene-Consistent Interactive Long Video Generation with Memory Retrieval",
+      "year": 2025,
+      "authors": [
+        "Jiwen Yu",
+        "Jianhong Bai",
+        "Yiran Qin",
+        "Quande Liu",
+        "Xintao Wang",
+        "Pengfei Wan",
+        "Di Zhang",
+        "Xihui Liu"
+      ],
+      "doi": null,
+      "arxiv": "2506.03141",
+      "url": "https://arxiv.org/abs/2506.03141",
+      "work_id": "arxiv:2506.03141"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B017",
+      "title": "DAC: A Dynamic Attention-aware Approach for Task-Agnostic Prompt Compression",
+      "year": 2025,
+      "authors": [
+        "Yi Zhao",
+        "Zuchao Li",
+        "Hai Zhao",
+        "Baoyuan Qi",
+        "Guoming Liu"
+      ],
+      "doi": null,
+      "arxiv": "2507.11942",
+      "url": "https://arxiv.org/abs/2507.11942",
+      "work_id": "arxiv:2507.11942"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B018",
+      "title": "DeepCodeSeek: Real-Time API Retrieval for Context-Aware Code Generation",
+      "year": 2025,
+      "authors": [
+        "Esakkivel Esakkiraja",
+        "Denis Akhiyarov",
+        "Aditya Shanmugham",
+        "Chitra Ganapathy"
+      ],
+      "doi": null,
+      "arxiv": "2509.25716",
+      "url": "https://arxiv.org/abs/2509.25716",
+      "work_id": "arxiv:2509.25716"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B019",
+      "title": "Dynamic Compressing Prompts for Efficient Inference of Large Language Models",
+      "year": 2025,
+      "authors": [
+        "Jinwu Hu",
+        "Wei Zhang",
+        "Yufeng Wang",
+        "Yu Hu",
+        "Bin Xiao",
+        "Mingkui Tan",
+        "Qing Du"
+      ],
+      "doi": null,
+      "arxiv": "2504.11004",
+      "url": "https://arxiv.org/abs/2504.11004",
+      "work_id": "arxiv:2504.11004"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B024",
+      "title": "SCOPE: A Generative Approach for LLM Prompt Compression",
+      "year": 2025,
+      "authors": [
+        "Tinghui Zhang",
+        "Yifan Wang",
+        "Daisy Zhe Wang"
+      ],
+      "doi": null,
+      "arxiv": "2508.15813",
+      "url": "https://arxiv.org/abs/2508.15813",
+      "work_id": "arxiv:2508.15813"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B025",
+      "title": "Satisfactory Medical Consultation based on Terminology-Enhanced Information Retrieval and Emotional In-Context Learning",
+      "year": 2025,
+      "authors": [
+        "Kaiwen Zuo",
+        "Jing Tang",
+        "Hanbing Qin",
+        "Binli Luo",
+        "Ligang He",
+        "Shiyan Tang"
+      ],
+      "doi": null,
+      "arxiv": "2503.17876",
+      "url": "https://arxiv.org/abs/2503.17876",
+      "work_id": "arxiv:2503.17876"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B028",
+      "title": "Understanding and Improving Information Preservation in Prompt Compression for LLMs",
+      "year": 2025,
+      "authors": [
+        "Weronika Łajewska",
+        "Momchil Hardalov",
+        "Laura Aina",
+        "Neha Anna John",
+        "Hang Su",
+        "Lluís Màrquez"
+      ],
+      "doi": null,
+      "arxiv": "2503.19114",
+      "url": "https://arxiv.org/abs/2503.19114",
+      "work_id": "arxiv:2503.19114"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B030",
+      "title": "Agent Retrieval Bench: Evaluating Repository Context Retrieval for Coding Agents",
+      "year": 2026,
+      "authors": [
+        "Bowen Qin",
+        "Yi Xie"
+      ],
+      "doi": null,
+      "arxiv": "2607.24882",
+      "url": "https://arxiv.org/abs/2607.24882",
+      "work_id": "arxiv:2607.24882"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B035",
+      "title": "Compression Method Matters: Benchmark-Dependent Output Dynamics in LLM Prompt Compression",
+      "year": 2026,
+      "authors": [
+        "Warren Johnson"
+      ],
+      "doi": null,
+      "arxiv": "2603.23527",
+      "url": "https://arxiv.org/abs/2603.23527",
+      "work_id": "arxiv:2603.23527"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B036",
+      "title": "Compression-Aware Abstention: Teaching LLMs to Refuse When KV-Compression Masks Remove Answer Evidence",
+      "year": 2026,
+      "authors": [
+        "Mohammadali Khodabandehlou",
+        "Bhaskar Krishnamachari"
+      ],
+      "doi": null,
+      "arxiv": "2608.29934",
+      "url": "https://arxiv.org/abs/2608.29934",
+      "work_id": "arxiv:2608.29934"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B037",
+      "title": "EHR-RAGp: Prototype-Guided Retrieval of Longitudinal Electronic Health Records for Clinical Prediction Models",
+      "year": 2026,
+      "authors": [
+        "Saeed Shurrab",
+        "Mariam Al-Omari",
+        "Dana El Samad",
+        "Farah E. Shamout"
+      ],
+      "doi": null,
+      "arxiv": "2605.12335",
+      "url": "https://arxiv.org/abs/2605.12335",
+      "work_id": "arxiv:2605.12335"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B038",
+      "title": "EffComp: Efficient Prompt Compression via Hybrid Reinforcement & Supervised Learning",
+      "year": 2026,
+      "authors": [
+        "Romtham Tungsununtham",
+        "Piyawat Lertvittayakumjorn",
+        "Atiwong Suchato",
+        "Peerapon Vateekul"
+      ],
+      "doi": null,
+      "arxiv": "2611.02766",
+      "url": "https://arxiv.org/abs/2611.02766",
+      "work_id": "arxiv:2611.02766"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B039",
+      "title": "Evaluating Multi-Hop Reasoning in RAG Systems: A Comparison of LLM-Based Retriever Evaluation Strategies",
+      "year": 2026,
+      "authors": [
+        "Lorenz Brehme",
+        "Thomas Ströhle",
+        "Ruth Breu"
+      ],
+      "doi": null,
+      "arxiv": "2604.18234",
+      "url": "https://arxiv.org/abs/2604.18234",
+      "work_id": "arxiv:2604.18234"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B041",
+      "title": "GRaSP: Latency-Aware Optimization for Geo-Distributed Retrieval-Augmented Generation",
+      "year": 2026,
+      "authors": [
+        "Hardik Ruparel",
+        "Raj Kumar Pandey",
+        "Pramod Kumar"
+      ],
+      "doi": "10.1145/3848000.3850202",
+      "arxiv": "2610.26938",
+      "url": "https://arxiv.org/abs/2610.26938",
+      "work_id": "arxiv:2610.26938"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B042",
+      "title": "Graph-Aware Reinforcement Learning for Reusable Prompt Compression in Black-Box LLMs",
+      "year": 2026,
+      "authors": [
+        "Mehrshad Eskandarpour",
+        "Parmida Haddadnejad",
+        "Mohammadjavad Jannati"
+      ],
+      "doi": "10.21203/rs.3.rs-10458568/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.21203/rs.3.rs-10458568/v1",
+      "work_id": "doi:10.21203/rs.3.rs-10458568/v1"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B044",
+      "title": "IFCMemoryBench: Evaluating Long-Term Memory of LLM-Based Agents in BIM Information Retrieval",
+      "year": 2026,
+      "authors": [
+        "Changyu Du",
+        "Alexander Vosseler",
+        "Filippo Mazza",
+        "André Borrmann"
+      ],
+      "doi": null,
+      "arxiv": "2607.26072",
+      "url": "https://arxiv.org/abs/2607.26072",
+      "work_id": "arxiv:2607.26072"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B045",
+      "title": "IterCOMP: Reasoning-aware Adaptive Prompt Compression for Multi-hop Question Answering",
+      "year": 2026,
+      "authors": [
+        "JungMin Yun",
+        "YoungBin Kim"
+      ],
+      "doi": "10.18653/v1/2026.acl-long.1559",
+      "arxiv": "2608.13588",
+      "url": "https://arxiv.org/abs/2608.13588",
+      "work_id": "arxiv:2608.13588"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B047",
+      "title": "Lost in Compression: A Controlled Cross-Lingual Audit of Extractive Prompt Compressors",
+      "year": 2026,
+      "authors": [
+        "Mantas Lukauskas"
+      ],
+      "doi": null,
+      "arxiv": "2608.26175",
+      "url": "https://arxiv.org/abs/2608.26175",
+      "work_id": "arxiv:2608.26175"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B048",
+      "title": "More Context, Same Budget: Dual-Bounded Relational Recall Beyond Top-K Retrieval",
+      "year": 2026,
+      "authors": [
+        "Thomson D. Nguy"
+      ],
+      "doi": null,
+      "arxiv": "2608.18448",
+      "url": "https://arxiv.org/abs/2608.18448",
+      "work_id": "arxiv:2608.18448"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B049",
+      "title": "Prompt Compression in Diffusion Large Language Models: Evaluating LLMLingua-2 on LLaDA",
+      "year": 2026,
+      "authors": [
+        "Sterling Huang",
+        "Abigayle Brown",
+        "Jiyoo Noh",
+        "Jiakang Xu",
+        "Wantong Huo",
+        "Kaung Myat Kyaw",
+        "Jonathan Chan"
+      ],
+      "doi": "10.1145/3816713.3818806",
+      "arxiv": "2605.17932",
+      "url": "https://arxiv.org/abs/2605.17932",
+      "work_id": "arxiv:2605.17932"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B050",
+      "title": "Prompt Compression in Production Task Orchestration: A Pre-Registered Randomized Trial",
+      "year": 2026,
+      "authors": [
+        "Warren Johnson",
+        "Charles Lee"
+      ],
+      "doi": null,
+      "arxiv": "2603.23525",
+      "url": "https://arxiv.org/abs/2603.23525",
+      "work_id": "arxiv:2603.23525"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B051",
+      "title": "RALI@iKAT 2026: Retrieval-aware User Profile Denoising via Personalized Conversational Dense Retrieval",
+      "year": 2026,
+      "authors": [
+        "Yuchen Hui",
+        "Fengran Mo",
+        "Jia Ao Sun",
+        "Yuxing Tian",
+        "Wenhao Xu",
+        "Jian-Yun Nie"
+      ],
+      "doi": null,
+      "arxiv": "2610.17673",
+      "url": "https://arxiv.org/abs/2610.17673",
+      "work_id": "arxiv:2610.17673"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B054",
+      "title": "Semantic Register Compression in Multi-Agent LLM Cascades",
+      "year": 2026,
+      "authors": [
+        "Manuele Tele Junior Fernandez"
+      ],
+      "doi": null,
+      "arxiv": "2607.14119",
+      "url": "https://arxiv.org/abs/2607.14119",
+      "work_id": "arxiv:2607.14119"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B055",
+      "title": "Task-Adaptive Retrieval over Agentic Multi-Modal Web Histories via Learned Graph Memory",
+      "year": 2026,
+      "authors": [
+        "Saman Forouzandeh",
+        "Kamal Berahmand",
+        "Mahdi Jalili"
+      ],
+      "doi": null,
+      "arxiv": "2604.07863",
+      "url": "https://arxiv.org/abs/2604.07863",
+      "work_id": "arxiv:2604.07863"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B056",
+      "title": "The Compression Paradox in LLM Inference: Provider-Dependent Energy Effects of Prompt Compression",
+      "year": 2026,
+      "authors": [
+        "Warren Johnson"
+      ],
+      "doi": null,
+      "arxiv": "2603.23528",
+      "url": "https://arxiv.org/abs/2603.23528",
+      "work_id": "arxiv:2603.23528"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B057",
+      "title": "The Perplexity Paradox: Why Code Compresses Better Than Math in LLM Prompts",
+      "year": 2026,
+      "authors": [
+        "Warren Johnson"
+      ],
+      "doi": null,
+      "arxiv": "2602.15843",
+      "url": "https://arxiv.org/abs/2602.15843",
+      "work_id": "arxiv:2602.15843"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B058",
+      "title": "Transcript-Managed Transformers: Monotone Multi-Agent Collapse and Universality with Two Pop-Enabled Transcripts",
+      "year": 2026,
+      "authors": [
+        "Sergey Salishev"
+      ],
+      "doi": null,
+      "arxiv": "2607.29496",
+      "url": "https://arxiv.org/abs/2607.29496",
+      "work_id": "arxiv:2607.29496"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B059",
+      "title": "When to Retrieve During Reasoning: Adaptive Retrieval for Large Reasoning Models",
+      "year": 2026,
+      "authors": [
+        "Dongxin Guo",
+        "Jikun Wu",
+        "Siu Ming Yiu"
+      ],
+      "doi": "10.1145/3805712.3809722",
+      "arxiv": "2604.26649",
+      "url": "https://arxiv.org/abs/2604.26649",
+      "work_id": "arxiv:2604.26649"
+    }
+  ],
+  "article_sha256": "52a2ea0b2f111230e9f7358500062cbf59302034da7d18e2cfbfb6c323ae7e9c",
+  "references_sha256": "61e0c0647abff205d714ea07ae909fcba4224d4d0351b997e18e73041d480b16",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

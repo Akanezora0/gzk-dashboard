@@ -1,8 +1,8 @@
 {
   "version": "dashboard-20261105",
   "source": "当前5184 Dashboard 的展示数据和只读接口；不包含原始数据库",
-  "ai_readable_surveys": 102,
-  "ai_current_B_surveys": 70,
+  "ai_readable_surveys": 112,
+  "ai_current_B_surveys": 80,
   "lowalt_surveys": 66,
   "searchable_display_records": 237522,
   "assets": [
@@ -55,9 +55,65 @@
       "file": "snapshot/public/chain-analysis/v1/analysis-metrics.json",
       "bytes": 24266,
       "sha256": "e3b25894de4d41e238eea8e0a60e260cc16c75d34e2d325e0cc330426486f09b"
+    },
+    {
+      "file": "snapshot/public/evolution/v1/evolution.json",
+      "bytes": 281582,
+      "sha256": "e4cac888d8b82967b2569df8b2296f1d771202e679722da5e36d7bafcaf86b3c"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI1.10/dashboard_bundle.json",
+      "bytes": 39717,
+      "sha256": "a04b6d12107606477277460cf4fa4eb167bb1c2919bdca2e29aca2b265e1717e"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI1.11/dashboard_bundle.json",
+      "bytes": 52442,
+      "sha256": "c0a4cd7e53c90038fa8b4cee8554717cd3382152888212bad4a3720e7522194e"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI1.12/dashboard_bundle.json",
+      "bytes": 40238,
+      "sha256": "12d73c9e20010d544c1cab873d0ca8137ce9c579b55096e4edc48425c415097a"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI1.13/dashboard_bundle.json",
+      "bytes": 65007,
+      "sha256": "a1154456771f256925031e1aa5b444db26ec3af93d1037805b4546b074f36657"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI2.16/dashboard_bundle.json",
+      "bytes": 42809,
+      "sha256": "b4d53c1c7a7da8672c26c66a8293cb5dacc2a98af3e0ddf0e2ce9954c247ab48"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI2.17/dashboard_bundle.json",
+      "bytes": 63642,
+      "sha256": "d78f05a24a41d2e08ca7a8f0589b21cf4d9022fb9fc354243d6d8caa40ac5602"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI3.15/dashboard_bundle.json",
+      "bytes": 36273,
+      "sha256": "9e11c254e85abfe1fc2b3a92f8256bb44371451a6747b1dbdcc2a84addb77c34"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI4.06/dashboard_bundle.json",
+      "bytes": 59436,
+      "sha256": "1b7c48d23b63f59a7fea1e87e61f3dada27748489024a03de8c1cc9fbc877ede"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI5.19/dashboard_bundle.json",
+      "bytes": 75136,
+      "sha256": "fd4c17a6aba8059ab29021e5b2d704d83818d36cd542dd23e9d982f7cf84b2c9"
+    },
+    {
+      "file": "snapshot/public/evolution-surveys/v1/AI6.08/dashboard_bundle.json",
+      "bytes": 55893,
+      "sha256": "6358741ccedce9ac3c332727257b94768c32a724f865d242ba02b0728b2bf8d4"
     }
   ],
   "note": "保留当前统计口径；检索候选范围与规范库总量分开。仅移除接口证据字符串中的本机绝对路径前缀。",
   "research_evidence_version": "curated-cases-20261109",
-  "innovation_analysis_version": "chain-fill-20261110-v1"
+  "innovation_analysis_version": "chain-fill-20261110-v1",
+  "evolution_version": "evolution80-20261110-v1"
 }

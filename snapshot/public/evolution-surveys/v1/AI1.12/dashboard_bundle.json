@@ -1,0 +1,622 @@
+{
+  "topic_id": "AI1.12",
+  "route": "B",
+  "title": "扩散语言模型：技术演进、方法比较与研究进展",
+  "content_md": "# 扩散语言模型：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了扩散语言模型的基本原理与发展脉络，涵盖连续扩散与离散扩散的双轨演进。重点比较了离散扩散、掩码语言建模等主流机制及其在训练效率、似然界限与生成质量上的表现。同时，梳理了预训练、条件生成、指令适配以及采样解码、并行性与生成质量的优化机制，深入探讨了关键技术路线的优势、局限与开放性问题，为非自回归文本生成提供了系统的理论与技术参考。\n\n## 扩散语言模型的基本原理与发展脉络\n\n扩散语言模型作为一种新兴的生成范式，旨在解决传统自回归模型在生成顺序和并行化方面的局限，通过在连续或离散空间中进行迭代去噪来建模文本分布[1][14][34]。在早期研究中，连续扩散语言模型通过将离散词嵌入映射至连续空间并引入前向噪声与反向去噪过程实现文本生成，例如基于编码器-扩散解码器架构的GENIE框架，利用连续段去噪（CPD）目标函数在保持语义和句法相干性的同时生成更为多样的文本样本[1]。然而，由于自然语言数据天然具有离散结构，直接套用基于连续空间得分匹配（Score Matching）的传统扩散方法面临诸多挑战[5][14]。\n\n为弥合连续扩散与离散文本域之间的鸿沟，近期研究转向了离散扩散范式。例如，得分熵离散扩散模型（SEDD）通过引入分数熵损失，将得分匹配自然推广至离散空间，在同等模型规模下显著降低了困惑度，并支持无需温度缩放等退火技术的忠实文本生成与可控填空[5]。与此同时，掩码离散扩散语言模型（MDLM）凭借简化的Rao-Blackwellized目标函数和类掩码语言建模的训练策略，在效率和困惑度上取得了突破，能够以半自回归方式生成任意长度的文本[9]。在扩展规律与架构演进方面，通过对掩码扩散、均匀状态扩散及插值离散扩散方法的系统性IsoFLOP分析发现，困惑度在单一扩散家族内部具有信息度，但在跨算法比较时可能具有误导性；某些在似然验证上表现稍逊的模型（如均匀状态扩散），在结合特定采样器后可能在速度-质量帕累托前沿或特定推理任务（如GSM8K）中展现出优势[31]。此外，通过扩散适应（Diffusive Adaptation）与指令微调，预训练的掩码语言模型能够被有效赋予零样本和少样本的上下文学习及复杂推理能力[4]。总体而言，扩散语言模型通过连续与离散机制的双轨发展，为非自回归文本生成提供了兼具理论深度与并行生成潜力的多样化技术路线[5][14][19]。\n\n## 离散扩散与掩码语言建模的主流机制及比较\n\n离散扩散与掩码语言建模作为非自回归文本生成的重要范式，近年来在机制设计和性能表现上取得了显著进展。传统扩散模型主要面向连续数据设计，直接将高维文本数据及高斯噪声引入连续空间时往往面临训练不稳定、离散噪声破坏效果不佳等问题[2]。为此，研究者们提出了多种主流机制以弥合连续与离散空间的鸿沟，并在训练效率、似然界限与生成质量上进行了广泛比较。\n\n在离散扩散的具体实现上，Score Entropy Discrete Diffusion（SEDD）通过引入分数熵（score entropy）自然地将得分匹配（score matching）扩展到离散空间，在同等模型规模下显著降低了困惑度，能够生成高质量文本且无需进行温度缩放等分布退火技术[5]。同时，Generalized Discrete Diffusion from Snapshots（GDDS）框架通过快照隐变量推导简单的证据下界（ELBO），支持大离散状态空间下的任意噪声过程，在训练效率和生成质量上表现优异[25]。在掩码扩散（Masked Diffusion Models, MDMs）方向，简化且高效的掩码扩散语言模型通过 Rao-Blackwellized 目标函数和现代工程实践，使编码器-解码器架构能够实现类似传统语言模型的半自回归任意长度文本生成[9]。\n\n针对标准二进制掩码策略在保留掩码时会丢弃历史预测信息的局限，Soft-Masked Diffusion Language Model（Masked-Diffuse LM 及 SM 变体）通过软掩码策略在解码步骤中动态融合掩码嵌入与前序预测标记的嵌入，向模型提供更具信息量的先验，从而在控制生成任务和代码生成中提升了困惑度与 MAUVE 指标[2][18]。此外，针对生成顺序对模型性能的关键影响，传统方法通常采用硬编码（如块状自左向右）或两阶段优化策略。最新进展通过多变量噪声调度将连续时间变分目标与解码顺序直接对应，证明了掩码扩散模型本质上是具有可学习顺序的自回归模型（如 LoMDM / OeMDM），从而实现了从头联合学习生成顺序与扩散骨干网络，在多个基准测试中超越了现有离散扩散方法[15][35]。\n\n综合多维度实证比较来看，当前离散扩散方法在同等参数量下已将与自回归模型的似然差距缩小至10%至25%以内，并在词汇多样性和分布覆盖率上展现出明显优势[12]。然而，不同变体在计算开销与适用条件上存在差异：如部分方法支持计算与质量的灵活权衡、减少网络评估次数[5]，而另一些方法则侧重于通过重参数化或连续时间调度优化训练效率[3][15]。\n\n## 预训练、条件生成与指令适配的方法与机制演进\n\n扩散语言模型作为文本与多元内容生成的重要范式，通过迭代去噪过程实现从噪声或掩码序列到连贯序列的转化。在预训练方法与机制演进方面，代表性框架如GENIE采用编码器与基于扩散的解码器架构，并结合连续段落去噪（CPD）预训练目标，在保持语义和句法连贯性的同时，实现了与最先进自回归模型相媲美的性能，并展现出生成更多样化文本样本的能力[1]。通过在海量数据上的扩展以及掩码语言建模预训练，扩散语言模型能够有效学习通用语言知识，而进一步的扩散自适应（diffusive adaptation）与指令微调则可解锁其少样本、零样本上下文学习以及解决复杂推理任务的能力[4]。在条件生成、控制与约束推理机制方面，不同范式展现出各自的适用条件与性能特征。例如，针对离散扩散模型，研究者推导出了分类器指导与无分类器指导机制，并引入连续时间变分下界以及利用均匀噪声的扩散模型，使其能够持续编辑输出并显著提升在基因组设计、分子生成及离散图像生成等可控任务中的表现[8]。同时，针对分子图生成的训练无需指导方法能够将基础扩散模型与可替换的指导函数相组合，实现对特定原子类型比例与分子量的定向引导[10]。在代码生成与结构化文本领域，离散扩散模型在每个去噪步暴露出全局程序状态的机制，催生了如约束代码扩散（CDC）等训练期之外的神经符号推理框架。该框架通过结合数学优化与程序分析的约束感知去噪算子，能够局部调整去噪轨迹，在保持贴近基础模型的同时大幅减少编辑token数量，实现高效的函数正确性、语法有效性及安全性约束[23]。此外，在非编码RNA序列设计中，基于掩码离散语言模型的RNA-MDLM通过引入RNA语言模型表征条件化与改进的无分类器指导方案（Mod-CFG），在结构保真度、生物学新颖性及修复准确性上取得了平衡[21]。在模型轻量化与多模态扩展方面，量化嵌入可控扩散语言模型（QE-CDLM）通过对特定任务嵌入空间进行量化重构，构建了基于梯度的控制器，在降低计算开销的同时实现了更稳定的中间潜变量、更快的收敛速度及良好的可控性[7]。而在多模态生成任务中，如SyMDit等统一的离散扩散模型通过自适应跨模态变换器与协同注意力模块，在一套框架内统一处理文本到图像、图像到文本及视觉问答等任务，相较于传统自回归和早期离散扩散方法显著提升了推理效率[32]。\n\n## 采样解码、并行性与生成质量的优化机制\n\n在本章中，我们将深入探讨扩散语言模型（DLMs）在采样解码、并行性与生成质量方面的优化机制。传统自回归模型在解码时严格依赖左到右的逐Token方式，而扩散语言模型则通过离散或连续扩散及迭代去噪机制支持并行生成与灵活的解码顺序[1][22]。然而，这种灵活性也带来了推理开销高昂和并行解码易致质量退化等挑战[20]。\n\n为了克服这些瓶颈，研究人员从采样解码策略、并行架构与训练后优化等多个维度提出了创新方法。在解码策略方面，基于置信度的解码方法展现出了强劲的性能。例如，蔡等人建立了一套关于置信度解码的理论分析框架，研究表明基于熵和的策略（在每次迭代中连续解掩码直到累积熵超过阈值）能够在KL散度下实现$\\epsilon$-准确采样，且期望迭代次数为$O(H(X_0)/\\varepsilon)$[22]。这种机制在目标数据分布具有较低熵时能够显著加速采样，并自动适应不确定性[22]。此外，顺序扩散语言模型（SDLM）通过引入“下一个序列预测”（NSP）统一了单Token与多Token块预测，能够在固定大小的掩码块内执行扩散推理，并根据模型置信度动态解码连续子序列[17]。与此类似，扩散思维（DoT）将扩散模型与思维链相结合，允许推理步骤在时间维度上弥散，在多位数乘法和布尔逻辑等任务中兼顾了效率与准确性[1]。\n\n在计算架构与系统吞吐优化方面，由于双向表示难以直接应用KV缓存，固定块大小的扩散解码往往面临计算冗余与负载敏感性之间的权衡[20][30]。针对这一问题，Optimus等工作提出了饱和感知弹性解码系统，通过分块解码（chunked decoding）和弹性调度在运行时动态调整解码粒度，以平衡GPU利用率与Token效率[30]。同时，窗口扩散（Window-Diffusion）方法通过揭示DLM推理中的结构局限性——即解码主要由前缀局部的活跃Token驱动，且解码后的Token表现出阶段性的时间稳定性——引入了滑动计算窗口以及对非活跃未解码Token的KV缓存复用，从而有效降低了全序列注意力的计算冗余[36]。固定点掩码生成模型（FP-MGMs）则通过跨步一致性损失和三态复用（3SR），在共享注意力层上利用固定点求解器替代部分去噪器，从而实现自适应深度与更优的低预算生成质量[24]。\n\n在生成质量与强化学习微调方面，研究者致力于通过先进的对齐与蒸馏技术提升模型性能。TraceRL通过引入轨迹感知的强化学习框架（包含基于扩散的值模型），将偏好的推理轨迹纳入后训练中，在复杂数学和代码任务上取得了显著的准确率提升[16]。在线策略残差学习（ORL）框架通过在动态生成的残差轨迹上直接学习，并引入鼓励预测锐化的熵收缩目标，配合异步残差捕获与专门的块扩散注意力引擎，大幅提升了每个前向的Token数（TPF）和端到端吞吐量[28]。此外，针对多步掩码扩散模型推理慢的问题，$\\mathtt{Di[M]O}$通过基于Token级分布匹配的“在线策略框架”以及带有随机性注入的Token初始化策略，成功实现了掩码扩散模型到单步生成器的蒸馏，在图像生成等任务中显著减少了推理时间并保持了与多步教师模型相当的竞争力[13]。\n\n综上所述，当前的优化机制在保持扩散语言模型双向上下文建模优势的同时，通过自适应解码、KV缓存与窗口裁剪、系统级弹性调度以及强化学习和蒸馏，大幅突破了原有的速度与质量帕累托边界，为实现高效的大规模扩散语言模型服务奠定了坚实基础。\n\n## 关键路线的优势、局限与开放性问题\n\n扩散语言模型（Diffusion Language Models, DLMs）作为传统自回归语言模型的重要非自回归替代方案，凭借其灵活的生成顺序与并行生成能力取得了显著进展[12][22]。然而，随着关键技术路线的拓展与深化，各类机制在优势、局限性以及开放性问题上也呈现出多样化的特征。从方法论与核心机制的维度来看，当前主流研究涵盖了离散扩散、掩码扩散以及均匀状态扩散等多种路线，并衍生出针对解码策略、长度控制、安全性对齐及训练优化的系统性探讨。\n\n在生成质量与似然估计的研究中，离散扩散方法在缩小与自回归模型的似然差距方面表现优异，并展现出词汇多样性与分布覆盖上的结构性优势，且无需复杂的温度调节即可达到良好的操作点[12]。尽管掩码扩散在多数基准测试中占据主导地位，但关于其缩放规律的研究表明，困惑度指标在跨算法族比较时可能具有误导性，某些似然标度较差的模型因具有更高实用采样速度和更好的帕累托前沿而在特定任务（如数学推理）中更具竞争力[31]。在优化策略方面，训练扩散模型的优化器选择同样至关重要；受控基准测试表明，尽管经过精心调优的AdamW是一个强有力的默认选择，但诸如Muon和MARS-M等替代优化器在特定的扩散建模任务中能够展现出显著的性能提升[29]。此外，从模型理论属性来看，均匀状态离散扩散模型可被框架化为联想记忆，通过条件似然最大化形成吸引子，从而在记忆训练数据与泛化未见数据之间取得平衡[27]。\n\n在采样解码与计算效率方面，解码策略直接决定了采样效率。基于预测置信度的自适应解码方法（如累积熵阈值策略）在理论上被证明是高效的，它能够在低不确定性区域自动扩大去噪集合，从而在低熵数据分布下实现显著的采样加速[22]。然而，扩散模型在面对可变长度生成任务时暴露出固有的长度诱导偏差，导致在未知长度的补全和填充任务中容易出现生成不足或冗余[26]。为此，引入显式长度正则化的框架（如LR-DLLM）能够解耦语义兼容性与长度不确定性，在不修改模型训练程序的前提下实现动态跨度调整[26]。此外，在推理扩展与测试时缩放（Test-Time Scaling）方面，通过奖励引导的拼接策略（Stitching），可以将扩散模型生成的廉价、多样化中间推理步骤与过程奖励模型（PRM）及求解器相结合，实现步骤级候选的模块化重组，在复杂推理任务中展现出优于传统轨迹级聚合和任务特定强化学习微调的灵活性与有效性[33]。\n\n在安全性对齐与鲁棒性方面，扩散语言模型任意顺序生成的灵活性也扩大了攻击面，使得有害片段可能出现在任意位置[11]。针对这一局限，标记级安全对齐方法（如A2D）通过在随机掩码下直接进行标记级对齐并在有害内容出现时触发终止信号，有效防御了各种顺序和预填充攻击，同时支持实时监测与早期拒绝[11]。而在架构级应用中，局部扩散机制的引入能够有效缓解大型语言模型中的结构性幻觉，通过跨层信息传播的优化显著提升生成文本的准确性与逻辑一致性[6]。综上所述，当前扩散语言模型在多条关键技术路线上面临着性能、效率与安全性的多维权衡，如何克服可变长度偏差、优化训练超参数并实现高效的测试时推理，构成了该领域未来发展的核心开放性问题[11][26][29][31][33]。\n\n## 结论\n\n扩散语言模型作为非自回归文本生成的重要范式，通过连续与离散机制的双轨发展取得了显著突破。离散扩散与掩码语言建模在缩小与自回归模型似然差距的同时，展现出词汇多样性和分布覆盖上的优势。通过自适应解码策略、KV缓存复用、弹性调度及强化学习和蒸馏，模型的推理效率与生成质量得到了大幅提升。然而，该领域仍面临可变长度诱导偏差、跨算法似然指标误导、训练超参数优化以及复杂生成任务中的安全性对齐等开放性挑战。未来的研究需要进一步平衡生成质量、计算效率与鲁棒性，以推动扩散语言模型在大规模实际应用中的落地。\n\n## 参考文献\n\n[1] Zhenghao Lin, Yeyun Gong, Yelong Shen, Tong Wu, Zhihao Fan. Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise. 2022. https://arxiv.org/abs/2212.11685\n\n[2] Jiaao Chen, Aston Zhang, Mu Li, Alex Smola, Diyi Yang. A Cheaper and Better Diffusion Language Model with Soft-Masked Noise. 2023. https://arxiv.org/abs/2304.04746\n\n[3] Lin Zheng, Jianbo Yuan, Lei Yu, Lingpeng Kong. A Reparameterized Discrete Diffusion Model for Text Generation. 2023. https://arxiv.org/abs/2302.05737\n\n[4] Jiasheng Ye, Zaixiang Zheng, Yu Bao, Lihua Qian, Quanquan Gu. Diffusion Language Models Can Perform Many Tasks with Scaling and Instruction-Finetuning. 2023. https://arxiv.org/abs/2308.12219\n\n[5] Aaron Lou, Chenlin Meng, Stefano Ermon. Discrete Diffusion Modeling by Estimating the Ratios of the Data Distribution. 2023. https://arxiv.org/abs/2310.16834\n\n[6] Kizuki Kiritani, Tsumugi Kayano. Mitigating Structural Hallucination in Large Language Models with Local Diffusion. 2024. https://doi.org/10.21203/rs.3.rs-4678127/v1\n\n[7] Cheng Kang, Xinye Chen, Yong Hu, Daniel Novak. Quantized Embedding Vectors for Controllable Diffusion Language Models. 2024. https://doi.org/10.36227/techrxiv.170723453.36138311/v1\n\n[8] Yair Schiff, Subham Sekhar Sahoo, Hao Phung, Guanghan Wang, Sam Boshar. Simple Guidance Mechanisms for Discrete Diffusion Models. 2024. https://arxiv.org/abs/2412.10193\n\n[9] Subham Sekhar Sahoo, Marianne Arriola, Yair Schiff, Aaron Gokaslan, Edgar Marroquin. Simple and Effective Masked Diffusion Language Models. 2024. https://arxiv.org/abs/2406.07524\n\n[10] Thomas J. Kerby, Kevin R. Moon. Training-Free Guidance for Discrete Diffusion Models for Molecular Generation. 2024. https://arxiv.org/abs/2409.07359\n\n[11] Wonje Jeung, Sangyeon Yoon, Yoonjun Cho, Dongjae Jeon, Sangwoo Shin. A2D: Any-Order, Any-Step Safety Alignment for Diffusion Language Models. 2025. https://arxiv.org/abs/2509.23286\n\n[12] Shuyang Xu, Fanyi Zhao, Xu Wang. An Empirical Comparison of Generation Quality and Diversity Between Discrete Diffusion and Autoregressive Text Generation. 2025. https://doi.org/10.69987/aimlr.2025.60202\n\n[13] Yuanzhi Zhu, Xi Wang, Stéphane Lathuilière, Vicky Kalogeiton. Di$\\mathtt{[M]}$O: Distilling Masked Diffusion Models into One-step Generator. 2025. https://arxiv.org/abs/2503.15457\n\n[14] Ashen Weligalle. Discrete Diffusion Models for Language Generation. 2025. https://arxiv.org/abs/2507.07050\n\n[15] Prateek Garg, Bhavya Kohli, Sunita Sarawagi. Masked Diffusion Models are Secretly Learned-Order Autoregressive Models. 2025. https://arxiv.org/abs/2511.19152\n\n[16] Yinjie Wang, Ling Yang, Bowen Li, Ye Tian, Ke Shen. Revolutionizing Reinforcement Learning Framework for Diffusion Large Language Models. 2025. https://arxiv.org/abs/2509.06949\n\n[17] Yangzhou Liu, Yue Cao, Hao Li, Gen Luo, Zhe Chen. Sequential Diffusion Language Models. 2025. https://arxiv.org/abs/2509.24007\n\n[18] Michael Hersche, Samuel Moor-Smith, Thomas Hofmann, Abbas Rahimi. Soft-Masked Diffusion Language Models. 2025. https://arxiv.org/abs/2510.17206\n\n[19] Jiayi Fu, Yuxia Wang. A Tutorial on Diffusion Theory: From Differential Equations to Diffusion Models. 2026. https://arxiv.org/abs/2605.22586\n\n[20] Kaung Myat Kyaw, Weiyu Chen, Jonathan Chan, James Kwok, wchenbx. Accelerating Inference in Diffusion Large Language Models: A Survey. 2026. https://doi.org/10.36227/techrxiv.177102145.58136415/v1\n\n[21] Utkarsh Upadhyay, Chuankai Dai, Julian Herold, Kengo Sato, Alexander Schug. Conditional Generation and Inpainting of Non-Coding RNA Sequences with Masked Discrete Diffusion. 2026. https://doi.org/10.64898/2026.09.17.752279\n\n[22] Changxiao Cai, Gen Li. Confidence-Based Decoding is Provably Efficient for Diffusion Language Models. 2026. https://arxiv.org/abs/2603.22248\n\n[23] Lize Shao, Michael Cardei, Zichen Xie, Ferdinando Fioretto, Wenxi Wang. Constrained Code Generation with Discrete Diffusion. 2026. https://arxiv.org/abs/2605.16829\n\n[24] Andrea Miele, Yiming Qin, Alba Carballo-Castro, Justin Deschenaux, Pascal Frossard. Fixed-Point Masked Generative Modeling. 2026. https://arxiv.org/abs/2605.31215\n\n[25] Oussama Zekri, Théo Uscidda, Nicolas Boullé, Anna Korba. Generalized Discrete Diffusion from Snapshots. 2026. https://arxiv.org/abs/2603.21342\n\n[26] Zicong Cheng, Ruixuan Jia, Jia Li, Guo-Wei Yang, Meng-Hao Guo. Improving Variable-Length Generation in Diffusion Language Models via Length Regularization. 2026. https://arxiv.org/abs/2602.07546\n\n[27] Bao Pham, Mohammed J. Zaki, Luca Ambrogioni, Dmitry Krotov, Matteo Negri. Language Diffusion Models are Associative Memories Capable of Retrieving Unseen Data. 2026. https://arxiv.org/abs/2604.26841\n\n[28] Anonymous. On-Policy Residual Learning for Diffusion Language Models. 2026. https://doi.org/10.66977/xsci.2610.002r\n\n[29] Arman Bolatov, Egor Shulgin, David Li, Abduragim Shtanchaev, Sebastian U. Stich. Optimizers for Diffusion Models: A Controlled Benchmark. 2026. https://arxiv.org/abs/2609.23055\n\n[30] Chiyue Wei, Cong Guo, Bowen Duan, Junyao Zhang, Haoxuan Shan. Optimus: Elastic Decoding for Efficient Diffusion LLM Serving. 2026. https://arxiv.org/abs/2605.24832\n\n[31] Subham Sekhar Sahoo, Jean-Marie Lemercier, Zhihan Yang, Justin Deschenaux, Jingyu Liu. Scaling Beyond Masked Diffusion Language Models. 2026. https://arxiv.org/abs/2602.15014\n\n[32] Zihan Pu, Linyu Bian. Synergistic Multimodal Diffusion Transformer: Unifying and Enhancing Multimodal Generation via Adaptive Discrete Diffusion. 2026. https://doi.org/10.20944/preprints202601.2316.v1\n\n[33] Roy Miles, Aysim Toker, Andreea-Maria Oncescu, Jiankang Deng, Ismail Elezi. Test-Time Scaling with Diffusion Language Models via Reward-Guided Stitching. 2026. https://arxiv.org/abs/2602.22871\n\n[34] Adnan Aboulalaâ. The Probabilistic Structure of Large Language Models. 2026. https://arxiv.org/abs/2609.25134\n\n[35] Chunsan Hong, Sanghyun Lee, Jong Chul Ye. Unifying Masked Diffusion Models with Various Generation Orders and Beyond. 2026. https://arxiv.org/abs/2602.02112\n\n[36] Fengrui Zuo, Zhiwei Ke, Yiming Liu, Wenqi Lou, Chao Wang. Window-Diffusion: Accelerating Diffusion Language Model Inference with Windowed Token Pruning and Caching. 2026. https://arxiv.org/abs/2601.20332\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Text Generation with Diffusion Language Models: A Pre-training Approach with Continuous Paragraph Denoise",
+      "year": 2022,
+      "authors": [
+        "Zhenghao Lin",
+        "Yeyun Gong",
+        "Yelong Shen",
+        "Tong Wu",
+        "Zhihao Fan",
+        "Chen Lin",
+        "Nan Duan",
+        "Weizhu Chen"
+      ],
+      "doi": null,
+      "arxiv": "2212.11685",
+      "url": "https://arxiv.org/abs/2212.11685",
+      "work_id": "arxiv:2212.11685"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B003",
+      "title": "A Cheaper and Better Diffusion Language Model with Soft-Masked Noise",
+      "year": 2023,
+      "authors": [
+        "Jiaao Chen",
+        "Aston Zhang",
+        "Mu Li",
+        "Alex Smola",
+        "Diyi Yang"
+      ],
+      "doi": null,
+      "arxiv": "2304.04746",
+      "url": "https://arxiv.org/abs/2304.04746",
+      "work_id": "arxiv:2304.04746"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B004",
+      "title": "A Reparameterized Discrete Diffusion Model for Text Generation",
+      "year": 2023,
+      "authors": [
+        "Lin Zheng",
+        "Jianbo Yuan",
+        "Lei Yu",
+        "Lingpeng Kong"
+      ],
+      "doi": null,
+      "arxiv": "2302.05737",
+      "url": "https://arxiv.org/abs/2302.05737",
+      "work_id": "arxiv:2302.05737"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B005",
+      "title": "Diffusion Language Models Can Perform Many Tasks with Scaling and Instruction-Finetuning",
+      "year": 2023,
+      "authors": [
+        "Jiasheng Ye",
+        "Zaixiang Zheng",
+        "Yu Bao",
+        "Lihua Qian",
+        "Quanquan Gu"
+      ],
+      "doi": null,
+      "arxiv": "2308.12219",
+      "url": "https://arxiv.org/abs/2308.12219",
+      "work_id": "arxiv:2308.12219"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B006",
+      "title": "Discrete Diffusion Modeling by Estimating the Ratios of the Data Distribution",
+      "year": 2023,
+      "authors": [
+        "Aaron Lou",
+        "Chenlin Meng",
+        "Stefano Ermon"
+      ],
+      "doi": null,
+      "arxiv": "2310.16834",
+      "url": "https://arxiv.org/abs/2310.16834",
+      "work_id": "arxiv:2310.16834"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B011",
+      "title": "Mitigating Structural Hallucination in Large Language Models with Local Diffusion",
+      "year": 2024,
+      "authors": [
+        "Kizuki Kiritani",
+        "Tsumugi Kayano"
+      ],
+      "doi": "10.21203/rs.3.rs-4678127/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.21203/rs.3.rs-4678127/v1",
+      "work_id": "doi:10.21203/rs.3.rs-4678127/v1"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B012",
+      "title": "Quantized Embedding Vectors for Controllable Diffusion Language Models",
+      "year": 2024,
+      "authors": [
+        "Cheng Kang",
+        "Xinye Chen",
+        "Yong Hu",
+        "Daniel Novak"
+      ],
+      "doi": "10.36227/techrxiv.170723453.36138311/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.36227/techrxiv.170723453.36138311/v1",
+      "work_id": "doi:10.36227/techrxiv.170723453.36138311/v1"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B013",
+      "title": "Simple Guidance Mechanisms for Discrete Diffusion Models",
+      "year": 2024,
+      "authors": [
+        "Yair Schiff",
+        "Subham Sekhar Sahoo",
+        "Hao Phung",
+        "Guanghan Wang",
+        "Sam Boshar",
+        "Hugo Dalla-torre",
+        "Bernardo P. de Almeida",
+        "Alexander Rush",
+        "Thomas Pierrot",
+        "Volodymyr Kuleshov"
+      ],
+      "doi": null,
+      "arxiv": "2412.10193",
+      "url": "https://arxiv.org/abs/2412.10193",
+      "work_id": "arxiv:2412.10193"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B014",
+      "title": "Simple and Effective Masked Diffusion Language Models",
+      "year": 2024,
+      "authors": [
+        "Subham Sekhar Sahoo",
+        "Marianne Arriola",
+        "Yair Schiff",
+        "Aaron Gokaslan",
+        "Edgar Marroquin",
+        "Justin T Chiu",
+        "Alexander Rush",
+        "Volodymyr Kuleshov"
+      ],
+      "doi": null,
+      "arxiv": "2406.07524",
+      "url": "https://arxiv.org/abs/2406.07524",
+      "work_id": "arxiv:2406.07524"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B016",
+      "title": "Training-Free Guidance for Discrete Diffusion Models for Molecular Generation",
+      "year": 2024,
+      "authors": [
+        "Thomas J. Kerby",
+        "Kevin R. Moon"
+      ],
+      "doi": null,
+      "arxiv": "2409.07359",
+      "url": "https://arxiv.org/abs/2409.07359",
+      "work_id": "arxiv:2409.07359"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B017",
+      "title": "A2D: Any-Order, Any-Step Safety Alignment for Diffusion Language Models",
+      "year": 2025,
+      "authors": [
+        "Wonje Jeung",
+        "Sangyeon Yoon",
+        "Yoonjun Cho",
+        "Dongjae Jeon",
+        "Sangwoo Shin",
+        "Hyesoo Hong",
+        "Albert No"
+      ],
+      "doi": null,
+      "arxiv": "2509.23286",
+      "url": "https://arxiv.org/abs/2509.23286",
+      "work_id": "arxiv:2509.23286"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B018",
+      "title": "An Empirical Comparison of Generation Quality and Diversity Between Discrete Diffusion and Autoregressive Text Generation",
+      "year": 2025,
+      "authors": [
+        "Shuyang Xu",
+        "Fanyi Zhao",
+        "Xu Wang"
+      ],
+      "doi": "10.69987/aimlr.2025.60202",
+      "arxiv": null,
+      "url": "https://doi.org/10.69987/aimlr.2025.60202",
+      "work_id": "doi:10.69987/aimlr.2025.60202"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B019",
+      "title": "Di$\\mathtt{[M]}$O: Distilling Masked Diffusion Models into One-step Generator",
+      "year": 2025,
+      "authors": [
+        "Yuanzhi Zhu",
+        "Xi Wang",
+        "Stéphane Lathuilière",
+        "Vicky Kalogeiton"
+      ],
+      "doi": null,
+      "arxiv": "2503.15457",
+      "url": "https://arxiv.org/abs/2503.15457",
+      "work_id": "arxiv:2503.15457"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B020",
+      "title": "Discrete Diffusion Models for Language Generation",
+      "year": 2025,
+      "authors": [
+        "Ashen Weligalle"
+      ],
+      "doi": null,
+      "arxiv": "2507.07050",
+      "url": "https://arxiv.org/abs/2507.07050",
+      "work_id": "arxiv:2507.07050"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B022",
+      "title": "Masked Diffusion Models are Secretly Learned-Order Autoregressive Models",
+      "year": 2025,
+      "authors": [
+        "Prateek Garg",
+        "Bhavya Kohli",
+        "Sunita Sarawagi"
+      ],
+      "doi": null,
+      "arxiv": "2511.19152",
+      "url": "https://arxiv.org/abs/2511.19152",
+      "work_id": "arxiv:2511.19152"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B024",
+      "title": "Revolutionizing Reinforcement Learning Framework for Diffusion Large Language Models",
+      "year": 2025,
+      "authors": [
+        "Yinjie Wang",
+        "Ling Yang",
+        "Bowen Li",
+        "Ye Tian",
+        "Ke Shen",
+        "Mengdi Wang"
+      ],
+      "doi": null,
+      "arxiv": "2509.06949",
+      "url": "https://arxiv.org/abs/2509.06949",
+      "work_id": "arxiv:2509.06949"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B026",
+      "title": "Sequential Diffusion Language Models",
+      "year": 2025,
+      "authors": [
+        "Yangzhou Liu",
+        "Yue Cao",
+        "Hao Li",
+        "Gen Luo",
+        "Zhe Chen",
+        "Weiyun Wang",
+        "Xiaobo Liang",
+        "Biqing Qi",
+        "Lijun Wu",
+        "Changyao Tian",
+        "Yanting Zhang",
+        "Yuqiang Li",
+        "Tong Lu",
+        "Yu Qiao",
+        "Jifeng Dai",
+        "Wenhai Wang"
+      ],
+      "doi": null,
+      "arxiv": "2509.24007",
+      "url": "https://arxiv.org/abs/2509.24007",
+      "work_id": "arxiv:2509.24007"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B028",
+      "title": "Soft-Masked Diffusion Language Models",
+      "year": 2025,
+      "authors": [
+        "Michael Hersche",
+        "Samuel Moor-Smith",
+        "Thomas Hofmann",
+        "Abbas Rahimi"
+      ],
+      "doi": null,
+      "arxiv": "2510.17206",
+      "url": "https://arxiv.org/abs/2510.17206",
+      "work_id": "arxiv:2510.17206"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B029",
+      "title": "A Tutorial on Diffusion Theory: From Differential Equations to Diffusion Models",
+      "year": 2026,
+      "authors": [
+        "Jiayi Fu",
+        "Yuxia Wang"
+      ],
+      "doi": null,
+      "arxiv": "2605.22586",
+      "url": "https://arxiv.org/abs/2605.22586",
+      "work_id": "arxiv:2605.22586"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B030",
+      "title": "Accelerating Inference in Diffusion Large Language Models: A Survey",
+      "year": 2026,
+      "authors": [
+        "Kaung Myat Kyaw",
+        "Weiyu Chen",
+        "Jonathan Chan",
+        "James Kwok",
+        "wchenbx"
+      ],
+      "doi": "10.36227/techrxiv.177102145.58136415/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.36227/techrxiv.177102145.58136415/v1",
+      "work_id": "doi:10.36227/techrxiv.177102145.58136415/v1"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B032",
+      "title": "Conditional Generation and Inpainting of Non-Coding RNA Sequences with Masked Discrete Diffusion",
+      "year": 2026,
+      "authors": [
+        "Utkarsh Upadhyay",
+        "Chuankai Dai",
+        "Julian Herold",
+        "Kengo Sato",
+        "Alexander Schug"
+      ],
+      "doi": "10.64898/2026.09.17.752279",
+      "arxiv": null,
+      "url": "https://doi.org/10.64898/2026.09.17.752279",
+      "work_id": "doi:10.64898/2026.09.17.752279"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B033",
+      "title": "Confidence-Based Decoding is Provably Efficient for Diffusion Language Models",
+      "year": 2026,
+      "authors": [
+        "Changxiao Cai",
+        "Gen Li"
+      ],
+      "doi": null,
+      "arxiv": "2603.22248",
+      "url": "https://arxiv.org/abs/2603.22248",
+      "work_id": "arxiv:2603.22248"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B034",
+      "title": "Constrained Code Generation with Discrete Diffusion",
+      "year": 2026,
+      "authors": [
+        "Lize Shao",
+        "Michael Cardei",
+        "Zichen Xie",
+        "Ferdinando Fioretto",
+        "Wenxi Wang"
+      ],
+      "doi": null,
+      "arxiv": "2605.16829",
+      "url": "https://arxiv.org/abs/2605.16829",
+      "work_id": "arxiv:2605.16829"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B039",
+      "title": "Fixed-Point Masked Generative Modeling",
+      "year": 2026,
+      "authors": [
+        "Andrea Miele",
+        "Yiming Qin",
+        "Alba Carballo-Castro",
+        "Justin Deschenaux",
+        "Pascal Frossard"
+      ],
+      "doi": null,
+      "arxiv": "2605.31215",
+      "url": "https://arxiv.org/abs/2605.31215",
+      "work_id": "arxiv:2605.31215"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B040",
+      "title": "Generalized Discrete Diffusion from Snapshots",
+      "year": 2026,
+      "authors": [
+        "Oussama Zekri",
+        "Théo Uscidda",
+        "Nicolas Boullé",
+        "Anna Korba"
+      ],
+      "doi": null,
+      "arxiv": "2603.21342",
+      "url": "https://arxiv.org/abs/2603.21342",
+      "work_id": "arxiv:2603.21342"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B043",
+      "title": "Improving Variable-Length Generation in Diffusion Language Models via Length Regularization",
+      "year": 2026,
+      "authors": [
+        "Zicong Cheng",
+        "Ruixuan Jia",
+        "Jia Li",
+        "Guo-Wei Yang",
+        "Meng-Hao Guo",
+        "Shi-Min Hu"
+      ],
+      "doi": null,
+      "arxiv": "2602.07546",
+      "url": "https://arxiv.org/abs/2602.07546",
+      "work_id": "arxiv:2602.07546"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B044",
+      "title": "Language Diffusion Models are Associative Memories Capable of Retrieving Unseen Data",
+      "year": 2026,
+      "authors": [
+        "Bao Pham",
+        "Mohammed J. Zaki",
+        "Luca Ambrogioni",
+        "Dmitry Krotov",
+        "Matteo Negri"
+      ],
+      "doi": null,
+      "arxiv": "2604.26841",
+      "url": "https://arxiv.org/abs/2604.26841",
+      "work_id": "arxiv:2604.26841"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B051",
+      "title": "On-Policy Residual Learning for Diffusion Language Models",
+      "year": 2026,
+      "authors": [
+        "Anonymous"
+      ],
+      "doi": "10.66977/xsci.2610.002r",
+      "arxiv": null,
+      "url": "https://doi.org/10.66977/xsci.2610.002r",
+      "work_id": "doi:10.66977/xsci.2610.002r"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B052",
+      "title": "Optimizers for Diffusion Models: A Controlled Benchmark",
+      "year": 2026,
+      "authors": [
+        "Arman Bolatov",
+        "Egor Shulgin",
+        "David Li",
+        "Abduragim Shtanchaev",
+        "Sebastian U. Stich",
+        "Maxim Panov",
+        "Eric Moulines",
+        "Peter Richtárik",
+        "Martin Takáč"
+      ],
+      "doi": null,
+      "arxiv": "2609.23055",
+      "url": "https://arxiv.org/abs/2609.23055",
+      "work_id": "arxiv:2609.23055"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B053",
+      "title": "Optimus: Elastic Decoding for Efficient Diffusion LLM Serving",
+      "year": 2026,
+      "authors": [
+        "Chiyue Wei",
+        "Cong Guo",
+        "Bowen Duan",
+        "Junyao Zhang",
+        "Haoxuan Shan",
+        "Yifei Wang",
+        "Yangjie Zhou",
+        "Hai \"Helen\" Li",
+        "Danyang Zhuo",
+        "Yiran Chen"
+      ],
+      "doi": null,
+      "arxiv": "2605.24832",
+      "url": "https://arxiv.org/abs/2605.24832",
+      "work_id": "arxiv:2605.24832"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B054",
+      "title": "Scaling Beyond Masked Diffusion Language Models",
+      "year": 2026,
+      "authors": [
+        "Subham Sekhar Sahoo",
+        "Jean-Marie Lemercier",
+        "Zhihan Yang",
+        "Justin Deschenaux",
+        "Jingyu Liu",
+        "John Thickstun",
+        "Ante Jukic"
+      ],
+      "doi": null,
+      "arxiv": "2602.15014",
+      "url": "https://arxiv.org/abs/2602.15014",
+      "work_id": "arxiv:2602.15014"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B055",
+      "title": "Synergistic Multimodal Diffusion Transformer: Unifying and Enhancing Multimodal Generation via Adaptive Discrete Diffusion",
+      "year": 2026,
+      "authors": [
+        "Zihan Pu",
+        "Linyu Bian"
+      ],
+      "doi": "10.20944/preprints202601.2316.v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.20944/preprints202601.2316.v1",
+      "work_id": "doi:10.20944/preprints202601.2316.v1"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B056",
+      "title": "Test-Time Scaling with Diffusion Language Models via Reward-Guided Stitching",
+      "year": 2026,
+      "authors": [
+        "Roy Miles",
+        "Aysim Toker",
+        "Andreea-Maria Oncescu",
+        "Jiankang Deng",
+        "Ismail Elezi"
+      ],
+      "doi": null,
+      "arxiv": "2602.22871",
+      "url": "https://arxiv.org/abs/2602.22871",
+      "work_id": "arxiv:2602.22871"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B057",
+      "title": "The Probabilistic Structure of Large Language Models",
+      "year": 2026,
+      "authors": [
+        "Adnan Aboulalaâ"
+      ],
+      "doi": null,
+      "arxiv": "2609.25134",
+      "url": "https://arxiv.org/abs/2609.25134",
+      "work_id": "arxiv:2609.25134"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B058",
+      "title": "Unifying Masked Diffusion Models with Various Generation Orders and Beyond",
+      "year": 2026,
+      "authors": [
+        "Chunsan Hong",
+        "Sanghyun Lee",
+        "Jong Chul Ye"
+      ],
+      "doi": null,
+      "arxiv": "2602.02112",
+      "url": "https://arxiv.org/abs/2602.02112",
+      "work_id": "arxiv:2602.02112"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B059",
+      "title": "Window-Diffusion: Accelerating Diffusion Language Model Inference with Windowed Token Pruning and Caching",
+      "year": 2026,
+      "authors": [
+        "Fengrui Zuo",
+        "Zhiwei Ke",
+        "Yiming Liu",
+        "Wenqi Lou",
+        "Chao Wang",
+        "Xuehai Zhou"
+      ],
+      "doi": null,
+      "arxiv": "2601.20332",
+      "url": "https://arxiv.org/abs/2601.20332",
+      "work_id": "arxiv:2601.20332"
+    }
+  ],
+  "article_sha256": "17219cb882188817ab4b820e2279ce41e092881b63f257ce52c9babba3600597",
+  "references_sha256": "e081a420d56084b6e20414b109710e2c46153a675797dddd092f329b31981d5f",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

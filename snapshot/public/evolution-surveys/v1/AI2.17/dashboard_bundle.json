@@ -1,0 +1,1229 @@
+{
+  "topic_id": "AI2.17",
+  "route": "B",
+  "title": "智能体强化学习：技术演进、方法比较与研究进展",
+  "content_md": "# 智能体强化学习：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了智能体强化学习的前沿进展，重点探讨其在复杂动态环境中解决长期决策、工具调用与稀疏奖励反馈的核心问题。研究范围涵盖序列建模演进、多轮轨迹与环境反馈机制、奖励与信用分配策略、工具使用与任务评测等维度。文章系统比较了无监督微调、渐进式多轮框架、经验强化学习（ERL）、群组相对策略优化（GRPO）及各类图与树结构信用分配路线的异同、适用条件与计算开销。主要认识指出，细粒度过程奖励与结构化信用分配能显著克服传统终端盲目分配的局限，而动态交互环境与状态分布修正则是保障长程训练稳定性的关键。最后，本文指出了开放域、跨模态及极端长序列交互中面临的高效稳定训练等挑战。\n\n## 第1章 智能体强化学习的起源、核心问题与发展演变\n\n智能体强化学习作为大语言模型演进的前沿范式，正经历从静态单步序列生成向动态多步决策环境的深刻转变[19]。在复杂的动态世界中，智能体强化学习主要解决大语言模型在长期决策、工具使用及稀疏延迟奖励反馈下面临的任务完成能力与交互效率问题[19][28][32]。\n\n针对传统方法在处理多步轨迹优化时面临的大参数量与可扩展性瓶颈，研究者引入了线性时间序列模型，例如通过探索数据结构与隐式注意力机制，在保持模型精简的同时实现对长序列的高效建模[1]。在工具调用与多步交互的训练机制方面，传统流水线高度依赖监督微调与大量标注数据，而新兴的无监督微调方案则通过在强化学习采样阶段引入上下文示例（Few-shot prompting），在训练推进过程中逐步缩减示例数量，最终实现模型独立调用工具的零样本能力[32]。此外，面对多轮动态交互与复杂环境，渐进式多轮强化学习框架通过动态用户交互训练、自适应视界管理以及领域自适应的工具编排，有效克服了稀疏奖励与繁琐的人工奖励工程开销[40]。针对稀疏及延迟的奖励信号，经验强化学习（ERL）进一步嵌入了显式的“经验–反思–巩固”循环机制，利用反思引导模型修正行为并将其内化至基础策略中，在确保部署阶段无额外推理开销的同时显著提升了学习效率与优化稳定性[28]。\n\n综上所述，不同方法在序列建模、冷启动依赖、奖励稀疏性处理以及推理开销上各有侧重：线性状态模型通过结构优化降低了计算负担[1]；上下文强化学习摆脱了冷启动对标注数据的依赖[32]；而经验强化学习与渐进式多轮框架则分别从反思机制与交互复杂度自适应维度，解决了延迟奖励和动态多轮工具调用的优化难题[28][40]。\n\n## 第2章 多轮轨迹与环境反馈机制的分支比较与实验依据\n\n在智能体强化学习中，语言模型需要通过多步决策、工具调用与动态环境交互来完成复杂任务 [27]。由于真实交互往往在整段对话结束后方能判定成败，多轮轨迹与环境反馈机制的设计构成了提升智能体策略的核心 [8]。围绕这一研究问题，当前文献主要从经验记忆、信用分配（Credit Assignment）、策略优化架构以及动态环境集成四个维度展开，并衍生出多样化的方法与机制。\n\n在记忆利用与策略进化机制方面，传统方法面临全轨迹迁移困难或工具级重用缺乏上下文的局限 [4]。为此，混合情节-程序记忆策略（H-EPM）通过构建包含工具间依赖关系及紧凑情节摘要的工具图谱，在推理时动态平衡情节回忆与程序执行，并在训练中通过偏置探索历史成功工具转移来缓解长轨迹探索不足 [4]。然而，多轮强化学习中的另一根本挑战在于信用分配的粒度。多数传统方法依赖稀疏的终端或延迟奖励，导致信用分配效果较差 [17][35]。对此，研究者从不同粒度提出了改进方案：一方面，密集逐轮（per-turn）奖励结构在GRPO和PPO中被证实优于稀疏与延迟奖励 [17]；另一方面，MICA通过在共享势函数上结合增量距离奖励与蒙特卡洛回报，在无需批判网络（critic-free）或匹配状态比较的情况下实现了稳定的逐轮优化 [35]。此外，为了协同不同层级的信用分配，VETTA框架通过在共享轻量级批判网络上设计双头结构，联合学习并融合了轮次级（turn-level）优势与响应内代币级（token-level）残差 [61]。\n\n在策略优化架构与训练稳定性方面，多轮交互常引发上下文失配、信用偏差及异步策略漂移等不稳定性 [42]。针对轨迹扁平化带来的结构缺陷，反向轮次策略优化（RTPO）将多轮 rollout 组织为稀疏反向树，按时间倒序执行逐轮策略更新以对齐后续上下文 [42]。而在工程与批次训练范式上，IterPO 针对训练循环中缺乏真实用户模拟器的痛点，利用学习到的轮次级 $Q$ 函数作为奖励模型，将标准的单轮 GRPO 交替应用于历史交互批次，从而在不引入在线交互环境的条件下实现原则性的多轮强化学习 [8]。此外，RLFactory 采用异步调用器和解耦的工具/训练架构重构了马尔可夫决策过程，统一支持规则、模型判断及工具验证等多种奖励信号 [14]，而 SINKFLEX-RL 则通过整合 Gymnasium 环境封装、VERL 数据流及保留模型注意力缩放的 FlexAttention 路径，有效缓解了长视界任务中的显存开销 [27]。对于具有特定环境特征的任务，TL-GRPO 针对代理与相同底层环境状态进行多轮交互的迭代优化场景，引入了基于轮次级群组采样的轻量级优化算法 [53]。\n\n在动态环境与用户交互机制方面，由于真实用户需求具随机与不确定性，且以往多轮工具使用缺乏动态用户参与，MUA-RL 首次将大模型模拟用户引入强化学习训练循环，以提升代理在多轮交互中沟通与解题的能力 [11]。在此基础上，渐进式多轮强化学习框架进一步融合了渐进式用户交互训练、自适应视界管理及领域自适应工具编排，克服了传统方法对预置查询的依赖 [40]。同时，TARL 框架引入沙盒环境与大模型裁判提供逐轮评估，支持交织的语音-文本 rollout，用以解决多模态交互中的信用分配问题 [13]。\n\n综合比较而言，上述方法在适用条件与计算开销上各有侧重。基于记忆与图谱的策略（如H-EPM）适用于需要跨任务泛化且避免领域特定经验收集的场景 [4]；批次在线方法（如IterPO）和无批判网络框架（如MICA）适合规避在线模拟器构建或降低计算成本 [8][35]；而深度协同架构（如VETTA、RTPO及SINKFLEX-RL）则更适用于长视界、高动态、需要精细化信用分配以及对显存和训练稳定性要求苛刻的复杂工具调用任务 [27][42][61]。尽管当前研究在多轮信用分配与动态环境建模上取得了显著进展，但如何在开放域、跨模态及极端长序列交互中保持高效且低成本的稳定训练，仍是未来需要持续探索的开放问题。\n\n## 第3章 奖励、信用分配与训练稳定性的方法演进与机制比较\n\n在智能体强化学习中，语言模型在多步长决策、工具交互及复杂推理任务中普遍面临稀疏且延迟的终端奖励，这导致传统的终端盲目分配难以准确评估中间推理步骤与多轮交互的实际贡献[2][5][24][44]。围绕奖励机制、信用分配粒度与训练稳定性的方法演进，现有研究形成了多种互补的技术路线。\n\n针对传统近端策略优化（PPO）中价值网络估计不准且易引起过拟合的局限[2][5]，许多研究转向无评判模型（critic-free）的群组相对策略优化（GRPO）及其扩展[5][6]。例如，VinePPO利用语言环境的灵活性计算无偏的蒙特卡洛估计[2]；GRPO-$\\lambda$则通过$\\lambda$-回报近似和无评判模型的时序差分误差，在多项数学推理基准上提升了训练性能[6]。此外，针对参数高效微调（如LoRA）下token级内禀信用信号退化的问题，ARCA通过度量适配器隐状态残差来提取非退化的token显著性[23]。\n\n为突破粗粒度序列级奖励带来的信息丢失，研究者广泛探索了中介步骤与树形、图形结构信用分配。部分方法借助外部通用语言模型或特定机制直接生成分步奖励或生成式信用：CAPO利用现成的通用语言模型作为生成式过程奖励模型，单次前向生成确定性的token级信用[3]；LCA采用多实例学习框架和软最大值加权求和（SWS）池化，实现了基于“最弱环节”原则的结局监督过程奖励建模[56]。在结构化推理和智能体交互方面，P2T与TEMPO将响应群组转化为前缀树，利用无参数前缀值与分支门控的时序差分修正提供精确的token级信用[5]；GraphGPO与GraphHCA则分别将交互轨迹汇聚为状态转移图，利用图结构或贝叶斯闭式推导实现无需显式后见分布估计的后见信用分配（HCA）[26][31]。类似地，TRCA通过证据、执行和无效性三类准则评估动作诱导的转移，无需成功锚点即可产出细粒度优势[54]；而SCRL则利用参考推理链构建子问题课程，在子问题位置独立归一化并分配优势[30]。\n\n在长视界、多轮智能体与多智能体协作场景中，信用分配需要兼顾轮次级（turn-level）与token级协作。VETTA通过独立头在共享轻量评判器上联合学习轮次级和token级价值[61]；DC-GRPO为多轮越狱学习中的每个轮次分配独立的群组相对学习信号[36]；Self-Credit通过内部群组重标定去除不应有的信用[52]；而C3和TreeHCA则进一步利用反事实连续性或后见引导探索构建推理与工具交互树[55][58]。此外，LLM-MCA、LLM-TACA及RICOL等框架利用大模型自身先验知识或上下文学习将稀疏奖励转化为稠密优势估计，实现了高效的样本利用与策略更新[9][18][45]。不同方法在是否依赖辅助模型、计算开销以及对特定任务环境的适应性上表现出显著的权衡差异[3][33][61]。\n\n## 第4章 工具使用、泛化与任务评测的方法、机制及适用条件\n\n第4章 工具使用、泛化与任务评测的方法、机制及适用条件\n\n智能体强化学习的核心在于利用工具或环境交互轨迹及任务反馈，训练语言模型智能体完成多步决策、工具使用与任务完成。在实际训练中，如何有效平衡行为对齐与下游性能、提升模型在不同任务及环境中的泛化能力，以及克服多步交互中的训练崩溃与错误累积，是当前研究的关键问题。\n\n针对工具使用与任务泛化的方法，主流研究提出了多种基于合成环境与策略对齐的机制。例如，通过提取原子函数或逻辑构建可验证的多轮工具调用环境，可以使不同规模的模型在域外泛化任务上获得显著增益[7]。为解决小语言模型在容量限制下对静态教师轨迹的过度约束问题，MENTOR框架通过引入兼顾过程感知的灵活奖励结构，在保持行为对齐的同时提升了域外工具使用性能[10]。此外，通过引入结构化代码执行与动态交织策略（如ReTool），模型能够在数学推理中自主探索最优工具调用模式，表现出代码自纠错等涌现行为[15]。在多模态场景下，VTool-R1通过在强化学习中整合基于Python的视觉编辑工具，使视觉语言模型能够自主生成多模态思维链[21]；而ParaVT针对长视频理解中的并行工具调用，提出了通过格式奖励和观察帧预算随机化来缓解工具先验悖论的策略[39]。在架构设计方面，MSARL通过显式解耦推理与工具使用，由专用推理智能体与多个工具智能体分工协作，提升了多步骤任务中的推理稳定性[16]。\n\n在强化学习训练稳定性和信用分配机制方面，不同方法展现出各自的适用条件与优化策略。面对基于组相对策略优化（GRPO）时小规模模型容易出现的中途崩溃问题，ToolExpander通过动态多轮困难采样与自我示范思考机制来平衡训练稳定性与策略探索[20]。针对多步搜索任务中的稀疏奖励与信用分配难题，研究表明引入中间检索监督并对其进行局部或最终优势结合，能够显著改变策略的训练行为[25]。同时，InfoTree框架通过将中间状态选择转化为拟阵子模最大化问题，在固定预算下最大化 rollout 的信息量[37]。在处理多轮执行错误时，Fission-GRPO利用错误模拟器将失败轨迹转化为在线自适应的纠错监督，从而引导模型从具体的探索错误中学习[46]。类似地，SENTINEL通过由控制器、提案器和求解器组成的循环，将求解失败转化为有针对性的训练任务[48]。此外，针对多步工具使用强化学习中特定控制标记概率突增导致的结构性崩溃，交替式监督微调与强化学习的结合能够有效防止策略退化[62]，而如MOSAIC等框架则通过将安全性设计为显式的“计划、检查、行动或拒绝”循环与成对偏好强化学习，保障了复杂多步交互中的安全性[34]。\n\n综合来看，各种方法在数据合成、环境交互、奖励塑形和稳定性保障上各有侧重。基于合成代码环境与统一API管理（如VerlTool）的方法适用于跨领域的全栈智能体构建与效率提升[22]，而细粒度的过程反馈与偏好优化则更适合解决长周期、高风险以及多步容错等具挑战性的智能体应用场景[43][49]。\n\n## 第5章 综合比较与开放问题：路线优势、失败条件与未来方向\n\n在智能体强化学习中，随着任务向长程、多步决策与复杂交互演进，传统单步或纯序列建模方法面临严重的信用分配失效、状态分布偏移与探索盲区[19][38][57]。为克服稀疏最终奖励或轨迹级反馈对中间推理和策略优化的局限，近期研究重点围绕多轨迹特征建模、状态空间对齐以及信用分配机制展开了系统性创新，形成了多路线并行发展的格局。\n\n在优化机制与信用分配方面，长程交互与多轮记忆更新常导致不同 rollout 写入异构的中间状态，破坏了传统组相对优化方法（如 GRPO）要求样本处于相同有效环境的假设，从而产生分配噪声与偏差[38]。为此，部分研究引入局部与全局协同的组相对优化架构（如 LoGo-GRPO），通过局部重采样或局部奖励校准缓解记忆交互带来的不平等问题[38]。在推理路径优化上，针对稀疏可验证奖励（RLVR）无法提供中间过程反馈的问题，部分方法提出分阶段监督与多级奖励 densification，例如在成功前引入前缀分解的可验证奖励、在成功后应用质量感知的过程形状奖励（如 SCOPE-RL），从而在不牺牲终态精度的同时压缩冗余推理符号[47]。在多智能体与多轮提示词优化中，则需同时考量时间维度的状态瓶颈与结构维度的静态角色策略，通过分解时间信用与结构信用进行迭代块坐标下降[59]，或将整个多智能体工作流作为统一的优化单元进行角色、回合与轨迹级奖励分配（如 UnityMAS-O）[60]。\n\n在状态对齐、探索扩展与轨迹多样性控制方面，长程自回归轨迹的局部策略不匹配易随视界增长累积为严重的轨迹级状态分布偏移[57]。为此，部分研究在强化学习目标中推导并引入状态分布修正项，并配合几何均值估计器与长度动态裁剪以保障训练稳定性（如 TAPO）[57]。在探索机制上，纯在线范式常受限于智能体自身的生成输出；引入外部检索或混合策略能动态扩展推理感受野，但若直接进行轨迹级估计则易忽略细粒度的步骤级探索动态[41]。采用检索感知的策略优化（如 RAPO）通过融合离线步骤级痕迹并进行重要度整形，可实现更高效的引导式探索[41]。此外，为打破隐式探索的随机性，部分方法通过显式定义任务特定的轨迹描述符，将集级多样性转化为轨迹级学习信号（如 TJPO）[29]，或结合基于信息论与选择性机制的策略优化来克服香农熵将固有状态复杂度与模型置信度混淆的缺陷（如 STAPO）[51]。在多模态或特殊交互场景中，通过策略内化（如 TriMPI）将复杂的提示词策略直接内化至模型参数，亦可在减少固定推理计算开销的同时增强鲁棒性[12]。在扩散大语言模型（dLLMs）的强化学习中，针对传统随机掩码与推理轨迹不匹配的问题，部分方法（如 SLIM-RL）通过引入 $\\tau$-预算解码器限制每次 rollout 步骤的提交风险，并在无轨迹切片的随机掩码目标下组合序列级重要度采样[50]。\n\n综合比较而言，各类方法在不同任务场景与计算约束下展现出各自的适用条件与性能边界。以群组相对策略优化为基础的框架在数学和代码等具有可验证终态的短中程任务上表现稳健，但面对长程多会话记忆或多智能体交互时，若缺乏局部分配或结构化分解则易陷入信用失真[38][60]。引入显式描述符的多样性优化与选择性轨迹监督能有效提升探索效率与复杂任务（如 ALFWorld、WebShop）的决策精度，但需要额外设计任务特定的描述符或付出微弱的计算开销（如约5.7%的前向计算开销）[29][51]。检索增强与状态分布修正则显著改善了长程泛化与探索盲区，但在强动态、大动作空间或高维多模态环境中仍面临边界行为识别与状态重访率稀疏的挑战[41][51][57]。未来的研究方向将进一步聚焦于跨任务族的通用描述符模板、多模态长序交互鲁棒性以及更具扩展性的统一强化学习训练架构[12][29]。\n\n## 结论\n\n本综述全面总结了智能体强化学习在多步决策与复杂环境交互中的方法演进。研究范围涵盖核心理论、多轮轨迹反馈、信用分配机制、工具调用泛化及综合优化策略。通过对线性状态模型、无评判模型优化、图/树结构信用分配及动态环境集成等路线的比较，主要认识表明：引入细粒度过程奖励、混合记忆图谱及局部状态对齐能够有效缓解信用分配失效与状态分布偏移，从而提升长程任务的泛化能力。开放问题集中在：如何在开放域、多模态及极端长序列交互中降低计算开销、避免结构性崩溃，以及如何设计跨任务族的通用动态描述符和统一强化学习训练架构，以实现更具扩展性的智能体策略优化。\n\n## 参考文献\n\n[1] Yang Dai, Oubo Ma, Longfei Zhang, Xingxing Liang, Shengchao Hu. Is Mamba Compatible with Trajectory Optimization in Offline Reinforcement Learning?. 2024. https://arxiv.org/abs/2405.12094\n\n[2] Amirhossein Kazemnejad, Milad Aghajohari, Eva Portelance, Alessandro Sordoni, Siva Reddy. VinePPO: Refining Credit Assignment in RL Training of LLMs. 2024. https://arxiv.org/abs/2410.01679\n\n[3] Guofu Xie, Yunsheng Shi, Hongtao Tian, Ting Yao, Xiao Zhang. CAPO: Towards Enhancing LLM Reasoning through Generative Credit Assignment. 2025. https://arxiv.org/abs/2508.02298\n\n[4] Sijia Li, Yuchen Huang, Zifan Liu, Zijian Li, Jingjing fu. Experience-Evolving Multi-Turn Tool-Use Agent with Hybrid Episodic-Procedural Memory. 2025. https://arxiv.org/abs/2512.07287\n\n[5] Hieu Tran, Zonghai Yao, Hong Yu. Exploiting Tree Structure for Credit Assignment in RL Training of LLMs. 2025. https://arxiv.org/abs/2509.18314\n\n[6] Prasanna Parthasarathi, Mathieu Reymond, Boxing Chen, Yufei Cui, Sarath Chandar. GRPO-$λ$: Credit Assignment improves LLM Reasoning. 2025. https://arxiv.org/abs/2510.00194\n\n[7] Weihua Du, Hailei Gong, Zhan Ling, Kang Liu, Lingfeng Shen. Generalizable End-to-End Tool-Use RL with Synthetic CodeGym. 2025. https://arxiv.org/abs/2509.17325\n\n[8] Daniel R. Jiang, Ankur Samanta, Yukai Yang, Jalaj Bhandari, Rémi Munos. Iterative Policy Optimization: Batch-Online Multi-Turn RL via Single-Turn RL. 2025. https://arxiv.org/abs/2511.21638\n\n[9] Kartik Nagpal, Dayi Dong, Jean-Baptiste Bouvier, Negar Mehr. Leveraging Large Language Models for Effective and Explainable Multi-Agent Credit Assignment. 2025. https://arxiv.org/abs/2502.16863\n\n[10] ChangSu Choi, Hoyun Song, Dongyeon Kim, Minkyung Cho, WooHyeon Jung. MENTOR: Reinforcement Learning via Flexible Teacher-Optimized Rewards for Tool-Use Distillation. 2025. https://arxiv.org/abs/2510.18383\n\n[11] Weikang Zhao, Xili Wang, Chengdi Ma, Lingbin Kong, Zhaohua Yang. MUA-RL: Multi-turn User-interacting Agent Reinforcement Learning for agentic tool use. 2025. https://arxiv.org/abs/2508.18669\n\n[12] Zhenhailong Wang, Jiateng Liu, Amin Fazel, Ritesh Sarkhel, Xing Fan. Multimodal Policy Internalization for Conversational Agents. 2025. https://arxiv.org/abs/2510.09474\n\n[13] Weiting Tan, Xinghua Qu, Ming Tu, Meng Ge, Andy T. Liu. Process-Supervised Reinforcement Learning for Interactive Multimodal Tool-Use Agents. 2025. https://arxiv.org/abs/2509.14480\n\n[14] Jiajun Chai, Guojun Yin, Zekun Xu, Chuhuai Yue, Yi Jia. RLFactory: A Plug-and-Play Reinforcement Learning Post-Training Framework for LLM Multi-Turn Tool-Use. 2025. https://arxiv.org/abs/2509.06980\n\n[15] Jiazhan Feng, Shijue Huang, Xingwei Qu, Ge Zhang, Yujia Qin. ReTool: Reinforcement Learning for Strategic Tool Use in LLMs. 2025. https://arxiv.org/abs/2504.11536\n\n[16] Dayu Wang, Yutong Liu, Jiaye Yang, Weikang Li, Jiahui Liang. Reducing Cognitive Overhead in Tool Use via Multi-Small-Agent Reinforcement Learning. 2025. https://arxiv.org/abs/2508.08882\n\n[17] Quan Wei, Siliang Zeng, Chenliang Li, Zhongruo Wang, William Brown. Reinforcing Multi-Turn Reasoning in LLM Agents via Fine-Grained Reward Structure and Credit Assignment. 2025. https://arxiv.org/abs/2505.11821\n\n[18] Muhan Lin, Shuyang Shi, Yue Guo, Vaishnav Tadiparthi, Behdad Chalaki. Speaking the Language of Teamwork: LLM-Guided Credit Assignment in Multi-Agent Reinforcement Learning. 2025. https://arxiv.org/abs/2502.03723\n\n[19] Guibin Zhang, Hejia Geng, Xiaohang Yu, Zhenfei Yin, Zaibin Zhang. The Landscape of Agentic Reinforcement Learning for LLMs: A Survey. 2025. https://arxiv.org/abs/2509.02547\n\n[20] Fu Chen, Peng Wang, Xiyin Li, Wen Li, Shichi Lei. ToolExpander: Extending the Frontiers of Tool-Using Reinforcement Learning to Weak LLMs. 2025. https://arxiv.org/abs/2510.07737\n\n[21] Mingyuan Wu, Jingcheng Yang, Jize Jiang, Meitang Li, Kaizhuo Yan. VTool-R1: VLMs Learn to Think with Images via Reinforcement Learning on Multimodal Tool Use. 2025. https://arxiv.org/abs/2505.19255\n\n[22] Dongfu Jiang, Yi Lu, Zhuofeng Li, Zhiheng Lyu, Ping Nie. VerlTool: Towards Holistic Agentic Reinforcement Learning with Tool Use. 2025. https://arxiv.org/abs/2509.01055\n\n[23] Rodney Lafuente-Mercado. ARCA: Adapter-Residual Credit Assignment When Token Signals Degenerate. 2026. https://arxiv.org/abs/2606.00257\n\n[24] Lianfa Li. Bellman-Consistent Trajectory RL for LLM Arithmetic Reasoning. 2026. https://arxiv.org/abs/2610.21060\n\n[25] Wenyu Huang, Xinyu Hou, Pavlos Vougiouklis, Ruofei Lai, Jeff Z. Pan. Beyond Outcome Rewards: Constructing and Assigning Retrieval Credit for Search Agents. 2026. https://arxiv.org/abs/2610.10179\n\n[26] Xin Cheng, Shuo He, Lang Feng, HaiYang Xu, Ming Yan. Beyond Trajectory-Level Attribution: Graph-Based Credit Assignment for Agentic Reinforcement Learning. 2026. https://arxiv.org/abs/2605.26684\n\n[27] Zelei Cheng, Amritansh Mishra, Sambit Sahu, William Campbell. Efficient Reinforcement Learning for Long-Horizon Tool-Use Agentic Tasks. 2026. https://arxiv.org/abs/2608.10357\n\n[28] Taiwei Shi, Sihao Chen, Bowen Jiang, Linxin Song, Longqi Yang. Experiential Reinforcement Learning. 2026. https://arxiv.org/abs/2602.13949\n\n[29] Huaiyu Fu, Heng Cao, Hao Wang, Jian Ya, Tao Chen. Explicit Trajectory Diversity for RL-Based Post-Training of LLM Agents. 2026. https://arxiv.org/abs/2609.38805\n\n[30] Xitai Jiang, Zihan Tang, Wenze Lin, Yang Yue, Shenzhi Wang. From Reasoning Chains to Verifiable Subproblems: Curriculum Reinforcement Learning Enables Credit Assignment for LLM Reasoning. 2026. https://arxiv.org/abs/2605.22074\n\n[31] Haodong Zhu, Yangyang Ren, Changbai Li, Sheng Xu, Linlin Yang. GraphHCA: Closed-Form Hindsight Credit Assignment for Long-Horizon LLM Agents. 2026. https://arxiv.org/abs/2609.35084\n\n[32] Yaoqi Ye, Yiran Zhao, Keyu Duan, Zeyu Zheng, Kenji Kawaguchi. In-Context Reinforcement Learning for Tool Use in Large Language Models. 2026. https://arxiv.org/abs/2603.08068\n\n[33] Kaijie Zhu, Weixiang Yan, Omar Attia, Abbas Kazerouni, Alexander Toshev. LLM Value Functions for Credit Assignment in Agentic RL. 2026. https://arxiv.org/abs/2610.15840\n\n[34] Aradhye Agarwal, Gurdit Siyan, Yash Pandya, Joykirat Singh, Akshay Nambi. Learning When to Act or Refuse: Guarding Agentic Reasoning Models for Safe Multi-Step Tool Use. 2026. https://arxiv.org/abs/2603.03205\n\n[35] Naifan Zhang, Ruihan Sun, Jinwei Su, Hengjie Yang, Zhengyuan Pan. MICA: Multi-granularity Intertemporal Credit Assignment for Long-Horizon Emotional Support Dialogue. 2026. https://arxiv.org/abs/2603.06194\n\n[36] Junyoung Park, Namgyu Park, Sechan Lee, Yoon-Chan Jhi, Jihoon Cho. MJ: Multi-turn LLM Jailbreaking via Decomposed Credit Assignment. 2026. https://arxiv.org/abs/2607.11070\n\n[37] Yuelin Hu, Zhenbo Yu, Zhengxue Cheng, Wei Liu, Li Song. Maximizing Rollout Informativeness under a Fixed Budget: A Submodular View of Tree Search for Tool-Use Agentic Reinforcement Learning. 2026. https://arxiv.org/abs/2605.05262\n\n[38] Sikuan Yan, Ahmed Bahloul, Ercong Nie, Susanna Schwarzmann, Riccardo Trivisonno. Memory-R2: Fair Credit Assignment for Long-Horizon Memory-Augmented LLM Agents. 2026. https://arxiv.org/abs/2605.21768\n\n[39] Zuhao Yang, Kaichen Zhang, Sudong Wang, Keming Wu, Zhongyu Yang. ParaVT: Taming the Tool Prior Paradox for Parallel Tool Use in Agentic Video Reinforcement Learning. 2026. https://arxiv.org/abs/2605.20342\n\n[40] Xudong Han, Yue Ma, Jing Qiao. Progressive Multi-Turn Reinforcement Learning for Dynamic User-Interactive Tool Agents. 2026. https://doi.org/10.20944/preprints202601.0669.v1\n\n[41] Siwei Zhang, Yun Xiong, Xi Chen, Zi'an Jia, Renhong Huang. RAPO: Expanding Exploration for LLM Agents via Retrieval-Augmented Policy Optimization. 2026. https://arxiv.org/abs/2603.03078\n\n[42] Yugu Li, Zehong Cao, Jianglin Qiao, Siyi Hu. RTPO: Reverse-Turn Policy Optimization for Stabilizing Agentic RL Training. 2026. https://arxiv.org/abs/2608.18682\n\n[43] Xian Qi Loye, Qinglin Su, Zhexin Zhang, Shiyao Cui, Qi Zhu. RUBAS: Rubric-Based Reinforcement Learning for Agent Safety. 2026. https://arxiv.org/abs/2606.04051\n\n[44] Fei Ding, Yongkang Zhang, Youwei Wang, Zijian Zeng. Reducing Credit Assignment Variance via Counterfactual Reasoning Paths. 2026. https://arxiv.org/abs/2605.16302\n\n[45] Wen-Tse Chen, Jiayu Chen, Fahim Tajwar, Hao Zhu, Xintong Duan. Retrospective In-Context Learning for Temporal Credit Assignment with Large Language Models. 2026. https://arxiv.org/abs/2602.17497\n\n[46] Zhiwei Zhang, Fei Zhao, Rui Wang, Zezhong Wang, Bin Liang. Robust Tool Use via Fission-GRPO: Learning to Recover from Execution Errors. 2026. https://arxiv.org/abs/2601.15625\n\n[47] Xiaojian Liu, Han Xu, Jianqiang Xia, Zhixuan Li, Ke Xu. SCOPE-RL: Optimizing Reasoning Paths Before and After Success. 2026. https://arxiv.org/abs/2607.11506\n\n[48] Ziyi Wang, Yuxuan Lu, Yimeng Zhang, Qun Liu, Chen Luo. SENTINEL: Failure-Driven Reinforcement Learning for Training Tool-Using Language Model Agents. 2026. https://arxiv.org/abs/2606.12908\n\n[49] Debangshu Banerjee, Changming Xu, Eugene Ie, Ming Zhang, Daiyi Peng. SEVerA: Verified Synthesis of Self-Evolving Agents. 2026. https://arxiv.org/abs/2603.25111\n\n[50] Ruikang Zhao, Zhenting Wang, Han Gao, Ligong Han. SLIM-RL: Risk-Budgeted Random-Masking RL for Diffusion LLMs Without Trajectory Slicing. 2026. https://arxiv.org/abs/2607.00208\n\n[51] Qiuyi Qi, Tian Liang, Mutian Bao, Jinjian Zhang, Dongnan Liu. STAPO: Selective Trajectory-Aware Policy Optimization for LLM Agent Training. 2026. https://arxiv.org/abs/2607.04963\n\n[52] Fangcong Yin, Ming Yin, Tanvi Bhandarkar, Aashu Singh, Eryk Helenowski. Self-Credit: Credit Assignment for Long-Horizon Agentic RL via Intra-group Rescaling. 2026. https://arxiv.org/abs/2610.28388\n\n[53] Peiji Li, Linyang Li, Handa Sun, Wenjin Mai, Yongkang Chen. TL-GRPO: Turn-Level RL for Reasoning-Guided Iterative Optimization. 2026. https://arxiv.org/abs/2601.16480\n\n[54] Huan Zhang, Mingju Chen, Dongxu Zhou, Can Lv, Heng Chang. TRCA: Transition-wise Rubric Credit Assignment for Long-horizon LLM Agents. 2026. https://arxiv.org/abs/2608.16156\n\n[55] Yanjun Chen, Yirong Sun, Hanlin Wang, Jinghan Wang, Xinming Zhang. The Trace Is the State: Exact Credit Assignment for LLM Agent Teams. 2026. https://arxiv.org/abs/2603.06859\n\n[56] Tianyu Jia, Yue Fang, Hongxin Ding, Rihong Qiu, Zhibang Yang. The Weakest Link Tells It All: Outcome-Supervised Process Reward Modeling via Learnable Credit Assignment. 2026. https://arxiv.org/abs/2606.27739\n\n[57] Zhicheng Cai, Hanlin Wu, Weinan Dai, Yuyan Zhou, Wei-Ying Ma. Trajectory-Aware Policy Optimization: Closing the State Distribution Gap in Long-Horizon LLM RL. 2026. https://arxiv.org/abs/2610.13020\n\n[58] Debajoy Mukherjee, Jeremy Carleton, Sushil Vemuri, Srinivas Shakkottai, Dileep Kalathil. TreeHCA: Hindsight-Guided Exploration and Credit Assignment for Multi-Turn LLM Agents. 2026. https://arxiv.org/abs/2610.12828\n\n[59] Wenwu Li, Yuran Song, Mingze Zhao, Bo Jin, Wenhao Li. Unifying Temporal and Structural Credit Assignment in LLM-Based Multi-Agent Prompt Optimization. 2026. https://arxiv.org/abs/2605.30227\n\n[60] Yiqun Chen, Wei Yang, Erhan Zhang, Shijie Wang, Qi Liu. UnityMAS-O: A General RL Optimization Framework for LLM-Based Multi-Agent Systems. 2026. https://arxiv.org/abs/2605.26646\n\n[61] Jiaju Chen, Min Yang, Jinghua Piao, Xiaochong Lan, Xu Xia. VETTA: Coordinating Turn- and Token-Level Credit Assignment for Multi-Turn LLM Agents. 2026. https://arxiv.org/abs/2610.08402\n\n[62] Yupu Hao, Zhuoran Jin, Huanxuan Liao, Kang Liu, Jun Zhao. Why Multi-Step Tool-Use Reinforcement Learning Collapses and How Supervisory Signals Fix It. 2026. https://arxiv.org/abs/2606.26027\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Is Mamba Compatible with Trajectory Optimization in Offline Reinforcement Learning?",
+      "year": 2024,
+      "authors": [
+        "Yang Dai",
+        "Oubo Ma",
+        "Longfei Zhang",
+        "Xingxing Liang",
+        "Shengchao Hu",
+        "Mengzhu Wang",
+        "Shouling Ji",
+        "Jincai Huang",
+        "Li Shen"
+      ],
+      "doi": null,
+      "arxiv": "2405.12094",
+      "url": "https://arxiv.org/abs/2405.12094",
+      "work_id": "arxiv:2405.12094"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B002",
+      "title": "VinePPO: Refining Credit Assignment in RL Training of LLMs",
+      "year": 2024,
+      "authors": [
+        "Amirhossein Kazemnejad",
+        "Milad Aghajohari",
+        "Eva Portelance",
+        "Alessandro Sordoni",
+        "Siva Reddy",
+        "Aaron Courville",
+        "Nicolas Le Roux"
+      ],
+      "doi": null,
+      "arxiv": "2410.01679",
+      "url": "https://arxiv.org/abs/2410.01679",
+      "work_id": "arxiv:2410.01679"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B003",
+      "title": "CAPO: Towards Enhancing LLM Reasoning through Generative Credit Assignment",
+      "year": 2025,
+      "authors": [
+        "Guofu Xie",
+        "Yunsheng Shi",
+        "Hongtao Tian",
+        "Ting Yao",
+        "Xiao Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2508.02298",
+      "url": "https://arxiv.org/abs/2508.02298",
+      "work_id": "arxiv:2508.02298"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B004",
+      "title": "Experience-Evolving Multi-Turn Tool-Use Agent with Hybrid Episodic-Procedural Memory",
+      "year": 2025,
+      "authors": [
+        "Sijia Li",
+        "Yuchen Huang",
+        "Zifan Liu",
+        "Zijian Li",
+        "Jingjing fu",
+        "Lei Song",
+        "Jiang Bian",
+        "Jun Zhang",
+        "Rui Wang"
+      ],
+      "doi": null,
+      "arxiv": "2512.07287",
+      "url": "https://arxiv.org/abs/2512.07287",
+      "work_id": "arxiv:2512.07287"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B005",
+      "title": "Exploiting Tree Structure for Credit Assignment in RL Training of LLMs",
+      "year": 2025,
+      "authors": [
+        "Hieu Tran",
+        "Zonghai Yao",
+        "Hong Yu"
+      ],
+      "doi": null,
+      "arxiv": "2509.18314",
+      "url": "https://arxiv.org/abs/2509.18314",
+      "work_id": "arxiv:2509.18314"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B006",
+      "title": "GRPO-$λ$: Credit Assignment improves LLM Reasoning",
+      "year": 2025,
+      "authors": [
+        "Prasanna Parthasarathi",
+        "Mathieu Reymond",
+        "Boxing Chen",
+        "Yufei Cui",
+        "Sarath Chandar"
+      ],
+      "doi": null,
+      "arxiv": "2510.00194",
+      "url": "https://arxiv.org/abs/2510.00194",
+      "work_id": "arxiv:2510.00194"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B007",
+      "title": "Generalizable End-to-End Tool-Use RL with Synthetic CodeGym",
+      "year": 2025,
+      "authors": [
+        "Weihua Du",
+        "Hailei Gong",
+        "Zhan Ling",
+        "Kang Liu",
+        "Lingfeng Shen",
+        "Xuesong Yao",
+        "Yufei Xu",
+        "Dingyuan Shi",
+        "Yiming Yang",
+        "Jiecao Chen"
+      ],
+      "doi": null,
+      "arxiv": "2509.17325",
+      "url": "https://arxiv.org/abs/2509.17325",
+      "work_id": "arxiv:2509.17325"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B008",
+      "title": "Iterative Policy Optimization: Batch-Online Multi-Turn RL via Single-Turn RL",
+      "year": 2025,
+      "authors": [
+        "Daniel R. Jiang",
+        "Ankur Samanta",
+        "Yukai Yang",
+        "Jalaj Bhandari",
+        "Rémi Munos",
+        "Tyler Lu"
+      ],
+      "doi": null,
+      "arxiv": "2511.21638",
+      "url": "https://arxiv.org/abs/2511.21638",
+      "work_id": "arxiv:2511.21638"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B009",
+      "title": "Leveraging Large Language Models for Effective and Explainable Multi-Agent Credit Assignment",
+      "year": 2025,
+      "authors": [
+        "Kartik Nagpal",
+        "Dayi Dong",
+        "Jean-Baptiste Bouvier",
+        "Negar Mehr"
+      ],
+      "doi": null,
+      "arxiv": "2502.16863",
+      "url": "https://arxiv.org/abs/2502.16863",
+      "work_id": "arxiv:2502.16863"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B010",
+      "title": "MENTOR: Reinforcement Learning via Flexible Teacher-Optimized Rewards for Tool-Use Distillation",
+      "year": 2025,
+      "authors": [
+        "ChangSu Choi",
+        "Hoyun Song",
+        "Dongyeon Kim",
+        "Minkyung Cho",
+        "WooHyeon Jung",
+        "Sunjin Park",
+        "NohHyeob Bae",
+        "Seona Yu",
+        "KyungTae Lim"
+      ],
+      "doi": null,
+      "arxiv": "2510.18383",
+      "url": "https://arxiv.org/abs/2510.18383",
+      "work_id": "arxiv:2510.18383"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B011",
+      "title": "MUA-RL: Multi-turn User-interacting Agent Reinforcement Learning for agentic tool use",
+      "year": 2025,
+      "authors": [
+        "Weikang Zhao",
+        "Xili Wang",
+        "Chengdi Ma",
+        "Lingbin Kong",
+        "Zhaohua Yang",
+        "Mingxiang Tuo",
+        "Xiaowei Shi",
+        "Yitao Zhai",
+        "Xunliang Cai"
+      ],
+      "doi": null,
+      "arxiv": "2508.18669",
+      "url": "https://arxiv.org/abs/2508.18669",
+      "work_id": "arxiv:2508.18669"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B012",
+      "title": "Multimodal Policy Internalization for Conversational Agents",
+      "year": 2025,
+      "authors": [
+        "Zhenhailong Wang",
+        "Jiateng Liu",
+        "Amin Fazel",
+        "Ritesh Sarkhel",
+        "Xing Fan",
+        "Xiang Li",
+        "Chenlei Guo",
+        "Heng Ji",
+        "Ruhi Sarikaya"
+      ],
+      "doi": null,
+      "arxiv": "2510.09474",
+      "url": "https://arxiv.org/abs/2510.09474",
+      "work_id": "arxiv:2510.09474"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B014",
+      "title": "Process-Supervised Reinforcement Learning for Interactive Multimodal Tool-Use Agents",
+      "year": 2025,
+      "authors": [
+        "Weiting Tan",
+        "Xinghua Qu",
+        "Ming Tu",
+        "Meng Ge",
+        "Andy T. Liu",
+        "Philipp Koehn",
+        "Lu Lu"
+      ],
+      "doi": null,
+      "arxiv": "2509.14480",
+      "url": "https://arxiv.org/abs/2509.14480",
+      "work_id": "arxiv:2509.14480"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B015",
+      "title": "RLFactory: A Plug-and-Play Reinforcement Learning Post-Training Framework for LLM Multi-Turn Tool-Use",
+      "year": 2025,
+      "authors": [
+        "Jiajun Chai",
+        "Guojun Yin",
+        "Zekun Xu",
+        "Chuhuai Yue",
+        "Yi Jia",
+        "Siyu Xia",
+        "Xiaohan Wang",
+        "Jiwen Jiang",
+        "Xiaoguang Li",
+        "Chengqi Dong",
+        "Hang He",
+        "Wei Lin"
+      ],
+      "doi": null,
+      "arxiv": "2509.06980",
+      "url": "https://arxiv.org/abs/2509.06980",
+      "work_id": "arxiv:2509.06980"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B016",
+      "title": "ReTool: Reinforcement Learning for Strategic Tool Use in LLMs",
+      "year": 2025,
+      "authors": [
+        "Jiazhan Feng",
+        "Shijue Huang",
+        "Xingwei Qu",
+        "Ge Zhang",
+        "Yujia Qin",
+        "Baoquan Zhong",
+        "Chengquan Jiang",
+        "Jinxin Chi",
+        "Wanjun Zhong"
+      ],
+      "doi": null,
+      "arxiv": "2504.11536",
+      "url": "https://arxiv.org/abs/2504.11536",
+      "work_id": "arxiv:2504.11536"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B017",
+      "title": "Reducing Cognitive Overhead in Tool Use via Multi-Small-Agent Reinforcement Learning",
+      "year": 2025,
+      "authors": [
+        "Dayu Wang",
+        "Yutong Liu",
+        "Jiaye Yang",
+        "Weikang Li",
+        "Jiahui Liang",
+        "Yang Li"
+      ],
+      "doi": null,
+      "arxiv": "2508.08882",
+      "url": "https://arxiv.org/abs/2508.08882",
+      "work_id": "arxiv:2508.08882"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B019",
+      "title": "Reinforcing Multi-Turn Reasoning in LLM Agents via Fine-Grained Reward Structure and Credit Assignment",
+      "year": 2025,
+      "authors": [
+        "Quan Wei",
+        "Siliang Zeng",
+        "Chenliang Li",
+        "Zhongruo Wang",
+        "William Brown",
+        "Oana Frunza",
+        "Wei Deng",
+        "Anderson Schneider",
+        "Yuriy Nevmyvaka",
+        "Yang Katie Zhao",
+        "Alfredo Garcia",
+        "Mingyi Hong"
+      ],
+      "doi": null,
+      "arxiv": "2505.11821",
+      "url": "https://arxiv.org/abs/2505.11821",
+      "work_id": "arxiv:2505.11821"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B021",
+      "title": "Speaking the Language of Teamwork: LLM-Guided Credit Assignment in Multi-Agent Reinforcement Learning",
+      "year": 2025,
+      "authors": [
+        "Muhan Lin",
+        "Shuyang Shi",
+        "Yue Guo",
+        "Vaishnav Tadiparthi",
+        "Behdad Chalaki",
+        "Ehsan Moradi Pari",
+        "Simon Stepputtis",
+        "Woojun Kim",
+        "Joseph Campbell",
+        "Katia Sycara"
+      ],
+      "doi": null,
+      "arxiv": "2502.03723",
+      "url": "https://arxiv.org/abs/2502.03723",
+      "work_id": "arxiv:2502.03723"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B022",
+      "title": "The Landscape of Agentic Reinforcement Learning for LLMs: A Survey",
+      "year": 2025,
+      "authors": [
+        "Guibin Zhang",
+        "Hejia Geng",
+        "Xiaohang Yu",
+        "Zhenfei Yin",
+        "Zaibin Zhang",
+        "Zelin Tan",
+        "Heng Zhou",
+        "Zhongzhi Li",
+        "Xiangyuan Xue",
+        "Yijiang Li",
+        "Yifan Zhou",
+        "Yang Chen",
+        "Chen Zhang",
+        "Yutao Fan",
+        "Zihu Wang",
+        "Songtao Huang",
+        "Francisco Piedrahita-Velez",
+        "Yue Liao",
+        "Hongru Wang",
+        "Mengyue Yang",
+        "Heng Ji",
+        "Jun Wang",
+        "Shuicheng Yan",
+        "Philip Torr",
+        "Lei Bai"
+      ],
+      "doi": null,
+      "arxiv": "2509.02547",
+      "url": "https://arxiv.org/abs/2509.02547",
+      "work_id": "arxiv:2509.02547"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B024",
+      "title": "ToolExpander: Extending the Frontiers of Tool-Using Reinforcement Learning to Weak LLMs",
+      "year": 2025,
+      "authors": [
+        "Fu Chen",
+        "Peng Wang",
+        "Xiyin Li",
+        "Wen Li",
+        "Shichi Lei",
+        "Dongdong Xiang"
+      ],
+      "doi": null,
+      "arxiv": "2510.07737",
+      "url": "https://arxiv.org/abs/2510.07737",
+      "work_id": "arxiv:2510.07737"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B025",
+      "title": "VTool-R1: VLMs Learn to Think with Images via Reinforcement Learning on Multimodal Tool Use",
+      "year": 2025,
+      "authors": [
+        "Mingyuan Wu",
+        "Jingcheng Yang",
+        "Jize Jiang",
+        "Meitang Li",
+        "Kaizhuo Yan",
+        "Hanchao Yu",
+        "Minjia Zhang",
+        "Chengxiang Zhai",
+        "Klara Nahrstedt"
+      ],
+      "doi": null,
+      "arxiv": "2505.19255",
+      "url": "https://arxiv.org/abs/2505.19255",
+      "work_id": "arxiv:2505.19255"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B026",
+      "title": "VerlTool: Towards Holistic Agentic Reinforcement Learning with Tool Use",
+      "year": 2025,
+      "authors": [
+        "Dongfu Jiang",
+        "Yi Lu",
+        "Zhuofeng Li",
+        "Zhiheng Lyu",
+        "Ping Nie",
+        "Haozhe Wang",
+        "Alex Su",
+        "Hui Chen",
+        "Kai Zou",
+        "Chao Du",
+        "Tianyu Pang",
+        "Wenhu Chen"
+      ],
+      "doi": null,
+      "arxiv": "2509.01055",
+      "url": "https://arxiv.org/abs/2509.01055",
+      "work_id": "arxiv:2509.01055"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B028",
+      "title": "ARCA: Adapter-Residual Credit Assignment When Token Signals Degenerate",
+      "year": 2026,
+      "authors": [
+        "Rodney Lafuente-Mercado"
+      ],
+      "doi": null,
+      "arxiv": "2606.00257",
+      "url": "https://arxiv.org/abs/2606.00257",
+      "work_id": "arxiv:2606.00257"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B029",
+      "title": "Bellman-Consistent Trajectory RL for LLM Arithmetic Reasoning",
+      "year": 2026,
+      "authors": [
+        "Lianfa Li"
+      ],
+      "doi": null,
+      "arxiv": "2610.21060",
+      "url": "https://arxiv.org/abs/2610.21060",
+      "work_id": "arxiv:2610.21060"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B030",
+      "title": "Beyond Outcome Rewards: Constructing and Assigning Retrieval Credit for Search Agents",
+      "year": 2026,
+      "authors": [
+        "Wenyu Huang",
+        "Xinyu Hou",
+        "Pavlos Vougiouklis",
+        "Ruofei Lai",
+        "Jeff Z. Pan"
+      ],
+      "doi": null,
+      "arxiv": "2610.10179",
+      "url": "https://arxiv.org/abs/2610.10179",
+      "work_id": "arxiv:2610.10179"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B031",
+      "title": "Beyond Trajectory-Level Attribution: Graph-Based Credit Assignment for Agentic Reinforcement Learning",
+      "year": 2026,
+      "authors": [
+        "Xin Cheng",
+        "Shuo He",
+        "Lang Feng",
+        "HaiYang Xu",
+        "Ming Yan",
+        "Lei Feng",
+        "Bo An"
+      ],
+      "doi": null,
+      "arxiv": "2605.26684",
+      "url": "https://arxiv.org/abs/2605.26684",
+      "work_id": "arxiv:2605.26684"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B034",
+      "title": "Efficient Reinforcement Learning for Long-Horizon Tool-Use Agentic Tasks",
+      "year": 2026,
+      "authors": [
+        "Zelei Cheng",
+        "Amritansh Mishra",
+        "Sambit Sahu",
+        "William Campbell"
+      ],
+      "doi": null,
+      "arxiv": "2608.10357",
+      "url": "https://arxiv.org/abs/2608.10357",
+      "work_id": "arxiv:2608.10357"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B035",
+      "title": "Experiential Reinforcement Learning",
+      "year": 2026,
+      "authors": [
+        "Taiwei Shi",
+        "Sihao Chen",
+        "Bowen Jiang",
+        "Linxin Song",
+        "Longqi Yang",
+        "Jieyu Zhao"
+      ],
+      "doi": null,
+      "arxiv": "2602.13949",
+      "url": "https://arxiv.org/abs/2602.13949",
+      "work_id": "arxiv:2602.13949"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B036",
+      "title": "Explicit Trajectory Diversity for RL-Based Post-Training of LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Huaiyu Fu",
+        "Heng Cao",
+        "Hao Wang",
+        "Jian Ya",
+        "Tao Chen"
+      ],
+      "doi": null,
+      "arxiv": "2609.38805",
+      "url": "https://arxiv.org/abs/2609.38805",
+      "work_id": "arxiv:2609.38805"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B038",
+      "title": "From Reasoning Chains to Verifiable Subproblems: Curriculum Reinforcement Learning Enables Credit Assignment for LLM Reasoning",
+      "year": 2026,
+      "authors": [
+        "Xitai Jiang",
+        "Zihan Tang",
+        "Wenze Lin",
+        "Yang Yue",
+        "Shenzhi Wang",
+        "Gao Huang"
+      ],
+      "doi": null,
+      "arxiv": "2605.22074",
+      "url": "https://arxiv.org/abs/2605.22074",
+      "work_id": "arxiv:2605.22074"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B039",
+      "title": "GraphHCA: Closed-Form Hindsight Credit Assignment for Long-Horizon LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Haodong Zhu",
+        "Yangyang Ren",
+        "Changbai Li",
+        "Sheng Xu",
+        "Linlin Yang",
+        "haiguang liu",
+        "Baochang Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2609.35084",
+      "url": "https://arxiv.org/abs/2609.35084",
+      "work_id": "arxiv:2609.35084"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B042",
+      "title": "In-Context Reinforcement Learning for Tool Use in Large Language Models",
+      "year": 2026,
+      "authors": [
+        "Yaoqi Ye",
+        "Yiran Zhao",
+        "Keyu Duan",
+        "Zeyu Zheng",
+        "Kenji Kawaguchi",
+        "Cihang Xie",
+        "Michael Qizhe Shieh"
+      ],
+      "doi": null,
+      "arxiv": "2603.08068",
+      "url": "https://arxiv.org/abs/2603.08068",
+      "work_id": "arxiv:2603.08068"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B044",
+      "title": "LLM Value Functions for Credit Assignment in Agentic RL",
+      "year": 2026,
+      "authors": [
+        "Kaijie Zhu",
+        "Weixiang Yan",
+        "Omar Attia",
+        "Abbas Kazerouni",
+        "Alexander Toshev",
+        "Andrew Szot"
+      ],
+      "doi": null,
+      "arxiv": "2610.15840",
+      "url": "https://arxiv.org/abs/2610.15840",
+      "work_id": "arxiv:2610.15840"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B045",
+      "title": "Learning When to Act or Refuse: Guarding Agentic Reasoning Models for Safe Multi-Step Tool Use",
+      "year": 2026,
+      "authors": [
+        "Aradhye Agarwal",
+        "Gurdit Siyan",
+        "Yash Pandya",
+        "Joykirat Singh",
+        "Akshay Nambi",
+        "Ahmed Awadallah"
+      ],
+      "doi": null,
+      "arxiv": "2603.03205",
+      "url": "https://arxiv.org/abs/2603.03205",
+      "work_id": "arxiv:2603.03205"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B047",
+      "title": "MICA: Multi-granularity Intertemporal Credit Assignment for Long-Horizon Emotional Support Dialogue",
+      "year": 2026,
+      "authors": [
+        "Naifan Zhang",
+        "Ruihan Sun",
+        "Jinwei Su",
+        "Hengjie Yang",
+        "Zhengyuan Pan",
+        "Zhaohan Chen",
+        "Xiaofan Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2603.06194",
+      "url": "https://arxiv.org/abs/2603.06194",
+      "work_id": "arxiv:2603.06194"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B048",
+      "title": "MJ: Multi-turn LLM Jailbreaking via Decomposed Credit Assignment",
+      "year": 2026,
+      "authors": [
+        "Junyoung Park",
+        "Namgyu Park",
+        "Sechan Lee",
+        "Yoon-Chan Jhi",
+        "Jihoon Cho",
+        "Sangdon Park"
+      ],
+      "doi": null,
+      "arxiv": "2607.11070",
+      "url": "https://arxiv.org/abs/2607.11070",
+      "work_id": "arxiv:2607.11070"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B049",
+      "title": "Maximizing Rollout Informativeness under a Fixed Budget: A Submodular View of Tree Search for Tool-Use Agentic Reinforcement Learning",
+      "year": 2026,
+      "authors": [
+        "Yuelin Hu",
+        "Zhenbo Yu",
+        "Zhengxue Cheng",
+        "Wei Liu",
+        "Li Song"
+      ],
+      "doi": null,
+      "arxiv": "2605.05262",
+      "url": "https://arxiv.org/abs/2605.05262",
+      "work_id": "arxiv:2605.05262"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B050",
+      "title": "Memory-R2: Fair Credit Assignment for Long-Horizon Memory-Augmented LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Sikuan Yan",
+        "Ahmed Bahloul",
+        "Ercong Nie",
+        "Susanna Schwarzmann",
+        "Riccardo Trivisonno",
+        "Volker Tresp",
+        "Yunpu Ma"
+      ],
+      "doi": null,
+      "arxiv": "2605.21768",
+      "url": "https://arxiv.org/abs/2605.21768",
+      "work_id": "arxiv:2605.21768"
+    },
+    {
+      "reference_number": 39,
+      "ref_id": "B053",
+      "title": "ParaVT: Taming the Tool Prior Paradox for Parallel Tool Use in Agentic Video Reinforcement Learning",
+      "year": 2026,
+      "authors": [
+        "Zuhao Yang",
+        "Kaichen Zhang",
+        "Sudong Wang",
+        "Keming Wu",
+        "Zhongyu Yang",
+        "Bo Li",
+        "Xiaojuan Qi",
+        "Shijian Lu",
+        "Xingxuan Li",
+        "Lidong Bing"
+      ],
+      "doi": null,
+      "arxiv": "2605.20342",
+      "url": "https://arxiv.org/abs/2605.20342",
+      "work_id": "arxiv:2605.20342"
+    },
+    {
+      "reference_number": 40,
+      "ref_id": "B054",
+      "title": "Progressive Multi-Turn Reinforcement Learning for Dynamic User-Interactive Tool Agents",
+      "year": 2026,
+      "authors": [
+        "Xudong Han",
+        "Yue Ma",
+        "Jing Qiao"
+      ],
+      "doi": "10.20944/preprints202601.0669.v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.20944/preprints202601.0669.v1",
+      "work_id": "doi:10.20944/preprints202601.0669.v1"
+    },
+    {
+      "reference_number": 41,
+      "ref_id": "B055",
+      "title": "RAPO: Expanding Exploration for LLM Agents via Retrieval-Augmented Policy Optimization",
+      "year": 2026,
+      "authors": [
+        "Siwei Zhang",
+        "Yun Xiong",
+        "Xi Chen",
+        "Zi'an Jia",
+        "Renhong Huang",
+        "Jiarong Xu",
+        "Jiawei Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2603.03078",
+      "url": "https://arxiv.org/abs/2603.03078",
+      "work_id": "arxiv:2603.03078"
+    },
+    {
+      "reference_number": 42,
+      "ref_id": "B057",
+      "title": "RTPO: Reverse-Turn Policy Optimization for Stabilizing Agentic RL Training",
+      "year": 2026,
+      "authors": [
+        "Yugu Li",
+        "Zehong Cao",
+        "Jianglin Qiao",
+        "Siyi Hu"
+      ],
+      "doi": null,
+      "arxiv": "2608.18682",
+      "url": "https://arxiv.org/abs/2608.18682",
+      "work_id": "arxiv:2608.18682"
+    },
+    {
+      "reference_number": 43,
+      "ref_id": "B058",
+      "title": "RUBAS: Rubric-Based Reinforcement Learning for Agent Safety",
+      "year": 2026,
+      "authors": [
+        "Xian Qi Loye",
+        "Qinglin Su",
+        "Zhexin Zhang",
+        "Shiyao Cui",
+        "Qi Zhu",
+        "Fei Mi",
+        "Hongning Wang",
+        "Minlie Huang"
+      ],
+      "doi": null,
+      "arxiv": "2606.04051",
+      "url": "https://arxiv.org/abs/2606.04051",
+      "work_id": "arxiv:2606.04051"
+    },
+    {
+      "reference_number": 44,
+      "ref_id": "B060",
+      "title": "Reducing Credit Assignment Variance via Counterfactual Reasoning Paths",
+      "year": 2026,
+      "authors": [
+        "Fei Ding",
+        "Yongkang Zhang",
+        "Youwei Wang",
+        "Zijian Zeng"
+      ],
+      "doi": null,
+      "arxiv": "2605.16302",
+      "url": "https://arxiv.org/abs/2605.16302",
+      "work_id": "arxiv:2605.16302"
+    },
+    {
+      "reference_number": 45,
+      "ref_id": "B061",
+      "title": "Retrospective In-Context Learning for Temporal Credit Assignment with Large Language Models",
+      "year": 2026,
+      "authors": [
+        "Wen-Tse Chen",
+        "Jiayu Chen",
+        "Fahim Tajwar",
+        "Hao Zhu",
+        "Xintong Duan",
+        "Ruslan Salakhutdinov",
+        "Jeff Schneider"
+      ],
+      "doi": null,
+      "arxiv": "2602.17497",
+      "url": "https://arxiv.org/abs/2602.17497",
+      "work_id": "arxiv:2602.17497"
+    },
+    {
+      "reference_number": 46,
+      "ref_id": "B062",
+      "title": "Robust Tool Use via Fission-GRPO: Learning to Recover from Execution Errors",
+      "year": 2026,
+      "authors": [
+        "Zhiwei Zhang",
+        "Fei Zhao",
+        "Rui Wang",
+        "Zezhong Wang",
+        "Bin Liang",
+        "Jiakang Wang",
+        "Yao Hu",
+        "Shaosheng Cao",
+        "Kam-Fai Wong"
+      ],
+      "doi": null,
+      "arxiv": "2601.15625",
+      "url": "https://arxiv.org/abs/2601.15625",
+      "work_id": "arxiv:2601.15625"
+    },
+    {
+      "reference_number": 47,
+      "ref_id": "B063",
+      "title": "SCOPE-RL: Optimizing Reasoning Paths Before and After Success",
+      "year": 2026,
+      "authors": [
+        "Xiaojian Liu",
+        "Han Xu",
+        "Jianqiang Xia",
+        "Zhixuan Li",
+        "Ke Xu",
+        "Yiwei Dai",
+        "Xinran Chen",
+        "Changwo Wu",
+        "Yuchen Li"
+      ],
+      "doi": null,
+      "arxiv": "2607.11506",
+      "url": "https://arxiv.org/abs/2607.11506",
+      "work_id": "arxiv:2607.11506"
+    },
+    {
+      "reference_number": 48,
+      "ref_id": "B064",
+      "title": "SENTINEL: Failure-Driven Reinforcement Learning for Training Tool-Using Language Model Agents",
+      "year": 2026,
+      "authors": [
+        "Ziyi Wang",
+        "Yuxuan Lu",
+        "Yimeng Zhang",
+        "Qun Liu",
+        "Chen Luo",
+        "Jiri Gesi",
+        "Hanqing Lu",
+        "Yisi Sang",
+        "Manling Li",
+        "Jing Huang",
+        "Dakuo Wang"
+      ],
+      "doi": null,
+      "arxiv": "2606.12908",
+      "url": "https://arxiv.org/abs/2606.12908",
+      "work_id": "arxiv:2606.12908"
+    },
+    {
+      "reference_number": 49,
+      "ref_id": "B065",
+      "title": "SEVerA: Verified Synthesis of Self-Evolving Agents",
+      "year": 2026,
+      "authors": [
+        "Debangshu Banerjee",
+        "Changming Xu",
+        "Eugene Ie",
+        "Ming Zhang",
+        "Daiyi Peng",
+        "Chu-Cheng Lin",
+        "Tarun Suresh",
+        "Gagandeep Singh"
+      ],
+      "doi": null,
+      "arxiv": "2603.25111",
+      "url": "https://arxiv.org/abs/2603.25111",
+      "work_id": "arxiv:2603.25111"
+    },
+    {
+      "reference_number": 50,
+      "ref_id": "B066",
+      "title": "SLIM-RL: Risk-Budgeted Random-Masking RL for Diffusion LLMs Without Trajectory Slicing",
+      "year": 2026,
+      "authors": [
+        "Ruikang Zhao",
+        "Zhenting Wang",
+        "Han Gao",
+        "Ligong Han"
+      ],
+      "doi": null,
+      "arxiv": "2607.00208",
+      "url": "https://arxiv.org/abs/2607.00208",
+      "work_id": "arxiv:2607.00208"
+    },
+    {
+      "reference_number": 51,
+      "ref_id": "B067",
+      "title": "STAPO: Selective Trajectory-Aware Policy Optimization for LLM Agent Training",
+      "year": 2026,
+      "authors": [
+        "Qiuyi Qi",
+        "Tian Liang",
+        "Mutian Bao",
+        "Jinjian Zhang",
+        "Dongnan Liu",
+        "Wei Zhou",
+        "Linjian Mo",
+        "Ming Kong",
+        "Jie Liu",
+        "Feng Zhang",
+        "Qiang Zhu"
+      ],
+      "doi": null,
+      "arxiv": "2607.04963",
+      "url": "https://arxiv.org/abs/2607.04963",
+      "work_id": "arxiv:2607.04963"
+    },
+    {
+      "reference_number": 52,
+      "ref_id": "B068",
+      "title": "Self-Credit: Credit Assignment for Long-Horizon Agentic RL via Intra-group Rescaling",
+      "year": 2026,
+      "authors": [
+        "Fangcong Yin",
+        "Ming Yin",
+        "Tanvi Bhandarkar",
+        "Aashu Singh",
+        "Eryk Helenowski",
+        "Shlok Kumar Mishra",
+        "Saghar Hosseini",
+        "Karthik Abinav Sankararaman",
+        "Greg Durrett",
+        "Dinkar Juyal"
+      ],
+      "doi": null,
+      "arxiv": "2610.28388",
+      "url": "https://arxiv.org/abs/2610.28388",
+      "work_id": "arxiv:2610.28388"
+    },
+    {
+      "reference_number": 53,
+      "ref_id": "B071",
+      "title": "TL-GRPO: Turn-Level RL for Reasoning-Guided Iterative Optimization",
+      "year": 2026,
+      "authors": [
+        "Peiji Li",
+        "Linyang Li",
+        "Handa Sun",
+        "Wenjin Mai",
+        "Yongkang Chen",
+        "Xiaozhe Li",
+        "Yue Shen",
+        "Yichuan Ma",
+        "Yiliu Sun",
+        "Jiaxi Cao",
+        "Zhishu He",
+        "Bo Wang",
+        "Xiaoqing Zheng",
+        "Zhaori Bi",
+        "Xipeng Qiu",
+        "Qipeng Guo",
+        "Kai Chen",
+        "Dahua Lin"
+      ],
+      "doi": null,
+      "arxiv": "2601.16480",
+      "url": "https://arxiv.org/abs/2601.16480",
+      "work_id": "arxiv:2601.16480"
+    },
+    {
+      "reference_number": 54,
+      "ref_id": "B072",
+      "title": "TRCA: Transition-wise Rubric Credit Assignment for Long-horizon LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Huan Zhang",
+        "Mingju Chen",
+        "Dongxu Zhou",
+        "Can Lv",
+        "Heng Chang",
+        "Sen Cui",
+        "Faguo Wu",
+        "Shiji Zhou"
+      ],
+      "doi": null,
+      "arxiv": "2608.16156",
+      "url": "https://arxiv.org/abs/2608.16156",
+      "work_id": "arxiv:2608.16156"
+    },
+    {
+      "reference_number": 55,
+      "ref_id": "B073",
+      "title": "The Trace Is the State: Exact Credit Assignment for LLM Agent Teams",
+      "year": 2026,
+      "authors": [
+        "Yanjun Chen",
+        "Yirong Sun",
+        "Hanlin Wang",
+        "Jinghan Wang",
+        "Xinming Zhang",
+        "Xiaoyu Shen",
+        "Wenjie Li",
+        "Wei Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2603.06859",
+      "url": "https://arxiv.org/abs/2603.06859",
+      "work_id": "arxiv:2603.06859"
+    },
+    {
+      "reference_number": 56,
+      "ref_id": "B074",
+      "title": "The Weakest Link Tells It All: Outcome-Supervised Process Reward Modeling via Learnable Credit Assignment",
+      "year": 2026,
+      "authors": [
+        "Tianyu Jia",
+        "Yue Fang",
+        "Hongxin Ding",
+        "Rihong Qiu",
+        "Zhibang Yang",
+        "Zhijing Wu",
+        "Junfeng Zhao",
+        "Yasha Wang",
+        "Xu Chu"
+      ],
+      "doi": null,
+      "arxiv": "2606.27739",
+      "url": "https://arxiv.org/abs/2606.27739",
+      "work_id": "arxiv:2606.27739"
+    },
+    {
+      "reference_number": 57,
+      "ref_id": "B075",
+      "title": "Trajectory-Aware Policy Optimization: Closing the State Distribution Gap in Long-Horizon LLM RL",
+      "year": 2026,
+      "authors": [
+        "Zhicheng Cai",
+        "Hanlin Wu",
+        "Weinan Dai",
+        "Yuyan Zhou",
+        "Wei-Ying Ma",
+        "Ya-Qin Zhang",
+        "Hao Zhou"
+      ],
+      "doi": null,
+      "arxiv": "2610.13020",
+      "url": "https://arxiv.org/abs/2610.13020",
+      "work_id": "arxiv:2610.13020"
+    },
+    {
+      "reference_number": 58,
+      "ref_id": "B076",
+      "title": "TreeHCA: Hindsight-Guided Exploration and Credit Assignment for Multi-Turn LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Debajoy Mukherjee",
+        "Jeremy Carleton",
+        "Sushil Vemuri",
+        "Srinivas Shakkottai",
+        "Dileep Kalathil"
+      ],
+      "doi": null,
+      "arxiv": "2610.12828",
+      "url": "https://arxiv.org/abs/2610.12828",
+      "work_id": "arxiv:2610.12828"
+    },
+    {
+      "reference_number": 59,
+      "ref_id": "B077",
+      "title": "Unifying Temporal and Structural Credit Assignment in LLM-Based Multi-Agent Prompt Optimization",
+      "year": 2026,
+      "authors": [
+        "Wenwu Li",
+        "Yuran Song",
+        "Mingze Zhao",
+        "Bo Jin",
+        "Wenhao Li"
+      ],
+      "doi": null,
+      "arxiv": "2605.30227",
+      "url": "https://arxiv.org/abs/2605.30227",
+      "work_id": "arxiv:2605.30227"
+    },
+    {
+      "reference_number": 60,
+      "ref_id": "B078",
+      "title": "UnityMAS-O: A General RL Optimization Framework for LLM-Based Multi-Agent Systems",
+      "year": 2026,
+      "authors": [
+        "Yiqun Chen",
+        "Wei Yang",
+        "Erhan Zhang",
+        "Shijie Wang",
+        "Qi Liu",
+        "Zechun Niu",
+        "Bin Zhang",
+        "Haitao Li",
+        "Rui Li",
+        "Lingyong Yan",
+        "Jinyuan Feng",
+        "Biqing Qi",
+        "Xiaochi Wei",
+        "Yan Gao",
+        "Yi Wu",
+        "Yao Hu",
+        "Jiaxin Mao"
+      ],
+      "doi": null,
+      "arxiv": "2605.26646",
+      "url": "https://arxiv.org/abs/2605.26646",
+      "work_id": "arxiv:2605.26646"
+    },
+    {
+      "reference_number": 61,
+      "ref_id": "B080",
+      "title": "VETTA: Coordinating Turn- and Token-Level Credit Assignment for Multi-Turn LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Jiaju Chen",
+        "Min Yang",
+        "Jinghua Piao",
+        "Xiaochong Lan",
+        "Xu Xia",
+        "Xiangnan He",
+        "Yong Li"
+      ],
+      "doi": null,
+      "arxiv": "2610.08402",
+      "url": "https://arxiv.org/abs/2610.08402",
+      "work_id": "arxiv:2610.08402"
+    },
+    {
+      "reference_number": 62,
+      "ref_id": "B082",
+      "title": "Why Multi-Step Tool-Use Reinforcement Learning Collapses and How Supervisory Signals Fix It",
+      "year": 2026,
+      "authors": [
+        "Yupu Hao",
+        "Zhuoran Jin",
+        "Huanxuan Liao",
+        "Kang Liu",
+        "Jun Zhao"
+      ],
+      "doi": null,
+      "arxiv": "2606.26027",
+      "url": "https://arxiv.org/abs/2606.26027",
+      "work_id": "arxiv:2606.26027"
+    }
+  ],
+  "article_sha256": "830fe91c6c83688d7770c360383a243ec4a07b51326c669ea60026bc76456176",
+  "references_sha256": "da1adc8f3565011630dc0adfc34024094de99ab621d619b2227ee1abb8290081",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

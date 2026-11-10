@@ -1,0 +1,708 @@
+{
+  "topic_id": "AI1.10",
+  "route": "B",
+  "title": "线性与混合注意力架构：技术演进、方法比较与研究进展",
+  "content_md": "# 线性与混合注意力架构：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文研究了线性与混合注意力架构的演进脉络与核心问题，旨在突破传统点积注意力随序列长度呈二次方增长的计算与内存瓶颈。主要研究分支包括：通过核特征映射和矩阵乘法结合律将复杂度降至线性的早期方法；通过分块技术、状态表示优化与误差控制改进因果设定下性能的递归线性注意力；以及结合全注意力、滑动窗口或状态空间模型的混合架构。综合认识表明，线性与混合架构在保持高效长文本处理的同时，通过合理分配组件比例和拓扑设计，有效平衡了计算效率、长程检索能力与硬件实现开销。\n\n## 线性与混合注意力架构的演进脉络与核心研究问题\n\n线性与混合注意力架构旨在解决传统点积注意力机制随序列长度呈二次方增长（$O(N^2)$）的计算与内存瓶颈，使其能够高效处理长文本、大规模视频或高分辨率图像等长序列输入[1][3][7][10]。在早期研究中，研究者通过引入核特征映射，利用矩阵乘法的结合律将自注意力复杂度从二次方降低至线性（$O(N)$），并将其表述为循环神经网络（RNN）形式，从而显著加速自回归预测[3]。为进一步逼近标准softmax全秩注意力，后续研究提出了基于随机正交特征等方法的核估计与优化策略（如FAVOR+机制），并在理论上具备无偏或近似无偏估计及低估计方差[2]，且 Sumformer 等研究进一步证明了其在序列到序列函数上的通用逼近能力[7]。针对因累积求和（cumsum）等问题导致线性注意力难以在因果设置中完全释放理论优势的痛点，Lightning Attention-2 等进展通过引入分块（tiling）技术，将块内计算采用传统注意力、块间利用线性注意力核技巧，并通过硬件友好的 Triton 实现，从而在保证计算效率的同时突破了输入长度限制[10]。此外，诸如 Primer 等架构搜索工作通过在自注意力投影后引入深度可分离卷积或调整激活函数（如平方ReLU），以较小的训练开销实现了模型性能的显著提升[4]。在近年的演进脉络中，DeltaNet、Gated DeltaNet、Kimi Delta Attention 以及 Gated DeltaNet-2 等递归线性注意力架构进一步在循环记忆表示、表达能力、记忆衰减以及擦除与写入控制等方面展现出差异化的权衡[26]。同时，混合架构与跨层路由机制（如跨层值路由 CLVR）的引入，虽在吞吐量上带来一定代价，但有效降低了验证损失，并在效率、表达能力与可解释性之间寻求更优平衡[26][31]。\n\n## 线性注意力机制的状态表示、更新方法与误差控制\n\n标准Transformer的自注意力机制具有二次方的计算复杂度，在处理长序列时面临严重的效率瓶颈[3]。为了突破这一限制，线性注意力通过对核特征映射应用矩阵乘法的结合律，将计算复杂度从平方级降低至线性级别，并赋予了其循环神经网络（RNN）的解析视角[3]。然而，传统的线性注意力在实际应用中暴露出多种结构与性能缺陷，其演进脉络主要围绕状态表示的优化、误差控制机制以及非线性近似方式的改进展开。\n\n在状态表示与计算机制方面，基础线性注意力因忽略查询（Query）的幅度信息而导致注意力得分分布缺乏动态自适应能力，MALA通过引入查询幅度信息修正了这一缺陷[16]；针对因果设定下的累积求和（cumsum）难题，Lightning Attention-2通过块内与块外分离的铺排（tiling）技术，在硬件层面实现了真正的线性计算优势[10]。此外，为了消除传统核近似带来的误差，精确线性注意力（ELA）利用核函数的精确分解性质消除近似误差，并引入超链接结构和内存叶片模块来提升长序列扩展性与表征能力[22]；Hadamard线性注意力（HLA）则改变非线性作用位置，在成对相似度计算后施加非线性，从而以更高阶的有理函数逼近Softmax[24]。随机特征注意力（RFA）则通过控制变量法显式刻画并降低了近似误差[6]。\n\n在状态更新与长程记忆的误差控制方面，固定大小的隐藏状态构成了线性注意力和状态空间模型的根本局限[14]。针对多状态线性注意力中固定状态合并策略引发的错误累积，动态线性注意力（DLA）通过信息感知动态状态合并，在语义转换处保持高分辨率，同时压缩稳定区域[20]；日志线性注意力（Log-linear attention）则通过引入对数增长的隐藏状态集合，平衡了线性效率与Softmax的表达能力[14]。此外，从预测-修正视角来看，残差线性注意力（RLA）通过辅助循环状态累积残差并修正基础预测，克服了传统线性注意力的表达瓶颈，其派生的残差Delta网（RDN）进一步引入自适应门控与残差裁剪以增强控制能力[12]。从状态追踪的理论边界来看，仿射循环网络在保持状态表示的同时无法纠正状态分离子空间中的误差，其实际表现受限于累积的类内扩散与类间分离的比值，这从根本上决定了其有限的预测视野[34]。\n\n## 混合注意力架构与长上下文建模能力\n\n在线性与混合注意力架构的研究中，核心问题是如何在保持大语言模型全局建模能力的同时，有效缓解标准Softmax注意力的二次方计算与内存复杂度[5][8][11]。当前方法主要沿着独立架构改进、层级混合及转换机制等方向演进，并在计算效率与长上下文任务表现之间展现出不同的机制特征与适用条件。\n\n在单一机制的高效变体方面，代理注意力（Agent Attention）引入了一组数量远少于Query的代理Token作为中间桥梁，在聚合和广播信息的同时等价于一种广义的线性注意力，兼顾了全局上下文建模与高分辨率视觉任务的高效生成[5]。聚类自注意力（CAST）则利用可学习的代理Token构建簇亲和矩阵，将复杂度由二次方降低至线性级别，在长程序列任务上取得优于或可比于基准Transformer的效果[8]。此外，在资源受限或特定推理场景下，带有注意力汇聚机制的滑动窗口注意力（SWA）无需额外训练即可实现极低的推理开销，并在长上下文检索（如大海捞针与BABILong）中展现出显著优于线性注意力的性能[36]。\n\n然而，纯线性注意力模型由于使用固定大小的隐状态，常常面临长程检索性能受限的问题[11]。机制分析表明，其长程检索（LRR）失效的根本原因在于梯度信号密度不足，即线性的V聚合稀释了长序列中的检索相关梯度，而非单纯的容量限制[23]。为了克服这一局限，混合架构（Hybrid Architectures）将全注意力与线性或滑动窗口注意力进行组合[11][15][28]。在混合比例与组件选择上，研究表明优秀的独立线性模型未必适用于混合架构，而选择具备选择性门控、分层递归及控制遗忘特性的变体（如HGRN-2或GatedDeltaNet）表现更佳，且线性与全注意力的比例通常维持在3:1到6:1之间可实现高效的Transformer级召回[11]。原生混合注意力（NHA）通过将层内与层间混合统一在单一设计中，利用线性RNN更新键值槽并结合滑动窗口短时Token，实现了无需额外融合参数的上下文相关加权[15]。在位置归纳偏置方面，滑动窗口注意力混合倾向于在长度外推上表现更优，而门控线性注意力（如GLA、GDN）混合则在长上下文持续预训练中获得更大收益[28]。\n\n在理论表达能力与架构转换机制上，研究揭示了混合注意力的边界。理论分析表明，全注意力与混合网络之间存在明确的表达能力分离层级：在必须于前向传播中完成的多步推理任务中，一定层数的全注意力网络足以胜任，而交织了大量线性层与少量全注意力层的混合网络无法解决该问题[18]。针对预训练Transformer的架构转换，传统启发式或独立层评分方法往往忽略了全局配置下的层间依赖与冗余[29]。为此，FlashMorph将层选择建模为预算约束下的子任务联合优化问题，通过构建可变形层与轻量级门控有效保持了长上下文检索与推理能力[29]。此外，离线蒸馏策略常导致线性层误差随序列增长而累积、在长上下文长链条思考时发生坍塌，而引入在线策略注意力线性化（OPAL）使混合学生模型采样自身轨迹并接收冻结教师模型的密集监督，则能以极少的训练Token恢复绝大部分全注意力性能[32]。整体而言，不同的混合策略与线性转换方法在计算成本、训练预算以及长距检索任务上各有取舍，需根据具体的上下文长度与硬件效率需求进行权衡[11][29][36]。\n\n## 效率、生成质量与硬件实现的权衡机制\n\n在线性与混合注意力架构的研究中，平衡计算效率、生成质量以及硬件实现开销是核心挑战。传统线性注意力虽然在理论上具备线性计算复杂度，能够以恒定的内存消耗处理无限长度序列，但由于累积求和（cumsum）等因果设定下的计算瓶颈，往往难以在实际部署中完全展现其理论优势[10]。为此，Lightning Attention-2通过分块（tiling）技术，将计算划分为块内（intra-block）与块间（inter-block）组件，块内采用传统注意力机制，块间则应用线性注意力核技巧，并在前向与反向传播中全面适配GPU硬件，从而使线性注意力能够在因果设定下真正实现其理论性能[10]。\n\n为了兼顾表达能力与效率，混合架构将线性注意力与软注意力（softmax attention）或状态空间组件进行组合。例如，Kimi Linear引入了基于Gated DeltaNet扩展的Kimi Delta Attention（KDA），并采用对角加低秩（DPLR）过渡矩阵的专用分块算法，在降低计算开销的同时保持了与经典delta规则的一致性[13]。在视频生成领域，SANA-Video 2.0通过结合O(N)复杂度的门控线性注意力与定期的门控softmax锚点（比例为3:1），辅以块注意力残差（AttnRes）来复用锚点特征并提升深层有效秩，从而在保持线性扩展特性的同时恢复了softmax级别的表达能力[35]。此外，Hybrid Forcing在流式视频生成中引入轻量级线性时间注意力以捕获远距离依赖，并结合局部滑动窗口的块稀疏注意力来减少冗余计算，通过解耦蒸馏策略保障了流式建模的优化稳定性[27]。\n\n然而，混合架构的内部组成模式对推理加速策略带来了复杂影响。研究表明，串行混合架构（如交错式线性与注意力层）与并行混合架构（如每层组合Mamba-2与注意力）在组件级自指定解码（self-speculative drafting）上的表现存在显著差异，串行架构由于组件集成方式的不同，其接受率显著低于并行架构[19]。在系统与硬件服务层面，朴素执行混合架构往往会因内存系统效率低下和架构不匹配而在预填充阶段遭遇瓶颈[21]。HA-NPU通过在核心级、算子级和张量级重组线性注意力组件的数据流，消除了跨核心全局内存访问并减少了局部缓冲区压力，实现了显著的加速与能耗降低[21]。而在解码阶段，针对传统服务中频繁更新大型线性状态导致的高内存访问开销，KVBuffer通过缓冲近期键值，支持分块计算、并行草稿验证及短上下文的直接计算，有效减少了内存访问并降低了解码延迟[25]。\n\n## 关键路线优劣势、失败条件与开放性问题展望\n\n线性与混合注意力架构旨在平衡传统全注意力机制的计算成本与序列建模能力，但在架构设计、表达能力边界及实际部署中表现出复杂的权衡机制。研究表明，尽管稀疏与线性变体理论上能够解决通用动态规划任务，但其模型规模需随问题规模同步缩放 [9]。在长序列和长程检索任务中，线性注意力的主要瓶颈并非容量极限，而是梯度信号密度问题：线性值聚合会导致检索相关梯度在长序列中被稀释，使得模型难以将特定 token 路由至正确位置 [23]。为了突破这一局限，近期研究提出了交错式与并行式等混合架构设计 [19][23][30][37]。\n\n不同混合拓扑在表达能力与计算机制上存在显著差异。在形式化表达能力方面，全注意力机制与混合架构之间存在明确的理论界限：例如，包含多层全注意力的网络与交错大量线性注意力层的混合网络在顺序函数组合等多步推理任务中表现出清晰的表达能力分离 [18]。然而，特定配置的混合架构（如 Gated DeltaNet 与 Gated Attention 的组合）能够在常数精度假设下，以常数级 scratchpad（即 $O(1)$ 的思维链步骤）解决奇偶条件检索任务，而纯循环模型或全注意力模型则分别面临无解或需要多项式级 scratchpad 的局限 [33]。在多语言处理中，混合架构的跨语言表征受循环层与全注意力层排序的显著影响，以全注意力层开头的模型在蒸馏训练中学习速度更快 [30]。\n\n在效率优化与下游微调方面，混合架构内部的组件异质性带来了独特的挑战与机遇。在组件级自指定解码中，并行混合架构（如 Falcon-H1 的每层并行机制）可将 SSM/线性注意力子图作为零成本的内部草稿，实现较高的接受率，而序列混合架构（如 Qwen3.5 的交错层）由于组件集成方式的不同，其草稿效率相对较低 [19]。此外，在后训练线性化转换中，现有的混合方法常因评估漏洞而无意中绕过线性组件、过度依赖滑动窗口注意力（SWA），可通过引入推理时混合、目标 LoRA 微调以及计划性滑动窗口 Dropout（SSD）来恢复均衡的组件利用率 [17]。在参数高效微调（PEFT）中，注意力路径是两类混合架构的最优 LoRA 目标，能够以更少的参数获得具有竞争力的性能；然而，适配循环主干在序列混合中表现出破坏性（如导致显著性能下降），但在并行混合中却是建设性的，这表明混合拓扑（序列与并行）是决定适配行为和跨任务迁移特性的主要因素 [37]。\n\n## 结论\n\n本文对比了不同架构的方法差异与发展规律。方法比较显示，纯线性注意力受限于梯度信号稀释与固定隐状态，而混合架构在计算成本与全注意力级召回间取得了更好平衡。发展规律表明，通过分块计算、门控机制、硬件级数据流重组以及在线蒸馏，架构性能得以持续提升。开放问题则集中在：混合网络与全注意力网络在多步推理中的表达能力边界、后训练线性化中的组件利用率失衡，以及序列与并行拓扑对参数高效微调的差异化影响，需在未来研究中进一步权衡。\n\n## 参考文献\n\n[1] Rui Li, Jianlin Su, Chenxi Duan, Shunyi Zheng. Linear Attention Mechanism: An Efficient Attention for Semantic Segmentation. 2020. https://arxiv.org/abs/2007.14902\n\n[2] Krzysztof Choromanski, Valerii Likhosherstov, David Dohan, Xingyou Song, Andreea Gane. Rethinking Attention with Performers. 2020. https://arxiv.org/abs/2009.14794\n\n[3] Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, François Fleuret. Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention. 2020. https://arxiv.org/abs/2006.16236\n\n[4] David R. So, Wojciech Mańke, Hanxiao Liu, Zihang Dai, Noam Shazeer. Primer: Searching for Efficient Transformers for Language Modeling. 2021. https://arxiv.org/abs/2109.08668\n\n[5] Dongchen Han, Tianzhu Ye, Yizeng Han, Zhuofan Xia, Siyuan Pan. Agent Attention: On the Integration of Softmax and Linear Attention. 2023. https://arxiv.org/abs/2312.08874\n\n[6] Lin Zheng, Jianbo Yuan, Chong Wang, Lingpeng Kong. Efficient Attention via Control Variates. 2023. https://arxiv.org/abs/2302.04542\n\n[7] Silas Alberti, Niclas Dern, Laura Thesing, Gitta Kutyniok. Sumformer: Universal Approximation for Efficient Transformers. 2023. https://arxiv.org/abs/2307.02301\n\n[8] Adjorn van Engelenhoven, Nicola Strisciuglio, Estefanía Talavera. CAST: Clustering Self-Attention using Surrogate Tokens for Efficient Transformers. 2024. https://arxiv.org/abs/2402.04239\n\n[9] Kai Yang, Jan Ackermann, Zhenyu He, Guhao Feng, Bohang Zhang. Do Efficient Transformers Really Save Computation?. 2024. https://arxiv.org/abs/2402.13934\n\n[10] Zhen Qin, Weigao Sun, Dong Li, Xuyang Shen, Weixuan Sun. Lightning Attention-2: A Free Lunch for Handling Unlimited Sequence Lengths in Large Language Models. 2024. https://arxiv.org/abs/2401.04658\n\n[11] Dustin Wang, Rui-Jie Zhu, Steven Abreu, Yong Shan, Taylor Kergan. A Systematic Analysis of Hybrid Linear Attention. 2025. https://arxiv.org/abs/2507.06457\n\n[12] Xunhao Lai, Jialiang Kang, Jianqiao Lu, Tong Lin, Pengyu Zhao. Enhancing Linear Attention with Residual Learning. 2025. https://arxiv.org/abs/2509.25223\n\n[13]  Kimi Team, Yu Zhang, Zongyu Lin, Xingcheng Yao, Jiaxi Hu. Kimi Linear: An Expressive, Efficient Attention Architecture. 2025. https://arxiv.org/abs/2510.26692\n\n[14] Han Guo, Songlin Yang, Tarushii Goel, Eric P. Xing, Tri Dao. Log-Linear Attention. 2025. https://arxiv.org/abs/2506.04761\n\n[15] Jusen Du, Jiaxi Hu, Tao Zhang, Weigao Sun, Yu Cheng. Native Hybrid Attention for Efficient Sequence Modeling. 2025. https://arxiv.org/abs/2510.07019\n\n[16] Qihang Fan, Huaibo Huang, Yuang Ai, Ran He. Rectifying Magnitude Neglect in Linear Attention. 2025. https://arxiv.org/abs/2507.00698\n\n[17] Martin Benfeghoul, Teresa Delgado, Adnan Oomerjee, Haitham Bou Ammar, Jun Wang. Untangling Component Imbalance in Hybrid Linear Attention Conversion Methods. 2025. https://arxiv.org/abs/2510.05901\n\n[18] Xiaowei Ye, Xiaoyu He, Chao Liao, Chen Wu, Pinyan Lu. A Provable Expressiveness Hierarchy in Hybrid Linear-Full Attention. 2026. https://arxiv.org/abs/2602.01763\n\n[19] Hector Borobia, Elies Seguí-Mas, Guillermina Tormo-Carbó. Component-Aware Self-Speculative Decoding in Hybrid Language Models. 2026. https://arxiv.org/abs/2605.01106\n\n[20] Xin Wang, Hui Shen, Boyuan Zheng, Xueshen Liu, Minkyoung Cho. Dynamic Linear Attention. 2026. https://arxiv.org/abs/2606.10650\n\n[21] Yinyuan Zhang, Daliang Xu, Xiaolong Huang, Wangsong Yin, Yun Ma. Empowering Hybrid Attention Models on NPUs. 2026. https://arxiv.org/abs/2609.32114\n\n[22] Weinuo Ou. Exact Linear Attention. 2026. https://arxiv.org/abs/2605.18848\n\n[23] Yahua Ruan. Gradient Signal Density, Not Capacity, Limits Long-Range Retrieval in Linear Attention. 2026. https://doi.org/10.21203/rs.3.rs-10062921/v1\n\n[24] Hanno Ackermann, Hong Cai, Mohsen Ghafoorian, Amirhossein Habibian. HLA: Hadamard Linear Attention. 2026. https://arxiv.org/abs/2602.12128\n\n[25] Longwei Zou, Lin Zhong. KVBuffer: IO-aware Serving for Linear Attention. 2026. https://arxiv.org/abs/2605.19049\n\n[26] Tommaso Cerruti, Tim Rieder, George Rowlands, Lingfeng Jin, Imanol Schlag. Linear Attention Architectures: Mechanisms, Trade-offs, and Cross-Layer Routing. 2026. https://arxiv.org/abs/2607.07953\n\n[27] Ruibin Li, Tao Yang, Fangzhou Ai, Tianhe Wu, Shilei Wen. Long-Horizon Streaming Video Generation via Hybrid Attention with Decoupled Distillation. 2026. https://arxiv.org/abs/2604.10103\n\n[28] Xiaoran Liu, Ziwei He, Xipeng Qiu. Mechanics of Long-Context Hybrid Models Part 1.1: From Hybrid Attention to Hybrid Position. 2026. https://arxiv.org/abs/2610.10114\n\n[29] Disen Lan, Jianbin Zheng, Yuxi Ren, Xin Xia, Xuanda Wang. Morphing into Hybrid Attention Models. 2026. https://arxiv.org/abs/2606.30562\n\n[30] Lucas Bandarkar, Junlin Hu, Chenyuan Yang, Mohsen Fayyaz, Nanyun Peng. Multilinguality in Hybrid Attention LLMs. 2026. https://arxiv.org/abs/2609.35378\n\n[31] Aditya Singh. Not All Attention Is Equal: A Quantitative Survey of the EEI Trade-off. 2026. https://arxiv.org/abs/2608.15459\n\n[32] Arian Raje, Anupam Nayak, Anthony Fei, Akaash Parthasarathy, Mohamed Abdelfattah. On-Policy Attention Linearization. 2026. https://arxiv.org/abs/2609.31947\n\n[33] Tomasz Steifer. Provably Shorter Scratchpads in Hybrid DeltaNet-Attention Decoders. 2026. https://arxiv.org/abs/2605.16640\n\n[34] Jiwan Chung, Heechan Choi, Seon Joo Kim. Rethinking State Tracking in Recurrent Models Through Error Control Dynamics. 2026. https://arxiv.org/abs/2605.07755\n\n[35] Junsong Chen, Jincheng Yu, Yitong Li, Shuchen Xue, Haozhe Liu. SANA-Video 2.0: Hybrid Linear Attention with Attention Residuals for Efficient Video Generation. 2026. https://arxiv.org/abs/2607.21553\n\n[36] Alexia Jolicoeur-Martineau, Rhea Sanjay Sukthanker, Pashmina Cameron, Emy Gervais. Sliding-window beats linear attention. 2026. https://arxiv.org/abs/2608.28444\n\n[37] Hector Borobia, Elies Seguí-Mas, Guillermina Tormo-Carbó. Where Should LoRA Go? Component-Type Placement in Hybrid Language Models. 2026. https://arxiv.org/abs/2604.22127\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Linear Attention Mechanism: An Efficient Attention for Semantic Segmentation",
+      "year": 2020,
+      "authors": [
+        "Rui Li",
+        "Jianlin Su",
+        "Chenxi Duan",
+        "Shunyi Zheng"
+      ],
+      "doi": null,
+      "arxiv": "2007.14902",
+      "url": "https://arxiv.org/abs/2007.14902",
+      "work_id": "arxiv:2007.14902"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B002",
+      "title": "Rethinking Attention with Performers",
+      "year": 2020,
+      "authors": [
+        "Krzysztof Choromanski",
+        "Valerii Likhosherstov",
+        "David Dohan",
+        "Xingyou Song",
+        "Andreea Gane",
+        "Tamas Sarlos",
+        "Peter Hawkins",
+        "Jared Davis",
+        "Afroz Mohiuddin",
+        "Lukasz Kaiser",
+        "David Belanger",
+        "Lucy Colwell",
+        "Adrian Weller"
+      ],
+      "doi": null,
+      "arxiv": "2009.14794",
+      "url": "https://arxiv.org/abs/2009.14794",
+      "work_id": "arxiv:2009.14794"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B003",
+      "title": "Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention",
+      "year": 2020,
+      "authors": [
+        "Angelos Katharopoulos",
+        "Apoorv Vyas",
+        "Nikolaos Pappas",
+        "François Fleuret"
+      ],
+      "doi": null,
+      "arxiv": "2006.16236",
+      "url": "https://arxiv.org/abs/2006.16236",
+      "work_id": "arxiv:2006.16236"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B004",
+      "title": "Primer: Searching for Efficient Transformers for Language Modeling",
+      "year": 2021,
+      "authors": [
+        "David R. So",
+        "Wojciech Mańke",
+        "Hanxiao Liu",
+        "Zihang Dai",
+        "Noam Shazeer",
+        "Quoc V. Le"
+      ],
+      "doi": null,
+      "arxiv": "2109.08668",
+      "url": "https://arxiv.org/abs/2109.08668",
+      "work_id": "arxiv:2109.08668"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B007",
+      "title": "Agent Attention: On the Integration of Softmax and Linear Attention",
+      "year": 2023,
+      "authors": [
+        "Dongchen Han",
+        "Tianzhu Ye",
+        "Yizeng Han",
+        "Zhuofan Xia",
+        "Siyuan Pan",
+        "Pengfei Wan",
+        "Shiji Song",
+        "Gao Huang"
+      ],
+      "doi": null,
+      "arxiv": "2312.08874",
+      "url": "https://arxiv.org/abs/2312.08874",
+      "work_id": "arxiv:2312.08874"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B008",
+      "title": "Efficient Attention via Control Variates",
+      "year": 2023,
+      "authors": [
+        "Lin Zheng",
+        "Jianbo Yuan",
+        "Chong Wang",
+        "Lingpeng Kong"
+      ],
+      "doi": null,
+      "arxiv": "2302.04542",
+      "url": "https://arxiv.org/abs/2302.04542",
+      "work_id": "arxiv:2302.04542"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B010",
+      "title": "Sumformer: Universal Approximation for Efficient Transformers",
+      "year": 2023,
+      "authors": [
+        "Silas Alberti",
+        "Niclas Dern",
+        "Laura Thesing",
+        "Gitta Kutyniok"
+      ],
+      "doi": null,
+      "arxiv": "2307.02301",
+      "url": "https://arxiv.org/abs/2307.02301",
+      "work_id": "arxiv:2307.02301"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B011",
+      "title": "CAST: Clustering Self-Attention using Surrogate Tokens for Efficient Transformers",
+      "year": 2024,
+      "authors": [
+        "Adjorn van Engelenhoven",
+        "Nicola Strisciuglio",
+        "Estefanía Talavera"
+      ],
+      "doi": null,
+      "arxiv": "2402.04239",
+      "url": "https://arxiv.org/abs/2402.04239",
+      "work_id": "arxiv:2402.04239"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B012",
+      "title": "Do Efficient Transformers Really Save Computation?",
+      "year": 2024,
+      "authors": [
+        "Kai Yang",
+        "Jan Ackermann",
+        "Zhenyu He",
+        "Guhao Feng",
+        "Bohang Zhang",
+        "Yunzhen Feng",
+        "Qiwei Ye",
+        "Di He",
+        "Liwei Wang"
+      ],
+      "doi": null,
+      "arxiv": "2402.13934",
+      "url": "https://arxiv.org/abs/2402.13934",
+      "work_id": "arxiv:2402.13934"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B013",
+      "title": "Lightning Attention-2: A Free Lunch for Handling Unlimited Sequence Lengths in Large Language Models",
+      "year": 2024,
+      "authors": [
+        "Zhen Qin",
+        "Weigao Sun",
+        "Dong Li",
+        "Xuyang Shen",
+        "Weixuan Sun",
+        "Yiran Zhong"
+      ],
+      "doi": null,
+      "arxiv": "2401.04658",
+      "url": "https://arxiv.org/abs/2401.04658",
+      "work_id": "arxiv:2401.04658"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B015",
+      "title": "A Systematic Analysis of Hybrid Linear Attention",
+      "year": 2025,
+      "authors": [
+        "Dustin Wang",
+        "Rui-Jie Zhu",
+        "Steven Abreu",
+        "Yong Shan",
+        "Taylor Kergan",
+        "Yuqi Pan",
+        "Yuhong Chou",
+        "Zheng Li",
+        "Jibin Wu",
+        "Ge Zhang",
+        "Wenhao Huang",
+        "Jason Eshraghian"
+      ],
+      "doi": null,
+      "arxiv": "2507.06457",
+      "url": "https://arxiv.org/abs/2507.06457",
+      "work_id": "arxiv:2507.06457"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B016",
+      "title": "Enhancing Linear Attention with Residual Learning",
+      "year": 2025,
+      "authors": [
+        "Xunhao Lai",
+        "Jialiang Kang",
+        "Jianqiao Lu",
+        "Tong Lin",
+        "Pengyu Zhao"
+      ],
+      "doi": null,
+      "arxiv": "2509.25223",
+      "url": "https://arxiv.org/abs/2509.25223",
+      "work_id": "arxiv:2509.25223"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B017",
+      "title": "Kimi Linear: An Expressive, Efficient Attention Architecture",
+      "year": 2025,
+      "authors": [
+        " Kimi Team",
+        "Yu Zhang",
+        "Zongyu Lin",
+        "Xingcheng Yao",
+        "Jiaxi Hu",
+        "Fanqing Meng",
+        "Chengyin Liu",
+        "Xin Men",
+        "Songlin Yang",
+        "Zhiyuan Li",
+        "Wentao Li",
+        "Enzhe Lu",
+        "Weizhou Liu",
+        "Yanru Chen",
+        "Weixin Xu",
+        "Longhui Yu",
+        "Yejie Wang",
+        "Yu Fan",
+        "Longguang Zhong",
+        "Enming Yuan",
+        "Dehao Zhang",
+        "Yizhi Zhang",
+        "T. Y. Liu",
+        "Haiming Wang",
+        "Shengjun Fang",
+        "Weiran He",
+        "Shaowei Liu",
+        "Yiwei Li",
+        "Jianlin Su",
+        "Jiezhong Qiu",
+        "Bo Pang",
+        "Junjie Yan",
+        "Zhejun Jiang",
+        "Weixiao Huang",
+        "Bohong Yin",
+        "Jiacheng You",
+        "Chu Wei",
+        "Zhengtao Wang",
+        "Chao Hong",
+        "Yutian Chen",
+        "Guanduo Chen",
+        "Yucheng Wang",
+        "Huabin Zheng",
+        "Feng Wang",
+        "Yibo Liu",
+        "Mengnan Dong",
+        "Zheng Zhang",
+        "Siyuan Pan",
+        "Wenhao Wu",
+        "Yuhao Wu",
+        "Longyu Guan",
+        "Jiawen Tao",
+        "Guohong Fu",
+        "Xinran Xu",
+        "Yuzhi Wang",
+        "Guokun Lai",
+        "Yuxin Wu",
+        "Xinyu Zhou",
+        "Zhilin Yang",
+        "Yulun Du"
+      ],
+      "doi": null,
+      "arxiv": "2510.26692",
+      "url": "https://arxiv.org/abs/2510.26692",
+      "work_id": "arxiv:2510.26692"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B018",
+      "title": "Log-Linear Attention",
+      "year": 2025,
+      "authors": [
+        "Han Guo",
+        "Songlin Yang",
+        "Tarushii Goel",
+        "Eric P. Xing",
+        "Tri Dao",
+        "Yoon Kim"
+      ],
+      "doi": null,
+      "arxiv": "2506.04761",
+      "url": "https://arxiv.org/abs/2506.04761",
+      "work_id": "arxiv:2506.04761"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B019",
+      "title": "Native Hybrid Attention for Efficient Sequence Modeling",
+      "year": 2025,
+      "authors": [
+        "Jusen Du",
+        "Jiaxi Hu",
+        "Tao Zhang",
+        "Weigao Sun",
+        "Yu Cheng"
+      ],
+      "doi": null,
+      "arxiv": "2510.07019",
+      "url": "https://arxiv.org/abs/2510.07019",
+      "work_id": "arxiv:2510.07019"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B021",
+      "title": "Rectifying Magnitude Neglect in Linear Attention",
+      "year": 2025,
+      "authors": [
+        "Qihang Fan",
+        "Huaibo Huang",
+        "Yuang Ai",
+        "Ran He"
+      ],
+      "doi": null,
+      "arxiv": "2507.00698",
+      "url": "https://arxiv.org/abs/2507.00698",
+      "work_id": "arxiv:2507.00698"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B023",
+      "title": "Untangling Component Imbalance in Hybrid Linear Attention Conversion Methods",
+      "year": 2025,
+      "authors": [
+        "Martin Benfeghoul",
+        "Teresa Delgado",
+        "Adnan Oomerjee",
+        "Haitham Bou Ammar",
+        "Jun Wang",
+        "Zafeirios Fountas"
+      ],
+      "doi": null,
+      "arxiv": "2510.05901",
+      "url": "https://arxiv.org/abs/2510.05901",
+      "work_id": "arxiv:2510.05901"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B024",
+      "title": "A Provable Expressiveness Hierarchy in Hybrid Linear-Full Attention",
+      "year": 2026,
+      "authors": [
+        "Xiaowei Ye",
+        "Xiaoyu He",
+        "Chao Liao",
+        "Chen Wu",
+        "Pinyan Lu"
+      ],
+      "doi": null,
+      "arxiv": "2602.01763",
+      "url": "https://arxiv.org/abs/2602.01763",
+      "work_id": "arxiv:2602.01763"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B025",
+      "title": "Component-Aware Self-Speculative Decoding in Hybrid Language Models",
+      "year": 2026,
+      "authors": [
+        "Hector Borobia",
+        "Elies Seguí-Mas",
+        "Guillermina Tormo-Carbó"
+      ],
+      "doi": null,
+      "arxiv": "2605.01106",
+      "url": "https://arxiv.org/abs/2605.01106",
+      "work_id": "arxiv:2605.01106"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B028",
+      "title": "Dynamic Linear Attention",
+      "year": 2026,
+      "authors": [
+        "Xin Wang",
+        "Hui Shen",
+        "Boyuan Zheng",
+        "Xueshen Liu",
+        "Minkyoung Cho",
+        "Zhongwei Wan",
+        "Zesen Zhao",
+        "Zhuoqing Mao",
+        "Shen Yan",
+        "Mi Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2606.10650",
+      "url": "https://arxiv.org/abs/2606.10650",
+      "work_id": "arxiv:2606.10650"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B029",
+      "title": "Empowering Hybrid Attention Models on NPUs",
+      "year": 2026,
+      "authors": [
+        "Yinyuan Zhang",
+        "Daliang Xu",
+        "Xiaolong Huang",
+        "Wangsong Yin",
+        "Yun Ma",
+        "Mengwei Xu",
+        "Gang Huang"
+      ],
+      "doi": null,
+      "arxiv": "2609.32114",
+      "url": "https://arxiv.org/abs/2609.32114",
+      "work_id": "arxiv:2609.32114"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B030",
+      "title": "Exact Linear Attention",
+      "year": 2026,
+      "authors": [
+        "Weinuo Ou"
+      ],
+      "doi": null,
+      "arxiv": "2605.18848",
+      "url": "https://arxiv.org/abs/2605.18848",
+      "work_id": "arxiv:2605.18848"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B031",
+      "title": "Gradient Signal Density, Not Capacity, Limits Long-Range Retrieval in Linear Attention",
+      "year": 2026,
+      "authors": [
+        "Yahua Ruan"
+      ],
+      "doi": "10.21203/rs.3.rs-10062921/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.21203/rs.3.rs-10062921/v1",
+      "work_id": "doi:10.21203/rs.3.rs-10062921/v1"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B032",
+      "title": "HLA: Hadamard Linear Attention",
+      "year": 2026,
+      "authors": [
+        "Hanno Ackermann",
+        "Hong Cai",
+        "Mohsen Ghafoorian",
+        "Amirhossein Habibian"
+      ],
+      "doi": null,
+      "arxiv": "2602.12128",
+      "url": "https://arxiv.org/abs/2602.12128",
+      "work_id": "arxiv:2602.12128"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B036",
+      "title": "KVBuffer: IO-aware Serving for Linear Attention",
+      "year": 2026,
+      "authors": [
+        "Longwei Zou",
+        "Lin Zhong"
+      ],
+      "doi": null,
+      "arxiv": "2605.19049",
+      "url": "https://arxiv.org/abs/2605.19049",
+      "work_id": "arxiv:2605.19049"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B037",
+      "title": "Linear Attention Architectures: Mechanisms, Trade-offs, and Cross-Layer Routing",
+      "year": 2026,
+      "authors": [
+        "Tommaso Cerruti",
+        "Tim Rieder",
+        "George Rowlands",
+        "Lingfeng Jin",
+        "Imanol Schlag"
+      ],
+      "doi": null,
+      "arxiv": "2607.07953",
+      "url": "https://arxiv.org/abs/2607.07953",
+      "work_id": "arxiv:2607.07953"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B039",
+      "title": "Long-Horizon Streaming Video Generation via Hybrid Attention with Decoupled Distillation",
+      "year": 2026,
+      "authors": [
+        "Ruibin Li",
+        "Tao Yang",
+        "Fangzhou Ai",
+        "Tianhe Wu",
+        "Shilei Wen",
+        "Bingyue Peng",
+        "Lei Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2604.10103",
+      "url": "https://arxiv.org/abs/2604.10103",
+      "work_id": "arxiv:2604.10103"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B040",
+      "title": "Mechanics of Long-Context Hybrid Models Part 1.1: From Hybrid Attention to Hybrid Position",
+      "year": 2026,
+      "authors": [
+        "Xiaoran Liu",
+        "Ziwei He",
+        "Xipeng Qiu"
+      ],
+      "doi": null,
+      "arxiv": "2610.10114",
+      "url": "https://arxiv.org/abs/2610.10114",
+      "work_id": "arxiv:2610.10114"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B042",
+      "title": "Morphing into Hybrid Attention Models",
+      "year": 2026,
+      "authors": [
+        "Disen Lan",
+        "Jianbin Zheng",
+        "Yuxi Ren",
+        "Xin Xia",
+        "Xuanda Wang",
+        "Xuefeng Xiao",
+        "Xipeng Qiu",
+        "Yu Cheng"
+      ],
+      "doi": null,
+      "arxiv": "2606.30562",
+      "url": "https://arxiv.org/abs/2606.30562",
+      "work_id": "arxiv:2606.30562"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B043",
+      "title": "Multilinguality in Hybrid Attention LLMs",
+      "year": 2026,
+      "authors": [
+        "Lucas Bandarkar",
+        "Junlin Hu",
+        "Chenyuan Yang",
+        "Mohsen Fayyaz",
+        "Nanyun Peng"
+      ],
+      "doi": null,
+      "arxiv": "2609.35378",
+      "url": "https://arxiv.org/abs/2609.35378",
+      "work_id": "arxiv:2609.35378"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B044",
+      "title": "Not All Attention Is Equal: A Quantitative Survey of the EEI Trade-off",
+      "year": 2026,
+      "authors": [
+        "Aditya Singh"
+      ],
+      "doi": null,
+      "arxiv": "2608.15459",
+      "url": "https://arxiv.org/abs/2608.15459",
+      "work_id": "arxiv:2608.15459"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B045",
+      "title": "On-Policy Attention Linearization",
+      "year": 2026,
+      "authors": [
+        "Arian Raje",
+        "Anupam Nayak",
+        "Anthony Fei",
+        "Akaash Parthasarathy",
+        "Mohamed Abdelfattah",
+        "Gauri Joshi"
+      ],
+      "doi": null,
+      "arxiv": "2609.31947",
+      "url": "https://arxiv.org/abs/2609.31947",
+      "work_id": "arxiv:2609.31947"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B047",
+      "title": "Provably Shorter Scratchpads in Hybrid DeltaNet-Attention Decoders",
+      "year": 2026,
+      "authors": [
+        "Tomasz Steifer"
+      ],
+      "doi": null,
+      "arxiv": "2605.16640",
+      "url": "https://arxiv.org/abs/2605.16640",
+      "work_id": "arxiv:2605.16640"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B048",
+      "title": "Rethinking State Tracking in Recurrent Models Through Error Control Dynamics",
+      "year": 2026,
+      "authors": [
+        "Jiwan Chung",
+        "Heechan Choi",
+        "Seon Joo Kim"
+      ],
+      "doi": null,
+      "arxiv": "2605.07755",
+      "url": "https://arxiv.org/abs/2605.07755",
+      "work_id": "arxiv:2605.07755"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B051",
+      "title": "SANA-Video 2.0: Hybrid Linear Attention with Attention Residuals for Efficient Video Generation",
+      "year": 2026,
+      "authors": [
+        "Junsong Chen",
+        "Jincheng Yu",
+        "Yitong Li",
+        "Shuchen Xue",
+        "Haozhe Liu",
+        "Jingyu Xin",
+        "Yuyang Zhao",
+        "Tian Ye",
+        "Zhangjie Wu",
+        "Zian Wang",
+        "Daquan Zhou",
+        "Ping Luo",
+        "Song Han",
+        "Enze Xie"
+      ],
+      "doi": null,
+      "arxiv": "2607.21553",
+      "url": "https://arxiv.org/abs/2607.21553",
+      "work_id": "arxiv:2607.21553"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B053",
+      "title": "Sliding-window beats linear attention",
+      "year": 2026,
+      "authors": [
+        "Alexia Jolicoeur-Martineau",
+        "Rhea Sanjay Sukthanker",
+        "Pashmina Cameron",
+        "Emy Gervais"
+      ],
+      "doi": null,
+      "arxiv": "2608.28444",
+      "url": "https://arxiv.org/abs/2608.28444",
+      "work_id": "arxiv:2608.28444"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B057",
+      "title": "Where Should LoRA Go? Component-Type Placement in Hybrid Language Models",
+      "year": 2026,
+      "authors": [
+        "Hector Borobia",
+        "Elies Seguí-Mas",
+        "Guillermina Tormo-Carbó"
+      ],
+      "doi": null,
+      "arxiv": "2604.22127",
+      "url": "https://arxiv.org/abs/2604.22127",
+      "work_id": "arxiv:2604.22127"
+    }
+  ],
+  "article_sha256": "ccc8716e4fc715c4c244cc66e4fc3ec80b690726e15b528528449778c6f10cec",
+  "references_sha256": "d2a621b911b4ff91d5ea7ab1c127f28137f639ac77cfb58570b6af85e76485ce",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

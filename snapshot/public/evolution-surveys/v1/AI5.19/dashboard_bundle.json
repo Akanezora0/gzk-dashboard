@@ -1,0 +1,1326 @@
+{
+  "topic_id": "AI5.19",
+  "route": "B",
+  "title": "多智能体协作：技术演进、方法比较与研究进展",
+  "content_md": "# 多智能体协作：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了多智能体协作技术在2024–2026年期间的演进与发展。研究范围涵盖从早期强化学习中的自主通信协议与间接信息素机制，到当前由大语言模型（LLM）驱动的分布式、集中式及层次化组织拓扑。论文系统比较了静态架构向动态组织设计、显式预算约束、混合模型部署以及通信协议标准化的技术路线，深入剖析了多智能体系统在任务分配、迭代辩论、共享状态管理、交叉检查及失败模式治理方面的核心认识。最后，指出了大规模互联下的通信开销、计算瓶颈、语义漂移及安全合谋等开放问题，为未来统一通信协议与高效协作机制的构建提供了参考。\n\n## 多智能体协作的起源与2024–2026年演进\n\n多智能体协作致力于通过多个智能体的分工、通信和交叉检查来共同规划及执行复杂任务[5]。在早期深度多智能体强化学习（MARL）阶段，研究主要集中在如何克服部分可观察环境以及智能体间通信机制的设计。例如，ACCNet框架通过将深度学习与演员-评论家（actor-critic）强化学习相结合，允许智能体在学习过程中从零开始自主学习通信协议，并在连续和离散动作空间下均取得了优于基线的表现[1]。类似地，在模拟高速公路驾驶等复杂仿真场景中，研究表明引入通信策略能够帮助多智能体在恶劣或不利条件（如能见度降低）下更好地进行集体行为协调[2]。而在应对大规模多智能体系统时，传统的直接交互会带来指数级增长的交互成本。为此，受群居昆虫启发的信息素间接通信框架PooL被提出，它将强化学习算法的输出定义为信息素，通过信息素更新机制对海量智能体的信息进行组织与低维降维，从而在低通信成本下实现了更快的收敛速度和更高的奖励[3]。\n\n进入2024至2026年，随着大语言模型（LLM）的广泛应用，多智能体协作演进为以LLM驱动的智能体系统，重点转向任务分配、迭代辩论、复杂上下文管理以及记忆优化[5]。在系统架构与编排层面，这一阶段涌现出对主流编排框架的系统性梳理，研究指出多智能体协作呈现出集中式、分散式和层次化等不同的拓扑结构，并伴随着动态/自适应控制轴的演进[57]。同时，为实现可扩展性，设计原则开始趋向于简单性、弹性反馈、带可选循环的顺序工作流以及基于摘要的通信[65]。在宏观人口动态演进方面，“Agentic Hive”等理论框架被引入，通过将智能体群体类比为动态一般均衡模型中的生产部门，利用数学工具分析了自主微智能体在人口出生、复制、专业化和死亡等动态过程中的均衡存在性与帕累托最优性[41]。\n\n然而，随着智能体的大规模互联，通信协议与安全风险成为制约其实际部署的关键瓶颈。由于早期缺乏统一的外部工具和跨智能体通信标准，生态系统呈现碎片化[9][27]。为此，诸如MCP（agent-to-tool）、A2A（agent-to-agent）以及智能体网络协议（ANP）等原生协议栈相继被设计并投入应用，分别在身份认证、动态协商、能力发现以及跨层架构上提供标准化支撑[10][17][57]。在安全与演生风险方面，生成式多智能体系统在共享资源竞争、顺序交接和集体决策聚合中，常会自发涌现出类似人类社会的合谋样态、协同同质化等社会智能风险[50]。这表明，仅依靠智能体层面的传统安全防护已难以应对复杂的集体交互失效模式，未来的发展亟需构建具备强安全性、语义清晰度与事务完整性的统一通信协议与治理机制[27]。不同方法在适用条件上各有侧重：强化学习中的通信机制适用于动态控制与连续/离散动作空间的协同策略优化[1][2]；信息素机制适用于带宽受限、需进行大规模降维的场景[3]；而基于LLM的编排协议与动态人口模型则更适用于处理长链条、跨组织及具身推理的复杂任务流[5][41][57]。\n\n## 角色分工与组织拓扑机制的比较、演变与适用条件\n\n本章聚焦于多智能体协作中角色分工与组织拓扑机制的比较、演变与适用条件。多智能体系统（MAS）通过多个语言模型智能体分工、通信和交叉检查，共同规划及执行复杂任务 [42]。然而，如何组织智能体结构、分配角色及设计协调机制，直接决定了系统的性能与计算开销。\n\n在研究问题与机制方面，早期的静态架构和均匀的模型分配常面临效率低下或级联幻觉问题 [7][60]。为此，近期研究从架构搜索转向动态组织设计。例如，MaCTG框架引入动态图结构，根据编程需求自主分配智能体角色并动态调整任务分布，同时采用混合大模型部署（专有模型处理复杂推理，开源模型处理常规编码与验证），在图像处理任务中实现了高准确率并显著降低了运营成本 [7]。在组织模式比较上，企业级应用评估表明，协调模式（通过并行通信和负载引用支持复杂任务）与路由模式（用于智能体间的高效消息转发）能够有效提升端到端目标成功率 [8]。此外，自动化多智能体组织设计（AMOD）框架将组织视为一类设计对象，利用执行证据显式建模责任分配与重组，通过预算匹配的移除、通用角色替换和重分配测试，推动自动化设计超越单纯的架构搜索，实现基于证据的分工 [43]。在安全维度上，架构决策深刻影响任务性能与攻击抵抗力之间的权衡，角色分配、通信拓扑等设计选择决定了系统的安全攻击面 [42]。\n\n在成本约束与资源优化方法上，如何在显式预算下构造多智能体系统成为了核心演变方向。AgentBalance框架通过“骨干优先-拓扑自适应”（backbone-then-topology）设计，在给定的Token成本和延迟预算下优化多智能体系统，实现跨异构模型的角色匹配与延迟感知拓扑合成 [18]。类似地，BAMAS方法通过求解整数线性规划平衡性能与成本，并利用强化学习选择交互拓扑 [19]。MasRouter通过级联控制器网络整合协作模式确定、角色分配和大模型路由，在降低开销的同时实现了即插即用的集成 [29]。此外，SC-MAS通过边缘级异构协作在性能和执行成本之间取得平衡 [64]，而OI-MAS则引入状态依赖的路由机制与置信度感知机制，在多尺度模型池中动态选择智能体角色与模型规模 [63]。针对辩论与推理机制，Mixture of Debaters（MoD）框架通过混合专家范式在单模型内实现动态自辩论，解耦了角色分配与进程流，在多模态基准上以较低的延迟和Token消耗实现了优于传统多智能体系统的性能 [60]。\n\n在适用条件与演变规律方面，不同编排架构展现出显著的性能-成本权衡。在金融文档处理基准中，反射型架构（reflexive self-correcting loop）字段级F1最高但成本最高，层级架构（hierarchical supervisor-worker）则占据了成本-准确率帕累托前沿的最优位置，通过混合配置能够以较低的基线成本恢复大部分准确率增益 [44]。另一方面，关于团队规模与通信机制的标度律研究表明，推理时多智能体扩展存在“林格曼效应”（Ringelmann Effect）：在自由形式的数学任务中，密集的同伴通信和辩论会使答案级机制从亚线性衰减折叠至硬上限，初始同伴间相关性（而非通信模式本身）往往控制着性能上限 [71]。同时，角色指令虽然分配了决策与工作，但移除角色并不一定降低首次通过准确率，而Reviewer等角色的审批门控会直接影响系统的提交流程与错误恢复机会 [45]。\n\n综上所述，多智能体协作机制已从传统的手工静态分工演变为结合动态路由、成本预算约束、架构自适应调整以及基于证据的组织学习范式。不同的编排模式、模型规模分配策略与团队规模配置在准确率、延迟和计算开销上各有优劣，需根据具体的任务复杂度与部署约束进行权衡选择。\n\n## 通信、共享状态与交叉检查机制的比较与演变\n\n在大模型驱动的多智能体协作系统中，通信机制、共享状态管理与交叉检查构成了保障系统高效运行与可靠推理的核心支柱。早期多智能体强化学习（MARL）面临严格的通信带宽限制，传统方法常在传输固定字节或零信息之间二选一 [4]。为此，动态大小消息调度（DSMS）方法通过引入基于傅里叶变换的压缩技术，在带宽受限场景下自适应调整消息大小，兼顾了信息损失与传输效率 [4]。随着大模型多智能体架构向长文本与复杂推理演进，自由文本通信容易引发语义漂移、幻觉传播和高昂的Token开销 [6][54]。在跨组织及异构系统协同背景下，研究者提出了多种代理通信协议以实现标准化互操作，如模型上下文协议（MCP）、代理通信协议（ACP）、代理到代理协议（A2A）以及代理网络协议（ANP）等 [11][12][15]。例如，图接地通信协议（G2CP）用结构化图操作（如遍历命令、子图片段及更新操作）替代自然语言，在工业知识管理任务中大幅削减了通信Token并消除了级联幻觉 [54]。混合潜在-文本协议（HyLaT）则采用多通道机制，通过潜在信道传输复杂认知信号以保证效率，同时通过自然语言表达简洁的关键信号以维持可解释性 [55]。在协议开销评估方面，基准测试表明，握手阶段的往返次数（Round-trips）和元数据读取是影响通信效率的关键因素，不同协议在冷启动、重连及 capability inventory 规模下的开销表现各异 [70]。\n\n在共享状态与跨域协同机制方面，为了突破单实例持续在线的局限并支持跨组织长期交互，代理传输协议（ATP）采用域中介架构，通过行政域服务器维护稳定地址，在目标执行实例离线时持续接收并保存消息 [39]。针对全上下文共享导致Token冗余和高延迟的痛点，角色条件上下文 routing（RCR）层在执行期根据智能体角色、任务阶段元数据及Token预算，选择性地向各智能体路由相关的共享内存项，从而在维持或提升任务性能的同时显著降低了Token消耗与运行时间 [31]。此外，代理上下文协议（ACPs）结合了持久化执行蓝图（即存储中间智能体输出的显式依赖图）与标准化的消息模式，支持容错的集体推理 [16]。在安全性与隐私审计方面，零知识证明与MCP的结合（zk-MCP）实现了代理通信的隐私保护与可验证审计，允许在不暴露消息内容的前提下验证合规性与使用指标 [35]。\n\n交叉检查与冲突解决机制在抑制智能体幻觉和纠正推理错误中发挥着关键作用。在长文本处理中，如LongAgent框架通过领导者分派任务给众多成员，并引入成员间通信机制来解决由于成员幻觉引发的响应冲突 [6]。在时间序列问答任务中，T3LLM框架构建了工作者、审阅者和学生模型的三者协作机制，由审阅者识别推理错误并提供校正意见，进而微调学生模型以实现多步推理与自我纠正的内化 [21]。在多智能体安全评估中，包含批评者、防守者和法官智能体的多智能体辩论框架在共享安全准则下进行辩论，提升了裁判的可靠性 [24]。此外，MARCH框架通过引入故意的“信息 asymmetry（信息不对称）”，强制求解器、提议者和检查者协同，使检查者在剥离原始输出的隔离状态下验证原子命题，从而打破自我确认偏误并抑制幻觉 [59]。\n\n## 任务收益、协作成本与失败模式的机制与对比\n\n在本章中，我们聚焦于多智能体协作系统中的任务收益、协作成本与失败模式之间的深层机制与对比。随着大语言模型（LLM）多智能体系统在复杂推理和决策任务中的广泛应用，其在带来性能提升的同时，也暴露出了严峻的计算资源开销与系统性协作失效问题[37]。\n\n### 1. 协作机制与收益：通信、分层拓扑与策略设计\n多智能体系统的核心优势源于通过显式或隐式的交互实现任务的分解与交叉验证[48]。在通信机制方面，研究表明简单的通信协议（如 cheap talk 机制）能够作为强鲁棒的协调机制，显著提升多智能体系统在博弈与协作任务中的合作率，其效果往往优于对设计高度敏感的课程学习方法[22]。在架构拓扑方面，系统设计逐渐从传统的中心化仲裁演进为更为灵活的分层与分布式结构。例如，在任务分配中，规划器（Planner）方法在处理并发动作时表现优于简单的统筹器（Orchestrator）方法，且提供显式的智能体能力信息能够进一步增强分配策略[33]。而在安全研究与特定推理任务中，探索不同的角色配置与拓扑结构（如 MASTER 框架）则能够为信息流交互范式和跨场景韧性提供系统性支持[28]。\n\n然而，多智能体协作并非在所有场景下均占优势。部分研究指出，在特定代码生成和数学推理基准上，自动化设计的复杂多智能体框架在准确率和效率上甚至不及经过优化的单次模型调用（Single-Call），暴露出“单次调用主导”的现象[51]。为理解这一收益边界，DIANOIA 框架将多智能体推理增益分解为覆盖度（Coverage）、保真度（Fidelity）和综合能力（Synthesis）三个可度量的通道，从而能够针对不同任务瓶颈进行通道感知的资源分配[48]。\n\n### 2. 协作成本与系统瓶颈：通信开销、内存压力与资源分配\n多智能体系统在带来性能增益的同时，伴随着显著的计算成本与推理延迟。传统的“全聚合”（All-Gather）数据流模式要求各智能体的私有历史与共享输出在多轮交互中不断重复编码，从而在GPU内存中引发严重的冗余和扩展瓶颈[72]。为此，TokenDance 等工作引入了集体 KV 缓存共享机制，通过跨请求的统一旋转位置编码与重要位置选择，大幅降低了 KV 缓存存储开销并缩短了端到端延迟[72]。在计算资源调度层面，针对无服务器（Serverless）GPU环境中的异构智能体工作负载，自适应 GPU 资源分配框架能够基于工作负载特征与优先级动态分配资源，实现显著的延迟降低[14]。\n\n在成本控制与效率优化方面，研究者们提出了多种动态路由与推理扩展策略。例如，CascadeDebate 在模型层级升级边界引入多智能体审议，仅对不确定查询激活轻量级智能体合集，从而在控制成本的同时保障准确率[47]。EvoRouter 则通过激励引导的在线蒸馏，将跨任务的配置轨迹反馈内化为路由策略，在降低推理计算成本的同时提升了任务准确率[52]。此外，针对金融情感分析等生产环境中的成本陷阱，TriAgent 通过语境粒度分层的多智能体委员会与语义分歧指数（SDI），实现了高效的查询路由与零边际成本的跨语种检索[74]。\n\n### 3. 失败模式与鲁棒性治理：对抗冲突、审计容量与蒸馏折中\n多智能体协作的失败模式主要表现为不建设性的辩论、信息过载、分工失误及审计过载[37]。研究表明，在多智能体蒙特卡洛模拟中，无建设性的争论与恶意通信会显著推迟收敛，且对参数规模较小的模型影响尤为严重[46]。在资源受限的灾难分诊模拟中，将决策分散到多智能体管道中并未自动降低人口统计学偏差的发生率，而独立审计员的“审计容量”成为能否捕获偏差的关键瓶颈；在负载超载下，由于覆盖率骤降导致大量偏见行为未被检测，而通过基于估计风险重新排序则可恢复大部分覆盖率[49]。\n\n为了克服多智能体系统在实际部署中的高计算成本和错误传播，研究者探索了将多智能体智能蒸馏至单一模型的路径。例如，AgentArk 框架通过推理增强微调、轨迹增强和过程感知蒸馏三种策略，将多智能体测试时的显式交互转化为单模型的隐式能力，在保持计算高效的同时保留了强推理和自我纠错性能[40]。另一方面，针对过程奖励模型（PRM）在长轨迹评估中的二次方计算瓶颈，KV-PRM 通过直接读取底层 KV 缓存，将评分开销从 $O(L^2)$ 降至 $O(L)$[56]。\n\n### 4. 方法比较与适用条件\n综合现有文献，不同的多智能体协作与优化方法适用于不同的资源和任务条件：\n- **直接通信协议**：适用于需要低延迟、高鲁棒性对齐与协调的社会性困境任务，比复杂的课程学习更具可靠性[22]。\n- **分层与多层次委员会架构（如 TriAgent、CascadeDebate）**：适用于具有明显任务难度梯度的场景，能够通过轻量级前置过滤或分层路由在保证准确率的同时实现数量级的成本节约[47][74]。\n- **KV缓存共享与自适应资源分配（如 TokenDance、GPU自适应分配）**：适用于需要高并发、长上下文交互的生产级多智能体服务环境，能够有效缓解GPU显存压力与服务延迟[14][72]。\n- **模型蒸馏与外部记忆优化（如 AgentArk、SkillMem）**：适用于受限于推理预算、需要将多智能体复杂推理能力内化或通过紧凑外部潜空间共享可复用技能的场景[40][67]。\n\n综上所述，平衡任务收益与协作成本的关键在于识别任务的特定瓶颈（如覆盖度或计算冗余），并采用通道感知、动态路由或结构优化的机制来实现帕累托最优[48][61]。\n\n## 综合评估、关键路线对比与开放性挑战\n\n在本章中，我们综合比较了大模型驱动的多智能体协作系统在关键路线、核心机制、失败条件与适用条件方面的研究进展。随着多智能体系统在复杂推理、软件工程、具身智能及安全评估等领域的广泛应用，如何有效组织智能体交互、降低计算通信开销、并在不同应用场景下克服错误放大与不稳定性，成为了当前的核心研究问题。\n\n在组织架构与拓扑设计方面，传统方法往往依赖固定的静态结构或暴力的单智能体长文本链（TTS），这容易导致上下文管理失效与推理成本急剧上升[34]。为此，结构化与自适应的多智能体协作框架得到了深入发展。例如，AdaSTORM针对大规模动态图推理任务，提出了自适应图分区与时空解耦多智能体协作架构，通过将全局任务分解为符合模型容量的子区域并在子区域间进行协同，有效突破了单模型处理大规模动态图时的扩展瓶颈[38]。在办公自动化和多步查询场景中，通过引入“计划-求解器”（Plan and Solver）分离架构并结合业务工具检索，显著提升了系统应对复杂交互和多轮对话的能力[30]。而在具身智能与多智能体协同规划中，DR. WELL框架采用去中心化的神经符号化方案，通过“提议角色-共识分配”的两阶段协商协议，利用共享世界模型对符号化计划进行执行跟踪与状态更新，从而避免了原始轨迹对齐的脆弱性[23]。\n\n在通信机制与计算开销优化方面，传统的“生成-再传输”（generate-then-transfer）流水线会导致端到端延迟随深度线性增长。为了克服这一缺陷，STREAM MA系统引入了流式通信机制（Streaming Communication），将每个推理步骤实时流式传输给下游智能体进行流水线化，不仅显著降低了延迟，还利用早期步骤较高的可靠性防止了易错的后期步骤对下游的误导[69]。在多智能体强化学习（MARL）与通信协议设计中，为了解决以往追求性能而盲目扩张通信开销的问题，信息熵效率指数（IEI）被提出用以量化消息熵与任务性能的比率，从而引导智能体在策略更新中学习到更加紧凑和高效的通信表示[58]。此外，针对生成智能体在通信网络协议设计中的应用，CP-AgentNet通过自动化生成代理设计出适应异构环境的协议，降低了对人类专家和繁琐超参数整定调优的依赖[20]。\n\n在错误修正、交叉检查与稳定性优化方面，多智能体协作常面临早期错误被放大、确认偏误以及弱势智能体拖累整体性能的挑战。APOLLO框架通过结合Lean编译器的模块化、模型无关智能体流程，实现了对大模型定理证明输出的目标式、编译器引导的修复，在保持较低采样预算的同时大幅提升了形式化推理的准确率[13]。针对长视距深度搜索中的错误累积问题，FALCA框架提出了“搜索者-纠错者”（Searcher-Falsifier）架构，通过主动搜寻反证、检查未满足约束并生成精炼的证伪报告来持续修正研究状态[53]。在弱链优化方面，WORC框架基于弱链原理，利用基于元学习的权重预测器零样本识别并定位性能瓶颈智能体，从而有效抑制协作过程中的推理不稳定与误差放大现象[75]。在多智能体辩论与角色分配方面，“真理最后”（Truth Last）等策略和多智能体辩论一致性（MADC）方法被证明能有效克服性能瓶颈并提升推理缩放效果[26]。\n\n在综合评估、经济学视角与安全挑战方面，多智能体系统的性能表现往往受到多重权衡的制约。在金融交易与决策场景中，协调首要假说（CPH）指出，间inter-agent协作协议的设计是决策质量的主要驱动因素，其影响力往往超过单纯的模型规模缩放，而评估时若忽视交易成本则可能完全逆转收益结论[73]。在计算机使用（CUA）代理中，“脊-支协作”（Spine-Branch Coordination）显式地对虚拟机状态无法合并的物理约束进行了建模，通过将主任务流与并行收集信息的支任务流解耦，在降低每任务成本的同时提升了成功率[68]。在系统安全与攻防评估领域，ORBIT框架揭示了不同通信协议（如CORAL与ACP）在身份验证、完整性与保密性上的架构权衡，并指出针对特定动作设计的防御策略往往难以泛化抵御多智能体合谋等新型威胁[32][62]。此外，多智能体系统中的社会比较与嫉妒偏好、跨时间的长效记忆组织（如LLMA-Mem），以及面向大规模检索的知识感知贝叶斯多臂强盗算法（KABB）等，共同构成了当前多智能体协作方法在多样化资源约束和动态环境下的完整技术图谱[25][36][66]。\n\n## 结论\n\n本综述系统梳理了多智能体协作系统从强化学习阶段向大模型驱动阶段的演进历程，对比了集中式、分散式、层次化及动态路由等多种组织拓扑与通信协议机制。研究表明，多智能体协作通过分工、交叉检查和动态组织分配显著提升了复杂推理任务的上限，但也伴随着高额的计算开销、Token冗余、通信带宽限制以及错误放大等系统性失败模式。未来的发展需要重点突破以下开放问题：一是构建具备强安全性、语义清晰度与事务完整性的统一通信与治理协议；二是设计兼顾长文本、多实例持久化及低延迟的共享状态与上下文路由机制；三是探索面向实际部署的计算成本优化、模型蒸馏与自动化组织设计范式，从而在任务收益与计算资源之间实现帕累托最优。\n\n## 参考文献\n\n[1] Hangyu Mao, Zhibo Gong, Yan Ni, Zhen Xiao. ACCNet: Actor-Coordinator-Critic Net for \"Learning-to-Communicate\" with Deep Multi-agent Reinforcement Learning. 2017. https://arxiv.org/abs/1706.03235\n\n[2] Cinjon Resnick, Ilya Kulikov, Kyunghyun Cho, Jason Weston. Vehicle Communication Strategies for Simulated Highway Driving. 2018. https://arxiv.org/abs/1804.07178\n\n[3] Zixuan Cao, Mengzhi Shi, Zhanbo Zhao, Xiujun Ma. PooL: Pheromone-inspired Communication Framework forLarge Scale Multi-Agent Reinforcement Learning. 2022. https://arxiv.org/abs/2202.09722\n\n[4] Qingshuang Sun, Denis Steckelmacher, Yuan Yao, Ann Nowé, Raphaël Avalos. Dynamic Size Message Scheduling for Multi-Agent Communication under Limited Bandwidth. 2023. https://arxiv.org/abs/2306.10134\n\n[5] Shanshan Han, Qifan Zhang, Weizhao Jin, Zhaozhuo Xu. LLM Multi-Agent Systems: Challenges and Open Problems. 2024. https://arxiv.org/abs/2402.03578\n\n[6] Jun Zhao, Can Zu, Hao Xu, Yi Lu, Wei He. LongAgent: Scaling Language Models to 128k Context through Multi-Agent Collaboration. 2024. https://arxiv.org/abs/2402.11550\n\n[7] Zixiao Zhao, Jing Sun, Zhe Hou, Zhiyuan Wei, Cheng-Hao Cai. MaCTG: Multi-Agent Collaborative Thought Graph for Automatic Programming. 2024. https://arxiv.org/abs/2410.19245\n\n[8] Raphael Shu, Nilaksh Das, Michelle Yuan, Monica Sunkara, Yi Zhang. Towards Effective GenAI Multi-Agent Collaboration: Design and Evaluation for Enterprise Applications. 2024. https://arxiv.org/abs/2412.05449\n\n[9] Yingxuan Yang, Huacan Chai, Yuanyi Song, Siyuan Qi, Muning Wen. A Survey of AI Agent Protocols. 2025. https://arxiv.org/abs/2504.16736\n\n[10] Dezhang Kong, Shi Lin, Zhenhua Xu, Zhebo Wang, Minghao Li. A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures. 2025. https://arxiv.org/abs/2506.19676\n\n[11] Abul Ehtesham, Aditi Singh, Gaurav Kumar Gupta, Saket Kumar. A survey of agent interoperability protocols: Model Context Protocol (MCP), Agent Communication Protocol (ACP), Agent-to-Agent Protocol (A2A), and Agent Network Protocol (ANP). 2025. https://arxiv.org/abs/2505.02279\n\n[12] Jun Liu, Ke Yu, Keliang Chen, Ke Li, Yuxinyue Qian. ACPs: Agent Collaboration Protocols for the Internet of Agents. 2025. https://arxiv.org/abs/2505.13523\n\n[13] Azim Ospanov, Farzan Farnia, Roozbeh Yousefzadeh. APOLLO: Automated LLM and Lean Collaboration for Advanced Formal Reasoning. 2025. https://arxiv.org/abs/2505.05758\n\n[14] Guilin Zhang, Wulan Guo, Ziqi Tan. Adaptive GPU Resource Allocation for Multi-Agent Collaborative Reasoning in Serverless Environments. 2025. https://arxiv.org/abs/2512.22149\n\n[15] Qiang Duan, Zhihui Lu. Agent Communications toward Agentic AI at Edge -- A Case Study of the Agent2Agent Protocol. 2025. https://arxiv.org/abs/2508.15819\n\n[16] Devansh Bhardwaj, Arjun Beniwal, Shreyas Chaudhari, Ashwin Kalyan, Tanmay Rajpurohit. Agent Context Protocols Enhance Collective Inference. 2025. https://arxiv.org/abs/2505.14569\n\n[17] Gaowei Chang, Eidan Lin, Chengxuan Yuan, Rizhao Cai, Binbin Chen. Agent Network Protocol Technical White Paper. 2025. https://arxiv.org/abs/2508.00007\n\n[18] Shuowei Cai, Yansong Ning, Hao Liu. AgentBalance: Backbone-then-Topology Design for Cost-Effective Multi-Agent Systems under Budget Constraints. 2025. https://arxiv.org/abs/2512.11426\n\n[19] Liming Yang, Junyu Luo, Xuanzhe Liu, Yiling Lou, Zhenpeng Chen. BAMAS: Structuring Budget-Aware Multi-Agent Systems. 2025. https://arxiv.org/abs/2511.21572\n\n[20] Dae Cheol Kwon, Xinyu Zhang. CP-AgentNet: Autonomous and Explainable Communication Protocol Design Using Generative Agents. 2025. https://arxiv.org/abs/2503.17850\n\n[21] Chen Su, Yuanhe Tian, Yan Song. Chain-of-thought Reviewing and Correction for Time Series Question Answering. 2025. https://arxiv.org/abs/2512.22627\n\n[22] Hachem Madmoun, Salem Lahlou. Communication Enables Cooperation in LLM Agents: A Comparison with Curriculum-Based Approaches. 2025. https://arxiv.org/abs/2510.05748\n\n[23] Narjes Nourzad, Hanqing Yang, Shiyu Chen, Carlee Joe-Wong. DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration. 2025. https://arxiv.org/abs/2511.04646\n\n[24] Dachuan Lin, Guobin Shen, Zihao Yang, Tianrong Liu, Dongcheng Zhao. Efficient LLM Safety Evaluation through Multi-Agent Debate. 2025. https://arxiv.org/abs/2511.06396\n\n[25] Jusheng Zhang, Zimeng Huang, Yijia Fan, Ningyuan Liu, Mingyan Li. KABB: Knowledge-Aware Bayesian Bandits for Dynamic Expert Coordination in Multi-Agent Systems. 2025. https://arxiv.org/abs/2502.07350\n\n[26] Qian Zhang, Yan Zheng, Jinyi Liu, Hebin Liang, Lanjun Wang. Key Decision-Makers in Multi-Agent Debates: Who Holds the Power?. 2025. https://arxiv.org/abs/2511.11040\n\n[27] Xin Li, Mengbing Liu, Chau Yuen. LLM Agent Communication Protocol (LACP) Requires Urgent Standardization: A Telecom-Inspired Protocol is Necessary. 2025. https://arxiv.org/abs/2510.13821\n\n[28] Yifan Zhu, Chao Zhang, Xin Shi, Xueqiao Zhang, Yi Yang. MASTER: Multi-Agent Security Through Exploration of Roles and Topological Structures -- A Comprehensive Framework. 2025. https://arxiv.org/abs/2505.18572\n\n[29] Yanwei Yue, Guibin Zhang, Boyang Liu, Guancheng Wan, Kun Wang. MasRouter: Learning to Route LLMs for Multi-Agent Systems. 2025. https://arxiv.org/abs/2502.11133\n\n[30] Songtao Sun, Jingyi Li, Yuanfei Dong, Haoguang Liu, Chenxin Xu. Multi-agent Application System in Office Collaboration Scenarios. 2025. https://arxiv.org/abs/2503.19584\n\n[31] Jun Liu, Zhenglun Kong, Changdi Yang, Fan Yang, Tianqi Li. RCR-Router: Efficient Role-Aware Context Routing for Multi-Agent LLM Systems with Structured Memory. 2025. https://arxiv.org/abs/2508.04903\n\n[32] Yedidel Louck, Ariel Stulman, Amit Dvir. Security Analysis of Agentic AI Communication Protocols: A Comparative Evaluation. 2025. https://arxiv.org/abs/2511.03841\n\n[33] Alfonso Amayuelas, Jingbo Yang, Saaket Agashe, Ashwin Nagarajan, Antonis Antoniades. Self-Resource Allocation in Multi-Agent LLM Systems. 2025. https://arxiv.org/abs/2504.02051\n\n[34] Can Jin, Hongwu Peng, Qixin Zhang, Yang Zhou, Yujin Tang. Two Heads are Better Than One: Test-time Scaling of Multi-agent Collaborative Reasoning. 2025. https://arxiv.org/abs/2504.09772\n\n[35] Guanlin Jing, Huayi Qi. Zero-Knowledge Audit for Internet of Agents: Privacy-Preserving Communication Verification with Model Context Protocol. 2025. https://arxiv.org/abs/2512.14737\n\n[36] Arnav Ramamoorthy, Shrey Dhorajiya, Ojas Pungalia, Rashi Upadhyay, Abhishek Mishra. neuralFOMO: Can LLMs Handle Being Second Best? Measuring Envy-Like Preferences in Multi-Agent Settings. 2025. https://arxiv.org/abs/2512.13481\n\n[37] Tianyu Yin, Jingyi Jia. AROMA: Adaptive Orchestration for Robust and Cost-Efficient Multi-Agent LLM Systems. 2026. https://doi.org/10.22541/au.177403077.77403552/v1\n\n[38] Bing Hao, Ruijie Wang, Haodong Qian, Yunlong Chu, Yuhang Liu. AdaSTORM: Scaling LLM Reasoning on Dynamic Graphs via Adaptive Spatio-Temporal Multi-Agent Collaboration. 2026. https://arxiv.org/abs/2606.16328\n\n[39] Yuqi Qiu, Zuyao Xu, Lu Sun, Xiang Li, Fasheng Miao. Agent Transfer Protocol: Server-Mediated Agent-to-Agent Communication Architecture for the Agentic Web. 2026. https://arxiv.org/abs/2610.38398\n\n[40] Yinyi Luo, Yiqiao Jin, Weichen Yu, Mengqi Zhang, Srijan Kumar. AgentArk: Distilling Multi-Agent Intelligence into a Single LLM Agent. 2026. https://arxiv.org/abs/2602.03955\n\n[41] Jean-Philippe Garnier. Agentic Hives: Equilibrium, Indeterminacy, and Endogenous Cycles in Self-Organizing Multi-Agent Systems. 2026. https://arxiv.org/abs/2603.00130\n\n[42] Ben Hagag, William L. Anderson, Christian Schroeder de Witt, Sarah Scheffler. Architecture Matters for Multi-Agent Security. 2026. https://arxiv.org/abs/2604.23459\n\n[43] Shao-Jun Xia, Yuner Zhang, Huixin Zhang, Di Wang, Yifan Jiang. Automated Multi-Agent Organization Design: From Architecture Search to Organizational Learning. 2026. https://arxiv.org/abs/2610.27531\n\n[44] Siddhant Kulkarni, Yukta Kulkarni. Benchmarking Multi-Agent LLM Architectures for Financial Document Processing: A Comparative Study of Orchestration Patterns, Cost-Accuracy Tradeoffs and Production Scaling Strategies. 2026. https://arxiv.org/abs/2603.22651\n\n[45] Chih-Hsuan Yang, Xinyang Li, Rajeev Thakur, Feng Yan. Beyond Division of Labor: How Roles Shape Feedback and Recovery in Multi-Agent Systems. 2026. https://arxiv.org/abs/2611.03931\n\n[46] Alison Moldovan-Mauer, Benedikt Mangold. Beyond Inefficiency: Systemic Costs of Incivility in Multi-Agent Monte Carlo Simulations. 2026. https://arxiv.org/abs/2605.11789\n\n[47] Raeyoung Chang, Dongwook Kwon, Jisoo Lee, Nikhil Verma. CascadeDebate: Multi-Agent Deliberation for Cost-Aware LLM Cascades. 2026. https://arxiv.org/abs/2604.12262\n\n[48] Yiming Yang, Zhuoyuan Li, Fanxiang Zeng, Hao Fu, Yue Liu. DIANOIA: Diagnostic Decomposition and Joint Optimization for Multi-Agent Reasoning. 2026. https://arxiv.org/abs/2602.08586\n\n[49] Paul-Peter Arslan. Does Splitting a Triage Decision Across Agents Hide Bias or Help Catch It? A Multi-Agent Simulation Study of LLM-Based Resource Allocation Under Audit Capacity Constraints. 2026. https://arxiv.org/abs/2608.06949\n\n[50] Yue Huang, Yu Jiang, Wenjie Wang, Haomin Zhuang, Xiaonan Luo. Emergent Risks in Generative Multi-Agent Systems. 2026. https://arxiv.org/abs/2603.27771\n\n[51] Tushar Sarkar. Evaluating Multi-Agent System Design: Single-Call Dominance, 28× Cost Reduction, and Dynamic Agent Pruning via the Sarkar Influence Gate. 2026. https://doi.org/10.2139/ssrn.7328322\n\n[52] Yitao Xiao, Xu Zhang, Ye Cheng, Shaoyong Guo, Yan Sun. EvoRouter: Cost-Efficient Multi-Agent Routing via Insight-Guided On-Policy Distillation. 2026. https://arxiv.org/abs/2610.35690\n\n[53] Zijun Dou, Kun Luo, Chaofan Li, Shuqi Lu, Zheng Liu. FALCA: Falsification-Aware Reinforcement Learning with Hierarchical Credit Assignment for Long-Horizon Deep Search Agents. 2026. https://arxiv.org/abs/2610.28361\n\n[54] Karim Ben Khaled, Davy Monticolo. G2CP: A Graph-Grounded Communication Protocol for Verifiable and Efficient Multi-Agent Reasoning. 2026. https://arxiv.org/abs/2602.13370\n\n[55] Xinyi Mou, Siyuan Wang, Zejun Li, Yulan He, Zhongyu Wei. HyLaT: Efficient Multi-Agent Communication via Hybrid Latent-Text Protocol. 2026. https://arxiv.org/abs/2605.25421\n\n[56] Peng Kuang, Haibo Jin, Xiaoyu Han, Yanli Wang, Xiaopeng Yuan. KV-PRM: Efficient Process Reward Modeling via KV-Cache Transfer for Multi-Agent Test-Time Scaling. 2026. https://arxiv.org/abs/2607.09153\n\n[57] Yiwen Zhu, Lihe Liu, Jiaqian Yu, Di Zhang. LLM-Based Multi-Agent Orchestration: A Survey of Frameworks, Communication Protocols, and Emerging Patterns. 2026. https://doi.org/10.20944/preprints202604.2147.v1\n\n[58] Xinren Zhang, Zixin Zhong, Jiadong Yu. Learning Multi-Agent Communication Protocol: Study on Information Entropy Efficiency in MARL. 2026. https://arxiv.org/abs/2606.07200\n\n[59] Zhuo Li, Yupeng Zhang, Pengyu Cheng, Jiajun Song, Mengyu Zhou. MARCH: Multi-Agent Reinforced Self-Check for LLM Hallucination. 2026. https://arxiv.org/abs/2603.24579\n\n[60] Dayong Liang, Kaisong Gong, Yi Cai, Changmeng Zheng, Xiao-Yong Wei. Mixture of Debaters: Learn to Debate at Architectural Level in Multi-Agent Reasoning. 2026. https://arxiv.org/abs/2606.29425\n\n[61] Florian Valentin Wunderlich, Lars Benedikt Kaesberg, Jan Philip Wahle, Terry Ruas, Bela Gipp. Multi-Agent Reasoning Improves Compute Efficiency: Pareto-Optimal Test-Time Scaling. 2026. https://arxiv.org/abs/2605.01566\n\n[62] Ben Hagag, William L. Anderson, Srija Chakraborty, Christian Schroeder de Witt. ORBIT: A Framework for Multi-Agent Safety and Security Evaluations. 2026. https://arxiv.org/abs/2609.33102\n\n[63] Jingbo Wang, Sendong Zhao, Jiatong Liu, Haochun Wang, Wanting Li. Orchestrating Intelligence: Confidence-Aware Routing for Efficient Multi-Agent Collaboration across Multi-Scale Models. 2026. https://arxiv.org/abs/2601.04861\n\n[64] Di Zhao, Longhui Ma, Siwei Wang, Miao Wang, Yi Kong. SC-MAS: Constructing Cost-Efficient Multi-Agent Systems with Edge-Level Heterogeneous Collaboration. 2026. https://arxiv.org/abs/2601.09434\n\n[65] Linus Sander, Fengjunjie Pan, Vahid Zolfaghari, Andre Schamschurko, Nenad Petrovic. Scaling LLM-Driven Multi-Agent Systems: Design Principles and Architectural Scalability Analysis. 2026. https://arxiv.org/abs/2607.27942\n\n[66] Shanglin Wu, Yuyang Luo, Yueqing Liang, Kaiwen Shi, Yanfang Ye. Scaling Teams or Scaling Time? Memory Enabled Lifelong Learning in LLM Multi-Agent Systems. 2026. https://arxiv.org/abs/2604.03295\n\n[67] Yuxuan Zhu, Mohammad Mohammadi Amiri, Pin-Yu Chen, Keerthiram Murugesan. SkillMem: Compact External Skill Memory for Latent Multi-Agent Reasoning. 2026. https://arxiv.org/abs/2610.37935\n\n[68] Mian Zhang, Manasi Sharma, Sheng Zhang, Minglai Yang, Kejian Shi. Spine-Branch Coordination for Multi-agent Computer Use. 2026. https://arxiv.org/abs/2608.22077\n\n[69] Zhen Yang, Xiaogang Xu, Wen Wang, Cong Chen, Xander Xu. Streaming Communication in Multi-Agent Reasoning. 2026. https://arxiv.org/abs/2606.05158\n\n[70] Pranav Varshney. The Cost of Saying Hello: An Empirical Study of Handshake Overhead in AI Agent Communication Protocols. 2026. https://arxiv.org/abs/2610.30151\n\n[71] Blaž Bertalanič, Carolina Fortuna. The Ringelmann Effect in Multi-Agent LLM Systems: A Scaling Law for Effective Team Size. 2026. https://arxiv.org/abs/2606.02646\n\n[72] Zhuohang Bian, Feiyang Wu, Chengrui Zhang, Hangcheng Dong, Yun Liang. TokenDance: Scaling Multi-Agent LLM Serving via Collective KV Cache Sharing. 2026. https://arxiv.org/abs/2604.03143\n\n[73] Phat Nguyen, Thang Pham. Toward Reliable Evaluation of LLM-Based Financial Multi-Agent Systems: Taxonomy, Coordination Primacy, and Cost Awareness. 2026. https://arxiv.org/abs/2603.27539\n\n[74] Isabel Xu, Cynthia Xu, Rachel Ren, Cong Guo, Jiacheng Ding. TriAgent: Divergence-Aware Multi-Agent Committees for Cost-Efficient Financial Sentiment Analysis. 2026. https://arxiv.org/abs/2607.19794\n\n[75] Haoyu Bian, Chaoning Zhang, Jiaquan Zhang, Xingyao Li, Yuanfang Guo. Weak-Link Optimization for Multi-Agent Reasoning and Collaboration. 2026. https://arxiv.org/abs/2604.15972\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "ACCNet: Actor-Coordinator-Critic Net for \"Learning-to-Communicate\" with Deep Multi-agent Reinforcement Learning",
+      "year": 2017,
+      "authors": [
+        "Hangyu Mao",
+        "Zhibo Gong",
+        "Yan Ni",
+        "Zhen Xiao"
+      ],
+      "doi": null,
+      "arxiv": "1706.03235",
+      "url": "https://arxiv.org/abs/1706.03235",
+      "work_id": "arxiv:1706.03235"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B002",
+      "title": "Vehicle Communication Strategies for Simulated Highway Driving",
+      "year": 2018,
+      "authors": [
+        "Cinjon Resnick",
+        "Ilya Kulikov",
+        "Kyunghyun Cho",
+        "Jason Weston"
+      ],
+      "doi": null,
+      "arxiv": "1804.07178",
+      "url": "https://arxiv.org/abs/1804.07178",
+      "work_id": "arxiv:1804.07178"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B003",
+      "title": "PooL: Pheromone-inspired Communication Framework forLarge Scale Multi-Agent Reinforcement Learning",
+      "year": 2022,
+      "authors": [
+        "Zixuan Cao",
+        "Mengzhi Shi",
+        "Zhanbo Zhao",
+        "Xiujun Ma"
+      ],
+      "doi": null,
+      "arxiv": "2202.09722",
+      "url": "https://arxiv.org/abs/2202.09722",
+      "work_id": "arxiv:2202.09722"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B004",
+      "title": "Dynamic Size Message Scheduling for Multi-Agent Communication under Limited Bandwidth",
+      "year": 2023,
+      "authors": [
+        "Qingshuang Sun",
+        "Denis Steckelmacher",
+        "Yuan Yao",
+        "Ann Nowé",
+        "Raphaël Avalos"
+      ],
+      "doi": null,
+      "arxiv": "2306.10134",
+      "url": "https://arxiv.org/abs/2306.10134",
+      "work_id": "arxiv:2306.10134"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B005",
+      "title": "LLM Multi-Agent Systems: Challenges and Open Problems",
+      "year": 2024,
+      "authors": [
+        "Shanshan Han",
+        "Qifan Zhang",
+        "Weizhao Jin",
+        "Zhaozhuo Xu"
+      ],
+      "doi": null,
+      "arxiv": "2402.03578",
+      "url": "https://arxiv.org/abs/2402.03578",
+      "work_id": "arxiv:2402.03578"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B006",
+      "title": "LongAgent: Scaling Language Models to 128k Context through Multi-Agent Collaboration",
+      "year": 2024,
+      "authors": [
+        "Jun Zhao",
+        "Can Zu",
+        "Hao Xu",
+        "Yi Lu",
+        "Wei He",
+        "Yiwen Ding",
+        "Tao Gui",
+        "Qi Zhang",
+        "Xuanjing Huang"
+      ],
+      "doi": null,
+      "arxiv": "2402.11550",
+      "url": "https://arxiv.org/abs/2402.11550",
+      "work_id": "arxiv:2402.11550"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B007",
+      "title": "MaCTG: Multi-Agent Collaborative Thought Graph for Automatic Programming",
+      "year": 2024,
+      "authors": [
+        "Zixiao Zhao",
+        "Jing Sun",
+        "Zhe Hou",
+        "Zhiyuan Wei",
+        "Cheng-Hao Cai",
+        "Miao Qiao",
+        "Jin Song Dong"
+      ],
+      "doi": null,
+      "arxiv": "2410.19245",
+      "url": "https://arxiv.org/abs/2410.19245",
+      "work_id": "arxiv:2410.19245"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B008",
+      "title": "Towards Effective GenAI Multi-Agent Collaboration: Design and Evaluation for Enterprise Applications",
+      "year": 2024,
+      "authors": [
+        "Raphael Shu",
+        "Nilaksh Das",
+        "Michelle Yuan",
+        "Monica Sunkara",
+        "Yi Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2412.05449",
+      "url": "https://arxiv.org/abs/2412.05449",
+      "work_id": "arxiv:2412.05449"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B010",
+      "title": "A Survey of AI Agent Protocols",
+      "year": 2025,
+      "authors": [
+        "Yingxuan Yang",
+        "Huacan Chai",
+        "Yuanyi Song",
+        "Siyuan Qi",
+        "Muning Wen",
+        "Ning Li",
+        "Junwei Liao",
+        "Haoyi Hu",
+        "Jianghao Lin",
+        "Gaowei Chang",
+        "Weiwen Liu",
+        "Ying Wen",
+        "Yong Yu",
+        "Weinan Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2504.16736",
+      "url": "https://arxiv.org/abs/2504.16736",
+      "work_id": "arxiv:2504.16736"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B011",
+      "title": "A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures",
+      "year": 2025,
+      "authors": [
+        "Dezhang Kong",
+        "Shi Lin",
+        "Zhenhua Xu",
+        "Zhebo Wang",
+        "Minghao Li",
+        "Yufeng Li",
+        "Yilun Zhang",
+        "Hujin Peng",
+        "Xiang Chen",
+        "Zeyang Sha",
+        "Yuyuan Li",
+        "Changting Lin",
+        "Xun Wang",
+        "Xuan Liu",
+        "Ningyu Zhang",
+        "Chaochao Chen",
+        "Chunming Wu",
+        "Muhammad Khurram Khan",
+        "Meng Han"
+      ],
+      "doi": null,
+      "arxiv": "2506.19676",
+      "url": "https://arxiv.org/abs/2506.19676",
+      "work_id": "arxiv:2506.19676"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B012",
+      "title": "A survey of agent interoperability protocols: Model Context Protocol (MCP), Agent Communication Protocol (ACP), Agent-to-Agent Protocol (A2A), and Agent Network Protocol (ANP)",
+      "year": 2025,
+      "authors": [
+        "Abul Ehtesham",
+        "Aditi Singh",
+        "Gaurav Kumar Gupta",
+        "Saket Kumar"
+      ],
+      "doi": null,
+      "arxiv": "2505.02279",
+      "url": "https://arxiv.org/abs/2505.02279",
+      "work_id": "arxiv:2505.02279"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B013",
+      "title": "ACPs: Agent Collaboration Protocols for the Internet of Agents",
+      "year": 2025,
+      "authors": [
+        "Jun Liu",
+        "Ke Yu",
+        "Keliang Chen",
+        "Ke Li",
+        "Yuxinyue Qian",
+        "Xiaolian Guo",
+        "Haozhe Song",
+        "Yinming Li"
+      ],
+      "doi": null,
+      "arxiv": "2505.13523",
+      "url": "https://arxiv.org/abs/2505.13523",
+      "work_id": "arxiv:2505.13523"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B014",
+      "title": "APOLLO: Automated LLM and Lean Collaboration for Advanced Formal Reasoning",
+      "year": 2025,
+      "authors": [
+        "Azim Ospanov",
+        "Farzan Farnia",
+        "Roozbeh Yousefzadeh"
+      ],
+      "doi": null,
+      "arxiv": "2505.05758",
+      "url": "https://arxiv.org/abs/2505.05758",
+      "work_id": "arxiv:2505.05758"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B015",
+      "title": "Adaptive GPU Resource Allocation for Multi-Agent Collaborative Reasoning in Serverless Environments",
+      "year": 2025,
+      "authors": [
+        "Guilin Zhang",
+        "Wulan Guo",
+        "Ziqi Tan"
+      ],
+      "doi": null,
+      "arxiv": "2512.22149",
+      "url": "https://arxiv.org/abs/2512.22149",
+      "work_id": "arxiv:2512.22149"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B017",
+      "title": "Agent Communications toward Agentic AI at Edge -- A Case Study of the Agent2Agent Protocol",
+      "year": 2025,
+      "authors": [
+        "Qiang Duan",
+        "Zhihui Lu"
+      ],
+      "doi": null,
+      "arxiv": "2508.15819",
+      "url": "https://arxiv.org/abs/2508.15819",
+      "work_id": "arxiv:2508.15819"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B018",
+      "title": "Agent Context Protocols Enhance Collective Inference",
+      "year": 2025,
+      "authors": [
+        "Devansh Bhardwaj",
+        "Arjun Beniwal",
+        "Shreyas Chaudhari",
+        "Ashwin Kalyan",
+        "Tanmay Rajpurohit",
+        "Karthik R. Narasimhan",
+        "Ameet Deshpande",
+        "Vishvak Murahari"
+      ],
+      "doi": null,
+      "arxiv": "2505.14569",
+      "url": "https://arxiv.org/abs/2505.14569",
+      "work_id": "arxiv:2505.14569"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B019",
+      "title": "Agent Network Protocol Technical White Paper",
+      "year": 2025,
+      "authors": [
+        "Gaowei Chang",
+        "Eidan Lin",
+        "Chengxuan Yuan",
+        "Rizhao Cai",
+        "Binbin Chen",
+        "Xuan Xie",
+        "Yin Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2508.00007",
+      "url": "https://arxiv.org/abs/2508.00007",
+      "work_id": "arxiv:2508.00007"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B020",
+      "title": "AgentBalance: Backbone-then-Topology Design for Cost-Effective Multi-Agent Systems under Budget Constraints",
+      "year": 2025,
+      "authors": [
+        "Shuowei Cai",
+        "Yansong Ning",
+        "Hao Liu"
+      ],
+      "doi": null,
+      "arxiv": "2512.11426",
+      "url": "https://arxiv.org/abs/2512.11426",
+      "work_id": "arxiv:2512.11426"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B021",
+      "title": "BAMAS: Structuring Budget-Aware Multi-Agent Systems",
+      "year": 2025,
+      "authors": [
+        "Liming Yang",
+        "Junyu Luo",
+        "Xuanzhe Liu",
+        "Yiling Lou",
+        "Zhenpeng Chen"
+      ],
+      "doi": null,
+      "arxiv": "2511.21572",
+      "url": "https://arxiv.org/abs/2511.21572",
+      "work_id": "arxiv:2511.21572"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B022",
+      "title": "CP-AgentNet: Autonomous and Explainable Communication Protocol Design Using Generative Agents",
+      "year": 2025,
+      "authors": [
+        "Dae Cheol Kwon",
+        "Xinyu Zhang"
+      ],
+      "doi": "10.1109/icnp65844.2025.11192445",
+      "arxiv": "2503.17850",
+      "url": "https://arxiv.org/abs/2503.17850",
+      "work_id": "arxiv:2503.17850"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B023",
+      "title": "Chain-of-thought Reviewing and Correction for Time Series Question Answering",
+      "year": 2025,
+      "authors": [
+        "Chen Su",
+        "Yuanhe Tian",
+        "Yan Song"
+      ],
+      "doi": null,
+      "arxiv": "2512.22627",
+      "url": "https://arxiv.org/abs/2512.22627",
+      "work_id": "arxiv:2512.22627"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B024",
+      "title": "Communication Enables Cooperation in LLM Agents: A Comparison with Curriculum-Based Approaches",
+      "year": 2025,
+      "authors": [
+        "Hachem Madmoun",
+        "Salem Lahlou"
+      ],
+      "doi": null,
+      "arxiv": "2510.05748",
+      "url": "https://arxiv.org/abs/2510.05748",
+      "work_id": "arxiv:2510.05748"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B025",
+      "title": "DR. WELL: Dynamic Reasoning and Learning with Symbolic World Model for Embodied LLM-Based Multi-Agent Collaboration",
+      "year": 2025,
+      "authors": [
+        "Narjes Nourzad",
+        "Hanqing Yang",
+        "Shiyu Chen",
+        "Carlee Joe-Wong"
+      ],
+      "doi": null,
+      "arxiv": "2511.04646",
+      "url": "https://arxiv.org/abs/2511.04646",
+      "work_id": "arxiv:2511.04646"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B026",
+      "title": "Efficient LLM Safety Evaluation through Multi-Agent Debate",
+      "year": 2025,
+      "authors": [
+        "Dachuan Lin",
+        "Guobin Shen",
+        "Zihao Yang",
+        "Tianrong Liu",
+        "Dongcheng Zhao",
+        "Yi Zeng"
+      ],
+      "doi": null,
+      "arxiv": "2511.06396",
+      "url": "https://arxiv.org/abs/2511.06396",
+      "work_id": "arxiv:2511.06396"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B027",
+      "title": "KABB: Knowledge-Aware Bayesian Bandits for Dynamic Expert Coordination in Multi-Agent Systems",
+      "year": 2025,
+      "authors": [
+        "Jusheng Zhang",
+        "Zimeng Huang",
+        "Yijia Fan",
+        "Ningyuan Liu",
+        "Mingyan Li",
+        "Zhuojie Yang",
+        "Jiawei Yao",
+        "Jian Wang",
+        "Keze Wang"
+      ],
+      "doi": null,
+      "arxiv": "2502.07350",
+      "url": "https://arxiv.org/abs/2502.07350",
+      "work_id": "arxiv:2502.07350"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B028",
+      "title": "Key Decision-Makers in Multi-Agent Debates: Who Holds the Power?",
+      "year": 2025,
+      "authors": [
+        "Qian Zhang",
+        "Yan Zheng",
+        "Jinyi Liu",
+        "Hebin Liang",
+        "Lanjun Wang"
+      ],
+      "doi": null,
+      "arxiv": "2511.11040",
+      "url": "https://arxiv.org/abs/2511.11040",
+      "work_id": "arxiv:2511.11040"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B029",
+      "title": "LLM Agent Communication Protocol (LACP) Requires Urgent Standardization: A Telecom-Inspired Protocol is Necessary",
+      "year": 2025,
+      "authors": [
+        "Xin Li",
+        "Mengbing Liu",
+        "Chau Yuen"
+      ],
+      "doi": null,
+      "arxiv": "2510.13821",
+      "url": "https://arxiv.org/abs/2510.13821",
+      "work_id": "arxiv:2510.13821"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B031",
+      "title": "MASTER: Multi-Agent Security Through Exploration of Roles and Topological Structures -- A Comprehensive Framework",
+      "year": 2025,
+      "authors": [
+        "Yifan Zhu",
+        "Chao Zhang",
+        "Xin Shi",
+        "Xueqiao Zhang",
+        "Yi Yang",
+        "Yawei Luo"
+      ],
+      "doi": null,
+      "arxiv": "2505.18572",
+      "url": "https://arxiv.org/abs/2505.18572",
+      "work_id": "arxiv:2505.18572"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B032",
+      "title": "MasRouter: Learning to Route LLMs for Multi-Agent Systems",
+      "year": 2025,
+      "authors": [
+        "Yanwei Yue",
+        "Guibin Zhang",
+        "Boyang Liu",
+        "Guancheng Wan",
+        "Kun Wang",
+        "Dawei Cheng",
+        "Yiyan Qi"
+      ],
+      "doi": null,
+      "arxiv": "2502.11133",
+      "url": "https://arxiv.org/abs/2502.11133",
+      "work_id": "arxiv:2502.11133"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B033",
+      "title": "Multi-agent Application System in Office Collaboration Scenarios",
+      "year": 2025,
+      "authors": [
+        "Songtao Sun",
+        "Jingyi Li",
+        "Yuanfei Dong",
+        "Haoguang Liu",
+        "Chenxin Xu",
+        "Fuyang Li",
+        "Qiang Liu"
+      ],
+      "doi": null,
+      "arxiv": "2503.19584",
+      "url": "https://arxiv.org/abs/2503.19584",
+      "work_id": "arxiv:2503.19584"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B035",
+      "title": "RCR-Router: Efficient Role-Aware Context Routing for Multi-Agent LLM Systems with Structured Memory",
+      "year": 2025,
+      "authors": [
+        "Jun Liu",
+        "Zhenglun Kong",
+        "Changdi Yang",
+        "Fan Yang",
+        "Tianqi Li",
+        "Peiyan Dong",
+        "Joannah Nanjekye",
+        "Hao Tang",
+        "Geng Yuan",
+        "Wei Niu",
+        "Wenbin Zhang",
+        "Pu Zhao",
+        "Xue Lin",
+        "Dong Huang",
+        "Yanzhi Wang"
+      ],
+      "doi": null,
+      "arxiv": "2508.04903",
+      "url": "https://arxiv.org/abs/2508.04903",
+      "work_id": "arxiv:2508.04903"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B037",
+      "title": "Security Analysis of Agentic AI Communication Protocols: A Comparative Evaluation",
+      "year": 2025,
+      "authors": [
+        "Yedidel Louck",
+        "Ariel Stulman",
+        "Amit Dvir"
+      ],
+      "doi": null,
+      "arxiv": "2511.03841",
+      "url": "https://arxiv.org/abs/2511.03841",
+      "work_id": "arxiv:2511.03841"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B038",
+      "title": "Self-Resource Allocation in Multi-Agent LLM Systems",
+      "year": 2025,
+      "authors": [
+        "Alfonso Amayuelas",
+        "Jingbo Yang",
+        "Saaket Agashe",
+        "Ashwin Nagarajan",
+        "Antonis Antoniades",
+        "Xin Eric Wang",
+        "William Wang"
+      ],
+      "doi": null,
+      "arxiv": "2504.02051",
+      "url": "https://arxiv.org/abs/2504.02051",
+      "work_id": "arxiv:2504.02051"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B040",
+      "title": "Two Heads are Better Than One: Test-time Scaling of Multi-agent Collaborative Reasoning",
+      "year": 2025,
+      "authors": [
+        "Can Jin",
+        "Hongwu Peng",
+        "Qixin Zhang",
+        "Yang Zhou",
+        "Yujin Tang",
+        "Tong Che",
+        "Dimitris N. Metaxas"
+      ],
+      "doi": null,
+      "arxiv": "2504.09772",
+      "url": "https://arxiv.org/abs/2504.09772",
+      "work_id": "arxiv:2504.09772"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B042",
+      "title": "Zero-Knowledge Audit for Internet of Agents: Privacy-Preserving Communication Verification with Model Context Protocol",
+      "year": 2025,
+      "authors": [
+        "Guanlin Jing",
+        "Huayi Qi"
+      ],
+      "doi": null,
+      "arxiv": "2512.14737",
+      "url": "https://arxiv.org/abs/2512.14737",
+      "work_id": "arxiv:2512.14737"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B043",
+      "title": "neuralFOMO: Can LLMs Handle Being Second Best? Measuring Envy-Like Preferences in Multi-Agent Settings",
+      "year": 2025,
+      "authors": [
+        "Arnav Ramamoorthy",
+        "Shrey Dhorajiya",
+        "Ojas Pungalia",
+        "Rashi Upadhyay",
+        "Abhishek Mishra",
+        "Abhiram H",
+        "Tejasvi Alladi",
+        "Sujan Yenuganti",
+        "Dhruv Kumar"
+      ],
+      "doi": null,
+      "arxiv": "2512.13481",
+      "url": "https://arxiv.org/abs/2512.13481",
+      "work_id": "arxiv:2512.13481"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B045",
+      "title": "AROMA: Adaptive Orchestration for Robust and Cost-Efficient Multi-Agent LLM Systems",
+      "year": 2026,
+      "authors": [
+        "Tianyu Yin",
+        "Jingyi Jia"
+      ],
+      "doi": "10.22541/au.177403077.77403552/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.22541/au.177403077.77403552/v1",
+      "work_id": "doi:10.22541/au.177403077.77403552/v1"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B047",
+      "title": "AdaSTORM: Scaling LLM Reasoning on Dynamic Graphs via Adaptive Spatio-Temporal Multi-Agent Collaboration",
+      "year": 2026,
+      "authors": [
+        "Bing Hao",
+        "Ruijie Wang",
+        "Haodong Qian",
+        "Yunlong Chu",
+        "Yuhang Liu",
+        "Yumeng Lin",
+        "Minglai Shao",
+        "Jianxin Li"
+      ],
+      "doi": null,
+      "arxiv": "2606.16328",
+      "url": "https://arxiv.org/abs/2606.16328",
+      "work_id": "arxiv:2606.16328"
+    },
+    {
+      "reference_number": 39,
+      "ref_id": "B048",
+      "title": "Agent Transfer Protocol: Server-Mediated Agent-to-Agent Communication Architecture for the Agentic Web",
+      "year": 2026,
+      "authors": [
+        "Yuqi Qiu",
+        "Zuyao Xu",
+        "Lu Sun",
+        "Xiang Li",
+        "Fasheng Miao",
+        "Fubin Wu",
+        "Haixin Duan",
+        "Zheli Liu"
+      ],
+      "doi": null,
+      "arxiv": "2610.38398",
+      "url": "https://arxiv.org/abs/2610.38398",
+      "work_id": "arxiv:2610.38398"
+    },
+    {
+      "reference_number": 40,
+      "ref_id": "B049",
+      "title": "AgentArk: Distilling Multi-Agent Intelligence into a Single LLM Agent",
+      "year": 2026,
+      "authors": [
+        "Yinyi Luo",
+        "Yiqiao Jin",
+        "Weichen Yu",
+        "Mengqi Zhang",
+        "Srijan Kumar",
+        "Xiaoxiao Li",
+        "Weijie Xu",
+        "Xin Chen",
+        "Jindong Wang"
+      ],
+      "doi": null,
+      "arxiv": "2602.03955",
+      "url": "https://arxiv.org/abs/2602.03955",
+      "work_id": "arxiv:2602.03955"
+    },
+    {
+      "reference_number": 41,
+      "ref_id": "B050",
+      "title": "Agentic Hives: Equilibrium, Indeterminacy, and Endogenous Cycles in Self-Organizing Multi-Agent Systems",
+      "year": 2026,
+      "authors": [
+        "Jean-Philippe Garnier"
+      ],
+      "doi": null,
+      "arxiv": "2603.00130",
+      "url": "https://arxiv.org/abs/2603.00130",
+      "work_id": "arxiv:2603.00130"
+    },
+    {
+      "reference_number": 42,
+      "ref_id": "B051",
+      "title": "Architecture Matters for Multi-Agent Security",
+      "year": 2026,
+      "authors": [
+        "Ben Hagag",
+        "William L. Anderson",
+        "Christian Schroeder de Witt",
+        "Sarah Scheffler"
+      ],
+      "doi": null,
+      "arxiv": "2604.23459",
+      "url": "https://arxiv.org/abs/2604.23459",
+      "work_id": "arxiv:2604.23459"
+    },
+    {
+      "reference_number": 43,
+      "ref_id": "B052",
+      "title": "Automated Multi-Agent Organization Design: From Architecture Search to Organizational Learning",
+      "year": 2026,
+      "authors": [
+        "Shao-Jun Xia",
+        "Yuner Zhang",
+        "Huixin Zhang",
+        "Di Wang",
+        "Yifan Jiang",
+        "Liangxi Liu"
+      ],
+      "doi": null,
+      "arxiv": "2610.27531",
+      "url": "https://arxiv.org/abs/2610.27531",
+      "work_id": "arxiv:2610.27531"
+    },
+    {
+      "reference_number": 44,
+      "ref_id": "B053",
+      "title": "Benchmarking Multi-Agent LLM Architectures for Financial Document Processing: A Comparative Study of Orchestration Patterns, Cost-Accuracy Tradeoffs and Production Scaling Strategies",
+      "year": 2026,
+      "authors": [
+        "Siddhant Kulkarni",
+        "Yukta Kulkarni"
+      ],
+      "doi": null,
+      "arxiv": "2603.22651",
+      "url": "https://arxiv.org/abs/2603.22651",
+      "work_id": "arxiv:2603.22651"
+    },
+    {
+      "reference_number": 45,
+      "ref_id": "B055",
+      "title": "Beyond Division of Labor: How Roles Shape Feedback and Recovery in Multi-Agent Systems",
+      "year": 2026,
+      "authors": [
+        "Chih-Hsuan Yang",
+        "Xinyang Li",
+        "Rajeev Thakur",
+        "Feng Yan"
+      ],
+      "doi": null,
+      "arxiv": "2611.03931",
+      "url": "https://arxiv.org/abs/2611.03931",
+      "work_id": "arxiv:2611.03931"
+    },
+    {
+      "reference_number": 46,
+      "ref_id": "B056",
+      "title": "Beyond Inefficiency: Systemic Costs of Incivility in Multi-Agent Monte Carlo Simulations",
+      "year": 2026,
+      "authors": [
+        "Alison Moldovan-Mauer",
+        "Benedikt Mangold"
+      ],
+      "doi": null,
+      "arxiv": "2605.11789",
+      "url": "https://arxiv.org/abs/2605.11789",
+      "work_id": "arxiv:2605.11789"
+    },
+    {
+      "reference_number": 47,
+      "ref_id": "B058",
+      "title": "CascadeDebate: Multi-Agent Deliberation for Cost-Aware LLM Cascades",
+      "year": 2026,
+      "authors": [
+        "Raeyoung Chang",
+        "Dongwook Kwon",
+        "Jisoo Lee",
+        "Nikhil Verma"
+      ],
+      "doi": null,
+      "arxiv": "2604.12262",
+      "url": "https://arxiv.org/abs/2604.12262",
+      "work_id": "arxiv:2604.12262"
+    },
+    {
+      "reference_number": 48,
+      "ref_id": "B060",
+      "title": "DIANOIA: Diagnostic Decomposition and Joint Optimization for Multi-Agent Reasoning",
+      "year": 2026,
+      "authors": [
+        "Yiming Yang",
+        "Zhuoyuan Li",
+        "Fanxiang Zeng",
+        "Hao Fu",
+        "Yue Liu"
+      ],
+      "doi": null,
+      "arxiv": "2602.08586",
+      "url": "https://arxiv.org/abs/2602.08586",
+      "work_id": "arxiv:2602.08586"
+    },
+    {
+      "reference_number": 49,
+      "ref_id": "B061",
+      "title": "Does Splitting a Triage Decision Across Agents Hide Bias or Help Catch It? A Multi-Agent Simulation Study of LLM-Based Resource Allocation Under Audit Capacity Constraints",
+      "year": 2026,
+      "authors": [
+        "Paul-Peter Arslan"
+      ],
+      "doi": null,
+      "arxiv": "2608.06949",
+      "url": "https://arxiv.org/abs/2608.06949",
+      "work_id": "arxiv:2608.06949"
+    },
+    {
+      "reference_number": 50,
+      "ref_id": "B062",
+      "title": "Emergent Risks in Generative Multi-Agent Systems",
+      "year": 2026,
+      "authors": [
+        "Yue Huang",
+        "Yu Jiang",
+        "Wenjie Wang",
+        "Haomin Zhuang",
+        "Xiaonan Luo",
+        "Yuchen Ma",
+        "Zhangchen Xu",
+        "Zichen Chen",
+        "Nuno Moniz",
+        "Zinan Lin",
+        "Pin-Yu Chen",
+        "Nitesh V Chawla",
+        "Nouha Dziri",
+        "Huan Sun",
+        "Xiangliang Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2603.27771",
+      "url": "https://arxiv.org/abs/2603.27771",
+      "work_id": "arxiv:2603.27771"
+    },
+    {
+      "reference_number": 51,
+      "ref_id": "B063",
+      "title": "Evaluating Multi-Agent System Design: Single-Call Dominance, 28× Cost Reduction, and Dynamic Agent Pruning via the Sarkar Influence Gate",
+      "year": 2026,
+      "authors": [
+        "Tushar Sarkar"
+      ],
+      "doi": "10.2139/ssrn.7328322",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.7328322",
+      "work_id": "doi:10.2139/ssrn.7328322"
+    },
+    {
+      "reference_number": 52,
+      "ref_id": "B064",
+      "title": "EvoRouter: Cost-Efficient Multi-Agent Routing via Insight-Guided On-Policy Distillation",
+      "year": 2026,
+      "authors": [
+        "Yitao Xiao",
+        "Xu Zhang",
+        "Ye Cheng",
+        "Shaoyong Guo",
+        "Yan Sun",
+        "Ziyue Zhu",
+        "Sitao Xie",
+        "Guo Tong",
+        "Haoran Luo"
+      ],
+      "doi": null,
+      "arxiv": "2610.35690",
+      "url": "https://arxiv.org/abs/2610.35690",
+      "work_id": "arxiv:2610.35690"
+    },
+    {
+      "reference_number": 53,
+      "ref_id": "B065",
+      "title": "FALCA: Falsification-Aware Reinforcement Learning with Hierarchical Credit Assignment for Long-Horizon Deep Search Agents",
+      "year": 2026,
+      "authors": [
+        "Zijun Dou",
+        "Kun Luo",
+        "Chaofan Li",
+        "Shuqi Lu",
+        "Zheng Liu"
+      ],
+      "doi": null,
+      "arxiv": "2610.28361",
+      "url": "https://arxiv.org/abs/2610.28361",
+      "work_id": "arxiv:2610.28361"
+    },
+    {
+      "reference_number": 54,
+      "ref_id": "B066",
+      "title": "G2CP: A Graph-Grounded Communication Protocol for Verifiable and Efficient Multi-Agent Reasoning",
+      "year": 2026,
+      "authors": [
+        "Karim Ben Khaled",
+        "Davy Monticolo"
+      ],
+      "doi": "10.65109/jhfw8307",
+      "arxiv": "2602.13370",
+      "url": "https://arxiv.org/abs/2602.13370",
+      "work_id": "arxiv:2602.13370"
+    },
+    {
+      "reference_number": 55,
+      "ref_id": "B069",
+      "title": "HyLaT: Efficient Multi-Agent Communication via Hybrid Latent-Text Protocol",
+      "year": 2026,
+      "authors": [
+        "Xinyi Mou",
+        "Siyuan Wang",
+        "Zejun Li",
+        "Yulan He",
+        "Zhongyu Wei"
+      ],
+      "doi": null,
+      "arxiv": "2605.25421",
+      "url": "https://arxiv.org/abs/2605.25421",
+      "work_id": "arxiv:2605.25421"
+    },
+    {
+      "reference_number": 56,
+      "ref_id": "B070",
+      "title": "KV-PRM: Efficient Process Reward Modeling via KV-Cache Transfer for Multi-Agent Test-Time Scaling",
+      "year": 2026,
+      "authors": [
+        "Peng Kuang",
+        "Haibo Jin",
+        "Xiaoyu Han",
+        "Yanli Wang",
+        "Xiaopeng Yuan",
+        "Ye Yu",
+        "Kaidi Xu",
+        "Haohan Wang"
+      ],
+      "doi": null,
+      "arxiv": "2607.09153",
+      "url": "https://arxiv.org/abs/2607.09153",
+      "work_id": "arxiv:2607.09153"
+    },
+    {
+      "reference_number": 57,
+      "ref_id": "B071",
+      "title": "LLM-Based Multi-Agent Orchestration: A Survey of Frameworks, Communication Protocols, and Emerging Patterns",
+      "year": 2026,
+      "authors": [
+        "Yiwen Zhu",
+        "Lihe Liu",
+        "Jiaqian Yu",
+        "Di Zhang"
+      ],
+      "doi": "10.20944/preprints202604.2147.v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.20944/preprints202604.2147.v1",
+      "work_id": "doi:10.20944/preprints202604.2147.v1"
+    },
+    {
+      "reference_number": 58,
+      "ref_id": "B074",
+      "title": "Learning Multi-Agent Communication Protocol: Study on Information Entropy Efficiency in MARL",
+      "year": 2026,
+      "authors": [
+        "Xinren Zhang",
+        "Zixin Zhong",
+        "Jiadong Yu"
+      ],
+      "doi": null,
+      "arxiv": "2606.07200",
+      "url": "https://arxiv.org/abs/2606.07200",
+      "work_id": "arxiv:2606.07200"
+    },
+    {
+      "reference_number": 59,
+      "ref_id": "B076",
+      "title": "MARCH: Multi-Agent Reinforced Self-Check for LLM Hallucination",
+      "year": 2026,
+      "authors": [
+        "Zhuo Li",
+        "Yupeng Zhang",
+        "Pengyu Cheng",
+        "Jiajun Song",
+        "Mengyu Zhou",
+        "Hao Li",
+        "Shujie Hu",
+        "Yu Qin",
+        "Erchao Zhao",
+        "Xiaoxi Jiang",
+        "Guanjun Jiang"
+      ],
+      "doi": null,
+      "arxiv": "2603.24579",
+      "url": "https://arxiv.org/abs/2603.24579",
+      "work_id": "arxiv:2603.24579"
+    },
+    {
+      "reference_number": 60,
+      "ref_id": "B077",
+      "title": "Mixture of Debaters: Learn to Debate at Architectural Level in Multi-Agent Reasoning",
+      "year": 2026,
+      "authors": [
+        "Dayong Liang",
+        "Kaisong Gong",
+        "Yi Cai",
+        "Changmeng Zheng",
+        "Xiao-Yong Wei"
+      ],
+      "doi": null,
+      "arxiv": "2606.29425",
+      "url": "https://arxiv.org/abs/2606.29425",
+      "work_id": "arxiv:2606.29425"
+    },
+    {
+      "reference_number": 61,
+      "ref_id": "B078",
+      "title": "Multi-Agent Reasoning Improves Compute Efficiency: Pareto-Optimal Test-Time Scaling",
+      "year": 2026,
+      "authors": [
+        "Florian Valentin Wunderlich",
+        "Lars Benedikt Kaesberg",
+        "Jan Philip Wahle",
+        "Terry Ruas",
+        "Bela Gipp"
+      ],
+      "doi": null,
+      "arxiv": "2605.01566",
+      "url": "https://arxiv.org/abs/2605.01566",
+      "work_id": "arxiv:2605.01566"
+    },
+    {
+      "reference_number": 62,
+      "ref_id": "B079",
+      "title": "ORBIT: A Framework for Multi-Agent Safety and Security Evaluations",
+      "year": 2026,
+      "authors": [
+        "Ben Hagag",
+        "William L. Anderson",
+        "Srija Chakraborty",
+        "Christian Schroeder de Witt"
+      ],
+      "doi": null,
+      "arxiv": "2609.33102",
+      "url": "https://arxiv.org/abs/2609.33102",
+      "work_id": "arxiv:2609.33102"
+    },
+    {
+      "reference_number": 63,
+      "ref_id": "B080",
+      "title": "Orchestrating Intelligence: Confidence-Aware Routing for Efficient Multi-Agent Collaboration across Multi-Scale Models",
+      "year": 2026,
+      "authors": [
+        "Jingbo Wang",
+        "Sendong Zhao",
+        "Jiatong Liu",
+        "Haochun Wang",
+        "Wanting Li",
+        "Bing Qin",
+        "Ting Liu"
+      ],
+      "doi": null,
+      "arxiv": "2601.04861",
+      "url": "https://arxiv.org/abs/2601.04861",
+      "work_id": "arxiv:2601.04861"
+    },
+    {
+      "reference_number": 64,
+      "ref_id": "B082",
+      "title": "SC-MAS: Constructing Cost-Efficient Multi-Agent Systems with Edge-Level Heterogeneous Collaboration",
+      "year": 2026,
+      "authors": [
+        "Di Zhao",
+        "Longhui Ma",
+        "Siwei Wang",
+        "Miao Wang",
+        "Yi Kong"
+      ],
+      "doi": null,
+      "arxiv": "2601.09434",
+      "url": "https://arxiv.org/abs/2601.09434",
+      "work_id": "arxiv:2601.09434"
+    },
+    {
+      "reference_number": 65,
+      "ref_id": "B084",
+      "title": "Scaling LLM-Driven Multi-Agent Systems: Design Principles and Architectural Scalability Analysis",
+      "year": 2026,
+      "authors": [
+        "Linus Sander",
+        "Fengjunjie Pan",
+        "Vahid Zolfaghari",
+        "Andre Schamschurko",
+        "Nenad Petrovic",
+        "Alois Knoll"
+      ],
+      "doi": null,
+      "arxiv": "2607.27942",
+      "url": "https://arxiv.org/abs/2607.27942",
+      "work_id": "arxiv:2607.27942"
+    },
+    {
+      "reference_number": 66,
+      "ref_id": "B085",
+      "title": "Scaling Teams or Scaling Time? Memory Enabled Lifelong Learning in LLM Multi-Agent Systems",
+      "year": 2026,
+      "authors": [
+        "Shanglin Wu",
+        "Yuyang Luo",
+        "Yueqing Liang",
+        "Kaiwen Shi",
+        "Yanfang Ye",
+        "Ali Payani",
+        "Kai Shu"
+      ],
+      "doi": null,
+      "arxiv": "2604.03295",
+      "url": "https://arxiv.org/abs/2604.03295",
+      "work_id": "arxiv:2604.03295"
+    },
+    {
+      "reference_number": 67,
+      "ref_id": "B086",
+      "title": "SkillMem: Compact External Skill Memory for Latent Multi-Agent Reasoning",
+      "year": 2026,
+      "authors": [
+        "Yuxuan Zhu",
+        "Mohammad Mohammadi Amiri",
+        "Pin-Yu Chen",
+        "Keerthiram Murugesan"
+      ],
+      "doi": null,
+      "arxiv": "2610.37935",
+      "url": "https://arxiv.org/abs/2610.37935",
+      "work_id": "arxiv:2610.37935"
+    },
+    {
+      "reference_number": 68,
+      "ref_id": "B087",
+      "title": "Spine-Branch Coordination for Multi-agent Computer Use",
+      "year": 2026,
+      "authors": [
+        "Mian Zhang",
+        "Manasi Sharma",
+        "Sheng Zhang",
+        "Minglai Yang",
+        "Kejian Shi",
+        "Ying Liu",
+        "Zhiyu Zoey Chen",
+        "Daniel Yue Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2608.22077",
+      "url": "https://arxiv.org/abs/2608.22077",
+      "work_id": "arxiv:2608.22077"
+    },
+    {
+      "reference_number": 69,
+      "ref_id": "B088",
+      "title": "Streaming Communication in Multi-Agent Reasoning",
+      "year": 2026,
+      "authors": [
+        "Zhen Yang",
+        "Xiaogang Xu",
+        "Wen Wang",
+        "Cong Chen",
+        "Xander Xu",
+        "Ying-Cong Chen"
+      ],
+      "doi": null,
+      "arxiv": "2606.05158",
+      "url": "https://arxiv.org/abs/2606.05158",
+      "work_id": "arxiv:2606.05158"
+    },
+    {
+      "reference_number": 70,
+      "ref_id": "B090",
+      "title": "The Cost of Saying Hello: An Empirical Study of Handshake Overhead in AI Agent Communication Protocols",
+      "year": 2026,
+      "authors": [
+        "Pranav Varshney"
+      ],
+      "doi": null,
+      "arxiv": "2610.30151",
+      "url": "https://arxiv.org/abs/2610.30151",
+      "work_id": "arxiv:2610.30151"
+    },
+    {
+      "reference_number": 71,
+      "ref_id": "B091",
+      "title": "The Ringelmann Effect in Multi-Agent LLM Systems: A Scaling Law for Effective Team Size",
+      "year": 2026,
+      "authors": [
+        "Blaž Bertalanič",
+        "Carolina Fortuna"
+      ],
+      "doi": null,
+      "arxiv": "2606.02646",
+      "url": "https://arxiv.org/abs/2606.02646",
+      "work_id": "arxiv:2606.02646"
+    },
+    {
+      "reference_number": 72,
+      "ref_id": "B092",
+      "title": "TokenDance: Scaling Multi-Agent LLM Serving via Collective KV Cache Sharing",
+      "year": 2026,
+      "authors": [
+        "Zhuohang Bian",
+        "Feiyang Wu",
+        "Chengrui Zhang",
+        "Hangcheng Dong",
+        "Yun Liang",
+        "Youwei Zhuo"
+      ],
+      "doi": null,
+      "arxiv": "2604.03143",
+      "url": "https://arxiv.org/abs/2604.03143",
+      "work_id": "arxiv:2604.03143"
+    },
+    {
+      "reference_number": 73,
+      "ref_id": "B093",
+      "title": "Toward Reliable Evaluation of LLM-Based Financial Multi-Agent Systems: Taxonomy, Coordination Primacy, and Cost Awareness",
+      "year": 2026,
+      "authors": [
+        "Phat Nguyen",
+        "Thang Pham"
+      ],
+      "doi": null,
+      "arxiv": "2603.27539",
+      "url": "https://arxiv.org/abs/2603.27539",
+      "work_id": "arxiv:2603.27539"
+    },
+    {
+      "reference_number": 74,
+      "ref_id": "B094",
+      "title": "TriAgent: Divergence-Aware Multi-Agent Committees for Cost-Efficient Financial Sentiment Analysis",
+      "year": 2026,
+      "authors": [
+        "Isabel Xu",
+        "Cynthia Xu",
+        "Rachel Ren",
+        "Cong Guo",
+        "Jiacheng Ding"
+      ],
+      "doi": null,
+      "arxiv": "2607.19794",
+      "url": "https://arxiv.org/abs/2607.19794",
+      "work_id": "arxiv:2607.19794"
+    },
+    {
+      "reference_number": 75,
+      "ref_id": "B096",
+      "title": "Weak-Link Optimization for Multi-Agent Reasoning and Collaboration",
+      "year": 2026,
+      "authors": [
+        "Haoyu Bian",
+        "Chaoning Zhang",
+        "Jiaquan Zhang",
+        "Xingyao Li",
+        "Yuanfang Guo",
+        "Wei Dong",
+        "Yang Yang"
+      ],
+      "doi": null,
+      "arxiv": "2604.15972",
+      "url": "https://arxiv.org/abs/2604.15972",
+      "work_id": "arxiv:2604.15972"
+    }
+  ],
+  "article_sha256": "bb647fe21ea0aa4059df0f703eb4252e83ad9f7e7b647289a3e803f0a9fb1002",
+  "references_sha256": "d1a0c8a5acdf7ab8f0a0d639b3b6f824fb20010d86d66b39df573d634df00ab5",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

@@ -1,0 +1,957 @@
+{
+  "topic_id": "AI1.11",
+  "route": "B",
+  "title": "世界模型：技术演进、方法比较与研究进展",
+  "content_md": "# 世界模型：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了世界模型的发展脉络、核心范式演进与前沿方法。研究范围涵盖环境状态表示与动态预测、可交互生成与动作条件控制、规划与具身任务以及模型可靠性验证。路线比较表明，早期基于重构与递归的模型逐渐向预训练优先、流匹配与联合去噪的通用世界动作模型演进，不同方法在潜空间压缩、长序列滚动稳定性和计算效率上各有权衡。主要认识指出，结构化先验、潜空间一致性正则化与测试时适应能有效缓解分布漂移和累积误差。开放问题包括高维视动对齐的泛化边界、离轨查询带来的控制次优性以及“视觉真实度高不等同于动作遵循能力强”的信任危机。\n\n## 第1章 引言：世界模型的发展脉络与核心范式演进\n\n第1章 引言：世界模型的发展脉络与核心范式演进\n\n世界模型旨在学习环境状态和变化规律，从而为智能体提供预测、规划或生成可交互环境的核心能力 [19]。作为通往通用人工智能（AGI）的重要路径，世界模型不仅超越了传统大语言模型仅处理文本输入的局限，还能够更好地抽象、推理并理解复杂的物理世界 [53]。\n\n从研究问题与演进机制来看，世界模型的发展经历了从早期针对视觉控制任务的在线模型到互联网规模视频生成基础模型的深刻转型 [45]。在早期阶段，模型主要聚焦于解决图像域中环境动力学未知的长期规划难题，例如通过循环状态空间模型（RSSM）结合确定性与随机性转移组件，并在潜空间中利用潜在超前预测（latent overshooting）作为正则化手段，实现从像素观测中高效求解连续控制任务 [1]。随着生成式方法、强化学习与决策规划理论的交叉融合，现代世界模型逐渐演化为涵盖视频生成、自动驾驶、具身智能体交互等多领域的通用基础设施 [6][9][19]。\n\n在核心架构与范式演变方面，文献梳理显示出三大关键跃迁：由在线基于模型的强化学习（MBRL）转向预训练优先的纯想象策略训练；架构上由解耦的世界与策略模块演进为统一的世界动作模型；并进一步将专用算法泛化为支持具身物理AI的底层基础设施 [45]。从具体的方法变体与适用条件来看，早期如PlaNet依赖递归状态空间模型处理局部可观测与稀疏奖励环境 [1]；而近年来，从早期掩码表征学习到统一架构，再到闭环交互生成与长期记忆增强系统的演进路线，构成了构建真实世界模型的核心路径 [12]。这些架构的集成使得感知、预测与动作组件紧密互联，有效增强了智能体在复杂环境中的样本效率、泛化能力与安全性 [19]。\n\n## 第2章 环境状态表示与动态预测的主要方法与机制比较\n\n环境状态表示与动态预测是构建世界模型的核心环节，其主要研究问题聚焦于如何在低维潜空间中准确刻画复杂环境的演化规律，并平衡重构精度与动态预测稳定性。在方法机制与架构演变方面，早期研究主要采用自编码器进行空间压缩，并结合循环神经网络（如LSTM）或高斯过程进行长期序列预测[2][3]。然而，在高维偏微分方程及非线性物理系统中，传统的单阶段自编码器需要同时满足数据重构和动态演化，这构成了相互竞争的重构-动力学冲突（reconstruction-dynamics trade-off）[23]。为突破这一瓶颈，近期进展演化出多阶段残差学习机制，例如mLaSDI通过引入阶段性解码器映射残差并结合周期性激活函数，在不损失动力学可解释性的前提下显著降低了高频重建与预测误差[23]。此外，针对参数化偏微分方程的状态预测，Latent Evolution Operator（LEO）采用编码器-传播器-解码器分解，支持从任意中间状态进行单步潜空间评估，避免了递归模型中长程积分的误差累积[14]。在模型正则化与结构约束方面，RRAEDy利用秩约自编码器自动裁剪潜变量，并通过奇异值和线性约束学习稳定的潜空间动力学[17]；而时滞嵌入潜哈密顿神经网络（DELHNN）则在部分可观测动力学中引入哈密顿结构先验，用于约束相位空间状态的滚动演化[27]。在具身与视觉世界模型中，面向复杂视觉观测的表征逐渐从传统的端到端场景中心模型转向面向对象的（Object-Centric）具身世界模型，研究表明结构化的槽（slot）表征与预训练特征（如DINO）能够有效增强模型在未知分布偏移下的泛化与鲁棒性[30]，并且不同的预测一致性优化目标会促使异构世界模型收敛向共享的潜层几何结构[43]。在适用条件与性能权衡方面，各类方法的表现高度依赖于观测 regime 与动态特性：潜空间维度并非越高越好，较高的潜维度虽然能改善重构，但可能削弱长程滚动的稳定性[41]；DELHNN等结构化先验在强非线性与严重数据缺失区域更具优势，而在温和缺失下黑盒潜空间动力学表现更佳[27]；同时，基于谱残差（Spectral-Residual）损失训练的Koopman算子能够有效抑制伪特征对（spurious eigenpairs），在多维混沌系统的自回归预测中较传统潜预测模型表现出更高的谱可靠性与更长的有效预测时间[48]。综合而言，从低维物理降维到高维视觉基础模型，环境状态表示正朝着具备几何约束、谱可靠性与强泛化能力的方向演进。\n\n## 第3章 可交互生成与动作条件控制的主要方法与机制比较\n\n第3章 可交互生成与动作条件控制的主要方法与机制比较\n\n在现代世界模型的研究中，实现具身智能和可交互环境生成的核心在于如何将动作控制信号与高维视觉动力学进行紧密对齐。早期研究主要探索无监督条件下的可玩视频生成（Playable Video Generation, PVG），通过在自编码器的瓶颈层预测离散动作标签，以重构损失驱动网络学习丰富的动作空间 [4]。然而，随着具身控制向高自由度、连续性和多模态方向演进，传统依赖离散标签或纯重构的方法面临着严峻的理论挑战。例如，在潜空间动力学建模中，“重构-动作不匹配”（reconstruction-action mismatch）现象表明，更低的重构误差并不必然带来更好的潜空间动力学或下游策略性能，这主要是由于逆动力学模型（IDM）容易将动作无关的外观变化与真实动作混淆，而前向动力学模型（FDM）也可能利用当前状态的预测捷径而低估潜动作的作用 [44]。\n\n为了克服上述局限并实现更具泛化能力的控制，近年来发展出了多种机制各异的动作条件控制与世界动作模型（WAM）架构。在表征与对齐机制方面，主流方法分化出多条技术路线：一部分研究关注多模态动作感官的对齐，通过开发专门的特征学习范式将本体感觉、力触觉及肌肉激活等细粒度模态与视频生成模型进行深度融合，从而减少时间漂移并增强复杂的交互动力学 [16]；另一部分研究则探索将低维度控制信号提升至像素或视觉空间，例如将7-DoF机器人动作转换为多视角像素级“动作图像”（Action Images），利用视频基础模型自身作为零样本策略，避免了分离动作头的复杂性 [25]，或者通过运动学到视觉的提升范式，构建层级路由的视觉控制框架以实现高效的计算分配 [35]。此外，诸如ContactFlow等方法提出了解耦具体外观与运动学的3D接触点轨迹，作为跨具身的通用条件信号，实现人类示范与多种机器人构型之间的无缝迁移 [32]。\n\n在生成范式与训练策略的演进中，流匹配（Flow Matching）与扩散架构逐渐成为主流。为了摆脱传统两阶段方法中效率低下或误差累积的问题，近期研究广泛引入了视频-动作联合去噪机制。例如，通过在统一的流匹配框架中同步视频与动作分支的去噪过程，或者在扩散世界模型中联合生成状态、奖励和动作轨迹，配合逆动力学模型支持一步式时序差分（TD）离线强化学习，从而平衡了训练复杂性与计算效率 [11][49]。在长序列生成与一致性保持方面，慢快双速学习系统（SlowFast-VGen）通过引入推理时的快速学习策略（如临时LoRA模块），有效缓解了超出上下文窗口时的帧间不一致问题 [8]。而在实时交互与计算效率的权衡上，诸如ForgeWM等方法采用渐进式因果训练与一致性蒸馏，将双向动作条件视频生成器转化为高效的几步式（few-step）交互世界模型，满足了游戏级或实时机器人控制的低延迟需求 [34]。相比之下，部分研究则从计算经济性出发，提出利用图像编辑模型替代完整的视频生成作为WAM骨干网，专注于当前帧到目标帧的视觉差异，从而在大幅降低推理成本的同时保持强大的动作预测能力 [38]。\n\n综上所述，可交互生成与动作条件控制的方法正从早期的离散标签瓶颈与像素重构，向动作中心式潜动力学、跨具身通用表征以及联合去噪生成演进。不同的方法在计算开销、动作精度和下游任务适用性上各有侧重：基于联合去噪与流匹配的架构擅长高保真度的多模态具身数据合成，而面向图像编辑或高效因果蒸馏的模型则更适合低延迟的实时闭环控制与策略部署。\n\n## 第4章 规划、具身任务与模型可靠性的主要方法与机制比较\n\n在本章中，我们将深入探讨世界模型在规划、具身任务及模型可靠性方面的主要方法、核心机制与发展演变。随着世界模型从传统的低维潜在空间建模向基于互联网规模数据的视频与多模态基础模型演进，如何在保持高效计算的同时实现精准的长周期规划与具身控制，成为了当前研究的核心问题。在环境状态表示与动态演化建模方面，为了从高维感知中滤除外源噪声、提取对控制必要的最小状态，研究者提出了基于多步逆模型的控制内源状态发现算法（AC-State）[5]，以及旨在应对复杂高维观测的潜空间动力学可覆盖性理论 [7]。然而，由于重构与动力学预测之间存在固有冲突，单纯依赖像素级重构往往难以保证下游规划的鲁棒性。为此，部分方法通过引入结构化关系先验（如将交通场景图作为语义监督注入潜空间），有效显式约束了表征的语义几何，显著降低了长序列预测中的累积误差 [46]。\n\n在可交互生成与动作条件控制的机制设计上，如何将大规模预训练视频模型的物理先验转化为具身智能体的决策能力是另一大关键。与依赖静态图像匹配或开放式视觉质量评估的传统方法不同，现代具身世界模型（如通过动作-语言条件进行轨迹评估的ALVA机制）能够基于完整的视动作轨迹联合分布提供精细的进展反馈，并在闭环策略优化中显著缩小性能差距 [26]。在架构实现上，诸如InternW0等物理基础世界模型通过采用异步的世界-动作联合建模与上下文路由机制，实现了细粒度接触丰富操作与高频控制的高效平衡 [39]；而直接经验世界模型优化（DEWO）范式则通过挖掘交互转折点以及成功与失败的未来轨迹，利用分类器自由引导在推理过程中克服了高维动作空间中的复合误差 [33]。\n\n在模型可靠性、测试时适应与持续学习方面，由于真实环境动力学经常发生漂移（如载荷变化或物理参数退化），静态世界模型在面对未见分布时往往面临零样本泛化瓶颈与灾难性遗忘[28][31]。为此，研究者发展了如JEPA-TTT等持久测试时训练方法，在冻结视觉编码器的同时通过稠密重播持续更新潜在动力学预测器，从而在动力学漂移下大幅降低自回归预测误差并恢复规划性能 [40]。同时，结合变点感知的重放遗忘机制（CAWM）能够利用在线统计检验精准擦除陈旧数据，避免因历史经验拖累而导致适应缓慢 [31]。此外，针对生成式世界模型在闭环决策中“视觉真实度高并不等同于动作遵循能力强”的信任危机，最新进展引入了基于多维可信度梯度的认证体系与雅可比质心行为监控栈，在无需真实奖励或动作标签的前提下提前识别出模型行为失调，从而保障了闭环具身规划的安全性与鲁棒性 [29][50]。综合来看，不同方法在数据利用效率、计算开销、对非平稳环境的适应性以及泛化边界上各有侧重，为构建兼具通用物理理解与高可靠决策能力的具身智能系统奠定了坚实的理论与机制基础。\n\n## 第5章 综合比较、关键路线优劣势与开放性问题\n\n第5章对现代世界模型在状态表示、可交互控制、泛化与可靠性验证等核心维度的关键技术路线进行了综合比较。在环境状态表示与动力学建模方面，潜空间自回归机制通过因果高斯过程等结构化先验，能够将序列动态从观测空间转移至连续潜空间，从而在保持非自回归解码并行的同时，诱导并保持更具长远稳定性的潜空间轨迹[10][15]。然而，传统的基于数据平均预测误差的训练目标在面对实际规划器的离轨查询（off-manifold queries）时并不足以完全保证控制性能，因为规划器访问的往往是超出训练数据流形的动作可达状态，此时控制次优性受到预测与真实代价间差异的直接有界约束[24]。此外，深度监督技术（如线性探针）可有效引导网络编码底层环境特征，减少高变异阶段的分布漂移，并在计算受限或小模型场景下显著提升训练稳定性和特征可解码性[13]。在结构恢复的理论边界上，低阶偏差模型在多任务设置下能够在温和假设下无偏恢复潜在于数据生成的变量，但该恢复过程对网络架构高度敏感[22]。针对异步传感器观测这一物理实际，引入零阶保持与显式时间调度特征（如陈旧度与刷新时间），在刷新事件直接影响系统动态时能够提供关键的信息增益[52]。\n\n在可交互生成与决策验证机制方面，基于大语言模型或经典规划器的世界模型展现出不同的能力边界。一方面，大语言模型不仅在棋类和棋盘布局任务中表现出高精度的无监督隐式世界模型归纳能力[18][20]，还能够通过未来查询（Future Querying）范式在无需手动特征工程的情况下处理非结构化临床轨迹[37]，或构建将物理规则与符号逻辑分离的网页世界模型[21]。另一方面，“脑与嘴分离”（The mouth is not the brain）等架构原则表明，将基于能量的世界模型（DBM）与冻结的语言模型通过软提示词进行适配，能够有效平衡提示词表达力不足与过长导致模型崩溃的权衡，从而在消费者评论等生成任务中实现稳定的受控生成[47]。经济世界模型（EWMs）则通过构建从规则代理到自适应多级能力阶梯，实现了经济主体与制度的内生协同演化[36]。\n\n在可靠性与失败条件（Failure Modes）分析上，文献揭示了世界模型在“验证精度”与“实际表现”之间的鸿沟。代码世界模型（CWM）及大语言模型合成的规划环境常以采样转移精度作为接受标准，但高转移准确率并不等同于游戏规划的玩耍充分性（play-adequacy）；由于少数字典规则的遗漏可能导致灾难性的规划失效，且此类缺陷无法通过单纯的数据规模扩张来修复[51]。同时，多步潜空间一致性正则化虽然在部分连续控制和视频预测基准中能够将模型推向近收缩带并大幅降低长 horizon 预测误差，但其成效具有强烈的领域局限性，在非目标动作控制域中并不具备普适的收缩效应[42]。\n\n## 结论\n\n本综述系统梳理了世界模型从早期视觉控制任务演进为多领域通用基础设施的全过程。主要认识表明：在状态表示上，结合残差学习、几何与谱约束的潜空间方法有效突破了重构-动力学冲突；在可交互生成上，联合去噪、流匹配及动作-视觉对齐显著提升了具身智能体的闭环控制性能；在可靠性方面，测试时训练与多维可信度认证缓解了动态漂移与行为失调。开放问题揭示了纯数据规模扩张无法根除规划失效的局限性，未来研究需重点解决离轨查询下的控制边界、长序列误差累积与高保真生成中的动作遵循能力，从而推动世界模型向高安全性与强泛化性的通用物理AI迈进。\n\n## 参考文献\n\n[1] Danijar Hafner, Timothy Lillicrap, Ian Fischer, Ruben Villegas, David Ha. Learning Latent Dynamics for Planning from Pixels. 2018. https://arxiv.org/abs/1811.04551\n\n[2] Steffen Wiewel, Byungsoo Kim, Vinicius C. Azevedo, Barbara Solenthaler, Nils Thuerey. Latent Space Subdivision: Stable and Controllable Time Predictions for Fluid Flow. 2020. https://arxiv.org/abs/2003.08723\n\n[3] Nathanael Bosch, Jan Achterhold, Laura Leal-Taixé, Jörg Stückler. Planning from Images with Deep Latent Gaussian Process Dynamics. 2020. https://arxiv.org/abs/2005.03770\n\n[4] Willi Menapace, Stéphane Lathuilière, Sergey Tulyakov, Aliaksandr Siarohin, Elisa Ricci. Playable Video Generation. 2021. https://arxiv.org/abs/2101.12195\n\n[5] Alex Lamb, Riashat Islam, Yonathan Efroni, Aniket Didolkar, Dipendra Misra. Guaranteed Discovery of Control-Endogenous Latent States with Multi-Step Inverse Models. 2022. https://arxiv.org/abs/2207.08229\n\n[6] Zheng Zhu, Xiaofeng Wang, Wangbo Zhao, Chen Min, Bohan Li. Is Sora a World Simulator? A Comprehensive Survey on General World Models and Beyond. 2024. https://arxiv.org/abs/2405.03520\n\n[7] Philip Amortila, Dylan J. Foster, Nan Jiang, Akshay Krishnamurthy, Zakaria Mhammedi. Reinforcement Learning under Latent Dynamics: Toward Statistical and Algorithmic Modularity. 2024. https://arxiv.org/abs/2410.17904\n\n[8] Yining Hong, Beide Liu, Maxine Wu, Yuanhao Zhai, Kai-Wei Chang. SlowFast-VGen: Slow-Fast Learning for Action-Driven Long Video Generation. 2024. https://arxiv.org/abs/2410.23277\n\n[9] Xiaoxiao Long, Qingrui Zhao, Kaiwen Zhang, Zihao Zhang, Dingrui Wang. A Survey: Learning Embodied Intelligence from Physical Simulators and World Models. 2025. https://arxiv.org/abs/2507.00917\n\n[10] Yves Ruffenach. Autoregressivity in the Latent Space of a GP-VAE Language Model: An Empirical Ablation Study. 2025. https://arxiv.org/abs/2512.24102\n\n[11] Zongyue Li, Xiao Han, Yusong Li, Niklas Strauss, Matthias Schubert. DAWM: Diffusion Action World Models for Offline Reinforcement Learning via Action-Inferred Transitions. 2025. https://arxiv.org/abs/2509.19538\n\n[12] Jinbin Bai, Yu Lei, Hecong Wu, Yuchen Zhu, Shufan Li. From Masks to Worlds: A Hitchhiker's Guide to World Models. 2025. https://arxiv.org/abs/2510.20668\n\n[13] Andrii Zahorodnii. Improving World Models using Deep Supervision with Linear Probes. 2025. https://arxiv.org/abs/2504.03861\n\n[14] Khalid Rafiq, Wenjing Liao, Aditya G. Nair. Latent Evolution Operator (LEO): State-to-State Forecasting of Parametric PDEs. 2025. https://arxiv.org/abs/2505.09063\n\n[15] Yves Ruffenach. Latent-Autoregressive GP-VAE Language Model. 2025. https://arxiv.org/abs/2512.09535\n\n[16] Yichen Li, Antonio Torralba. MultiModal Action Conditioned Video Generation. 2025. https://arxiv.org/abs/2510.02287\n\n[17] Jad Mounayer, Sebastian Rodriguez, Jerome Tomezyk, Chady Ghnatios, Francisco Chinesta. RRAEDy: Adaptive Latent Linearization of Nonlinear Dynamical Systems. 2025. https://arxiv.org/abs/2512.07542\n\n[18] Yifei Yuan, Anders Søgaard. Revisiting the Othello World Model Hypothesis. 2025. https://arxiv.org/abs/2503.04421\n\n[19] Sampath Mandava. Toward Intelligent Agents with Learned World Models for Real-World Decision-Making. 2025. https://doi.org/10.2139/ssrn.5551718\n\n[20] Romain Harang, Jason Naradowsky, Yaswitha Gujju, Yusuke Miyao. Tracking World States with Language Models: State-Based Evaluation Using Chess. 2025. https://arxiv.org/abs/2508.19851\n\n[21] Jichen Feng, Yifan Zhang, Chenggong Zhang, Yifu Lu, Shilong Liu. Web World Models. 2025. https://arxiv.org/abs/2512.23676\n\n[22] Tianren Zhang, Guanyu Chen, Feng Chen. When Do Neural Networks Learn World Models?. 2025. https://arxiv.org/abs/2502.09297\n\n[23] William Anderson, Seung Whan Chung, Robert Stephany, Youngsoo Choi. mLaSDI: Multi-stage latent space dynamics identification. 2025. https://arxiv.org/abs/2506.09207\n\n[24] Hanzhe You, Yonggang Zhang, Maohao Ran, Zhiqin Yang, Zhenyuan Zhang. A Control Theory of Predictability in Latent World Models. 2026. https://arxiv.org/abs/2607.10362\n\n[25] Haoyu Zhen, Zixian Gao, Qiao Sun, Yilin Zhao, Yuncong Yang. Action Images: End-to-End Policy Learning via Multiview Video Generation. 2026. https://arxiv.org/abs/2604.06168\n\n[26] Hwanhee Kim, Jaehyun Jang, Seungmin Cha, Hyeonseo Yun, Donghoon Lee. Action- and Language-Conditioned Video Assessment for Embodied Control. 2026. https://arxiv.org/abs/2608.08273\n\n[27] Lin'an Li, Shuangcheng Bai. Applicability Boundaries of Delay-Embedded Latent Hamiltonian Priors for Partially Observed Dynamics. 2026. https://doi.org/10.2139/ssrn.7009893\n\n[28] Amir Mesbah, Di Wu. Before We Adapt: The Zero-Shot Generalization Bottleneck in Continual World Models. 2026. https://arxiv.org/abs/2610.41041\n\n[29] Thomas Walker, Randall Balestriero, Richard Baraniuk. Behavioral Monitoring of JEPA World Models with Jacobian Centroids. 2026. https://arxiv.org/abs/2609.33940\n\n[30] Shukrullo Nazirjonov, Sai Prasanna, Anna Manasyan, Georg Martius. Better Slots, Better Worlds: Representation Quality & Robustness in Object-Centric World Models. 2026. https://arxiv.org/abs/2608.12078\n\n[31] Everest Yang. Changepoint-Aware World Models: Detecting Dynamics Shifts and Recovering by Forgetting Stale Replay in Model-Based RL. 2026. https://arxiv.org/abs/2609.18950\n\n[32] Sami Azirar, Enrico Pallotta, Jan Nogga, Jürgen Gall, Sven Behnke. ContactFlow: A video action conditioning that transfers across embodiments. 2026. https://arxiv.org/abs/2607.26579\n\n[33] Xiangcheng Zhan, Zirui Chen, Yicheng Zhao, Ziteng Gao, Shuo Yang. Direct Experience World-Model Optimization: Learning the World Beyond Action Imitation. 2026. https://arxiv.org/abs/2609.37398\n\n[34] Xinye Li, Lingshuai Lin, Lei Wang, Liuzhou Zhang, Jialin Cui. ForgeWM: Progressive Causal Training for Few-Step Action-Conditioned Video World Models. 2026. https://arxiv.org/abs/2608.14022\n\n[35] Bohan Li, Shuojue Yang, Baorui Peng, Xianda Guo, Erli Zhang. From Articulated Kinematics to Routed Visual Control for Action-Conditioned Surgical Video Generation. 2026. https://arxiv.org/abs/2605.08712\n\n[36] Jiale Han, Xiang Li, Jing Qian, Wenyuan Gu, Pin Gao. From Economic Agents to Agentic Economies: A Systems Blueprint for Economic World Models. 2026. https://arxiv.org/abs/2608.06020\n\n[37] Siri Willems, James Butterworth, Lore Goetschalckx, Peter Vrancx, Philippe Modard. Future Querying: Can LLMs Serve as Implicit Medical World Models?. 2026. https://arxiv.org/abs/2608.23248\n\n[38] Yuyang Zhang, Wenyao Zhang, Zekun Qi, He Zhang, Haitao Lin. ImageWAM: Do World Action Models Really Need Video Generation, or Just Image Editing?. 2026. https://arxiv.org/abs/2606.19531\n\n[39] Jisong Cai, Yao Mu, Ganlin Yang, Zhe Cao, Zhangzheng Tu. InternW0: A Foundational Physical World Model for Efficient Real-World Interactions. 2026. https://arxiv.org/abs/2609.27656\n\n[40] Zheyuan Zhang, Suyu Ye, Nakul Agarwal, Hossein Nourkhiz Mahjoub, Ehsan Moradi Pari. JEPA-TTT: Persistent Test-Time Training of Latent World Models for Planning under Dynamics Shifts. 2026. https://arxiv.org/abs/2610.00722\n\n[41] Arpit Goel. Learning Bounded Latent Degradation Dynamics for stable rollout and Remaining Useful Life Prediction. 2026. https://doi.org/10.2139/ssrn.7180558\n\n[42] Kavya Bhand, Aadi Joshi. Multi-Horizon Consistency as Geometry: When Latent Dynamics Contract, and When They Do Not. 2026. https://arxiv.org/abs/2607.21645\n\n[43] Wenhow Li, Chengwei MA, Hui Xiong, Ying-Cong Chen, Lei Zhang. Platonic Representation Hypothesis on World Models. 2026. https://arxiv.org/abs/2608.23720\n\n[44] Dingjie Fu, Dianxing Shi, Yangyang Xu, Jun Yu. Reconstructing Is Not Acting: Action-Centric Latent Dynamics Modeling. 2026. https://arxiv.org/abs/2609.15189\n\n[45] Wojciech Dąbrowicki, Andrzej Rusiecki. Reinforcement Learning with World Models in the Era of Scale: From Online Imagination to World Action Models. 2026. https://doi.org/10.21203/rs.3.rs-11327969/v1\n\n[46] Fabian Schmidt, Markus Enzweiler, Abhinav Valada. Relationally Grounded Latent World Models for Autonomous Driving. 2026. https://arxiv.org/abs/2609.24626\n\n[47] Junichiro Niimi. The Mouth is Not the Brain: Bridging Energy-Based World Models and Language Generation. 2026. https://arxiv.org/abs/2601.17094\n\n[48] Itsushi Sakata, Yuta Miyauchi, Yoshinobu Kawahara. Understanding Latent-Dimension Scaling in Dynamical-System Learning through Spectral Reliability. 2026. https://arxiv.org/abs/2610.11866\n\n[49] Xiaolei Lang, Yang Wang, Yukun Zhou, Chaojun Ni, Kerui Li. VAG: Dual-Stream Video-Action Generation for Embodied Data Synthesis. 2026. https://arxiv.org/abs/2604.09330\n\n[50] Christian Oefinger, Finn Rasmus Schäfer, Korbinian Moller, Mattia Piccinini, Johannes Betz. Validate the Dream Before You Trust Its Verdict: Admissibility for World-Model Simulators. 2026. https://arxiv.org/abs/2607.07196\n\n[51] Javier Aguilar Martín. When a Verified World Model Still Loses: Play-Adequacy vs Prediction-Accuracy in LLM-Synthesized Code World Models. 2026. https://arxiv.org/abs/2607.14169\n\n[52] Akash Anand, Abhay Anand, Yash Vishe. World Models Under Asynchronous Sensor Observations. 2026. https://arxiv.org/abs/2609.07299\n\n[53] Mohammad Raeini. World Models: A Survey. 2026. https://doi.org/10.2139/ssrn.6971379\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B002",
+      "title": "Learning Latent Dynamics for Planning from Pixels",
+      "year": 2018,
+      "authors": [
+        "Danijar Hafner",
+        "Timothy Lillicrap",
+        "Ian Fischer",
+        "Ruben Villegas",
+        "David Ha",
+        "Honglak Lee",
+        "James Davidson"
+      ],
+      "doi": null,
+      "arxiv": "1811.04551",
+      "url": "https://arxiv.org/abs/1811.04551",
+      "work_id": "arxiv:1811.04551"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B003",
+      "title": "Latent Space Subdivision: Stable and Controllable Time Predictions for Fluid Flow",
+      "year": 2020,
+      "authors": [
+        "Steffen Wiewel",
+        "Byungsoo Kim",
+        "Vinicius C. Azevedo",
+        "Barbara Solenthaler",
+        "Nils Thuerey"
+      ],
+      "doi": null,
+      "arxiv": "2003.08723",
+      "url": "https://arxiv.org/abs/2003.08723",
+      "work_id": "arxiv:2003.08723"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B005",
+      "title": "Planning from Images with Deep Latent Gaussian Process Dynamics",
+      "year": 2020,
+      "authors": [
+        "Nathanael Bosch",
+        "Jan Achterhold",
+        "Laura Leal-Taixé",
+        "Jörg Stückler"
+      ],
+      "doi": null,
+      "arxiv": "2005.03770",
+      "url": "https://arxiv.org/abs/2005.03770",
+      "work_id": "arxiv:2005.03770"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B006",
+      "title": "Playable Video Generation",
+      "year": 2021,
+      "authors": [
+        "Willi Menapace",
+        "Stéphane Lathuilière",
+        "Sergey Tulyakov",
+        "Aliaksandr Siarohin",
+        "Elisa Ricci"
+      ],
+      "doi": null,
+      "arxiv": "2101.12195",
+      "url": "https://arxiv.org/abs/2101.12195",
+      "work_id": "arxiv:2101.12195"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B007",
+      "title": "Guaranteed Discovery of Control-Endogenous Latent States with Multi-Step Inverse Models",
+      "year": 2022,
+      "authors": [
+        "Alex Lamb",
+        "Riashat Islam",
+        "Yonathan Efroni",
+        "Aniket Didolkar",
+        "Dipendra Misra",
+        "Dylan Foster",
+        "Lekan Molu",
+        "Rajan Chari",
+        "Akshay Krishnamurthy",
+        "John Langford"
+      ],
+      "doi": null,
+      "arxiv": "2207.08229",
+      "url": "https://arxiv.org/abs/2207.08229",
+      "work_id": "arxiv:2207.08229"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B016",
+      "title": "Is Sora a World Simulator? A Comprehensive Survey on General World Models and Beyond",
+      "year": 2024,
+      "authors": [
+        "Zheng Zhu",
+        "Xiaofeng Wang",
+        "Wangbo Zhao",
+        "Chen Min",
+        "Bohan Li",
+        "Nianchen Deng",
+        "Min Dou",
+        "Yuqi Wang",
+        "Botian Shi",
+        "Kai Wang",
+        "Chi Zhang",
+        "Yang You",
+        "Zhaoxiang Zhang",
+        "Dawei Zhao",
+        "Liang Xiao",
+        "Jian Zhao",
+        "Jiwen Lu",
+        "Guan Huang"
+      ],
+      "doi": null,
+      "arxiv": "2405.03520",
+      "url": "https://arxiv.org/abs/2405.03520",
+      "work_id": "arxiv:2405.03520"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B018",
+      "title": "Reinforcement Learning under Latent Dynamics: Toward Statistical and Algorithmic Modularity",
+      "year": 2024,
+      "authors": [
+        "Philip Amortila",
+        "Dylan J. Foster",
+        "Nan Jiang",
+        "Akshay Krishnamurthy",
+        "Zakaria Mhammedi"
+      ],
+      "doi": null,
+      "arxiv": "2410.17904",
+      "url": "https://arxiv.org/abs/2410.17904",
+      "work_id": "arxiv:2410.17904"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B019",
+      "title": "SlowFast-VGen: Slow-Fast Learning for Action-Driven Long Video Generation",
+      "year": 2024,
+      "authors": [
+        "Yining Hong",
+        "Beide Liu",
+        "Maxine Wu",
+        "Yuanhao Zhai",
+        "Kai-Wei Chang",
+        "Linjie Li",
+        "Kevin Lin",
+        "Chung-Ching Lin",
+        "Jianfeng Wang",
+        "Zhengyuan Yang",
+        "Yingnian Wu",
+        "Lijuan Wang"
+      ],
+      "doi": null,
+      "arxiv": "2410.23277",
+      "url": "https://arxiv.org/abs/2410.23277",
+      "work_id": "arxiv:2410.23277"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B021",
+      "title": "A Survey: Learning Embodied Intelligence from Physical Simulators and World Models",
+      "year": 2025,
+      "authors": [
+        "Xiaoxiao Long",
+        "Qingrui Zhao",
+        "Kaiwen Zhang",
+        "Zihao Zhang",
+        "Dingrui Wang",
+        "Yumeng Liu",
+        "Zhengjie Shu",
+        "Yi Lu",
+        "Shouzheng Wang",
+        "Xinzhe Wei",
+        "Wei Li",
+        "Wei Yin",
+        "Yao Yao",
+        "Jia Pan",
+        "Qiu Shen",
+        "Ruigang Yang",
+        "Xun Cao",
+        "Qionghai Dai"
+      ],
+      "doi": null,
+      "arxiv": "2507.00917",
+      "url": "https://arxiv.org/abs/2507.00917",
+      "work_id": "arxiv:2507.00917"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B023",
+      "title": "Autoregressivity in the Latent Space of a GP-VAE Language Model: An Empirical Ablation Study",
+      "year": 2025,
+      "authors": [
+        "Yves Ruffenach"
+      ],
+      "doi": null,
+      "arxiv": "2512.24102",
+      "url": "https://arxiv.org/abs/2512.24102",
+      "work_id": "arxiv:2512.24102"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B026",
+      "title": "DAWM: Diffusion Action World Models for Offline Reinforcement Learning via Action-Inferred Transitions",
+      "year": 2025,
+      "authors": [
+        "Zongyue Li",
+        "Xiao Han",
+        "Yusong Li",
+        "Niklas Strauss",
+        "Matthias Schubert"
+      ],
+      "doi": null,
+      "arxiv": "2509.19538",
+      "url": "https://arxiv.org/abs/2509.19538",
+      "work_id": "arxiv:2509.19538"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B028",
+      "title": "From Masks to Worlds: A Hitchhiker's Guide to World Models",
+      "year": 2025,
+      "authors": [
+        "Jinbin Bai",
+        "Yu Lei",
+        "Hecong Wu",
+        "Yuchen Zhu",
+        "Shufan Li",
+        "Yi Xin",
+        "Xiangtai Li",
+        "Molei Tao",
+        "Aditya Grover",
+        "Ming-Hsuan Yang"
+      ],
+      "doi": null,
+      "arxiv": "2510.20668",
+      "url": "https://arxiv.org/abs/2510.20668",
+      "work_id": "arxiv:2510.20668"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B030",
+      "title": "Improving World Models using Deep Supervision with Linear Probes",
+      "year": 2025,
+      "authors": [
+        "Andrii Zahorodnii"
+      ],
+      "doi": null,
+      "arxiv": "2504.03861",
+      "url": "https://arxiv.org/abs/2504.03861",
+      "work_id": "arxiv:2504.03861"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B032",
+      "title": "Latent Evolution Operator (LEO): State-to-State Forecasting of Parametric PDEs",
+      "year": 2025,
+      "authors": [
+        "Khalid Rafiq",
+        "Wenjing Liao",
+        "Aditya G. Nair"
+      ],
+      "doi": null,
+      "arxiv": "2505.09063",
+      "url": "https://arxiv.org/abs/2505.09063",
+      "work_id": "arxiv:2505.09063"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B033",
+      "title": "Latent-Autoregressive GP-VAE Language Model",
+      "year": 2025,
+      "authors": [
+        "Yves Ruffenach"
+      ],
+      "doi": null,
+      "arxiv": "2512.09535",
+      "url": "https://arxiv.org/abs/2512.09535",
+      "work_id": "arxiv:2512.09535"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B035",
+      "title": "MultiModal Action Conditioned Video Generation",
+      "year": 2025,
+      "authors": [
+        "Yichen Li",
+        "Antonio Torralba"
+      ],
+      "doi": null,
+      "arxiv": "2510.02287",
+      "url": "https://arxiv.org/abs/2510.02287",
+      "work_id": "arxiv:2510.02287"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B037",
+      "title": "RRAEDy: Adaptive Latent Linearization of Nonlinear Dynamical Systems",
+      "year": 2025,
+      "authors": [
+        "Jad Mounayer",
+        "Sebastian Rodriguez",
+        "Jerome Tomezyk",
+        "Chady Ghnatios",
+        "Francisco Chinesta"
+      ],
+      "doi": null,
+      "arxiv": "2512.07542",
+      "url": "https://arxiv.org/abs/2512.07542",
+      "work_id": "arxiv:2512.07542"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B038",
+      "title": "Revisiting the Othello World Model Hypothesis",
+      "year": 2025,
+      "authors": [
+        "Yifei Yuan",
+        "Anders Søgaard"
+      ],
+      "doi": null,
+      "arxiv": "2503.04421",
+      "url": "https://arxiv.org/abs/2503.04421",
+      "work_id": "arxiv:2503.04421"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B039",
+      "title": "Toward Intelligent Agents with Learned World Models for Real-World Decision-Making",
+      "year": 2025,
+      "authors": [
+        "Sampath Mandava"
+      ],
+      "doi": "10.2139/ssrn.5551718",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.5551718",
+      "work_id": "doi:10.2139/ssrn.5551718"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B040",
+      "title": "Tracking World States with Language Models: State-Based Evaluation Using Chess",
+      "year": 2025,
+      "authors": [
+        "Romain Harang",
+        "Jason Naradowsky",
+        "Yaswitha Gujju",
+        "Yusuke Miyao"
+      ],
+      "doi": null,
+      "arxiv": "2508.19851",
+      "url": "https://arxiv.org/abs/2508.19851",
+      "work_id": "arxiv:2508.19851"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B041",
+      "title": "Web World Models",
+      "year": 2025,
+      "authors": [
+        "Jichen Feng",
+        "Yifan Zhang",
+        "Chenggong Zhang",
+        "Yifu Lu",
+        "Shilong Liu",
+        "Mengdi Wang"
+      ],
+      "doi": null,
+      "arxiv": "2512.23676",
+      "url": "https://arxiv.org/abs/2512.23676",
+      "work_id": "arxiv:2512.23676"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B042",
+      "title": "When Do Neural Networks Learn World Models?",
+      "year": 2025,
+      "authors": [
+        "Tianren Zhang",
+        "Guanyu Chen",
+        "Feng Chen"
+      ],
+      "doi": null,
+      "arxiv": "2502.09297",
+      "url": "https://arxiv.org/abs/2502.09297",
+      "work_id": "arxiv:2502.09297"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B044",
+      "title": "mLaSDI: Multi-stage latent space dynamics identification",
+      "year": 2025,
+      "authors": [
+        "William Anderson",
+        "Seung Whan Chung",
+        "Robert Stephany",
+        "Youngsoo Choi"
+      ],
+      "doi": null,
+      "arxiv": "2506.09207",
+      "url": "https://arxiv.org/abs/2506.09207",
+      "work_id": "arxiv:2506.09207"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B045",
+      "title": "A Control Theory of Predictability in Latent World Models",
+      "year": 2026,
+      "authors": [
+        "Hanzhe You",
+        "Yonggang Zhang",
+        "Maohao Ran",
+        "Zhiqin Yang",
+        "Zhenyuan Zhang",
+        "Wei Xue",
+        "Jun Song",
+        "Xinmei Tian",
+        "Yike Guo"
+      ],
+      "doi": null,
+      "arxiv": "2607.10362",
+      "url": "https://arxiv.org/abs/2607.10362",
+      "work_id": "arxiv:2607.10362"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B048",
+      "title": "Action Images: End-to-End Policy Learning via Multiview Video Generation",
+      "year": 2026,
+      "authors": [
+        "Haoyu Zhen",
+        "Zixian Gao",
+        "Qiao Sun",
+        "Yilin Zhao",
+        "Yuncong Yang",
+        "Yilun Du",
+        "Pengsheng Guo",
+        "Tsun-Hsuan Wang",
+        "Yi-Ling Qiao",
+        "Chuang Gan"
+      ],
+      "doi": null,
+      "arxiv": "2604.06168",
+      "url": "https://arxiv.org/abs/2604.06168",
+      "work_id": "arxiv:2604.06168"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B049",
+      "title": "Action- and Language-Conditioned Video Assessment for Embodied Control",
+      "year": 2026,
+      "authors": [
+        "Hwanhee Kim",
+        "Jaehyun Jang",
+        "Seungmin Cha",
+        "Hyeonseo Yun",
+        "Donghoon Lee",
+        "Chang D. Yoo"
+      ],
+      "doi": "10.3390/s26165046",
+      "arxiv": "2608.08273",
+      "url": "https://arxiv.org/abs/2608.08273",
+      "work_id": "arxiv:2608.08273"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B051",
+      "title": "Applicability Boundaries of Delay-Embedded Latent Hamiltonian Priors for Partially Observed Dynamics",
+      "year": 2026,
+      "authors": [
+        "Lin'an Li",
+        "Shuangcheng Bai"
+      ],
+      "doi": "10.2139/ssrn.7009893",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.7009893",
+      "work_id": "doi:10.2139/ssrn.7009893"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B052",
+      "title": "Before We Adapt: The Zero-Shot Generalization Bottleneck in Continual World Models",
+      "year": 2026,
+      "authors": [
+        "Amir Mesbah",
+        "Di Wu"
+      ],
+      "doi": null,
+      "arxiv": "2610.41041",
+      "url": "https://arxiv.org/abs/2610.41041",
+      "work_id": "arxiv:2610.41041"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B053",
+      "title": "Behavioral Monitoring of JEPA World Models with Jacobian Centroids",
+      "year": 2026,
+      "authors": [
+        "Thomas Walker",
+        "Randall Balestriero",
+        "Richard Baraniuk"
+      ],
+      "doi": null,
+      "arxiv": "2609.33940",
+      "url": "https://arxiv.org/abs/2609.33940",
+      "work_id": "arxiv:2609.33940"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B054",
+      "title": "Better Slots, Better Worlds: Representation Quality & Robustness in Object-Centric World Models",
+      "year": 2026,
+      "authors": [
+        "Shukrullo Nazirjonov",
+        "Sai Prasanna",
+        "Anna Manasyan",
+        "Georg Martius"
+      ],
+      "doi": null,
+      "arxiv": "2608.12078",
+      "url": "https://arxiv.org/abs/2608.12078",
+      "work_id": "arxiv:2608.12078"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B057",
+      "title": "Changepoint-Aware World Models: Detecting Dynamics Shifts and Recovering by Forgetting Stale Replay in Model-Based RL",
+      "year": 2026,
+      "authors": [
+        "Everest Yang"
+      ],
+      "doi": null,
+      "arxiv": "2609.18950",
+      "url": "https://arxiv.org/abs/2609.18950",
+      "work_id": "arxiv:2609.18950"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B058",
+      "title": "ContactFlow: A video action conditioning that transfers across embodiments",
+      "year": 2026,
+      "authors": [
+        "Sami Azirar",
+        "Enrico Pallotta",
+        "Jan Nogga",
+        "Jürgen Gall",
+        "Sven Behnke",
+        "Hermann Blum"
+      ],
+      "doi": null,
+      "arxiv": "2607.26579",
+      "url": "https://arxiv.org/abs/2607.26579",
+      "work_id": "arxiv:2607.26579"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B059",
+      "title": "Direct Experience World-Model Optimization: Learning the World Beyond Action Imitation",
+      "year": 2026,
+      "authors": [
+        "Xiangcheng Zhan",
+        "Zirui Chen",
+        "Yicheng Zhao",
+        "Ziteng Gao",
+        "Shuo Yang"
+      ],
+      "doi": null,
+      "arxiv": "2609.37398",
+      "url": "https://arxiv.org/abs/2609.37398",
+      "work_id": "arxiv:2609.37398"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B062",
+      "title": "ForgeWM: Progressive Causal Training for Few-Step Action-Conditioned Video World Models",
+      "year": 2026,
+      "authors": [
+        "Xinye Li",
+        "Lingshuai Lin",
+        "Lei Wang",
+        "Liuzhou Zhang",
+        "Jialin Cui",
+        "Qingshan Li",
+        "Guanchu Wang",
+        "Qingbin Liu",
+        "Xi Chen",
+        "Jiang Bian",
+        "Wai Lam"
+      ],
+      "doi": null,
+      "arxiv": "2608.14022",
+      "url": "https://arxiv.org/abs/2608.14022",
+      "work_id": "arxiv:2608.14022"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B063",
+      "title": "From Articulated Kinematics to Routed Visual Control for Action-Conditioned Surgical Video Generation",
+      "year": 2026,
+      "authors": [
+        "Bohan Li",
+        "Shuojue Yang",
+        "Baorui Peng",
+        "Xianda Guo",
+        "Erli Zhang",
+        "Youqi Tao",
+        "Junfeng Duan",
+        "Daguang Xu",
+        "Qi Dou",
+        "Xin Jin",
+        "Wenjun Zeng",
+        "Hao Zhao",
+        "Yueming Jin"
+      ],
+      "doi": null,
+      "arxiv": "2605.08712",
+      "url": "https://arxiv.org/abs/2605.08712",
+      "work_id": "arxiv:2605.08712"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B064",
+      "title": "From Economic Agents to Agentic Economies: A Systems Blueprint for Economic World Models",
+      "year": 2026,
+      "authors": [
+        "Jiale Han",
+        "Xiang Li",
+        "Jing Qian",
+        "Wenyuan Gu",
+        "Pin Gao",
+        "Ye Luo",
+        "Hongyuan Zha",
+        "Dacheng Tao",
+        "Benyou Wang",
+        "Lin William Cong"
+      ],
+      "doi": null,
+      "arxiv": "2608.06020",
+      "url": "https://arxiv.org/abs/2608.06020",
+      "work_id": "arxiv:2608.06020"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B065",
+      "title": "Future Querying: Can LLMs Serve as Implicit Medical World Models?",
+      "year": 2026,
+      "authors": [
+        "Siri Willems",
+        "James Butterworth",
+        "Lore Goetschalckx",
+        "Peter Vrancx",
+        "Philippe Modard",
+        "Elke Giets",
+        "Ludovic Denoyer"
+      ],
+      "doi": null,
+      "arxiv": "2608.23248",
+      "url": "https://arxiv.org/abs/2608.23248",
+      "work_id": "arxiv:2608.23248"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B067",
+      "title": "ImageWAM: Do World Action Models Really Need Video Generation, or Just Image Editing?",
+      "year": 2026,
+      "authors": [
+        "Yuyang Zhang",
+        "Wenyao Zhang",
+        "Zekun Qi",
+        "He Zhang",
+        "Haitao Lin",
+        "Jingbo Zhang",
+        "Yao Mu",
+        "Xiaokang Yang",
+        "Wenjun Zeng",
+        "Xin Jin"
+      ],
+      "doi": null,
+      "arxiv": "2606.19531",
+      "url": "https://arxiv.org/abs/2606.19531",
+      "work_id": "arxiv:2606.19531"
+    },
+    {
+      "reference_number": 39,
+      "ref_id": "B068",
+      "title": "InternW0: A Foundational Physical World Model for Efficient Real-World Interactions",
+      "year": 2026,
+      "authors": [
+        "Jisong Cai",
+        "Yao Mu",
+        "Ganlin Yang",
+        "Zhe Cao",
+        "Zhangzheng Tu",
+        "Xing Gao",
+        "Kailin Li",
+        "Xinyu Zhan",
+        "Lixin Yang",
+        "Yangkun Zhu",
+        "Haoxiang Ma",
+        "Ming Zhou",
+        "Qiaojun Yu",
+        "Yufei Xue",
+        "Liqun He",
+        "Yifei Yao",
+        "Yifan Zhu",
+        "Long Ling",
+        "Bingqi Jiang",
+        "Haoyu Guo",
+        "Xueyue Zhu",
+        "Bowen Zhou",
+        "Bin Zhao",
+        "Tianfan Xue",
+        "Chunhua Shen",
+        "Weinan Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2609.27656",
+      "url": "https://arxiv.org/abs/2609.27656",
+      "work_id": "arxiv:2609.27656"
+    },
+    {
+      "reference_number": 40,
+      "ref_id": "B070",
+      "title": "JEPA-TTT: Persistent Test-Time Training of Latent World Models for Planning under Dynamics Shifts",
+      "year": 2026,
+      "authors": [
+        "Zheyuan Zhang",
+        "Suyu Ye",
+        "Nakul Agarwal",
+        "Hossein Nourkhiz Mahjoub",
+        "Ehsan Moradi Pari",
+        "Daniel Khashabi",
+        "Tianmin Shu",
+        "Vaishnav Tadiparthi"
+      ],
+      "doi": null,
+      "arxiv": "2610.00722",
+      "url": "https://arxiv.org/abs/2610.00722",
+      "work_id": "arxiv:2610.00722"
+    },
+    {
+      "reference_number": 41,
+      "ref_id": "B074",
+      "title": "Learning Bounded Latent Degradation Dynamics for stable rollout and Remaining Useful Life Prediction",
+      "year": 2026,
+      "authors": [
+        "Arpit Goel"
+      ],
+      "doi": "10.2139/ssrn.7180558",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.7180558",
+      "work_id": "doi:10.2139/ssrn.7180558"
+    },
+    {
+      "reference_number": 42,
+      "ref_id": "B077",
+      "title": "Multi-Horizon Consistency as Geometry: When Latent Dynamics Contract, and When They Do Not",
+      "year": 2026,
+      "authors": [
+        "Kavya Bhand",
+        "Aadi Joshi"
+      ],
+      "doi": null,
+      "arxiv": "2607.21645",
+      "url": "https://arxiv.org/abs/2607.21645",
+      "work_id": "arxiv:2607.21645"
+    },
+    {
+      "reference_number": 43,
+      "ref_id": "B078",
+      "title": "Platonic Representation Hypothesis on World Models",
+      "year": 2026,
+      "authors": [
+        "Wenhow Li",
+        "Chengwei MA",
+        "Hui Xiong",
+        "Ying-Cong Chen",
+        "Lei Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2608.23720",
+      "url": "https://arxiv.org/abs/2608.23720",
+      "work_id": "arxiv:2608.23720"
+    },
+    {
+      "reference_number": 44,
+      "ref_id": "B081",
+      "title": "Reconstructing Is Not Acting: Action-Centric Latent Dynamics Modeling",
+      "year": 2026,
+      "authors": [
+        "Dingjie Fu",
+        "Dianxing Shi",
+        "Yangyang Xu",
+        "Jun Yu"
+      ],
+      "doi": null,
+      "arxiv": "2609.15189",
+      "url": "https://arxiv.org/abs/2609.15189",
+      "work_id": "arxiv:2609.15189"
+    },
+    {
+      "reference_number": 45,
+      "ref_id": "B082",
+      "title": "Reinforcement Learning with World Models in the Era of Scale: From Online Imagination to World Action Models",
+      "year": 2026,
+      "authors": [
+        "Wojciech Dąbrowicki",
+        "Andrzej Rusiecki"
+      ],
+      "doi": "10.21203/rs.3.rs-11327969/v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.21203/rs.3.rs-11327969/v1",
+      "work_id": "doi:10.21203/rs.3.rs-11327969/v1"
+    },
+    {
+      "reference_number": 46,
+      "ref_id": "B083",
+      "title": "Relationally Grounded Latent World Models for Autonomous Driving",
+      "year": 2026,
+      "authors": [
+        "Fabian Schmidt",
+        "Markus Enzweiler",
+        "Abhinav Valada"
+      ],
+      "doi": null,
+      "arxiv": "2609.24626",
+      "url": "https://arxiv.org/abs/2609.24626",
+      "work_id": "arxiv:2609.24626"
+    },
+    {
+      "reference_number": 47,
+      "ref_id": "B087",
+      "title": "The Mouth is Not the Brain: Bridging Energy-Based World Models and Language Generation",
+      "year": 2026,
+      "authors": [
+        "Junichiro Niimi"
+      ],
+      "doi": null,
+      "arxiv": "2601.17094",
+      "url": "https://arxiv.org/abs/2601.17094",
+      "work_id": "arxiv:2601.17094"
+    },
+    {
+      "reference_number": 48,
+      "ref_id": "B088",
+      "title": "Understanding Latent-Dimension Scaling in Dynamical-System Learning through Spectral Reliability",
+      "year": 2026,
+      "authors": [
+        "Itsushi Sakata",
+        "Yuta Miyauchi",
+        "Yoshinobu Kawahara"
+      ],
+      "doi": null,
+      "arxiv": "2610.11866",
+      "url": "https://arxiv.org/abs/2610.11866",
+      "work_id": "arxiv:2610.11866"
+    },
+    {
+      "reference_number": 49,
+      "ref_id": "B090",
+      "title": "VAG: Dual-Stream Video-Action Generation for Embodied Data Synthesis",
+      "year": 2026,
+      "authors": [
+        "Xiaolei Lang",
+        "Yang Wang",
+        "Yukun Zhou",
+        "Chaojun Ni",
+        "Kerui Li",
+        "Jiagang Zhu",
+        "Tianze Liu",
+        "Jiajun Lv",
+        "Xingxing Zuo",
+        "Yun Ye",
+        "Guan Huang",
+        "Xiaofeng Wang",
+        "Zheng Zhu"
+      ],
+      "doi": null,
+      "arxiv": "2604.09330",
+      "url": "https://arxiv.org/abs/2604.09330",
+      "work_id": "arxiv:2604.09330"
+    },
+    {
+      "reference_number": 50,
+      "ref_id": "B091",
+      "title": "Validate the Dream Before You Trust Its Verdict: Admissibility for World-Model Simulators",
+      "year": 2026,
+      "authors": [
+        "Christian Oefinger",
+        "Finn Rasmus Schäfer",
+        "Korbinian Moller",
+        "Mattia Piccinini",
+        "Johannes Betz"
+      ],
+      "doi": null,
+      "arxiv": "2607.07196",
+      "url": "https://arxiv.org/abs/2607.07196",
+      "work_id": "arxiv:2607.07196"
+    },
+    {
+      "reference_number": 51,
+      "ref_id": "B093",
+      "title": "When a Verified World Model Still Loses: Play-Adequacy vs Prediction-Accuracy in LLM-Synthesized Code World Models",
+      "year": 2026,
+      "authors": [
+        "Javier Aguilar Martín"
+      ],
+      "doi": null,
+      "arxiv": "2607.14169",
+      "url": "https://arxiv.org/abs/2607.14169",
+      "work_id": "arxiv:2607.14169"
+    },
+    {
+      "reference_number": 52,
+      "ref_id": "B094",
+      "title": "World Models Under Asynchronous Sensor Observations",
+      "year": 2026,
+      "authors": [
+        "Akash Anand",
+        "Abhay Anand",
+        "Yash Vishe"
+      ],
+      "doi": null,
+      "arxiv": "2609.07299",
+      "url": "https://arxiv.org/abs/2609.07299",
+      "work_id": "arxiv:2609.07299"
+    },
+    {
+      "reference_number": 53,
+      "ref_id": "B095",
+      "title": "World Models: A Survey",
+      "year": 2026,
+      "authors": [
+        "Mohammad Raeini"
+      ],
+      "doi": "10.2139/ssrn.6971379",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.6971379",
+      "work_id": "doi:10.2139/ssrn.6971379"
+    }
+  ],
+  "article_sha256": "976ba49e377c5ea6b2d4e27b4000279e163228a8ebd01c4325146cffd4ecd394",
+  "references_sha256": "c5296d26359ff6fcddabbbd5be3cbcc21348bdcdeb48d43d0373fa351fc31ad8",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

@@ -1,0 +1,1211 @@
+{
+  "topic_id": "AI1.13",
+  "route": "B",
+  "title": "选择性状态空间模型：技术演进、方法比较与研究进展",
+  "content_md": "# 选择性状态空间模型：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了选择性状态空间模型（SSMs）的最新进展。研究范围涵盖核心起源与理论发展、状态空间对偶性（SSD）、混合架构设计与多范式融合、长序列效率与记忆保持能力，以及关键路线对比与开放问题。在路线比较方面，系统梳理了纯SSM与Transformer在矩阵乘积追踪、贝叶斯序列估计及潜在空间表征几何上的本质差异，并对比了串行交替、并行融合及蒸馏转换等混合架构的优劣。主要认识表明，SSM通过输入依赖的选择机制突破了传统循环与注意力机制的效率瓶颈，而通过与注意力、卷积等范式的深度融合可进一步弥补其在局部特征捕获与高频响应上的不足。开放问题则聚焦于复杂动态环境下的自适应机制、低维与极端噪声场景的鲁棒性适配，以及硬件高效量化与剪枝策略的通用理论边界。\n\n## 选择性状态空间模型的核心起源与理论发展\n\n选择性状态空间模型（SSMs）作为序列建模的新兴范式，旨在克服传统循环神经网络、卷积神经网络及注意力机制在处理长序列依赖时的效率瓶颈[1][15][41]。早期结构化状态空间模型（如S4）通过特殊的参数化修正实现了高效计算，但在语言建模等任务上仍与Transformer存在性能差距[1]。2024至2026年间的进展重点围绕核心机制的理论重构、表征能力与泛化性分析，以及对不规则时间序列和复杂任务的适应性演进。\n\n在理论与机制演进方面，研究者深入探讨了选择性状态空间模型的动态学行为与记忆压缩原理。针对经典Mamba模型中缺乏理论指导的启发式选择机制，近期研究引入了预测充分性原则，通过最小化历史信息的冗余来实现对非因果噪声的过滤[38]。同时，有研究将选择机制表述为潜状态不确定性最小化的卡尔曼最优框架，借此建立闭环、上下文感知的选择性更新[33]。在几何控制理论视角下，部分工作挑战了传统认为选择性必须打破线性时不变（LTI）特性的观点，提出通过不变子空间设计在保持时不变特性的同时实现选择性[31]。此外，针对连续时间模型与选择性架构的冲突，有方法将输入依赖性从步长转移至对角状态矩阵，在维持物理时间间隔的同时保障了单token的表征能力[69]。在训练动态与稳定性分析方面，文献揭示了连续时间极限下的收敛与发散场景，并据此提出了排除收敛场景或基于重要性重排序的优化方案[5]，同时推导了基于覆盖数的泛化误差界[30]。\n\n在模型方法的综合比较与适用条件上，不同的变体针对特定计算或应用约束展现出各自的优势。例如，采用全状态密度字典与Softmax选择机制的SD-SSM在正则语言任务上表现出完美的长度泛化能力[18]；而基于变分量子门的Q-SSM则通过参数化量子电路调节内存更新，在长程时间序列预测中提供了轻量化的替代方案[36]。信息导向的重采样机制（如SeRpEnt）能够按信息含量压缩序列，在长程竞技场及语言任务中取得成效[41]。在计算范式对比层面，理论证明了常参数状态空间模型与Transformer之间存在无法通过位置编码弥合的结构鸿沟：状态空间模型天然适合追踪非交换矩阵乘积与动态贝叶斯序列预测，而静态匹配任务则更偏好Transformer[70][51]。这些进展表明，选择性状态空间模型正朝着更具理论严谨性与任务适应性的方向演进。\n\n## 状态空间对偶性与现代架构演进\n\n状态空间对偶性（Structured State Space Duality, SSD）作为连接循环状态空间模型与掩码注意力机制的关键桥梁，近年来在长序列建模、高效计算以及多领域应用中展现出重要价值[25][34][65]。传统序列建模方法（如卷积神经网络、RNN及Transformer）在处理长序列或多分支特征时，常面临计算复杂度高、信息利用不充分或硬件效率受限的问题[11][20][68]。为此，SSD架构通过将线性时间的循环计算与二次时间的注意力机制进行数学等价与融合，在保持高计算效率的同时拓宽了序列模型的表达空间[34]。\n\n在理论机制与架构演进方面，研究表明标量恒等状态矩阵的SSM等价于具有1-半可分因果掩码的掩码自注意力[34]。该对偶性进一步扩展至通用对角状态矩阵，使其在保持训练复杂度下限的同时支持更丰富的动态特性，但这种对偶性无法直接扩展至标准softmax注意力[34]。基于SSD构建的Mamba-2等核心层相较于传统选择性SSM实现了显著的速度提升，同时在语言建模等任务上保持了竞争力[25]。\n\n在计算优化与硬件适配领域，针对SSD扩展所带来的内存与延迟开销，后训练量化框架（如SSDi8）通过解耦逐元素乘法与矩阵乘法、复用量化激活值以及针对通道变化激活的自适应量化，在维持与FP16相近精度的同时，在W4A8和W8A8设置下实现了显著加速，并具备在资源受限边缘设备上的部署能力[65]。\n\n在多样化下游任务的应用中，SSD及其衍生模型展现出各自独特的适用条件与机制优势：\n1. 计算病理学：Mamba2MIL框架利用SSD建模整张切片（WSI）的长序列补丁，结合加权特征选择与序列变换方法，增强了序列独立特征并保留局部序列信息，从而克服了传统框架在多分支特征融合与序列信息利用上的不足[11]。\n2. 序列推荐系统：SSD4Rec采用双向SSD块和序列寄存器处理变长及长序列项目表示，实现了近乎线性的可扩展性[20]；而针对SSD在低维场景下的性能退滑问题，TiM4Rec引入了时间感知结构化掩码矩阵，在保持计算效率的同时有效弥补了低维上下文中的性能损失[24]。\n3. 工业机械故障诊断：基于Mamba-2的诊断模型利用数据依赖的选择性扫描机制，自适应隔离噪声背景中的故障特征，并结合噪声感知训练策略，在极端信噪比下显著优于1D-CNN与Transformer，且在硬件效率上大幅降低了峰值内存消耗并消除了平方复杂度瓶颈[68]。\n\n综上所述，状态空间对偶性模型在不同应用场景中展现出优异的效率与鲁棒性，但现有研究在低维场景适配、极端噪声鲁棒性及高效量化压缩等方面仍存在特定的探索空间[24][65][68]。\n\n## 混合架构设计与多范式融合机制\n\n混合架构设计与多范式融合机制旨在整合自注意力机制（Attention）与状态空间模型（SSMs）的互补优势，以平衡长序列处理效率与表征表现力。针对传统Transformer面临的二次方计算复杂度瓶颈以及纯SSM模型在捕获复杂局部交互和信息检索上的局限，现有研究主要探索了串行交替、并行融合及蒸馏转换等设计范式[2][3][7][21][27][59][60][64]。\n\n在串行与层级交替机制方面，研究通过在不同层或模块间交织注意力与状态空间更新来实现信息互补。例如，SPADE模型将状态空间模型置于底层以扩充粗粒度全局信息，并通过上层的高效局部注意力方法对局部细节进行细化[2]。Block-State Transformer（BST）内部结合了用于长程上下文关联的SSM子层和用于短时序列表示的区块Transformer子层[3]。在多模态与垂直领域中，HyMaTE、HTM-UNet、VP-Hype以及Tydra等工作进一步将混合架构扩展至电子健康记录（EHR）、医学图像分割、高光谱图像分类及表格数据等场景，通过在分层阶段交替使用Mamba混合器与窗口化自注意力，有效兼顾了全局空间-光谱依赖与局部特征精炼[7][32][71][72]。TransMamba则提出了一种序列级混合框架，通过共享参数矩阵与内存转换器在不同标记长度和层间动态切换注意力与SSM机制[44]。此外，TransXSSM引入了统一的旋转位置编码（Unified RoPE），解决了注意力机制与SSM状态组件在位置编码机制上的根本不兼容问题[45]。\n\n在并行融合与多尺度专家机制方面，部分研究摒弃了串行流水线中可能导致的组件空闲或信息干扰问题，转向并发架构设计。例如，SST针对时间序列预测中的信息干扰问题，提出了结合Mamba专家（捕捉长程模式）与Transformer专家（建模短期动态）的多尺度混合专家架构[21]。FlowHN通过动态标记分配与输出融合机制，实现了并行注意力与SSM分支之间的计算负载平衡与表征表达增强[27]。HARMONY通过自适应残差门控将局部精确注意力、选择性状态空间建模及轻量级混合专家统一在单一框架中，实现了输入引导的动态信号路由[59]。GSS-Transformer并行混合架构（PHA）则运行门控状态空间（GSS）、群组查询注意力（GQA）与前馈网络作为独立并行分支，通过可学习的混合机制进行融合[60]。此外，Sessa通过将注意力置于循环反馈路径中，实现了更具弹性的选择性检索与幂律记忆尾迹[67]。\n\n在跨架构蒸馏与高效参数微调方面，研究致力于将预训练Transformer的知识高效迁移至线性或混合子结构中。MOHAWK通过匹配不同粒度（混合矩阵、隐藏单元及端到端预测）将预训练Transformer蒸馏至SSM或混合变体[26]。RAD框架则利用自投机解码识别冗余注意力层并将其选择性替换为SSM组件进行针对性蒸馏[37]。类似地，Priming方法通过参数转移、短对齐和端到端自适应阶段，由预训练Transformer初始化混合状态空间模型[63]。在微调策略上，针对混合模型的组件类型LoRA放置研究表明，注意力路径是两类架构中的最优LoRA目标，而递归骨干网在串行混合中表现出破坏性，但在并行混合中则是建设性的[73]。在推理加速与硬件部署方面，DUET通过为预处理和解码阶段分配专用加速封装解决了混合模型在计算加速器上的算子失配问题[56]，而组件感知自投机解码则利用SSM/线性注意力子图作为零成本的内部草稿来加速自回归推理[55]。\n\n不同混合方法及其变体在计算开销、建模粒度和适用条件上存在差异。串行交替结构通过层级互补提升了长上下文的全局建模能力，但可能引入组件间的流水线延迟；并行混合能够均衡计算负载并增强多尺度表征，但需要精细的融合机制以避免异构输出冲突；而蒸馏转换与适配器方法则显著降低了从头训练大模型的资源开销，但其性能高度依赖于初始化策略与组件放置方案。整体而言，混合架构设计为突破单一序列建模范式的性能边界提供了灵活且高效的路径。\n\n## 长序列效率、记忆保持能力与性能局限\n\n选择性状态空间模型（如Mamba及其衍生架构）通过引入输入依赖的选择机制与线性复杂度的序列处理能力，为解决传统Transformer在长序列建模中的二次计算瓶颈提供了重要途径[4][12][23]。然而，纯状态空间模型在处理图像、语音、点云及图结构等高维或空间多向数据时，常面临局部细节丢失、边界平滑过度以及对高频响应抑制等挑战[8][47][53]。围绕记忆能力、长序列效率与性能局限，当前研究在机制设计与方法演进上主要形成了多维混合架构、动态适应优化及校准校正等三类主流路线。\n\n在研究问题与机制层面，许多研究聚焦于突破纯SSM在局部特征捕获与高频信息保留上的局限。由于传统线性序列扫描容易导致局部像素遗忘或空间连贯性受损，研究者提出了多路径协同与混合编码机制。例如，通过将选择性状态空间模型与卷积网络、注意力机制或Transformer进行组合，能够兼顾全局上下文建模与局部高保真特征提取[8][16][47][52]。在视觉和多模态任务中，双向扫描、跨模态空间感知模块及混合状态空间编码器被广泛用于补偿纯SSM在空间几何捕捉方面的不足[17][19][39]。在图学习与推荐系统中，动态状态演化和多级令牌化策略则有效增强了异构节点和长序列行为的长期依赖捕获能力[9][12][22]。\n\n针对不同应用场景下的开销与适用条件，各种变体方法展现出显著的性能权衡。在计算效率与资源受限场景中，基于硬件感知并行算法与状态空间对偶性（SSD）的模型（如Mamba-2）实现了接近线性的扩展性，在语音分离、动作生成、信道预测及点云分析中大幅降低了计算开销并提升了推理速度[6][17][28][29]。而在需要精细局部对齐的任务（如遥感语义分割、图像去模糊及异常检测）中，纯SSM由于全局聚合容易造成边界模糊[53]，因此必须依赖如残差注入、频率校准或局部-全局混合结构来维持高频响应[10][53][61]。此外，在物理仿真与电池状态评估等时间序列预测任务中，引入动态校准、哈密尔顿约束或优化算法的混合架构能够有效克服分布偏移，保障长步长预测的稳定性[49][50][62]。\n\n总体而言，选择性状态空间模型在保持线性复杂度的同时，通过与注意力机制、卷积及多样化扫描策略的深度融合，显著拓宽了其在长序列高维数据处理中的适用边界[14][42][66]。不过，现有研究大多集中于特定领域的架构适配与性能验证，针对复杂动态环境下自适应机制与通用理论边界的探讨仍有待深化。\n\n## 关键路线对比、失败条件分析与开放问题展望\n\n选择性状态空间模型（SSM）与Transformer在序列建模中展现了不同的计算范式。为了深入理解两者的本质差异，研究表明在常量参数下，任何固定深度与参数的Transformer均无法追踪非交换矩阵乘积，而具有 $O(d)$ 状态维度的选择性SSM能够精确实现该更新，这源于矩阵乘法所需的序列状态更新机制无法通过修改注意力权重的各类位置编码（PE）来弥补[70]。在贝叶斯序列估计中，这种计算范式的差异表现为双向统计分离：元训练的选择性SSM在动态估计中可实现贝叶斯最优预测，而Transformer在静态匹配中更具优势，因此复杂任务往往需要将两者结合[70]。\n\n在表征几何与动态行为方面，纯SSM与Transformer展现出不同的潜在空间利用方式与功能收敛性。纯SSM将表征信息均匀分布在所有维度中，而Transformer表征则由单一主方向主导；当引入混合架构时，表征空间在每个注意力层之后会逐渐向单一主导方向倾斜，但两者的有效容量与局部语义流形高度收敛[58]。在混合架构的设计选择中，集成方式直接影响性能表现：研究表明顺序混合（sequential hybrids）在较短上下文中表现更优，而并行混合（parallel hybrids）则对较长上下文更有效[46]。为增强混合模型的长序列推理与验证效率，基于累加状态转移矩阵结构的树状推理投机解码（Speculative Tree Decoding）算法能够以极小开销实现并行加速[40]。\n\n在资源受限与部署优化方面，针对选择性SSM及混合架构的量化和剪枝策略取得了重要进展。在性能分析中，SSM组件通常占据Mamba模块中相当大的计算资源[35]。针对大语言模型的压缩需求，基于变分和一阶/二阶显著性分析的无训练剪枝框架（如SparseSSM）能够在不微调的情况下剪枝50%的SSM权重且零样本精度无损失[43]，而针对特定状态的剪枝也能在保持适度精度的同时带来吞吐量和内存收益[35]。在模型量化领域，由于不同模块对量化敏感性存在异质性，基于Kullback–Leibler（KL）散度或通道内与Token感知的校准方法（如CTOAC）能够有效识别并保护敏感的循环状态转移矩阵，确保低位宽量化下的模型鲁棒性[48][54]。此外，在分布式与可解释性研究中，面向单层和多层选择性SSM的架构感知收敛性边界为联邦学习算法提供了理论解释框架[57]，而层相关传播算法（MambaLRP）则通过关联守恒公理克服了某些架构组件带来的不忠实解释问题[13]。\n\n## 结论\n\n选择性状态空间模型作为序列建模的新兴范式，在理论重构、架构演进及多领域应用中取得了显著突破。本文的主要认识表明，状态空间对偶性（SSD）成功架起了线性循环与高效注意力的桥梁，而混合架构通过串行或并行融合有效平衡了长序列全局建模与局部精细表征。然而，纯SSM在高维高频任务中的局部细节丢失问题，以及混合架构在复杂组件互补中的延迟和融合冲突，仍制约着其性能边界。未来的研究方向与开放问题主要包括：深化选择机制的闭环理论引导与泛化分析，优化低维或极端噪声场景下的自适应鲁棒性，以及开发面向资源受限边缘设备的精细化无损量化与剪枝策略，从而推动选择性状态空间模型向更具理论严谨性与广泛任务适应性的方向演进。\n\n## 参考文献\n\n[1] Albert Gu, Karan Goel, Christopher Ré. Efficiently Modeling Long Sequences with Structured State Spaces. 2021. https://arxiv.org/abs/2111.00396\n\n[2] Simiao Zuo, Xiaodong Liu, Jian Jiao, Denis Charles, Eren Manavoglu. Efficient Long Sequence Modeling via State Space Augmented Transformer. 2022. https://arxiv.org/abs/2212.08136\n\n[3] Mahan Fathi, Jonathan Pilault, Orhan Firat, Christopher Pal, Pierre-Luc Bacon. Block-State Transformers. 2023. https://arxiv.org/abs/2306.09539\n\n[4] Sarthak Yadav, Zheng-Hua Tan. Audio Mamba: Selective State Spaces for Self-Supervised Audio Representations. 2024. https://arxiv.org/abs/2406.02178\n\n[5] Thieu N Vo, Tung D. Pham, Xin T. Tong, Tan Minh Nguyen. Demystifying the Token Dynamics of Deep Selective State Space Models. 2024. https://arxiv.org/abs/2410.03292\n\n[6] Xilin Jiang, Cong Han, Nima Mesgarani. Dual-path Mamba: Short and Long-term Bidirectional Selective Structured State Space Models for Speech Separation. 2024. https://arxiv.org/abs/2403.18257\n\n[7] Mingya Zhang, Zhihao Chen, Yiyuan Ge, Xianping Tao. HMT-UNet: A hybird Mamba-Transformer Vision UNet for Medical Image Segmentation. 2024. https://arxiv.org/abs/2408.11289\n\n[8] Badri N. Patro, Suhas Ranganath, Vinay P. Namboodiri, Vijay S. Agneeswaran. Heracles: A Hybrid SSM-Transformer Model for High-Resolution Image and Time-Series Analysis. 2024. https://arxiv.org/abs/2403.18063\n\n[9] Zhenyu Pan, Yoonsung Jeong, Xiaoda Liu, Han Liu. HeteGraph-Mamba: Heterogeneous Graph Learning via Selective State Space Model. 2024. https://arxiv.org/abs/2405.13915\n\n[10] Hu Gao, Depeng Dang. Learning Enriched Features via Selective State Spaces Model for Efficient Image Deblurring. 2024. https://arxiv.org/abs/2403.20106\n\n[11] Yuqi Zhang, Xiaoqian Zhang, Jiakai Wang, Yuancheng Yang, Taiying Peng. Mamba2MIL: State Space Duality Based Multiple Instance Learning for Computational Pathology. 2024. https://arxiv.org/abs/2408.15032\n\n[12] Chengkai Liu, Jianghao Lin, Jianling Wang, Hanzhou Liu, James Caverlee. Mamba4Rec: Towards Efficient Sequential Recommendation with Selective State Space Models. 2024. https://arxiv.org/abs/2403.03900\n\n[13] Farnoush Rezaei Jafari, Grégoire Montavon, Klaus-Robert Müller, Oliver Eberle. MambaLRP: Explaining Selective State Space Sequence Models. 2024. https://arxiv.org/abs/2406.07592\n\n[14] Ali Behrouz, Michele Santacatterina, Ramin Zabih. MambaMixer: Efficient Selective State Space Models with Dual Token and Channel Selection. 2024. https://arxiv.org/abs/2403.19888\n\n[15] Siddhanth Bhat. Mathematical Formalism for Memory Compression in Selective State Space Models. 2024. https://arxiv.org/abs/2410.03158\n\n[16] Can Hu, Ning Cao, Han Zhou, Bin Guo. Medical Image Classification with a Hybrid SSM Model Based on CNN and Transformer. 2024. https://doi.org/10.3390/electronics13153094\n\n[17] Zeyu Zhang, Akide Liu, Ian Reid, Richard Hartley, Bohan Zhuang. Motion Mamba: Efficient and Long Sequence Motion Generation. 2024. https://arxiv.org/abs/2403.07487\n\n[18] Aleksandar Terzić, Michael Hersche, Giacomo Camposampiero, Thomas Hofmann, Abu Sebastian. On the Expressiveness and Length Generalization of Selective State-Space Models on Regular Languages. 2024. https://arxiv.org/abs/2412.19350\n\n[19] Haolong Ma, Hui Li, Chunyang Cheng, Gaoang Wang, Xiaoning Song. S4Fusion: Saliency-aware Selective State Space Model for Infrared Visible Image Fusion. 2024. https://arxiv.org/abs/2405.20881\n\n[20] Haohao Qu, Yifeng Zhang, Liangbo Ning, Wenqi Fan, Qing Li. SSD4Rec: A Structured State Space Duality Model for Efficient Sequential Recommendation. 2024. https://arxiv.org/abs/2409.01192\n\n[21] Xiongxiao Xu, Canyu Chen, Yueqing Liang, Baixiang Huang, Guangji Bai. SST: Multi-Scale Hybrid Mamba-Transformer Experts for Time Series Forecasting. 2024. https://arxiv.org/abs/2404.14757\n\n[22] Lincan Li, Hanchen Wang, Wenjie Zhang, Adelle Coster. STG-Mamba: Spatial-Temporal Graph Learning via Selective State Space Model. 2024. https://arxiv.org/abs/2403.12418\n\n[23] Xiaoxue Gao, Nancy F. Chen. Speech-Mamba: Long-Context Speech Recognition with Selective State Spaces Models. 2024. https://arxiv.org/abs/2409.18654\n\n[24] Hao Fan, Mengyi Zhu, Yanrong Hu, Hailin Feng, Zhijie He. TiM4Rec: An Efficient Sequential Recommendation Model Based on Time-Aware Structured State Space Duality Model. 2024. https://arxiv.org/abs/2409.16182\n\n[25] Tri Dao, Albert Gu. Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality. 2024. https://arxiv.org/abs/2405.21060\n\n[26] Aviv Bick, Kevin Y. Li, Eric P. Xing, J. Zico Kolter, Albert Gu. Transformers to SSMs: Distilling Quadratic Knowledge to Subquadratic Models. 2024. https://arxiv.org/abs/2408.10189\n\n[27] Mohammad Mahdi Moradi, Walid Ahmed, Shuangyue Wen, Sudhir Mudur, Weiwei Zhang. Balancing Computation Load and Representation Expressivity in Parallel Hybrid Neural Networks. 2025. https://arxiv.org/abs/2505.19472\n\n[28] Sheng Luo, Jiashu Xie, Yueling Che, Junmei Yao, Jian Tian. CPMamba: Selective State Space Models for MIMO Channel Prediction in High-Mobility Environments. 2025. https://arxiv.org/abs/2512.16315\n\n[29] Kanglin Qu, Pan Gao, Qun Dai, Zhanzhi Ye, Rui Ye. CloudMamba: Grouped Selective State Spaces for Point Cloud Analysis. 2025. https://arxiv.org/abs/2511.07823\n\n[30] Arya Honarpisheh, Mustafa Bozdag, Octavia Camps, Mario Sznaier. Generalization Error Analysis for Selective State-Space Models Through the Lens of Attention. 2025. https://arxiv.org/abs/2502.01473\n\n[31] Umberto Casti, Giacomo Baggio, Sandro Zampieri, Fabio Pasqualetti. Geometric SSM: LTI State Space Models for Selective Tasks. 2025. https://arxiv.org/abs/2505.17932\n\n[32] Md Mozaharul Mottalib, Thao-Ly T. Phan, Rahmatollah Beheshti. HyMaTE: A Hybrid Mamba and Transformer Model for EHR Representation Learning. 2025. https://arxiv.org/abs/2509.24118\n\n[33] Lei Wang, Xin Tan, Mingwei Wang, Ying Zhang. KOSS: Kalman-Optimal Selective State Spaces for Long-Term Sequence Modeling. 2025. https://arxiv.org/abs/2512.16723\n\n[34] Jerry Yao-Chieh Hu, Xiwen Zhang, Ali ElSheikh, Weimin Wu, Han Liu. On Structured State-Space Duality. 2025. https://arxiv.org/abs/2510.04944\n\n[35] Abdullah Al Asif, Mobina Kashaniyan, Sixing Yu, Juan Pablo Muñoz, Ali Jannesari. PerfMamba: Performance Analysis and Pruning of Selective State Space Models. 2025. https://arxiv.org/abs/2511.22849\n\n[36] Stefan-Alexandru Jura, Mihai Udrescu, Alexandru Topirceanu. Quantum-Optimized Selective State Space Model for Efficient Time Series Prediction. 2025. https://arxiv.org/abs/2509.00259\n\n[37] Yuichiro Hoshino, Hideyuki Tachibana, Muneyoshi Inahara, Hiroto Takegawa. RAD: Redundancy-Aware Distillation for Hybrid Models via Self-Speculative Decoding. 2025. https://arxiv.org/abs/2505.22135\n\n[38] Yiyi Wang, Jian'an Zhang, Hongyi Duan, Haoyang Liu, Qingyang Li. Rethinking Selectivity in State Space Models: A Minimal Predictive Sufficiency Approach. 2025. https://arxiv.org/abs/2508.03158\n\n[39] Shuting Zhao, Linxin Bai, Liangjing Shao, Ye Zhang, Xinrong Chen. SSD-Poser: Avatar Pose Estimation with State Space Duality from Sparse Observations. 2025. https://arxiv.org/abs/2504.18332\n\n[40] Yangchao Wu, Zongyue Qin, Alex Wong, Stefano Soatto. STree: Speculative Tree Decoding for Hybrid State-Space Models. 2025. https://arxiv.org/abs/2505.14969\n\n[41] Stefano Rando, Luca Romani, Matteo Migliarini, Luca Franco, Denis Gudovskiy. SeRpEnt: Selective Resampling for Expressive State Space Models. 2025. https://arxiv.org/abs/2501.11729\n\n[42] Ian Holmes, Johannes Linder, David Kelley. Selective State Space Models Outperform Transformers at Predicting RNA-Seq Read Coverage. 2025. https://doi.org/10.1101/2025.02.13.638190\n\n[43] Kaiwen Tuo, Huan Wang. SparseSSM: Efficient Selective Structured State Space Models Can Be Pruned in One-Shot. 2025. https://arxiv.org/abs/2506.09613\n\n[44] Yixing Li, Ruobing Xie, Zhen Yang, Xingwu Sun, Shuaipeng Li. TransMamba: A Sequence-Level Hybrid Transformer-Mamba Language Model. 2025. https://arxiv.org/abs/2503.24067\n\n[45] Bingheng Wu, Jingze Shi, Yifan Wu, Nan Tang, Yuyu Luo. TransXSSM: A Hybrid Transformer State Space Model with Unified Rotary Position Embedding. 2025. https://arxiv.org/abs/2506.09507\n\n[46] Hyunji Lee, Wenhao Yu, Hongming Zhang, Kaixin Ma, Jiyeon Kim. Understanding and Enhancing Mamba-Transformer Hybrids for Memory Recall and Language Modeling. 2025. https://arxiv.org/abs/2510.26912\n\n[47] Bingwen Qiu, Yuan Liu, Junqi Bai, Tong Jiang, Ben Liang. 3DTMDet: A Dual-Path Synergy Network of Transformer and SSM for 3D Object Detection in Point Clouds. 2026. https://arxiv.org/abs/2605.15546\n\n[48] Jason Kong, Nilesh Prasad Pandey, Flavio Ponzina, Tajana Rosing. A KL Lens on Quantization: Fast, Forward-Only Sensitivity for Mixed-Precision SSM-Transformer Models. 2026. https://arxiv.org/abs/2604.13440\n\n[49] Jun Yang, Yifei Wang, Dongsheng Li, Fan Zhang, Jiasheng Wang. A RIME-Configured SSM–Transformer Framework for Lithium-Ion Battery State-of-Health Assessment. 2026. https://doi.org/10.3390/en19153604\n\n[50] Yani Meziani. Akasha 2: Hamiltonian State Space Duality and Visual-Language Joint Embedding Predictive Architectur. 2026. https://arxiv.org/abs/2601.06212\n\n[51] Di Zhang, Jiaqi Xing. Bayesian Optimality of In-Context Learning with Selective State Spaces. 2026. https://arxiv.org/abs/2602.17744\n\n[52] Chong Chen, Shaoyi Xu, Chengtao Wang, Yuan Zhang, Xing Deng. BiMamba2-Tunnel: an efficient and high-fidelity hybrid SSM-transformer framework for tunnel point cloud completion. 2026. https://doi.org/10.1117/1.jrs.20.026508\n\n[53] Kangning Wang, Haopeng Zhang, Zhiguo Jiang. CRISP: Calibration-Aware Visual State Space Duality for Remote Sensing Semantic Segmentation. 2026. https://arxiv.org/abs/2608.23746\n\n[54] Jonghyeon Lim, Changhoon Yim. Channel-Wise and Token-Aware Post-Training Quantization for Visual State Space Duality. 2026. https://arxiv.org/abs/2609.16656\n\n[55] Hector Borobia, Elies Seguí-Mas, Guillermina Tormo-Carbó. Component-Aware Self-Speculative Decoding in Hybrid Language Models. 2026. https://arxiv.org/abs/2605.01106\n\n[56] Alish Kanani, Sangwan Lee, Han Lyu, Jiahao Lin, Jaehyun Park. DUET: Disaggregated Hybrid Mamba-Transformer LLMs with Prefill and Decode-Specific Packages. 2026. https://arxiv.org/abs/2603.15530\n\n[57] Adam Piaseczny, Md Kamran Chowdhury Shisher, Shiqiang Wang, Christopher G. Brinton. Distributed Learning with Selective State Space Models: Architecture-Aware Convergence Analysis. 2026. https://arxiv.org/abs/2610.02659\n\n[58] Amit Ben-Artzy, Roy Schwartz. Global Divergence, Local Convergence: Representation Geometry in SSMs and Transformers. 2026. https://arxiv.org/abs/2609.08692\n\n[59] John Smith, Emma Davis. HARMONY: Hybrid Attention-Selective State Space Mixture for Long-Context Deep Learning. 2026. https://doi.org/10.2139/ssrn.6147230\n\n[60] Kuzey Torlak, Hüseyin Arda Arslan, Anıl Dervişoğlu, Beyza Nur Deniz, Onur Boyar. Long-Context Modeling via GSS-Transformer Hybrid Architecture with Learnable Mixing. 2026. https://arxiv.org/abs/2606.16093\n\n[61] Xiaobin Hu, Haoyang He, Bo Yin, Yu He, Lei Xie. MambaADv2: Evolving Duality-enhanced State Space Model for Unsupervised Anomaly Detection. 2026. https://arxiv.org/abs/2606.23126\n\n[62] Haochuan Zhang, Sinisa Todorovic. PhysMamba: Selective State Space Models as Learned Articulated Body Simulators. 2026. https://arxiv.org/abs/2610.04014\n\n[63] Aditya Chattopadhyay, Elvis Nunez, Prannay Kaul, Benjamin Bowman, Evan Becker. Priming: Hybrid State Space Models From Pre-trained Transformers. 2026. https://arxiv.org/abs/2605.08301\n\n[64] Georgios Pantazopoulos, Malvina Nikandrou, Ioannis Konstas, Alessandro Suglia. Retrievit: In-context Retrieval Capabilities of Transformers, State Space Models, and Hybrid Architectures. 2026. https://arxiv.org/abs/2603.02874\n\n[65] Hyunwoo Kim, Byoungchan Ko, Minseok Kang, Minwoo Kim, Dongjin Lee. SSDi8: Accurate and Efficient 8-bit Quantization for State Space Duality. 2026. https://arxiv.org/abs/2608.21952\n\n[66] Ali Emre Gök, Mustafa Yurdakul, Şakir Taşdemir. Selective State-Space Models in Medical Image Processing. 2026. https://doi.org/10.20944/preprints202604.0948.v1\n\n[67] Liubomyr Horbatko. Sessa: Selective State Space Attention. 2026. https://arxiv.org/abs/2604.18580\n\n[68] Yi Wang. Structured State Space Duality (SSD) for RobustMechanical Fault Diagnosis: A Mamba-2 BasedApproach under Harsh Industrial Noise. 2026. https://doi.org/10.2139/ssrn.6174525\n\n[69] Taylan Soydan, Miguel A. Bessa, Dirk Mohr, Rui Barreira. TIDES: Implicit Time-Awareness in Selective State Space Models. 2026. https://arxiv.org/abs/2605.09742\n\n[70] Di Zhang. The Structural Chasm: Why No Positional Encoding Can Bridge the SSM–Transformer Gap. 2026. https://doi.org/10.20944/preprints202605.1816.v1\n\n[71] Mieszko Komisarczyk, Saurabh Mathur, Maurice Kraus, Sriraam Natarajan, Kristian Kersting. Tydra: An Efficient Hybrid Model for Tabular Data. 2026. https://arxiv.org/abs/2608.21199\n\n[72] Abdellah Zakaria Sellam, Fadi Abdeladhim Zidi, Salah Eddine Bekhouche, Ihssen Houhou, Marouane Tliba. VP-Hype: A Hybrid Mamba-Transformer Framework with Visual-Textual Prompting for Hyperspectral Image Classification. 2026. https://arxiv.org/abs/2603.01174\n\n[73] Hector Borobia, Elies Seguí-Mas, Guillermina Tormo-Carbó. Where Should LoRA Go? Component-Type Placement in Hybrid Language Models. 2026. https://arxiv.org/abs/2604.22127\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Efficiently Modeling Long Sequences with Structured State Spaces",
+      "year": 2021,
+      "authors": [
+        "Albert Gu",
+        "Karan Goel",
+        "Christopher Ré"
+      ],
+      "doi": null,
+      "arxiv": "2111.00396",
+      "url": "https://arxiv.org/abs/2111.00396",
+      "work_id": "arxiv:2111.00396"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B002",
+      "title": "Efficient Long Sequence Modeling via State Space Augmented Transformer",
+      "year": 2022,
+      "authors": [
+        "Simiao Zuo",
+        "Xiaodong Liu",
+        "Jian Jiao",
+        "Denis Charles",
+        "Eren Manavoglu",
+        "Tuo Zhao",
+        "Jianfeng Gao"
+      ],
+      "doi": null,
+      "arxiv": "2212.08136",
+      "url": "https://arxiv.org/abs/2212.08136",
+      "work_id": "arxiv:2212.08136"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B003",
+      "title": "Block-State Transformers",
+      "year": 2023,
+      "authors": [
+        "Mahan Fathi",
+        "Jonathan Pilault",
+        "Orhan Firat",
+        "Christopher Pal",
+        "Pierre-Luc Bacon",
+        "Ross Goroshin"
+      ],
+      "doi": null,
+      "arxiv": "2306.09539",
+      "url": "https://arxiv.org/abs/2306.09539",
+      "work_id": "arxiv:2306.09539"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B005",
+      "title": "Audio Mamba: Selective State Spaces for Self-Supervised Audio Representations",
+      "year": 2024,
+      "authors": [
+        "Sarthak Yadav",
+        "Zheng-Hua Tan"
+      ],
+      "doi": null,
+      "arxiv": "2406.02178",
+      "url": "https://arxiv.org/abs/2406.02178",
+      "work_id": "arxiv:2406.02178"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B006",
+      "title": "Demystifying the Token Dynamics of Deep Selective State Space Models",
+      "year": 2024,
+      "authors": [
+        "Thieu N Vo",
+        "Tung D. Pham",
+        "Xin T. Tong",
+        "Tan Minh Nguyen"
+      ],
+      "doi": null,
+      "arxiv": "2410.03292",
+      "url": "https://arxiv.org/abs/2410.03292",
+      "work_id": "arxiv:2410.03292"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B007",
+      "title": "Dual-path Mamba: Short and Long-term Bidirectional Selective Structured State Space Models for Speech Separation",
+      "year": 2024,
+      "authors": [
+        "Xilin Jiang",
+        "Cong Han",
+        "Nima Mesgarani"
+      ],
+      "doi": null,
+      "arxiv": "2403.18257",
+      "url": "https://arxiv.org/abs/2403.18257",
+      "work_id": "arxiv:2403.18257"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B008",
+      "title": "HMT-UNet: A hybird Mamba-Transformer Vision UNet for Medical Image Segmentation",
+      "year": 2024,
+      "authors": [
+        "Mingya Zhang",
+        "Zhihao Chen",
+        "Yiyuan Ge",
+        "Xianping Tao"
+      ],
+      "doi": null,
+      "arxiv": "2408.11289",
+      "url": "https://arxiv.org/abs/2408.11289",
+      "work_id": "arxiv:2408.11289"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B009",
+      "title": "Heracles: A Hybrid SSM-Transformer Model for High-Resolution Image and Time-Series Analysis",
+      "year": 2024,
+      "authors": [
+        "Badri N. Patro",
+        "Suhas Ranganath",
+        "Vinay P. Namboodiri",
+        "Vijay S. Agneeswaran"
+      ],
+      "doi": null,
+      "arxiv": "2403.18063",
+      "url": "https://arxiv.org/abs/2403.18063",
+      "work_id": "arxiv:2403.18063"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B010",
+      "title": "HeteGraph-Mamba: Heterogeneous Graph Learning via Selective State Space Model",
+      "year": 2024,
+      "authors": [
+        "Zhenyu Pan",
+        "Yoonsung Jeong",
+        "Xiaoda Liu",
+        "Han Liu"
+      ],
+      "doi": null,
+      "arxiv": "2405.13915",
+      "url": "https://arxiv.org/abs/2405.13915",
+      "work_id": "arxiv:2405.13915"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B012",
+      "title": "Learning Enriched Features via Selective State Spaces Model for Efficient Image Deblurring",
+      "year": 2024,
+      "authors": [
+        "Hu Gao",
+        "Depeng Dang"
+      ],
+      "doi": null,
+      "arxiv": "2403.20106",
+      "url": "https://arxiv.org/abs/2403.20106",
+      "work_id": "arxiv:2403.20106"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B014",
+      "title": "Mamba2MIL: State Space Duality Based Multiple Instance Learning for Computational Pathology",
+      "year": 2024,
+      "authors": [
+        "Yuqi Zhang",
+        "Xiaoqian Zhang",
+        "Jiakai Wang",
+        "Yuancheng Yang",
+        "Taiying Peng",
+        "Chao Tong"
+      ],
+      "doi": null,
+      "arxiv": "2408.15032",
+      "url": "https://arxiv.org/abs/2408.15032",
+      "work_id": "arxiv:2408.15032"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B015",
+      "title": "Mamba4Rec: Towards Efficient Sequential Recommendation with Selective State Space Models",
+      "year": 2024,
+      "authors": [
+        "Chengkai Liu",
+        "Jianghao Lin",
+        "Jianling Wang",
+        "Hanzhou Liu",
+        "James Caverlee"
+      ],
+      "doi": null,
+      "arxiv": "2403.03900",
+      "url": "https://arxiv.org/abs/2403.03900",
+      "work_id": "arxiv:2403.03900"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B016",
+      "title": "MambaLRP: Explaining Selective State Space Sequence Models",
+      "year": 2024,
+      "authors": [
+        "Farnoush Rezaei Jafari",
+        "Grégoire Montavon",
+        "Klaus-Robert Müller",
+        "Oliver Eberle"
+      ],
+      "doi": null,
+      "arxiv": "2406.07592",
+      "url": "https://arxiv.org/abs/2406.07592",
+      "work_id": "arxiv:2406.07592"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B017",
+      "title": "MambaMixer: Efficient Selective State Space Models with Dual Token and Channel Selection",
+      "year": 2024,
+      "authors": [
+        "Ali Behrouz",
+        "Michele Santacatterina",
+        "Ramin Zabih"
+      ],
+      "doi": null,
+      "arxiv": "2403.19888",
+      "url": "https://arxiv.org/abs/2403.19888",
+      "work_id": "arxiv:2403.19888"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B018",
+      "title": "Mathematical Formalism for Memory Compression in Selective State Space Models",
+      "year": 2024,
+      "authors": [
+        "Siddhanth Bhat"
+      ],
+      "doi": null,
+      "arxiv": "2410.03158",
+      "url": "https://arxiv.org/abs/2410.03158",
+      "work_id": "arxiv:2410.03158"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B019",
+      "title": "Medical Image Classification with a Hybrid SSM Model Based on CNN and Transformer",
+      "year": 2024,
+      "authors": [
+        "Can Hu",
+        "Ning Cao",
+        "Han Zhou",
+        "Bin Guo"
+      ],
+      "doi": "10.3390/electronics13153094",
+      "arxiv": null,
+      "url": "https://doi.org/10.3390/electronics13153094",
+      "work_id": "doi:10.3390/electronics13153094"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B021",
+      "title": "Motion Mamba: Efficient and Long Sequence Motion Generation",
+      "year": 2024,
+      "authors": [
+        "Zeyu Zhang",
+        "Akide Liu",
+        "Ian Reid",
+        "Richard Hartley",
+        "Bohan Zhuang",
+        "Hao Tang"
+      ],
+      "doi": null,
+      "arxiv": "2403.07487",
+      "url": "https://arxiv.org/abs/2403.07487",
+      "work_id": "arxiv:2403.07487"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B022",
+      "title": "On the Expressiveness and Length Generalization of Selective State-Space Models on Regular Languages",
+      "year": 2024,
+      "authors": [
+        "Aleksandar Terzić",
+        "Michael Hersche",
+        "Giacomo Camposampiero",
+        "Thomas Hofmann",
+        "Abu Sebastian",
+        "Abbas Rahimi"
+      ],
+      "doi": null,
+      "arxiv": "2412.19350",
+      "url": "https://arxiv.org/abs/2412.19350",
+      "work_id": "arxiv:2412.19350"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B025",
+      "title": "S4Fusion: Saliency-aware Selective State Space Model for Infrared Visible Image Fusion",
+      "year": 2024,
+      "authors": [
+        "Haolong Ma",
+        "Hui Li",
+        "Chunyang Cheng",
+        "Gaoang Wang",
+        "Xiaoning Song",
+        "Xiaojun Wu"
+      ],
+      "doi": null,
+      "arxiv": "2405.20881",
+      "url": "https://arxiv.org/abs/2405.20881",
+      "work_id": "arxiv:2405.20881"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B027",
+      "title": "SSD4Rec: A Structured State Space Duality Model for Efficient Sequential Recommendation",
+      "year": 2024,
+      "authors": [
+        "Haohao Qu",
+        "Yifeng Zhang",
+        "Liangbo Ning",
+        "Wenqi Fan",
+        "Qing Li"
+      ],
+      "doi": null,
+      "arxiv": "2409.01192",
+      "url": "https://arxiv.org/abs/2409.01192",
+      "work_id": "arxiv:2409.01192"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B028",
+      "title": "SST: Multi-Scale Hybrid Mamba-Transformer Experts for Time Series Forecasting",
+      "year": 2024,
+      "authors": [
+        "Xiongxiao Xu",
+        "Canyu Chen",
+        "Yueqing Liang",
+        "Baixiang Huang",
+        "Guangji Bai",
+        "Liang Zhao",
+        "Kai Shu"
+      ],
+      "doi": null,
+      "arxiv": "2404.14757",
+      "url": "https://arxiv.org/abs/2404.14757",
+      "work_id": "arxiv:2404.14757"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B030",
+      "title": "STG-Mamba: Spatial-Temporal Graph Learning via Selective State Space Model",
+      "year": 2024,
+      "authors": [
+        "Lincan Li",
+        "Hanchen Wang",
+        "Wenjie Zhang",
+        "Adelle Coster"
+      ],
+      "doi": null,
+      "arxiv": "2403.12418",
+      "url": "https://arxiv.org/abs/2403.12418",
+      "work_id": "arxiv:2403.12418"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B031",
+      "title": "Speech-Mamba: Long-Context Speech Recognition with Selective State Spaces Models",
+      "year": 2024,
+      "authors": [
+        "Xiaoxue Gao",
+        "Nancy F. Chen"
+      ],
+      "doi": null,
+      "arxiv": "2409.18654",
+      "url": "https://arxiv.org/abs/2409.18654",
+      "work_id": "arxiv:2409.18654"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B033",
+      "title": "TiM4Rec: An Efficient Sequential Recommendation Model Based on Time-Aware Structured State Space Duality Model",
+      "year": 2024,
+      "authors": [
+        "Hao Fan",
+        "Mengyi Zhu",
+        "Yanrong Hu",
+        "Hailin Feng",
+        "Zhijie He",
+        "Hongjiu Liu",
+        "Qingyang Liu"
+      ],
+      "doi": "10.1016/j.neucom.2025.131270",
+      "arxiv": "2409.16182",
+      "url": "https://arxiv.org/abs/2409.16182",
+      "work_id": "arxiv:2409.16182"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B034",
+      "title": "Transformers are SSMs: Generalized Models and Efficient Algorithms Through Structured State Space Duality",
+      "year": 2024,
+      "authors": [
+        "Tri Dao",
+        "Albert Gu"
+      ],
+      "doi": null,
+      "arxiv": "2405.21060",
+      "url": "https://arxiv.org/abs/2405.21060",
+      "work_id": "arxiv:2405.21060"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B035",
+      "title": "Transformers to SSMs: Distilling Quadratic Knowledge to Subquadratic Models",
+      "year": 2024,
+      "authors": [
+        "Aviv Bick",
+        "Kevin Y. Li",
+        "Eric P. Xing",
+        "J. Zico Kolter",
+        "Albert Gu"
+      ],
+      "doi": null,
+      "arxiv": "2408.10189",
+      "url": "https://arxiv.org/abs/2408.10189",
+      "work_id": "arxiv:2408.10189"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B039",
+      "title": "Balancing Computation Load and Representation Expressivity in Parallel Hybrid Neural Networks",
+      "year": 2025,
+      "authors": [
+        "Mohammad Mahdi Moradi",
+        "Walid Ahmed",
+        "Shuangyue Wen",
+        "Sudhir Mudur",
+        "Weiwei Zhang",
+        "Yang Liu"
+      ],
+      "doi": null,
+      "arxiv": "2505.19472",
+      "url": "https://arxiv.org/abs/2505.19472",
+      "work_id": "arxiv:2505.19472"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B040",
+      "title": "CPMamba: Selective State Space Models for MIMO Channel Prediction in High-Mobility Environments",
+      "year": 2025,
+      "authors": [
+        "Sheng Luo",
+        "Jiashu Xie",
+        "Yueling Che",
+        "Junmei Yao",
+        "Jian Tian",
+        "Daquan Feng",
+        "Kaishun Wu"
+      ],
+      "doi": null,
+      "arxiv": "2512.16315",
+      "url": "https://arxiv.org/abs/2512.16315",
+      "work_id": "arxiv:2512.16315"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B041",
+      "title": "CloudMamba: Grouped Selective State Spaces for Point Cloud Analysis",
+      "year": 2025,
+      "authors": [
+        "Kanglin Qu",
+        "Pan Gao",
+        "Qun Dai",
+        "Zhanzhi Ye",
+        "Rui Ye",
+        "Yuanhao Sun"
+      ],
+      "doi": null,
+      "arxiv": "2511.07823",
+      "url": "https://arxiv.org/abs/2511.07823",
+      "work_id": "arxiv:2511.07823"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B043",
+      "title": "Generalization Error Analysis for Selective State-Space Models Through the Lens of Attention",
+      "year": 2025,
+      "authors": [
+        "Arya Honarpisheh",
+        "Mustafa Bozdag",
+        "Octavia Camps",
+        "Mario Sznaier"
+      ],
+      "doi": null,
+      "arxiv": "2502.01473",
+      "url": "https://arxiv.org/abs/2502.01473",
+      "work_id": "arxiv:2502.01473"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B044",
+      "title": "Geometric SSM: LTI State Space Models for Selective Tasks",
+      "year": 2025,
+      "authors": [
+        "Umberto Casti",
+        "Giacomo Baggio",
+        "Sandro Zampieri",
+        "Fabio Pasqualetti"
+      ],
+      "doi": null,
+      "arxiv": "2505.17932",
+      "url": "https://arxiv.org/abs/2505.17932",
+      "work_id": "arxiv:2505.17932"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B045",
+      "title": "HyMaTE: A Hybrid Mamba and Transformer Model for EHR Representation Learning",
+      "year": 2025,
+      "authors": [
+        "Md Mozaharul Mottalib",
+        "Thao-Ly T. Phan",
+        "Rahmatollah Beheshti"
+      ],
+      "doi": "10.1145/3765612.3767245",
+      "arxiv": "2509.24118",
+      "url": "https://arxiv.org/abs/2509.24118",
+      "work_id": "arxiv:2509.24118"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B046",
+      "title": "KOSS: Kalman-Optimal Selective State Spaces for Long-Term Sequence Modeling",
+      "year": 2025,
+      "authors": [
+        "Lei Wang",
+        "Xin Tan",
+        "Mingwei Wang",
+        "Ying Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2512.16723",
+      "url": "https://arxiv.org/abs/2512.16723",
+      "work_id": "arxiv:2512.16723"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B049",
+      "title": "On Structured State-Space Duality",
+      "year": 2025,
+      "authors": [
+        "Jerry Yao-Chieh Hu",
+        "Xiwen Zhang",
+        "Ali ElSheikh",
+        "Weimin Wu",
+        "Han Liu"
+      ],
+      "doi": null,
+      "arxiv": "2510.04944",
+      "url": "https://arxiv.org/abs/2510.04944",
+      "work_id": "arxiv:2510.04944"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B050",
+      "title": "PerfMamba: Performance Analysis and Pruning of Selective State Space Models",
+      "year": 2025,
+      "authors": [
+        "Abdullah Al Asif",
+        "Mobina Kashaniyan",
+        "Sixing Yu",
+        "Juan Pablo Muñoz",
+        "Ali Jannesari"
+      ],
+      "doi": null,
+      "arxiv": "2511.22849",
+      "url": "https://arxiv.org/abs/2511.22849",
+      "work_id": "arxiv:2511.22849"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B051",
+      "title": "Quantum-Optimized Selective State Space Model for Efficient Time Series Prediction",
+      "year": 2025,
+      "authors": [
+        "Stefan-Alexandru Jura",
+        "Mihai Udrescu",
+        "Alexandru Topirceanu"
+      ],
+      "doi": null,
+      "arxiv": "2509.00259",
+      "url": "https://arxiv.org/abs/2509.00259",
+      "work_id": "arxiv:2509.00259"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B052",
+      "title": "RAD: Redundancy-Aware Distillation for Hybrid Models via Self-Speculative Decoding",
+      "year": 2025,
+      "authors": [
+        "Yuichiro Hoshino",
+        "Hideyuki Tachibana",
+        "Muneyoshi Inahara",
+        "Hiroto Takegawa"
+      ],
+      "doi": null,
+      "arxiv": "2505.22135",
+      "url": "https://arxiv.org/abs/2505.22135",
+      "work_id": "arxiv:2505.22135"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B053",
+      "title": "Rethinking Selectivity in State Space Models: A Minimal Predictive Sufficiency Approach",
+      "year": 2025,
+      "authors": [
+        "Yiyi Wang",
+        "Jian'an Zhang",
+        "Hongyi Duan",
+        "Haoyang Liu",
+        "Qingyang Li"
+      ],
+      "doi": null,
+      "arxiv": "2508.03158",
+      "url": "https://arxiv.org/abs/2508.03158",
+      "work_id": "arxiv:2508.03158"
+    },
+    {
+      "reference_number": 39,
+      "ref_id": "B054",
+      "title": "SSD-Poser: Avatar Pose Estimation with State Space Duality from Sparse Observations",
+      "year": 2025,
+      "authors": [
+        "Shuting Zhao",
+        "Linxin Bai",
+        "Liangjing Shao",
+        "Ye Zhang",
+        "Xinrong Chen"
+      ],
+      "doi": null,
+      "arxiv": "2504.18332",
+      "url": "https://arxiv.org/abs/2504.18332",
+      "work_id": "arxiv:2504.18332"
+    },
+    {
+      "reference_number": 40,
+      "ref_id": "B055",
+      "title": "STree: Speculative Tree Decoding for Hybrid State-Space Models",
+      "year": 2025,
+      "authors": [
+        "Yangchao Wu",
+        "Zongyue Qin",
+        "Alex Wong",
+        "Stefano Soatto"
+      ],
+      "doi": null,
+      "arxiv": "2505.14969",
+      "url": "https://arxiv.org/abs/2505.14969",
+      "work_id": "arxiv:2505.14969"
+    },
+    {
+      "reference_number": 41,
+      "ref_id": "B056",
+      "title": "SeRpEnt: Selective Resampling for Expressive State Space Models",
+      "year": 2025,
+      "authors": [
+        "Stefano Rando",
+        "Luca Romani",
+        "Matteo Migliarini",
+        "Luca Franco",
+        "Denis Gudovskiy",
+        "Fabio Galasso"
+      ],
+      "doi": null,
+      "arxiv": "2501.11729",
+      "url": "https://arxiv.org/abs/2501.11729",
+      "work_id": "arxiv:2501.11729"
+    },
+    {
+      "reference_number": 42,
+      "ref_id": "B057",
+      "title": "Selective State Space Models Outperform Transformers at Predicting RNA-Seq Read Coverage",
+      "year": 2025,
+      "authors": [
+        "Ian Holmes",
+        "Johannes Linder",
+        "David Kelley"
+      ],
+      "doi": "10.1101/2025.02.13.638190",
+      "arxiv": null,
+      "url": "https://doi.org/10.1101/2025.02.13.638190",
+      "work_id": "doi:10.1101/2025.02.13.638190"
+    },
+    {
+      "reference_number": 43,
+      "ref_id": "B059",
+      "title": "SparseSSM: Efficient Selective Structured State Space Models Can Be Pruned in One-Shot",
+      "year": 2025,
+      "authors": [
+        "Kaiwen Tuo",
+        "Huan Wang"
+      ],
+      "doi": null,
+      "arxiv": "2506.09613",
+      "url": "https://arxiv.org/abs/2506.09613",
+      "work_id": "arxiv:2506.09613"
+    },
+    {
+      "reference_number": 44,
+      "ref_id": "B060",
+      "title": "TransMamba: A Sequence-Level Hybrid Transformer-Mamba Language Model",
+      "year": 2025,
+      "authors": [
+        "Yixing Li",
+        "Ruobing Xie",
+        "Zhen Yang",
+        "Xingwu Sun",
+        "Shuaipeng Li",
+        "Weidong Han",
+        "Zhanhui Kang",
+        "Yu Cheng",
+        "Chengzhong Xu",
+        "Di Wang",
+        "Jie Jiang"
+      ],
+      "doi": null,
+      "arxiv": "2503.24067",
+      "url": "https://arxiv.org/abs/2503.24067",
+      "work_id": "arxiv:2503.24067"
+    },
+    {
+      "reference_number": 45,
+      "ref_id": "B061",
+      "title": "TransXSSM: A Hybrid Transformer State Space Model with Unified Rotary Position Embedding",
+      "year": 2025,
+      "authors": [
+        "Bingheng Wu",
+        "Jingze Shi",
+        "Yifan Wu",
+        "Nan Tang",
+        "Yuyu Luo"
+      ],
+      "doi": null,
+      "arxiv": "2506.09507",
+      "url": "https://arxiv.org/abs/2506.09507",
+      "work_id": "arxiv:2506.09507"
+    },
+    {
+      "reference_number": 46,
+      "ref_id": "B063",
+      "title": "Understanding and Enhancing Mamba-Transformer Hybrids for Memory Recall and Language Modeling",
+      "year": 2025,
+      "authors": [
+        "Hyunji Lee",
+        "Wenhao Yu",
+        "Hongming Zhang",
+        "Kaixin Ma",
+        "Jiyeon Kim",
+        "Dong Yu",
+        "Minjoon Seo"
+      ],
+      "doi": null,
+      "arxiv": "2510.26912",
+      "url": "https://arxiv.org/abs/2510.26912",
+      "work_id": "arxiv:2510.26912"
+    },
+    {
+      "reference_number": 47,
+      "ref_id": "B065",
+      "title": "3DTMDet: A Dual-Path Synergy Network of Transformer and SSM for 3D Object Detection in Point Clouds",
+      "year": 2026,
+      "authors": [
+        "Bingwen Qiu",
+        "Yuan Liu",
+        "Junqi Bai",
+        "Tong Jiang",
+        "Ben Liang",
+        "Fangzhou Chen",
+        "Xiubao Sui",
+        "Qian Chen"
+      ],
+      "doi": null,
+      "arxiv": "2605.15546",
+      "url": "https://arxiv.org/abs/2605.15546",
+      "work_id": "arxiv:2605.15546"
+    },
+    {
+      "reference_number": 48,
+      "ref_id": "B066",
+      "title": "A KL Lens on Quantization: Fast, Forward-Only Sensitivity for Mixed-Precision SSM-Transformer Models",
+      "year": 2026,
+      "authors": [
+        "Jason Kong",
+        "Nilesh Prasad Pandey",
+        "Flavio Ponzina",
+        "Tajana Rosing"
+      ],
+      "doi": null,
+      "arxiv": "2604.13440",
+      "url": "https://arxiv.org/abs/2604.13440",
+      "work_id": "arxiv:2604.13440"
+    },
+    {
+      "reference_number": 49,
+      "ref_id": "B067",
+      "title": "A RIME-Configured SSM–Transformer Framework for Lithium-Ion Battery State-of-Health Assessment",
+      "year": 2026,
+      "authors": [
+        "Jun Yang",
+        "Yifei Wang",
+        "Dongsheng Li",
+        "Fan Zhang",
+        "Jiasheng Wang",
+        "Jingang Wang"
+      ],
+      "doi": "10.3390/en19153604",
+      "arxiv": null,
+      "url": "https://doi.org/10.3390/en19153604",
+      "work_id": "doi:10.3390/en19153604"
+    },
+    {
+      "reference_number": 50,
+      "ref_id": "B068",
+      "title": "Akasha 2: Hamiltonian State Space Duality and Visual-Language Joint Embedding Predictive Architectur",
+      "year": 2026,
+      "authors": [
+        "Yani Meziani"
+      ],
+      "doi": null,
+      "arxiv": "2601.06212",
+      "url": "https://arxiv.org/abs/2601.06212",
+      "work_id": "arxiv:2601.06212"
+    },
+    {
+      "reference_number": 51,
+      "ref_id": "B071",
+      "title": "Bayesian Optimality of In-Context Learning with Selective State Spaces",
+      "year": 2026,
+      "authors": [
+        "Di Zhang",
+        "Jiaqi Xing"
+      ],
+      "doi": null,
+      "arxiv": "2602.17744",
+      "url": "https://arxiv.org/abs/2602.17744",
+      "work_id": "arxiv:2602.17744"
+    },
+    {
+      "reference_number": 52,
+      "ref_id": "B072",
+      "title": "BiMamba2-Tunnel: an efficient and high-fidelity hybrid SSM-transformer framework for tunnel point cloud completion",
+      "year": 2026,
+      "authors": [
+        "Chong Chen",
+        "Shaoyi Xu",
+        "Chengtao Wang",
+        "Yuan Zhang",
+        "Xing Deng",
+        "Hao Wang",
+        "Zuhao Zhu",
+        "Chenhui Yu"
+      ],
+      "doi": "10.1117/1.jrs.20.026508",
+      "arxiv": null,
+      "url": "https://doi.org/10.1117/1.jrs.20.026508",
+      "work_id": "doi:10.1117/1.jrs.20.026508"
+    },
+    {
+      "reference_number": 53,
+      "ref_id": "B073",
+      "title": "CRISP: Calibration-Aware Visual State Space Duality for Remote Sensing Semantic Segmentation",
+      "year": 2026,
+      "authors": [
+        "Kangning Wang",
+        "Haopeng Zhang",
+        "Zhiguo Jiang"
+      ],
+      "doi": null,
+      "arxiv": "2608.23746",
+      "url": "https://arxiv.org/abs/2608.23746",
+      "work_id": "arxiv:2608.23746"
+    },
+    {
+      "reference_number": 54,
+      "ref_id": "B074",
+      "title": "Channel-Wise and Token-Aware Post-Training Quantization for Visual State Space Duality",
+      "year": 2026,
+      "authors": [
+        "Jonghyeon Lim",
+        "Changhoon Yim"
+      ],
+      "doi": null,
+      "arxiv": "2609.16656",
+      "url": "https://arxiv.org/abs/2609.16656",
+      "work_id": "arxiv:2609.16656"
+    },
+    {
+      "reference_number": 55,
+      "ref_id": "B075",
+      "title": "Component-Aware Self-Speculative Decoding in Hybrid Language Models",
+      "year": 2026,
+      "authors": [
+        "Hector Borobia",
+        "Elies Seguí-Mas",
+        "Guillermina Tormo-Carbó"
+      ],
+      "doi": null,
+      "arxiv": "2605.01106",
+      "url": "https://arxiv.org/abs/2605.01106",
+      "work_id": "arxiv:2605.01106"
+    },
+    {
+      "reference_number": 56,
+      "ref_id": "B076",
+      "title": "DUET: Disaggregated Hybrid Mamba-Transformer LLMs with Prefill and Decode-Specific Packages",
+      "year": 2026,
+      "authors": [
+        "Alish Kanani",
+        "Sangwan Lee",
+        "Han Lyu",
+        "Jiahao Lin",
+        "Jaehyun Park",
+        "Umit Y. Ogras"
+      ],
+      "doi": null,
+      "arxiv": "2603.15530",
+      "url": "https://arxiv.org/abs/2603.15530",
+      "work_id": "arxiv:2603.15530"
+    },
+    {
+      "reference_number": 57,
+      "ref_id": "B077",
+      "title": "Distributed Learning with Selective State Space Models: Architecture-Aware Convergence Analysis",
+      "year": 2026,
+      "authors": [
+        "Adam Piaseczny",
+        "Md Kamran Chowdhury Shisher",
+        "Shiqiang Wang",
+        "Christopher G. Brinton"
+      ],
+      "doi": null,
+      "arxiv": "2610.02659",
+      "url": "https://arxiv.org/abs/2610.02659",
+      "work_id": "arxiv:2610.02659"
+    },
+    {
+      "reference_number": 58,
+      "ref_id": "B081",
+      "title": "Global Divergence, Local Convergence: Representation Geometry in SSMs and Transformers",
+      "year": 2026,
+      "authors": [
+        "Amit Ben-Artzy",
+        "Roy Schwartz"
+      ],
+      "doi": null,
+      "arxiv": "2609.08692",
+      "url": "https://arxiv.org/abs/2609.08692",
+      "work_id": "arxiv:2609.08692"
+    },
+    {
+      "reference_number": 59,
+      "ref_id": "B082",
+      "title": "HARMONY: Hybrid Attention-Selective State Space Mixture for Long-Context Deep Learning",
+      "year": 2026,
+      "authors": [
+        "John Smith",
+        "Emma Davis"
+      ],
+      "doi": "10.2139/ssrn.6147230",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.6147230",
+      "work_id": "doi:10.2139/ssrn.6147230"
+    },
+    {
+      "reference_number": 60,
+      "ref_id": "B086",
+      "title": "Long-Context Modeling via GSS-Transformer Hybrid Architecture with Learnable Mixing",
+      "year": 2026,
+      "authors": [
+        "Kuzey Torlak",
+        "Hüseyin Arda Arslan",
+        "Anıl Dervişoğlu",
+        "Beyza Nur Deniz",
+        "Onur Boyar"
+      ],
+      "doi": null,
+      "arxiv": "2606.16093",
+      "url": "https://arxiv.org/abs/2606.16093",
+      "work_id": "arxiv:2606.16093"
+    },
+    {
+      "reference_number": 61,
+      "ref_id": "B089",
+      "title": "MambaADv2: Evolving Duality-enhanced State Space Model for Unsupervised Anomaly Detection",
+      "year": 2026,
+      "authors": [
+        "Xiaobin Hu",
+        "Haoyang He",
+        "Bo Yin",
+        "Yu He",
+        "Lei Xie",
+        "Jiangning Zhang",
+        "Yu-Gang Jiang",
+        "Shuicheng Yan"
+      ],
+      "doi": null,
+      "arxiv": "2606.23126",
+      "url": "https://arxiv.org/abs/2606.23126",
+      "work_id": "arxiv:2606.23126"
+    },
+    {
+      "reference_number": 62,
+      "ref_id": "B091",
+      "title": "PhysMamba: Selective State Space Models as Learned Articulated Body Simulators",
+      "year": 2026,
+      "authors": [
+        "Haochuan Zhang",
+        "Sinisa Todorovic"
+      ],
+      "doi": null,
+      "arxiv": "2610.04014",
+      "url": "https://arxiv.org/abs/2610.04014",
+      "work_id": "arxiv:2610.04014"
+    },
+    {
+      "reference_number": 63,
+      "ref_id": "B092",
+      "title": "Priming: Hybrid State Space Models From Pre-trained Transformers",
+      "year": 2026,
+      "authors": [
+        "Aditya Chattopadhyay",
+        "Elvis Nunez",
+        "Prannay Kaul",
+        "Benjamin Bowman",
+        "Evan Becker",
+        "Luca Zancato",
+        "David Thomas",
+        "Wei Xia",
+        "Stefano Soatto"
+      ],
+      "doi": null,
+      "arxiv": "2605.08301",
+      "url": "https://arxiv.org/abs/2605.08301",
+      "work_id": "arxiv:2605.08301"
+    },
+    {
+      "reference_number": 64,
+      "ref_id": "B094",
+      "title": "Retrievit: In-context Retrieval Capabilities of Transformers, State Space Models, and Hybrid Architectures",
+      "year": 2026,
+      "authors": [
+        "Georgios Pantazopoulos",
+        "Malvina Nikandrou",
+        "Ioannis Konstas",
+        "Alessandro Suglia"
+      ],
+      "doi": null,
+      "arxiv": "2603.02874",
+      "url": "https://arxiv.org/abs/2603.02874",
+      "work_id": "arxiv:2603.02874"
+    },
+    {
+      "reference_number": 65,
+      "ref_id": "B095",
+      "title": "SSDi8: Accurate and Efficient 8-bit Quantization for State Space Duality",
+      "year": 2026,
+      "authors": [
+        "Hyunwoo Kim",
+        "Byoungchan Ko",
+        "Minseok Kang",
+        "Minwoo Kim",
+        "Dongjin Lee",
+        "Jaehoon Lee",
+        "Sungroh Yoon",
+        "Dahuin Jung"
+      ],
+      "doi": null,
+      "arxiv": "2608.21952",
+      "url": "https://arxiv.org/abs/2608.21952",
+      "work_id": "arxiv:2608.21952"
+    },
+    {
+      "reference_number": 66,
+      "ref_id": "B097",
+      "title": "Selective State-Space Models in Medical Image Processing",
+      "year": 2026,
+      "authors": [
+        "Ali Emre Gök",
+        "Mustafa Yurdakul",
+        "Şakir Taşdemir"
+      ],
+      "doi": "10.20944/preprints202604.0948.v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.20944/preprints202604.0948.v1",
+      "work_id": "doi:10.20944/preprints202604.0948.v1"
+    },
+    {
+      "reference_number": 67,
+      "ref_id": "B098",
+      "title": "Sessa: Selective State Space Attention",
+      "year": 2026,
+      "authors": [
+        "Liubomyr Horbatko"
+      ],
+      "doi": null,
+      "arxiv": "2604.18580",
+      "url": "https://arxiv.org/abs/2604.18580",
+      "work_id": "arxiv:2604.18580"
+    },
+    {
+      "reference_number": 68,
+      "ref_id": "B099",
+      "title": "Structured State Space Duality (SSD) for RobustMechanical Fault Diagnosis: A Mamba-2 BasedApproach under Harsh Industrial Noise",
+      "year": 2026,
+      "authors": [
+        "Yi Wang"
+      ],
+      "doi": "10.2139/ssrn.6174525",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.6174525",
+      "work_id": "doi:10.2139/ssrn.6174525"
+    },
+    {
+      "reference_number": 69,
+      "ref_id": "B100",
+      "title": "TIDES: Implicit Time-Awareness in Selective State Space Models",
+      "year": 2026,
+      "authors": [
+        "Taylan Soydan",
+        "Miguel A. Bessa",
+        "Dirk Mohr",
+        "Rui Barreira"
+      ],
+      "doi": null,
+      "arxiv": "2605.09742",
+      "url": "https://arxiv.org/abs/2605.09742",
+      "work_id": "arxiv:2605.09742"
+    },
+    {
+      "reference_number": 70,
+      "ref_id": "B101",
+      "title": "The Structural Chasm: Why No Positional Encoding Can Bridge the SSM–Transformer Gap",
+      "year": 2026,
+      "authors": [
+        "Di Zhang"
+      ],
+      "doi": "10.20944/preprints202605.1816.v1",
+      "arxiv": null,
+      "url": "https://doi.org/10.20944/preprints202605.1816.v1",
+      "work_id": "doi:10.20944/preprints202605.1816.v1"
+    },
+    {
+      "reference_number": 71,
+      "ref_id": "B102",
+      "title": "Tydra: An Efficient Hybrid Model for Tabular Data",
+      "year": 2026,
+      "authors": [
+        "Mieszko Komisarczyk",
+        "Saurabh Mathur",
+        "Maurice Kraus",
+        "Sriraam Natarajan",
+        "Kristian Kersting"
+      ],
+      "doi": null,
+      "arxiv": "2608.21199",
+      "url": "https://arxiv.org/abs/2608.21199",
+      "work_id": "arxiv:2608.21199"
+    },
+    {
+      "reference_number": 72,
+      "ref_id": "B103",
+      "title": "VP-Hype: A Hybrid Mamba-Transformer Framework with Visual-Textual Prompting for Hyperspectral Image Classification",
+      "year": 2026,
+      "authors": [
+        "Abdellah Zakaria Sellam",
+        "Fadi Abdeladhim Zidi",
+        "Salah Eddine Bekhouche",
+        "Ihssen Houhou",
+        "Marouane Tliba",
+        "Cosimo Distante",
+        "Abdenour Hadid"
+      ],
+      "doi": null,
+      "arxiv": "2603.01174",
+      "url": "https://arxiv.org/abs/2603.01174",
+      "work_id": "arxiv:2603.01174"
+    },
+    {
+      "reference_number": 73,
+      "ref_id": "B104",
+      "title": "Where Should LoRA Go? Component-Type Placement in Hybrid Language Models",
+      "year": 2026,
+      "authors": [
+        "Hector Borobia",
+        "Elies Seguí-Mas",
+        "Guillermina Tormo-Carbó"
+      ],
+      "doi": null,
+      "arxiv": "2604.22127",
+      "url": "https://arxiv.org/abs/2604.22127",
+      "work_id": "arxiv:2604.22127"
+    }
+  ],
+  "article_sha256": "f6576c82ef7caf75d2b9075a76caa24f81d6d055f69dee6c0bc0034c59fd1a1f",
+  "references_sha256": "e461373a2185c4aa4bd80435faf736248aa558eb23e19cb20147ab9b9e2c4f83",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

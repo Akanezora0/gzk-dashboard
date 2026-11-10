@@ -1,0 +1,1089 @@
+{
+  "topic_id": "AI6.08",
+  "route": "B",
+  "title": "智能体长期记忆：技术演进、方法比较与研究进展",
+  "content_md": "# 智能体长期记忆：技术演进、方法比较与研究进展\n\n## 摘要\n\n本文综述了智能体长期记忆的核心问题与演进脉络，系统探讨了经验提取、存储组织、动态更新、遗忘机制及隐私安全评测。研究范围涵盖从早期静态检索到自适应控制、拓扑演化与参数内化的全生命周期管理。路线比较表明，静态向量检索易致碎片化，而结构化分层记忆、图结构表征与马尔可夫决策自适应控制在平衡计算开销、Token消耗与多跳推理准确率上展现出显著优势。主要认识指出，记忆效用受制于检索策略与真实贡献，且持久化存储面临权限崩塌与对抗性攻击等严重安全隐患。开放问题主要集中于跨异构平台分布式共享记忆的安全边界、不可信写入隔离机制以及建立防范越权攻击的系统级可审计标准。\n\n## 第1章 引言：智能体长期记忆的核心问题与演进脉络\n\n智能体长期记忆旨在实现历史会话、任务经验与用户信息的提取、更新与检索，使大语言模型智能体在多轮或跨任务运行中持续利用已有知识 [18]。传统大语言模型及静态系统在处理连续输入时易出现灾难性遗忘与干扰，难以应对长时间跨度的动态环境 [2][17]。为此，近年研究重点聚焦于突破静态检索限制，围绕记忆的生命周期管理与认知机制展开了演进。\n\n在研究问题与底层机制方面，现有方法广泛汲取人类认知科学（如补充学习系统与情景记忆理论）以优化记忆的组织与动态演进。例如，部分研究通过引入人类记忆线索回溯或基于时间与因果关系的记忆链接结构，增强智能体在长期对话中的时序认知与上下文演化捕捉能力 [5][7]。同时，诸如主动梦境记忆（ADM）等生物启发机制采用双存储架构，通过合成场景模拟对候选规则进行反事实验证，从而在无需微调的前提下实现高效的学习与遗忘抑制 [9]。此外，All-Mem 框架通过非破坏性的拓扑演进（如分割、合并和更新操作）维护记忆库，避免了传统摘要压缩造成的不可逆信息丢失 [21]，而面向长视距智能体的连续记忆架构（CMA）则通过持久化存储、选择性保留及时间链接来克服传统检索增强生成（RAG）的无状态局限 [27]。\n\n在方法的系统比较与适用条件上，针对记忆体量无限增长导致的检索退化与计算开销问题，不同的读写策略展现出各异的适用场景。双层智能体记忆框架通过引入成本感知的认知路由与周期性参数化整合（将外部记忆通过微调内化至模型参数），在剪枝大量冗余外部记忆的同时保持了下游任务的准确率 [31]。在检索与操作控制层面，Memory as a Controlled Process（MemCon）将记忆操作建模为马尔可夫决策过程，利用上下文多臂强盗算法自适应地决定检索时机与内容，从而在多任务中降低令牌消耗并提升成功率 [43]。此外，Hippocam 架构通过嵌套意图与递归前缀 consolidation 机制，模拟人类记忆的“用进废退”，使智能体能够在不更新模型参数的前提下实现经验的层级抽象与能力演化 [54]。而在系统计算层面，PLACEMEM 则将长期记忆表示为版本化胶囊，通过统一语义、来源与有效性的控制平面来优化实时服务开销 [45]。总体而言，从早期的静态检索到当前的自适应控制、拓扑演化与参数内化，长期记忆机制正在向兼顾计算效率与认知鲁棒性的方向演进。\n\n## 第2章 经验提取、存储与组织机制分支\n\n第2章 经验提取、存储与组织机制分支\n\n智能体长期记忆的核心研究问题在于如何从海量、连续且快速增长的交互历史中高效提取、存储并组织经验，以克服计算开销过大、灾难性遗忘以及上下文冗余等瓶颈。围绕这一问题，现有方法在存储机制、提取策略和组织结构上形成了多条演进路径。\n\n在经验提取与优先级路由方面，经典强化学习与智能体框架引入了差异化的采样与摘要机制。优先经验回放（PER）通过计算时间差分误差（TD-error）对转换进行非均匀采样，优先重放高信息量的转换以提升学习效率 [1]，并通过分布式架构将环境交互与模型学习进行解耦 [3]。针对大语言模型智能体在长序列交互中面临的高昂构造代价，部分方法转向降低大模型调用频率的策略：例如，LycheeMemory V2采用语义段级（segment-level）批处理替代频繁的单轮交互摘要，在减少编码频率的同时利用语义边界保留细粒度上下文证据 [39]；而AgentRR则通过对交互轨迹进行结构化记录、总结与重放，平衡了经验的特异性与通用性 [15]。\n\n在经验存储结构与多级组织机制方面，研究者广泛借鉴认知科学原理构建了多层次、异构的记忆网络。1）分层与多时标架构：如TiMem通过时间记忆树（TMT）实现从原始对话到抽象人格表示的逐级固化 [53]，LightMem划分短期、中期和长期记忆以隔离在线与离线开销 [38]，HPMN利用具有不同更新周期的分层槽位来捕获多尺度序列模式 [4]。2）图形化与语义-情景双系统：AriGraph与CAST等方法构建了融合语义与情景记忆的图结构或角色-场景表征，以显式恢复复杂的时空轨迹、叙事进程及多跳关系 [6][24]。SEEM和GSW（Generative Semantic Workspace）进一步引入结构化事件帧或神经启发的工作空间，通过演算器与调节器确保空间、时间和逻辑的一致性 [11][51]。此外，PersonaTree构建了从底层证据到抽象人设的生命周期树 [46]，Infini Memory则将记忆维护为可修订的主题文档 [35]。生物启发机制方面，Memini等模型引入基于Benna-Fusi突触固化模型的快速/慢速双变量耦合机制，使外部记忆具备类似生物突触的选择性遗忘与巩固能力 [26]；EngramRAG则结合Hebbian可塑性与使用调节的个性化PageRank（U-PPR）动态调整图拓扑 [33]。\n\n在适用条件与方法比较上，不同的提取与组织机制展现出显著的性能权衡。静态向量检索虽然实现简单，但易导致检索碎片化并暴露出“集聚问题”；相比之下，CoreMem利用黎曼流形检索（Fisher-Rao度量）对高维搜索中的集聚现象进行局部自适应惩罚，配合Fisher引导的离散Token蒸馏（FDTD）在8GB等严格显存约束的边缘设备上实现了高效的跨会话长程检索 [28]。在资源开销方面，结构化分层记忆（如TiMem和LycheeMemory V2）在大幅削减上下文 Token 消耗和高昂LLM编码频率的同时，显著提升了多跳推理与时间推理的准确率 [39][53]。然而，当前多源异构平台下的分布式共享记忆仍缺乏对不可信写入的系统性隔离与安全边界对比基准，成为制约其跨域扩展的关键瓶颈。\n\n## 第3章 更新、遗忘与跨任务检索机制分支\n\n在智能体长期运行与多轮交互中，如何高效地更新、管理和利用历史记忆，是维持稳定且具适应性推理能力的核心。现有研究围绕记忆的动态更新、选择性遗忘与跨任务检索机制展开了多维度探索。在更新与写入控制方面，针对无序存储带来的噪声与冗余问题，部分工作通过引入小型语言模型（SLM）在写入阶段进行结构化过滤与智能存储管理，从而保持记忆的高可检索性[19]。与此同时，针对多智能体或长序列中因连续更新导致的记忆退化与错误累积现象，研究指出频繁由大模型直接改写 consolidated memory 反而可能引入偏差甚至导致效用低于无记忆基线[55]，这凸显了对写入过程进行精细控制的必要性。在遗忘与抗干扰机制方面，为克服连续交互中的干扰与资源无限制增长，生物启发式的睡眠机制与多维重要性标签被引入记忆架构，通过周期性休眠合并、选择性淘汰或压缩陈旧条目，有效降低了检索噪声并控制了记忆规模[37][49]。在跨任务检索与上下文适配方面，为平衡信息保留与压缩损耗，部分框架通过显式的算子选择策略权衡保留与抽象合并的增益[48]，或者采用双通道参数记忆、双极性在线校正以及规划-记忆双向耦合等方案，在不进行全量参数微调的前提下实现了长程推理与经验复用[8][25][29]。综合来看，不同方法在计算开销、抗干扰能力及适用场景上各有侧重：基于轻量级过滤与准入控制的方法适合追求低延迟与低Token消耗的交互场景[50]，而结合生物启发遗忘与显式合并策略的架构则更擅长处理长视界、强干扰下的复杂多任务推理与演化需求[37][49]。\n\n## 第4章 记忆效用、隐私与安全评测机制分支\n\n智能体长期记忆在多轮对话、跨任务机器人控制以及科学工作流中扮演着关键角色，但其有效性、隐私安全及评测机制一直是制约系统可靠落地的核心瓶颈。围绕记忆效用，研究表明记忆不单是静态的信息留存，更涉及复杂的提取、表征与动态资源分配。例如，AEC架构通过整合大语言模型语义增强器与关键状态识别器，将记忆使用从被动相似度匹配转化为上下文感知的策略性回溯，在多项环境中显著提升了数据效率与泛化能力[10]。在工具使用与多智能体场景中，混合 episodic-procedural 策略（H-EPM）通过构建图结构捕获例程并关联紧凑的 episodic 摘要，平衡了上下文推理与常规执行[14]。而在计算与推理开销的优化方面，LIMBO 框架将长期记忆视为可控的推理期资源，在单通道内联优化记忆策略与推理预算，在保障准确率的同时大幅降低了推理成本[36]。此外，诸如动态检索增强专家网络（DRAE）则利用稀疏混合专家机制与参数化检索协同缓解灾难性遗忘[12]。然而，检索到的记忆并不等同于其实际贡献，经验审计表明，记忆检索后的成效受制于具体的记忆库与智能体消耗方式，部分命中往往表现为“乘客信用”而非边际帮助[30]。在图结构检索方面，自适应图配置与传统词汇检索（如BM25）在不同基准上的表现表明，检索策略需与记忆设定联合评估[52]，而将证据提取与策略执行进行阶段解耦，则能有效突破多跳推理的瓶颈[47]。\n\n在安全与隐私边界方面，随着记忆系统从简单检索演变为支持全生命周期治理的数据管理系统[22]，记忆机制也引出了独特的攻击面与权限崩塌问题。反向链记忆攻击（BMA）揭示了低信任证据通过持久化记忆形成未经授权控制路径的灰色风险[23]，而记忆形成灌毒基准（MemForm）则指出内容、证据、作用域、选择及路径等多个接口均对对抗性操纵表现出广泛敏感性[41]。更进一步，“权威崩塌”现象表明，在记忆巩固边界处，若未能保留源头约束，存储的记忆便会暗示超出其来源允许的权限[57]，而记忆溯源洗钱问题也暴露出外部观察在巩固为用户历史或工作流支持时，会丢失剥夺低信任来源权限的缺陷[42]。对此，引入如平台保持的溯源、确认与风险标签等机制（如PPMF），可有效阻断未经授权的高风险动作[42]。此外，在共享记忆包仓库中部署蜜罐标记时，共享信息池与响应律差异也会引入额外的泄漏通道，需通过私有参考监视器与溯源强制代理进行架构响应[56]。\n\n在评测机制与基准演进方面，由于现有系统长期将记忆作为黑盒处理并主要依据端到端任务成功率进行评估[22]，领域内正转向基于路径和状态的精细化评测。例如，LIFESTATE-BENCH 旨在评估大语言模型中的终身学习与状态保持能力[16]，而 PATH-Bench 则通过构建受控的历史序列来度量前向传递、后向传递与遗忘[44]。同时，针对多智能体工作流综合的 EMMA 框架通过明确更新规则与所有权，利用独立守卫保持编辑的增量与有界[32]，Echo 评估基准则填补了时间情景记忆在多轮对话评估中的空白[13]。尽管各类材料科学与金融决策智能体通过持久化记忆实现了跨模型迁移与任务成功率的翻倍[34][20]，但跨异构平台分布式共享记忆的安全边界与不可信写入隔离机制仍缺乏系统性对比证据，构成当前开放的演进挑战。\n\n## 第5章 路线比较、失败条件与开放问题\n\n智能体长期记忆在多轮与跨任务运行中通过提取、更新并检索历史会话、任务经验与用户信息，持续利用已有知识[2][18]。然而，现有研究在核心机制、失效条件及安全边界上面临诸多挑战。从长远演进来看，大模型在持续编辑时往往陷入“不可能三角”——直接修改长期参数记忆会引发冲突并损害局部性与可靠性，而依赖工作记忆的检索激活则难以进行有效泛化[8]。为此，双参数记忆架构（如主存保留预训练知识、侧存承载编辑知识并通过路由器分发）以及知识分片机制被提出以解决上述冲突[8]。在记忆组织与动态拓扑方面，传统的有损摘要压缩易造成不可逆的信息丢失，而动态拓扑演进框架则通过显式、非破坏性的整合操作（如分裂、更新和合并）在有界可见表面上锚定检索，从而保持搜索成本可控[21]。\n\n在记忆的生命周期管理与算子选择上，静态的启发式策略已难以适应复杂的动态上下文。研究表明，记忆的持续更新伴随着效用的先升后降甚至低于无记忆基线的现象[55]。针对这一问题，基于预算依赖的算子选择策略（如权衡覆盖效应与替换效应的Merge、Abstract或Rewrite）能够在不同推理预算下优化证据压缩与保留[48]；而通过归因分析在用后评估其有效性并在压缩前进行判别式筛选，也能在减少活动存储的同时避免关键证据的丢失[40]。此外，将记忆操作建模为马尔可夫决策过程的自适应管理框架，能够利用轻量级上下文学习机制在单任务中在线学习何时、检索什么以及如何进行检索或遗忘[43]，而推断时的记忆与预算联合优化框架则在跨任务中平衡了任务性能与计算开销[36]。\n\n尽管长期记忆增强了智能体的持续自适应能力，但其在安全与权限边界上也暴露出严重隐患。由于持久化记忆将外部异构观察甚至低信任证据转化为行动上下文，逆向规划攻击（如反链记忆攻击BMA）证明了攻击者可利用不可信写入形成未经授权的控制路径[23]。同时，记忆形成过程中的多接口易受对抗性操纵（如内容、证据、范围、选择与路径中毒），真实的成功经验亦不能完全保证下游行为的可靠性[41]。更进一步，记忆整合过程极易导致“权限崩塌”，即在保留声明的同时抹除了源约束，使存储的记忆隐式地放大了其来源所允许的权限[57]。针对此类记忆来源洗钱与权限膨胀问题，轻量级溯源防火墙与平台维护的权限标签能够通过匹配行动风险与记忆授权来实现非放大式的权限控制[42]。综合来看，未来的智能体原生记忆系统亟需在保持长程稳定、控制计算开销与防范越权攻击之间建立严格的系统级平衡与可审计标准[22]。\n\n## 结论\n\n本综述系统梳理了智能体长期记忆的研究进展，得出以下主要结论：首先，长期记忆机制已从简单的静态检索演进为融合认知科学、拓扑演化、参数内化与马尔可夫决策的自适应生命周期管理体系，有效缓解了灾难性遗忘与计算开销过大的瓶颈。其次，路线比较表明，分层架构、图结构语义-情景双系统及基于成本感知的控制策略能够显著提升长视距任务的推理与检索效率。然而，记忆效用常受制于“乘客信用”现象，且持久化存储引入了反向链记忆攻击、记忆中毒以及“权限崩塌”等深层安全隐患。未来研究亟需在保持长程稳定、平衡计算开销与构建严格的溯源防火墙和权限隔离机制之间实现系统级平衡。\n\n## 参考文献\n\n[1] Tom Schaul, John Quan, Ioannis Antonoglou, David Silver. Prioritized Experience Replay. 2015. https://arxiv.org/abs/1511.05952\n\n[2] German I. Parisi, Ronald Kemker, Jose L. Part, Christopher Kanan, Stefan Wermter. Continual Lifelong Learning with Neural Networks: A Review. 2018. https://arxiv.org/abs/1802.07569\n\n[3] Dan Horgan, John Quan, David Budden, Gabriel Barth-Maron, Matteo Hessel. Distributed Prioritized Experience Replay. 2018. https://arxiv.org/abs/1803.00933\n\n[4] Kan Ren, Jiarui Qin, Yuchen Fang, Weinan Zhang, Lei Zheng. Lifelong Sequential Modeling with Personalized Memorization for User Response Prediction. 2019. https://arxiv.org/abs/1905.00758\n\n[5] Yuki Hou, Haruki Tamoto, Homei Miyashita. \"My agent understands me better\": Integrating Dynamic Human-like Memory Recall and Consolidation in LLM-Based Agents. 2024. https://arxiv.org/abs/2404.00573\n\n[6] Petr Anokhin, Nikita Semenov, Artyom Sorokin, Dmitry Evseev, Andrey Kravchenko. AriGraph: Learning Knowledge Graph World Models with Episodic Memory for LLM Agents. 2024. https://arxiv.org/abs/2407.04363\n\n[7] Kai Tzu-iunn Ong, Namyoung Kim, Minju Gwak, Hyungjoo Chae, Taeyoon Kwon. Towards Lifelong Dialogue Agents via Timeline-based Memory Management. 2024. https://arxiv.org/abs/2406.10996\n\n[8] Peng Wang, Zexi Li, Ningyu Zhang, Ziwen Xu, Yunzhi Yao. WISE: Rethinking the Knowledge Memory for Lifelong Model Editing of Large Language Models. 2024. https://arxiv.org/abs/2405.14768\n\n[9] Dudekula Kasim Vali. Active Dreaming Memory: Biologically-Inspired Episodic Consolidation for Lifelong Learning in Autonomous Agents. 2025. https://doi.org/10.31224/5919\n\n[10] Xidong Yang, Wenhao Li, Junjie Sheng, Yun Hua, Haosheng Chen. Agentic Episodic Control. 2025. https://arxiv.org/abs/2506.01442\n\n[11] Shreyas Rajesh, Pavan Holur, Chenda Duan, David Chong, Vwani Roychowdhury. Beyond Fact Retrieval: Episodic Memory for RAG with Generative Semantic Workspaces. 2025. https://arxiv.org/abs/2511.07587\n\n[12] Yayu Long, Kewei Chen, Long Jin, Mingsheng Shang. DRAE: Dynamic Retrieval-Augmented Expert Networks for Lifelong Learning and Task Adaptation in Robotics. 2025. https://arxiv.org/abs/2507.04661\n\n[13] WenTao Liu, Ruohua Zhang, Aimin Zhou, Feng Gao, JiaLi Liu. Echo: A Large Language Model with Temporal Episodic Memory. 2025. https://arxiv.org/abs/2502.16090\n\n[14] Sijia Li, Yuchen Huang, Zifan Liu, Zijian Li, Jingjing fu. Experience-Evolving Multi-Turn Tool-Use Agent with Hybrid Episodic-Procedural Memory. 2025. https://arxiv.org/abs/2512.07287\n\n[15] Erhu Feng, Wenbo Zhou, Zibin Liu, Le Chen, Yunpeng Dong. Get Experience from Practice: LLM Agents with Record & Replay. 2025. https://arxiv.org/abs/2505.17716\n\n[16] Siqi Fan, Xiusheng Huang, Yiqun Yao, Xuezhi Fang, Kang Liu. If an LLM Were a Character, Would It Know Its Own Story? Evaluating Lifelong Learning in LLMs. 2025. https://arxiv.org/abs/2503.23514\n\n[17] Junhao Zheng, Chengming Shi, Xidi Cai, Qiuke Li, Duzhen Zhang. Lifelong Learning of Large Language Model based Agents: A Roadmap. 2025. https://arxiv.org/abs/2501.07278\n\n[18] Wei-Chieh Huang, Weizhi Zhang, Yueqing Liang, Yuanchen Bei, Yankai Chen. A Survey of Agent Memory in the Second Half: Towards Self-Evolving and Long-Horizon Agents. 2026. https://arxiv.org/abs/2602.06052\n\n[19] Tao Hwang, Yishi Diao. AMU:Admission and Memory Update for Personalized Conversations---Structured Memory with SLM Guided Control. 2026. https://arxiv.org/abs/2609.36976\n\n[20] Nuoyue Xu, Jiang Liu, Wenxuan Huang, Xiang Zhang, Juntai Cao. Agent Memory with Episodic Retrieval for Financial Decision-Making. 2026. https://arxiv.org/abs/2609.28771\n\n[21] Can Lv, Heng Chang, Shengyu Tao, Mingju Chen, Zhaoxin Fan. All-Mem: Agentic Lifelong Memory via Dynamic Topology Evolution. 2026. https://arxiv.org/abs/2603.19595\n\n[22] Wei Zhou, Xuanhe Zhou, Shaokun Han, Hongming Xu, Guoliang Li. Are We Ready For An Agent-Native Memory System?. 2026. https://arxiv.org/abs/2606.24775\n\n[23] Kaisheng Fan, Yishu Gao, Xunzhu Tang, Tegawendé F. Bissyandé, Weizhe Zhang. BMA: Backchain Memory Attacks Create Unauthorized Control Paths in LLM Agents. 2026. https://arxiv.org/abs/2609.32186\n\n[24] Kexin Ma, Bojun Li, Yuhua Tang, Liting Sun, Ruochun Jin. CAST: Character-and-Scene Episodic Memory for Agents. 2026. https://arxiv.org/abs/2602.06051\n\n[25] Khang Nhat Hoang Vo, Tam Minh Chu, Anh Trac Duc Dinh, Thuyen Vinh Ha Bui, Tho Quan. Causal Episodic Memory for Feedback-Driven Agent Repair. 2026. https://arxiv.org/abs/2608.05906\n\n[26] Andreas Pattichis, Constantine Dovrolis. Continual Knowledge Updating in LLM Systems: Learning Through Multi-Timescale Memory Dynamics. 2026. https://arxiv.org/abs/2605.05097\n\n[27] Joe Logan. Continuum Memory Architectures for Long-Horizon LLM Agents. 2026. https://arxiv.org/abs/2601.09913\n\n[28] Jiaqi Chen, Yongqin Zeng, Shaoshen Chen, Yijian Zhang, Hai-Tao Zheng. CoreMem: Riemannian Retrieval and Fisher-Guided Distillation for Long-Term Memory in Dialogue Agents. 2026. https://arxiv.org/abs/2606.18406\n\n[29] Jiahao Zhang, Yifan Zhang, Yu Huang. Coupling Planning with Episodic Memory in LLM Agents for Software Issue Resolution. 2026. https://arxiv.org/abs/2608.06811\n\n[30] Alessio Rocchi. Does Memory Credit Travel? Paired Factorial Audits of LLM-Agent Memory. 2026. https://doi.org/10.2139/ssrn.7160321\n\n[31] Wenzhi Li, Dong Nie, Rui Lan, Tongtong Lyu, Peiyao Wang. Dual-Layer Agentic Memory with Fast Write Routing and Slow Consolidation. 2026. https://arxiv.org/abs/2608.22215\n\n[32] Ruijia Niu, Kaiwen Liu, Rose Yu, Kristina Klinkner. EMMA: Structured Episodic Memory for Multi-Agent Workflow Synthesis. 2026. https://arxiv.org/abs/2610.35966\n\n[33] Bhavyateja Potineni, Lohit Giri, Anu Jain, Vadim Kutsyy, Rajasekhar Pentakota. EngramRAG: Dynamic Usage-Weighted Topology and Synaptic Consolidation for Multi-Hop Agentic Memory. 2026. https://arxiv.org/abs/2609.32049\n\n[34] Siyu Liu, Bo Hu, Beilin Ye, He Cao, David J. Srolovitz. Harnessing agent memory to build lifelong AI partners for materials scientists. 2026. https://arxiv.org/abs/2608.11224\n\n[35] Suozhao Ji, Baodong Wu, Zehao Wang, Lei Xia, Qingping Li. Infini Memory: Maintainable Topic Documents for Long-Term LLM Agent Memory. 2026. https://arxiv.org/abs/2606.10677\n\n[36] Siddharth Sharma, Nilesh Prasad Pandey, Onat Gungor, Tajana Rosing. LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents. 2026. https://arxiv.org/abs/2609.14138\n\n[37] Ying Xie. Learning to Forget: Sleep-Inspired Memory Consolidation for Resolving Proactive Interference in Large Language Models. 2026. https://arxiv.org/abs/2603.14517\n\n[38] Jiaquan Zhang, Chaoning Zhang, Shuxu Chen, Zhenzhen Huang, Pengcheng Zheng. Lightweight LLM Agent Memory with Small Language Models. 2026. https://arxiv.org/abs/2604.07798\n\n[39] Dongfang Li, Zixuan Liu, Junmai Wang, Jiahe Huang, Fuhao Li. LycheeMemory V2: Efficient Long-Term Memory for LLM Agents via Semantic Segment-Level Consolidation. 2026. https://arxiv.org/abs/2608.12990\n\n[40] Mayank Anand, Subham Raj, Aman Vaibhav Jha, Sriparna Saha. MEMOIR: A Training-Free Memory Lifecycle for Long-Horizon LLM Agents. 2026. https://arxiv.org/abs/2611.07631\n\n[41] Haowen Pan, Pengyang Shao, Yunshan Ma, Yanzheng Jin, Naixin Zhai. MemForm: Benchmarking Memory Formation Poisoning in LLM Agents. 2026. https://arxiv.org/abs/2610.14431\n\n[42] Jinghan Xu, Yiyong Xiao, Wanru Shao, Hankai Liu, Xinjin Li. Memory Provenance Laundering in LLM Agents: A Non-Amplification Firewall for Persistent Memory. 2026. https://arxiv.org/abs/2607.29167\n\n[43] Eric Hanchen Jiang, Zhi Zhang, Yuchen Wu, Levina Li, Dong Liu. Memory as a Controlled Process: Learned Adaptive Memory Management for LLM Agents. 2026. https://arxiv.org/abs/2607.13591\n\n[44] Xidong Yang, Xingyi Zhang, Wenhao Li, Wenyan Liu, Junjie Sheng. PATH-Bench: Path-Dependent Evaluation of Lifelong Agents. 2026. https://arxiv.org/abs/2608.01149\n\n[45] Sukanta Ganguly. PLACEMEM: Toward a Compute-Aware Memory Plane for Lifelong Agents. 2026. https://arxiv.org/abs/2607.04089\n\n[46] Yubo Hou, Jingwei Song, Hongbo Zhang, Zhisheng Chen, Bang Xiao. PersonaTree: Structured Lifecycle Memory for Person Understanding in LLM Agents. 2026. https://arxiv.org/abs/2606.04780\n\n[47] Vikas Reddy, Sumanth Reddy Challaram. Reliable Post-Retrieval Assembly for Agent Memory: Separating Evidence Extraction from Policy Execution. 2026. https://arxiv.org/abs/2606.01435\n\n[48] Qingcan Kang, Mingyang Liu, Shixiong Kai, Kaichao Liang, Zhentao Tang. Retain or Consolidate? Budget-Dependent Operator Selection for Language Agent Memory. 2026. https://arxiv.org/abs/2607.17545\n\n[49] Saish Sachin Shinde. SCM: Sleep-Consolidated Memory with Algorithmic Forgetting for Large Language Models. 2026. https://arxiv.org/abs/2604.20943\n\n[50] Xiaobin Chen, Dian Jin, Lin Shu, Defeng Sun, Xiaoming Tao. SLICE-Mem: Salience-Gated Lightweight Information Curation for Efficient LLM Agent Memory. 2026. https://arxiv.org/abs/2610.33015\n\n[51] Zhengxuan Lu, Dongfang Li, Yukun Shi, Beilun Wang, Longyue Wang. Structured Episodic Event Memory. 2026. https://arxiv.org/abs/2601.06411\n\n[52] Yu-Shu Chen, Yu-Jung Liang, Pengtao Xie. TAGGRAPH: Tag-Augmented Graphs for Graph Retrieval of Agent Persistent Histories. 2026. https://arxiv.org/abs/2609.38353\n\n[53] Kai Li, Xuanqing Yu, Ziyi Ni, Yi Zeng, Yao Xu. TiMem: Temporal-Hierarchical Memory Consolidation for Long-Horizon Conversational Agents. 2026. https://arxiv.org/abs/2601.02845\n\n[54] Xiangyi Zeng, Baihang Liu, Xutong Wang, Ze Jin, Yunpeng Li. Use and Disuse: Intent-Structured Experience Consolidation for Memory and Learning in LLM Agents. 2026. https://arxiv.org/abs/2610.12124\n\n[55] Dylan Zhang, Yanshan Lin, Zhengkun Wu, Yihang Sun, Bingxuan Li. Useful Memories Become Faulty When Continuously Updated by LLMs. 2026. https://arxiv.org/abs/2605.12978\n\n[56] Joshua S. Gans. When Agents Talk: Honeytokens under Shared Memory. 2026. https://arxiv.org/abs/2608.11436\n\n[57] Qiuyang Zhan, Rui Zhang, Sheng Guo, Lepeng Zhao, Zhuotao Liu. When Memory Becomes Authority: Benchmarking Authority Collapse at the Memory Consolidation Boundary. 2026. https://arxiv.org/abs/2608.01679\n\n",
+  "references": [
+    {
+      "reference_number": 1,
+      "ref_id": "B001",
+      "title": "Prioritized Experience Replay",
+      "year": 2015,
+      "authors": [
+        "Tom Schaul",
+        "John Quan",
+        "Ioannis Antonoglou",
+        "David Silver"
+      ],
+      "doi": null,
+      "arxiv": "1511.05952",
+      "url": "https://arxiv.org/abs/1511.05952",
+      "work_id": "arxiv:1511.05952"
+    },
+    {
+      "reference_number": 2,
+      "ref_id": "B004",
+      "title": "Continual Lifelong Learning with Neural Networks: A Review",
+      "year": 2018,
+      "authors": [
+        "German I. Parisi",
+        "Ronald Kemker",
+        "Jose L. Part",
+        "Christopher Kanan",
+        "Stefan Wermter"
+      ],
+      "doi": "10.1016/j.neunet.2019.01.012.",
+      "arxiv": "1802.07569",
+      "url": "https://arxiv.org/abs/1802.07569",
+      "work_id": "arxiv:1802.07569"
+    },
+    {
+      "reference_number": 3,
+      "ref_id": "B006",
+      "title": "Distributed Prioritized Experience Replay",
+      "year": 2018,
+      "authors": [
+        "Dan Horgan",
+        "John Quan",
+        "David Budden",
+        "Gabriel Barth-Maron",
+        "Matteo Hessel",
+        "Hado van Hasselt",
+        "David Silver"
+      ],
+      "doi": null,
+      "arxiv": "1803.00933",
+      "url": "https://arxiv.org/abs/1803.00933",
+      "work_id": "arxiv:1803.00933"
+    },
+    {
+      "reference_number": 4,
+      "ref_id": "B014",
+      "title": "Lifelong Sequential Modeling with Personalized Memorization for User Response Prediction",
+      "year": 2019,
+      "authors": [
+        "Kan Ren",
+        "Jiarui Qin",
+        "Yuchen Fang",
+        "Weinan Zhang",
+        "Lei Zheng",
+        "Weijie Bian",
+        "Guorui Zhou",
+        "Jian Xu",
+        "Yong Yu",
+        "Xiaoqiang Zhu",
+        "Kun Gai"
+      ],
+      "doi": "10.1145/3331184.3331230",
+      "arxiv": "1905.00758",
+      "url": "https://arxiv.org/abs/1905.00758",
+      "work_id": "arxiv:1905.00758"
+    },
+    {
+      "reference_number": 5,
+      "ref_id": "B028",
+      "title": "\"My agent understands me better\": Integrating Dynamic Human-like Memory Recall and Consolidation in LLM-Based Agents",
+      "year": 2024,
+      "authors": [
+        "Yuki Hou",
+        "Haruki Tamoto",
+        "Homei Miyashita"
+      ],
+      "doi": "10.1145/3613905.3650839",
+      "arxiv": "2404.00573",
+      "url": "https://arxiv.org/abs/2404.00573",
+      "work_id": "arxiv:2404.00573"
+    },
+    {
+      "reference_number": 6,
+      "ref_id": "B029",
+      "title": "AriGraph: Learning Knowledge Graph World Models with Episodic Memory for LLM Agents",
+      "year": 2024,
+      "authors": [
+        "Petr Anokhin",
+        "Nikita Semenov",
+        "Artyom Sorokin",
+        "Dmitry Evseev",
+        "Andrey Kravchenko",
+        "Mikhail Burtsev",
+        "Evgeny Burnaev"
+      ],
+      "doi": null,
+      "arxiv": "2407.04363",
+      "url": "https://arxiv.org/abs/2407.04363",
+      "work_id": "arxiv:2407.04363"
+    },
+    {
+      "reference_number": 7,
+      "ref_id": "B034",
+      "title": "Towards Lifelong Dialogue Agents via Timeline-based Memory Management",
+      "year": 2024,
+      "authors": [
+        "Kai Tzu-iunn Ong",
+        "Namyoung Kim",
+        "Minju Gwak",
+        "Hyungjoo Chae",
+        "Taeyoon Kwon",
+        "Yohan Jo",
+        "Seung-won Hwang",
+        "Dongha Lee",
+        "Jinyoung Yeo"
+      ],
+      "doi": null,
+      "arxiv": "2406.10996",
+      "url": "https://arxiv.org/abs/2406.10996",
+      "work_id": "arxiv:2406.10996"
+    },
+    {
+      "reference_number": 8,
+      "ref_id": "B035",
+      "title": "WISE: Rethinking the Knowledge Memory for Lifelong Model Editing of Large Language Models",
+      "year": 2024,
+      "authors": [
+        "Peng Wang",
+        "Zexi Li",
+        "Ningyu Zhang",
+        "Ziwen Xu",
+        "Yunzhi Yao",
+        "Yong Jiang",
+        "Pengjun Xie",
+        "Fei Huang",
+        "Huajun Chen"
+      ],
+      "doi": null,
+      "arxiv": "2405.14768",
+      "url": "https://arxiv.org/abs/2405.14768",
+      "work_id": "arxiv:2405.14768"
+    },
+    {
+      "reference_number": 9,
+      "ref_id": "B036",
+      "title": "Active Dreaming Memory: Biologically-Inspired Episodic Consolidation for Lifelong Learning in Autonomous Agents",
+      "year": 2025,
+      "authors": [
+        "Dudekula Kasim Vali"
+      ],
+      "doi": "10.31224/5919",
+      "arxiv": null,
+      "url": "https://doi.org/10.31224/5919",
+      "work_id": "doi:10.31224/5919"
+    },
+    {
+      "reference_number": 10,
+      "ref_id": "B037",
+      "title": "Agentic Episodic Control",
+      "year": 2025,
+      "authors": [
+        "Xidong Yang",
+        "Wenhao Li",
+        "Junjie Sheng",
+        "Yun Hua",
+        "Haosheng Chen",
+        "Chuyun Shen",
+        "Xiangfeng Wang"
+      ],
+      "doi": null,
+      "arxiv": "2506.01442",
+      "url": "https://arxiv.org/abs/2506.01442",
+      "work_id": "arxiv:2506.01442"
+    },
+    {
+      "reference_number": 11,
+      "ref_id": "B038",
+      "title": "Beyond Fact Retrieval: Episodic Memory for RAG with Generative Semantic Workspaces",
+      "year": 2025,
+      "authors": [
+        "Shreyas Rajesh",
+        "Pavan Holur",
+        "Chenda Duan",
+        "David Chong",
+        "Vwani Roychowdhury"
+      ],
+      "doi": null,
+      "arxiv": "2511.07587",
+      "url": "https://arxiv.org/abs/2511.07587",
+      "work_id": "arxiv:2511.07587"
+    },
+    {
+      "reference_number": 12,
+      "ref_id": "B039",
+      "title": "DRAE: Dynamic Retrieval-Augmented Expert Networks for Lifelong Learning and Task Adaptation in Robotics",
+      "year": 2025,
+      "authors": [
+        "Yayu Long",
+        "Kewei Chen",
+        "Long Jin",
+        "Mingsheng Shang"
+      ],
+      "doi": null,
+      "arxiv": "2507.04661",
+      "url": "https://arxiv.org/abs/2507.04661",
+      "work_id": "arxiv:2507.04661"
+    },
+    {
+      "reference_number": 13,
+      "ref_id": "B040",
+      "title": "Echo: A Large Language Model with Temporal Episodic Memory",
+      "year": 2025,
+      "authors": [
+        "WenTao Liu",
+        "Ruohua Zhang",
+        "Aimin Zhou",
+        "Feng Gao",
+        "JiaLi Liu"
+      ],
+      "doi": null,
+      "arxiv": "2502.16090",
+      "url": "https://arxiv.org/abs/2502.16090",
+      "work_id": "arxiv:2502.16090"
+    },
+    {
+      "reference_number": 14,
+      "ref_id": "B044",
+      "title": "Experience-Evolving Multi-Turn Tool-Use Agent with Hybrid Episodic-Procedural Memory",
+      "year": 2025,
+      "authors": [
+        "Sijia Li",
+        "Yuchen Huang",
+        "Zifan Liu",
+        "Zijian Li",
+        "Jingjing fu",
+        "Lei Song",
+        "Jiang Bian",
+        "Jun Zhang",
+        "Rui Wang"
+      ],
+      "doi": null,
+      "arxiv": "2512.07287",
+      "url": "https://arxiv.org/abs/2512.07287",
+      "work_id": "arxiv:2512.07287"
+    },
+    {
+      "reference_number": 15,
+      "ref_id": "B045",
+      "title": "Get Experience from Practice: LLM Agents with Record & Replay",
+      "year": 2025,
+      "authors": [
+        "Erhu Feng",
+        "Wenbo Zhou",
+        "Zibin Liu",
+        "Le Chen",
+        "Yunpeng Dong",
+        "Cheng Zhang",
+        "Yisheng Zhao",
+        "Dong Du",
+        "Zhichao Hua",
+        "Yubin Xia",
+        "Haibo Chen"
+      ],
+      "doi": null,
+      "arxiv": "2505.17716",
+      "url": "https://arxiv.org/abs/2505.17716",
+      "work_id": "arxiv:2505.17716"
+    },
+    {
+      "reference_number": 16,
+      "ref_id": "B046",
+      "title": "If an LLM Were a Character, Would It Know Its Own Story? Evaluating Lifelong Learning in LLMs",
+      "year": 2025,
+      "authors": [
+        "Siqi Fan",
+        "Xiusheng Huang",
+        "Yiqun Yao",
+        "Xuezhi Fang",
+        "Kang Liu",
+        "Peng Han",
+        "Shuo Shang",
+        "Aixin Sun",
+        "Yequan Wang"
+      ],
+      "doi": null,
+      "arxiv": "2503.23514",
+      "url": "https://arxiv.org/abs/2503.23514",
+      "work_id": "arxiv:2503.23514"
+    },
+    {
+      "reference_number": 17,
+      "ref_id": "B049",
+      "title": "Lifelong Learning of Large Language Model based Agents: A Roadmap",
+      "year": 2025,
+      "authors": [
+        "Junhao Zheng",
+        "Chengming Shi",
+        "Xidi Cai",
+        "Qiuke Li",
+        "Duzhen Zhang",
+        "Chenxing Li",
+        "Dong Yu",
+        "Qianli Ma"
+      ],
+      "doi": null,
+      "arxiv": "2501.07278",
+      "url": "https://arxiv.org/abs/2501.07278",
+      "work_id": "arxiv:2501.07278"
+    },
+    {
+      "reference_number": 18,
+      "ref_id": "B053",
+      "title": "A Survey of Agent Memory in the Second Half: Towards Self-Evolving and Long-Horizon Agents",
+      "year": 2026,
+      "authors": [
+        "Wei-Chieh Huang",
+        "Weizhi Zhang",
+        "Yueqing Liang",
+        "Yuanchen Bei",
+        "Yankai Chen",
+        "Tao Feng",
+        "Xinyu Pan",
+        "Zhen Tan",
+        "Yu Wang",
+        "Tianxin Wei",
+        "Shanglin Wu",
+        "Ruiyao Xu",
+        "Liangwei Yang",
+        "Rui Yang",
+        "Wooseong Yang",
+        "Chin-Yuan Yeh",
+        "Hanrong Zhang",
+        "Haozhen Zhang",
+        "Siqi Zhu",
+        "Henry Peng Zou",
+        "Wanjia Zhao",
+        "Song Wang",
+        "Wujiang Xu",
+        "Zixuan Ke",
+        "Zheng Hui",
+        "Dawei Li",
+        "Yaozu Wu",
+        "Langzhou He",
+        "Chen Wang",
+        "Xiongxiao Xu",
+        "Baixiang Huang",
+        "Juntao Tan",
+        "Shelby Heinecke",
+        "Huan Wang",
+        "Caiming Xiong",
+        "Ahmed A. Metwally",
+        "Jun Yan",
+        "Chen-Yu Lee",
+        "Hanqing Zeng",
+        "Yinglong Xia",
+        "Xiaokai Wei",
+        "Ali Payani",
+        "Yu Wang",
+        "Haitong Ma",
+        "Wenya Wang",
+        "Chenguang Wang",
+        "Yu Zhang",
+        "Xin Eric Wang",
+        "Yongfeng Zhang",
+        "Jiaxuan You",
+        "Hanghang Tong",
+        "Xiao Luo",
+        "Xue Liu",
+        "Yizhou Sun",
+        "Wei Wang",
+        "Julian McAuley",
+        "James Zou",
+        "Jiawei Han",
+        "Philip S. Yu",
+        "Kai Shu"
+      ],
+      "doi": null,
+      "arxiv": "2602.06052",
+      "url": "https://arxiv.org/abs/2602.06052",
+      "work_id": "arxiv:2602.06052"
+    },
+    {
+      "reference_number": 19,
+      "ref_id": "B054",
+      "title": "AMU:Admission and Memory Update for Personalized Conversations---Structured Memory with SLM Guided Control",
+      "year": 2026,
+      "authors": [
+        "Tao Hwang",
+        "Yishi Diao"
+      ],
+      "doi": null,
+      "arxiv": "2609.36976",
+      "url": "https://arxiv.org/abs/2609.36976",
+      "work_id": "arxiv:2609.36976"
+    },
+    {
+      "reference_number": 20,
+      "ref_id": "B055",
+      "title": "Agent Memory with Episodic Retrieval for Financial Decision-Making",
+      "year": 2026,
+      "authors": [
+        "Nuoyue Xu",
+        "Jiang Liu",
+        "Wenxuan Huang",
+        "Xiang Zhang",
+        "Juntai Cao",
+        "Jiaqi Wei"
+      ],
+      "doi": null,
+      "arxiv": "2609.28771",
+      "url": "https://arxiv.org/abs/2609.28771",
+      "work_id": "arxiv:2609.28771"
+    },
+    {
+      "reference_number": 21,
+      "ref_id": "B056",
+      "title": "All-Mem: Agentic Lifelong Memory via Dynamic Topology Evolution",
+      "year": 2026,
+      "authors": [
+        "Can Lv",
+        "Heng Chang",
+        "Shengyu Tao",
+        "Mingju Chen",
+        "Zhaoxin Fan",
+        "Ziwei Zhang",
+        "Yuchen Guo",
+        "Shiji Zhou"
+      ],
+      "doi": null,
+      "arxiv": "2603.19595",
+      "url": "https://arxiv.org/abs/2603.19595",
+      "work_id": "arxiv:2603.19595"
+    },
+    {
+      "reference_number": 22,
+      "ref_id": "B057",
+      "title": "Are We Ready For An Agent-Native Memory System?",
+      "year": 2026,
+      "authors": [
+        "Wei Zhou",
+        "Xuanhe Zhou",
+        "Shaokun Han",
+        "Hongming Xu",
+        "Guoliang Li",
+        "Zhiyu Li",
+        "Feiyu Xiong",
+        "Fan Wu"
+      ],
+      "doi": null,
+      "arxiv": "2606.24775",
+      "url": "https://arxiv.org/abs/2606.24775",
+      "work_id": "arxiv:2606.24775"
+    },
+    {
+      "reference_number": 23,
+      "ref_id": "B059",
+      "title": "BMA: Backchain Memory Attacks Create Unauthorized Control Paths in LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Kaisheng Fan",
+        "Yishu Gao",
+        "Xunzhu Tang",
+        "Tegawendé F. Bissyandé",
+        "Weizhe Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2609.32186",
+      "url": "https://arxiv.org/abs/2609.32186",
+      "work_id": "arxiv:2609.32186"
+    },
+    {
+      "reference_number": 24,
+      "ref_id": "B060",
+      "title": "CAST: Character-and-Scene Episodic Memory for Agents",
+      "year": 2026,
+      "authors": [
+        "Kexin Ma",
+        "Bojun Li",
+        "Yuhua Tang",
+        "Liting Sun",
+        "Ruochun Jin"
+      ],
+      "doi": null,
+      "arxiv": "2602.06051",
+      "url": "https://arxiv.org/abs/2602.06051",
+      "work_id": "arxiv:2602.06051"
+    },
+    {
+      "reference_number": 25,
+      "ref_id": "B063",
+      "title": "Causal Episodic Memory for Feedback-Driven Agent Repair",
+      "year": 2026,
+      "authors": [
+        "Khang Nhat Hoang Vo",
+        "Tam Minh Chu",
+        "Anh Trac Duc Dinh",
+        "Thuyen Vinh Ha Bui",
+        "Tho Quan"
+      ],
+      "doi": null,
+      "arxiv": "2608.05906",
+      "url": "https://arxiv.org/abs/2608.05906",
+      "work_id": "arxiv:2608.05906"
+    },
+    {
+      "reference_number": 26,
+      "ref_id": "B064",
+      "title": "Continual Knowledge Updating in LLM Systems: Learning Through Multi-Timescale Memory Dynamics",
+      "year": 2026,
+      "authors": [
+        "Andreas Pattichis",
+        "Constantine Dovrolis"
+      ],
+      "doi": null,
+      "arxiv": "2605.05097",
+      "url": "https://arxiv.org/abs/2605.05097",
+      "work_id": "arxiv:2605.05097"
+    },
+    {
+      "reference_number": 27,
+      "ref_id": "B065",
+      "title": "Continuum Memory Architectures for Long-Horizon LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Joe Logan"
+      ],
+      "doi": null,
+      "arxiv": "2601.09913",
+      "url": "https://arxiv.org/abs/2601.09913",
+      "work_id": "arxiv:2601.09913"
+    },
+    {
+      "reference_number": 28,
+      "ref_id": "B066",
+      "title": "CoreMem: Riemannian Retrieval and Fisher-Guided Distillation for Long-Term Memory in Dialogue Agents",
+      "year": 2026,
+      "authors": [
+        "Jiaqi Chen",
+        "Yongqin Zeng",
+        "Shaoshen Chen",
+        "Yijian Zhang",
+        "Hai-Tao Zheng",
+        "Chunxia Ma",
+        "XiuTeng Zhou"
+      ],
+      "doi": null,
+      "arxiv": "2606.18406",
+      "url": "https://arxiv.org/abs/2606.18406",
+      "work_id": "arxiv:2606.18406"
+    },
+    {
+      "reference_number": 29,
+      "ref_id": "B067",
+      "title": "Coupling Planning with Episodic Memory in LLM Agents for Software Issue Resolution",
+      "year": 2026,
+      "authors": [
+        "Jiahao Zhang",
+        "Yifan Zhang",
+        "Yu Huang"
+      ],
+      "doi": null,
+      "arxiv": "2608.06811",
+      "url": "https://arxiv.org/abs/2608.06811",
+      "work_id": "arxiv:2608.06811"
+    },
+    {
+      "reference_number": 30,
+      "ref_id": "B069",
+      "title": "Does Memory Credit Travel? Paired Factorial Audits of LLM-Agent Memory",
+      "year": 2026,
+      "authors": [
+        "Alessio Rocchi"
+      ],
+      "doi": "10.2139/ssrn.7160321",
+      "arxiv": null,
+      "url": "https://doi.org/10.2139/ssrn.7160321",
+      "work_id": "doi:10.2139/ssrn.7160321"
+    },
+    {
+      "reference_number": 31,
+      "ref_id": "B071",
+      "title": "Dual-Layer Agentic Memory with Fast Write Routing and Slow Consolidation",
+      "year": 2026,
+      "authors": [
+        "Wenzhi Li",
+        "Dong Nie",
+        "Rui Lan",
+        "Tongtong Lyu",
+        "Peiyao Wang",
+        "Lingzi Hong",
+        "Weihang Pan",
+        "Binbin Lin",
+        "Boyuan Pan",
+        "Yao Hu"
+      ],
+      "doi": null,
+      "arxiv": "2608.22215",
+      "url": "https://arxiv.org/abs/2608.22215",
+      "work_id": "arxiv:2608.22215"
+    },
+    {
+      "reference_number": 32,
+      "ref_id": "B073",
+      "title": "EMMA: Structured Episodic Memory for Multi-Agent Workflow Synthesis",
+      "year": 2026,
+      "authors": [
+        "Ruijia Niu",
+        "Kaiwen Liu",
+        "Rose Yu",
+        "Kristina Klinkner"
+      ],
+      "doi": null,
+      "arxiv": "2610.35966",
+      "url": "https://arxiv.org/abs/2610.35966",
+      "work_id": "arxiv:2610.35966"
+    },
+    {
+      "reference_number": 33,
+      "ref_id": "B075",
+      "title": "EngramRAG: Dynamic Usage-Weighted Topology and Synaptic Consolidation for Multi-Hop Agentic Memory",
+      "year": 2026,
+      "authors": [
+        "Bhavyateja Potineni",
+        "Lohit Giri",
+        "Anu Jain",
+        "Vadim Kutsyy",
+        "Rajasekhar Pentakota"
+      ],
+      "doi": null,
+      "arxiv": "2609.32049",
+      "url": "https://arxiv.org/abs/2609.32049",
+      "work_id": "arxiv:2609.32049"
+    },
+    {
+      "reference_number": 34,
+      "ref_id": "B077",
+      "title": "Harnessing agent memory to build lifelong AI partners for materials scientists",
+      "year": 2026,
+      "authors": [
+        "Siyu Liu",
+        "Bo Hu",
+        "Beilin Ye",
+        "He Cao",
+        "David J. Srolovitz",
+        "Tongqi Wen"
+      ],
+      "doi": null,
+      "arxiv": "2608.11224",
+      "url": "https://arxiv.org/abs/2608.11224",
+      "work_id": "arxiv:2608.11224"
+    },
+    {
+      "reference_number": 35,
+      "ref_id": "B080",
+      "title": "Infini Memory: Maintainable Topic Documents for Long-Term LLM Agent Memory",
+      "year": 2026,
+      "authors": [
+        "Suozhao Ji",
+        "Baodong Wu",
+        "Zehao Wang",
+        "Lei Xia",
+        "Qingping Li",
+        "Ruisong Wang",
+        "Wenbo Ding",
+        "Zhenhua Zhu",
+        "Boxun Li",
+        "Guohao Dai",
+        "Yu Wang"
+      ],
+      "doi": null,
+      "arxiv": "2606.10677",
+      "url": "https://arxiv.org/abs/2606.10677",
+      "work_id": "arxiv:2606.10677"
+    },
+    {
+      "reference_number": 36,
+      "ref_id": "B081",
+      "title": "LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Siddharth Sharma",
+        "Nilesh Prasad Pandey",
+        "Onat Gungor",
+        "Tajana Rosing"
+      ],
+      "doi": null,
+      "arxiv": "2609.14138",
+      "url": "https://arxiv.org/abs/2609.14138",
+      "work_id": "arxiv:2609.14138"
+    },
+    {
+      "reference_number": 37,
+      "ref_id": "B082",
+      "title": "Learning to Forget: Sleep-Inspired Memory Consolidation for Resolving Proactive Interference in Large Language Models",
+      "year": 2026,
+      "authors": [
+        "Ying Xie"
+      ],
+      "doi": null,
+      "arxiv": "2603.14517",
+      "url": "https://arxiv.org/abs/2603.14517",
+      "work_id": "arxiv:2603.14517"
+    },
+    {
+      "reference_number": 38,
+      "ref_id": "B084",
+      "title": "Lightweight LLM Agent Memory with Small Language Models",
+      "year": 2026,
+      "authors": [
+        "Jiaquan Zhang",
+        "Chaoning Zhang",
+        "Shuxu Chen",
+        "Zhenzhen Huang",
+        "Pengcheng Zheng",
+        "Zhicheng Wang",
+        "Ping Guo",
+        "Fan Mo",
+        "Sung-Ho Bae",
+        "Jie Zou",
+        "Jiwei Wei",
+        "Yang Yang"
+      ],
+      "doi": null,
+      "arxiv": "2604.07798",
+      "url": "https://arxiv.org/abs/2604.07798",
+      "work_id": "arxiv:2604.07798"
+    },
+    {
+      "reference_number": 39,
+      "ref_id": "B085",
+      "title": "LycheeMemory V2: Efficient Long-Term Memory for LLM Agents via Semantic Segment-Level Consolidation",
+      "year": 2026,
+      "authors": [
+        "Dongfang Li",
+        "Zixuan Liu",
+        "Junmai Wang",
+        "Jiahe Huang",
+        "Fuhao Li",
+        "Lin Zhang",
+        "Bonian Jia",
+        "Baotian Hu",
+        "Min Zhang"
+      ],
+      "doi": null,
+      "arxiv": "2608.12990",
+      "url": "https://arxiv.org/abs/2608.12990",
+      "work_id": "arxiv:2608.12990"
+    },
+    {
+      "reference_number": 40,
+      "ref_id": "B086",
+      "title": "MEMOIR: A Training-Free Memory Lifecycle for Long-Horizon LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Mayank Anand",
+        "Subham Raj",
+        "Aman Vaibhav Jha",
+        "Sriparna Saha"
+      ],
+      "doi": null,
+      "arxiv": "2611.07631",
+      "url": "https://arxiv.org/abs/2611.07631",
+      "work_id": "arxiv:2611.07631"
+    },
+    {
+      "reference_number": 41,
+      "ref_id": "B087",
+      "title": "MemForm: Benchmarking Memory Formation Poisoning in LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Haowen Pan",
+        "Pengyang Shao",
+        "Yunshan Ma",
+        "Yanzheng Jin",
+        "Naixin Zhai",
+        "Xiang Wang",
+        "Xun Yang"
+      ],
+      "doi": null,
+      "arxiv": "2610.14431",
+      "url": "https://arxiv.org/abs/2610.14431",
+      "work_id": "arxiv:2610.14431"
+    },
+    {
+      "reference_number": 42,
+      "ref_id": "B090",
+      "title": "Memory Provenance Laundering in LLM Agents: A Non-Amplification Firewall for Persistent Memory",
+      "year": 2026,
+      "authors": [
+        "Jinghan Xu",
+        "Yiyong Xiao",
+        "Wanru Shao",
+        "Hankai Liu",
+        "Xinjin Li"
+      ],
+      "doi": null,
+      "arxiv": "2607.29167",
+      "url": "https://arxiv.org/abs/2607.29167",
+      "work_id": "arxiv:2607.29167"
+    },
+    {
+      "reference_number": 43,
+      "ref_id": "B091",
+      "title": "Memory as a Controlled Process: Learned Adaptive Memory Management for LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Eric Hanchen Jiang",
+        "Zhi Zhang",
+        "Yuchen Wu",
+        "Levina Li",
+        "Dong Liu",
+        "Xiao Liang",
+        "Rui Sun",
+        "Yubei Li",
+        "Edward Sun",
+        "Haozheng Luo",
+        "Zhaolu Kang",
+        "Aylin Caliskan",
+        "Kai-Wei Chang",
+        "Ying Nian Wu"
+      ],
+      "doi": null,
+      "arxiv": "2607.13591",
+      "url": "https://arxiv.org/abs/2607.13591",
+      "work_id": "arxiv:2607.13591"
+    },
+    {
+      "reference_number": 44,
+      "ref_id": "B094",
+      "title": "PATH-Bench: Path-Dependent Evaluation of Lifelong Agents",
+      "year": 2026,
+      "authors": [
+        "Xidong Yang",
+        "Xingyi Zhang",
+        "Wenhao Li",
+        "Wenyan Liu",
+        "Junjie Sheng",
+        "Yun Hua",
+        "Wei Yin",
+        "Tao Fang",
+        "Chuyun Shen",
+        "Xiangfeng Wang"
+      ],
+      "doi": null,
+      "arxiv": "2608.01149",
+      "url": "https://arxiv.org/abs/2608.01149",
+      "work_id": "arxiv:2608.01149"
+    },
+    {
+      "reference_number": 45,
+      "ref_id": "B095",
+      "title": "PLACEMEM: Toward a Compute-Aware Memory Plane for Lifelong Agents",
+      "year": 2026,
+      "authors": [
+        "Sukanta Ganguly"
+      ],
+      "doi": null,
+      "arxiv": "2607.04089",
+      "url": "https://arxiv.org/abs/2607.04089",
+      "work_id": "arxiv:2607.04089"
+    },
+    {
+      "reference_number": 46,
+      "ref_id": "B097",
+      "title": "PersonaTree: Structured Lifecycle Memory for Person Understanding in LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Yubo Hou",
+        "Jingwei Song",
+        "Hongbo Zhang",
+        "Zhisheng Chen",
+        "Bang Xiao",
+        "Tao Wan",
+        "Zengchang Qin"
+      ],
+      "doi": null,
+      "arxiv": "2606.04780",
+      "url": "https://arxiv.org/abs/2606.04780",
+      "work_id": "arxiv:2606.04780"
+    },
+    {
+      "reference_number": 47,
+      "ref_id": "B100",
+      "title": "Reliable Post-Retrieval Assembly for Agent Memory: Separating Evidence Extraction from Policy Execution",
+      "year": 2026,
+      "authors": [
+        "Vikas Reddy",
+        "Sumanth Reddy Challaram"
+      ],
+      "doi": null,
+      "arxiv": "2606.01435",
+      "url": "https://arxiv.org/abs/2606.01435",
+      "work_id": "arxiv:2606.01435"
+    },
+    {
+      "reference_number": 48,
+      "ref_id": "B101",
+      "title": "Retain or Consolidate? Budget-Dependent Operator Selection for Language Agent Memory",
+      "year": 2026,
+      "authors": [
+        "Qingcan Kang",
+        "Mingyang Liu",
+        "Shixiong Kai",
+        "Kaichao Liang",
+        "Zhentao Tang",
+        "Yuqi Cui",
+        "Tao Zhong",
+        "Mingxuan Yuan"
+      ],
+      "doi": null,
+      "arxiv": "2607.17545",
+      "url": "https://arxiv.org/abs/2607.17545",
+      "work_id": "arxiv:2607.17545"
+    },
+    {
+      "reference_number": 49,
+      "ref_id": "B103",
+      "title": "SCM: Sleep-Consolidated Memory with Algorithmic Forgetting for Large Language Models",
+      "year": 2026,
+      "authors": [
+        "Saish Sachin Shinde"
+      ],
+      "doi": null,
+      "arxiv": "2604.20943",
+      "url": "https://arxiv.org/abs/2604.20943",
+      "work_id": "arxiv:2604.20943"
+    },
+    {
+      "reference_number": 50,
+      "ref_id": "B104",
+      "title": "SLICE-Mem: Salience-Gated Lightweight Information Curation for Efficient LLM Agent Memory",
+      "year": 2026,
+      "authors": [
+        "Xiaobin Chen",
+        "Dian Jin",
+        "Lin Shu",
+        "Defeng Sun",
+        "Xiaoming Tao"
+      ],
+      "doi": null,
+      "arxiv": "2610.33015",
+      "url": "https://arxiv.org/abs/2610.33015",
+      "work_id": "arxiv:2610.33015"
+    },
+    {
+      "reference_number": 51,
+      "ref_id": "B105",
+      "title": "Structured Episodic Event Memory",
+      "year": 2026,
+      "authors": [
+        "Zhengxuan Lu",
+        "Dongfang Li",
+        "Yukun Shi",
+        "Beilun Wang",
+        "Longyue Wang",
+        "Baotian Hu"
+      ],
+      "doi": null,
+      "arxiv": "2601.06411",
+      "url": "https://arxiv.org/abs/2601.06411",
+      "work_id": "arxiv:2601.06411"
+    },
+    {
+      "reference_number": 52,
+      "ref_id": "B106",
+      "title": "TAGGRAPH: Tag-Augmented Graphs for Graph Retrieval of Agent Persistent Histories",
+      "year": 2026,
+      "authors": [
+        "Yu-Shu Chen",
+        "Yu-Jung Liang",
+        "Pengtao Xie"
+      ],
+      "doi": null,
+      "arxiv": "2609.38353",
+      "url": "https://arxiv.org/abs/2609.38353",
+      "work_id": "arxiv:2609.38353"
+    },
+    {
+      "reference_number": 53,
+      "ref_id": "B108",
+      "title": "TiMem: Temporal-Hierarchical Memory Consolidation for Long-Horizon Conversational Agents",
+      "year": 2026,
+      "authors": [
+        "Kai Li",
+        "Xuanqing Yu",
+        "Ziyi Ni",
+        "Yi Zeng",
+        "Yao Xu",
+        "Zheqing Zhang",
+        "Xin Li",
+        "Jitao Sang",
+        "Xiaogang Duan",
+        "Xuelei Wang",
+        "Chengbao Liu",
+        "Jie Tan"
+      ],
+      "doi": null,
+      "arxiv": "2601.02845",
+      "url": "https://arxiv.org/abs/2601.02845",
+      "work_id": "arxiv:2601.02845"
+    },
+    {
+      "reference_number": 54,
+      "ref_id": "B109",
+      "title": "Use and Disuse: Intent-Structured Experience Consolidation for Memory and Learning in LLM Agents",
+      "year": 2026,
+      "authors": [
+        "Xiangyi Zeng",
+        "Baihang Liu",
+        "Xutong Wang",
+        "Ze Jin",
+        "Yunpeng Li",
+        "Qixu Liu"
+      ],
+      "doi": null,
+      "arxiv": "2610.12124",
+      "url": "https://arxiv.org/abs/2610.12124",
+      "work_id": "arxiv:2610.12124"
+    },
+    {
+      "reference_number": 55,
+      "ref_id": "B110",
+      "title": "Useful Memories Become Faulty When Continuously Updated by LLMs",
+      "year": 2026,
+      "authors": [
+        "Dylan Zhang",
+        "Yanshan Lin",
+        "Zhengkun Wu",
+        "Yihang Sun",
+        "Bingxuan Li",
+        "Dianqi Li",
+        "Hao Peng"
+      ],
+      "doi": null,
+      "arxiv": "2605.12978",
+      "url": "https://arxiv.org/abs/2605.12978",
+      "work_id": "arxiv:2605.12978"
+    },
+    {
+      "reference_number": 56,
+      "ref_id": "B112",
+      "title": "When Agents Talk: Honeytokens under Shared Memory",
+      "year": 2026,
+      "authors": [
+        "Joshua S. Gans"
+      ],
+      "doi": null,
+      "arxiv": "2608.11436",
+      "url": "https://arxiv.org/abs/2608.11436",
+      "work_id": "arxiv:2608.11436"
+    },
+    {
+      "reference_number": 57,
+      "ref_id": "B113",
+      "title": "When Memory Becomes Authority: Benchmarking Authority Collapse at the Memory Consolidation Boundary",
+      "year": 2026,
+      "authors": [
+        "Qiuyang Zhan",
+        "Rui Zhang",
+        "Sheng Guo",
+        "Lepeng Zhao",
+        "Zhuotao Liu"
+      ],
+      "doi": null,
+      "arxiv": "2608.01679",
+      "url": "https://arxiv.org/abs/2608.01679",
+      "work_id": "arxiv:2608.01679"
+    }
+  ],
+  "article_sha256": "97fca1541a1a9b5baafd4e4a55266bd34337f57d58f3bc054e1b1e4ef5373822",
+  "references_sha256": "c0452aba746278d0a84a26b028e447c9d325bc0b551ca0ad0273b1f004473f46",
+  "expert_reviewed": false,
+  "source_version": "skills_core10_completion_20261109_v1"
+}

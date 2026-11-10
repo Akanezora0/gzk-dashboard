@@ -18,7 +18,7 @@ const picks=[
  ['deepseekr1_2025','DeepSeek-R1','强化学习驱动推理'],
 ]
 const byId=computed(()=>new Map((props.chronology?.events||[]).map(e=>[e.id,e])))
-const items=computed(()=>picks.map(([id,name,note])=>({ev:byId.value.get(id),name,note,story:milestoneStories[id]})).filter(i=>i.ev).sort((a,b)=>String(a.ev.first_public_date||a.ev.year).localeCompare(String(b.ev.first_public_date||b.ev.year))))
+const items=computed(()=>[...picks,...(props.chronology?.featured_additions||[]).map(p=>[p.id,p.name,p.note])].map(([id,name,note])=>({ev:byId.value.get(id),name,note,story:milestoneStories[id]||props.chronology?.featured_stories?.[id]})).filter(i=>i.ev).sort((a,b)=>String(a.ev.first_public_date||a.ev.year).localeCompare(String(b.ev.first_public_date||b.ev.year))))
 const entry=ev=>props.entries?.find(e=>e.topic_id===ev.topic_id&&e.route==='B')
 
 /* 配色：约每两年一种主色（红 → 金 → 青 → 蓝 → 紫），相邻主色之间平滑过渡 */
@@ -34,8 +34,8 @@ function tone(fy){
 /* 布局：主线为等距连续年份轴，技术点按发布日期落在所属年份区间；
    卡片尽量贴近时间点、上下与远近交替，直角引线分层避免交叉 */
 const wrap=ref(null),stageW=ref(1180)
-const W=computed(()=>Math.max(1080,stageW.value))
-const AY=270,NEAR=62,FAR=172,CARD=128
+const W=computed(()=>Math.max(1080,stageW.value,items.value.length*50))
+const AY=286,NEAR=62,FAR=172,CARD=128
 const layout=computed(()=>{
  const list=items.value,w=W.value;if(!list.length)return {years:[],pts:[],ax0:0,ax1:0,stops:[]}
  const years=[...new Set(list.map(i=>i.ev.year))].sort((a,b)=>a-b)
@@ -69,7 +69,9 @@ function hoverIn(p,e){
   if(selected.value||!root.value)return
   const r=card.getBoundingClientRect(),o=root.value.getBoundingClientRect(),PW=316,gap=14
   const right=r.right+gap+PW<=o.right+8
-  peek.value={p,left:right?r.right-o.left+gap:r.left-o.left-gap-PW,top:r.top-o.top+r.height/2,side:right?'right':'left'}
+  const preferred=right?r.right-o.left+gap:r.left-o.left-gap-PW
+  const left=Math.max(8-o.left,Math.min(window.innerWidth-8-PW-o.left,preferred))
+  peek.value={p,left,top:r.top-o.top+r.height/2,side:right?'right':'left'}
  },e.type==='focusin'?0:320)
 }
 function hoverOut(){clearTimeout(peekTimer);peek.value=null}
