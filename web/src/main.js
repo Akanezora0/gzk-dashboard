@@ -20,5 +20,5 @@ router.beforeEach((to,from)=>{
    sessionStorage.setItem('gzk-research-domain',current)
  }
 })
-router.afterEach(to=>{const labels={home:'首页',overview:'数据总览',data:'领域数据',evolution:'技术演进',chain:'短链条分析',cases:'长链条分析',assess:'评估'};document.title=`${labels[to.name]||'首页'} · 基础研究数据与评估系统`})
+router.afterEach(to=>{const labels={home:'首页',overview:'数据总览',data:'领域数据',evolution:'技术演进',chain:'短链条分析',cases:'长链条案例',assess:'评估'};document.title=`${labels[to.name]||'首页'} · 基础研究数据与评估系统`})
 createApp(App).use(router).mount('#app')

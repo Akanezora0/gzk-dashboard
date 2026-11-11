@@ -15,7 +15,7 @@ const rows=computed(()=>[
   {k:'pap',n:'论文',x:XS[1],all:C.value.papers&&`全库 ${wan(C.value.papers)}篇`,ai:C.value.ai_papers&&`AI ${wan(C.value.ai_papers)}篇`},
   {k:'pat',n:'专利',x:XS[2],all:C.value.national_patents&&`全库 ${wan(C.value.national_patents)}件`,ai:C.value.ai_patents&&`AI ${wan(C.value.ai_patents)}件`}],
   links:[{a:0,b:1,n:metric('基金—论文关系'),u:'对 · 基金—论文',how:'成果登记与论文资助标注',ai:metric('AI基金登记成果关系')},{a:1,b:2,n:metric('已接通专利—论文关系'),u:'对 · 专利引用论文',how:'规范化匹配专利引用的论文'}]},
- {y:R2,label:'产业链',sub:'基金 · 产品 · 产业 · 经济',nodes:[
+ {y:R2,label:'产业链',sub:'基金 · 产品 · 产业 · 经济社会价值',nodes:[
   {k:'fund',n:'基金项目',x:XS2[0],all:'经技术主题连接',ai:'80 个技术点',hub:true},
   {k:'prod',n:'产品',x:XS2[1],all:'产品与软著',ph:true},
   {k:'ind',n:'产业',x:XS2[2],all:'AI 企业名录',ai:'27,075 家'},
@@ -27,7 +27,7 @@ function linkTip(e,l){if(l.ph)show(e,`<b>${l.u}</b><br>关系数据接入中`);e
 </script>
 <template>
  <section class="ev-graph chain-rel">
-  <header class="ev-graph-head"><div><h3>已建立的链条关系</h3><p>领域数据经技术词表连接后形成的链条；红色标签为人工智能领域，虚线为数据接入中的环节</p></div></header>
+  <header class="ev-graph-head"><div><h3>已建立的链条关系</h3><p>领域数据经共同技术词表连接后形成的链条；红色标签为人工智能领域，虚线为数据接入中的环节</p></div></header>
   <div class="rs-scroll"><svg class="rs-svg chain-rel-svg" viewBox="0 0 1100 430" role="img" aria-label="创新链与产业链已建立的关联关系">
    <defs><linearGradient v-for="l in rows.flatMap(r=>r.links).filter(l=>!l.ph)" :key="'g'+l.id" :id="'crg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".85"/></linearGradient></defs>
    <g v-for="r in rows" :key="r.y">

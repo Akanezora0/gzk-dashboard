@@ -15,7 +15,7 @@ const Y=170
 const tones={org:'#6b5a52',per:'#8c6a3a',fund:'#a21535',pap:'#2c64a0',pat:'#23806e'}
 const nodes=computed(()=>[
  {k:'fund',n:'基金项目',x:250,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
- {k:'per',n:'人员',x:680,r:58,ai:`${fmt((props.dataset?.continuity||[]).length)} 位进阶`,aiN:growth.value?`负责人进阶 · 另有 ${fmt(growth.value.cases.length)} 位参与人成长`:'负责人前后项目进阶'},
+ {k:'per',n:'人员',x:680,r:58,ai:`${fmt((props.dataset?.continuity||[]).length)} 位负责人进阶`,aiN:growth.value?`另有 ${fmt(growth.value.cases.length)} 位参与人成长为负责人`:'负责人前后项目进阶'},
  {k:'org',n:'机构',x:1110,r:58,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`}])
 const links=computed(()=>{const N=nodes.value;return [
  {id:'fp',a:0,b:1,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录'},

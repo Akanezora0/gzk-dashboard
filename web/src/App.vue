@@ -17,7 +17,7 @@ import EvolutionHub from './components/EvolutionHub.vue'
 const route=useRoute(), router=useRouter(), data=ref(null), error=ref(''), loading=ref(false), updated=ref(''), viewSettled=ref(false)
 provide('viewSettled', viewSettled)
 const stageKey=computed(()=>domain.value==='lowalt'&&!['home','overview','assess'].includes(route.name)?'lowalt':String(route.name))
-const nav=[['home','首页'],['overview','数据总览'],['data','领域数据'],['evolution','技术演进'],['chain','短链条分析'],['cases','长链条分析'],['assess','评估']]
+const nav=[['home','首页'],['overview','数据总览'],['data','领域数据'],['evolution','技术演进'],['chain','短链条分析'],['cases','长链条案例'],['assess','评估']]
 const domain=computed(()=>['ai','lowalt'].includes(route.query.domain)?route.query.domain:sessionStorage.getItem('gzk-research-domain')==='lowalt'?'lowalt':'ai')
 const activeNav=computed(()=>Math.max(0,nav.findIndex(([id])=>id===route.name)))
 const navIcons=['M3 11l9-8 9 8 M5 9v12h5v-7h4v7h5V9','M3 5c0-3 18-3 18 0s-18 3-18 0v7c0 3 18 3 18 0V5 M3 12v7c0 3 18 3 18 0v-7','M4 20h17 M5 16h3v-5H5z M11 16h3V6h-3z M17 16h3V3h-3z','M3 20h18 M4 15l5-6 5 3 6-9 M18 3h3v3','M8 7h8 M7 8v8 M16 8l-7 8 M17 8v8 M4 4h6v6H4z M14 4h6v6h-6z M4 16h6v6H4z M14 16h6v6h-6z','M3 7h18v14H3z M8 7V3h8v4 M3 12h18 M10 12v3h4v-3','M4 20V10 M10 20V4 M16 20v-7 M3 20h18 M18 7l3-3 M21 7V4h-3']

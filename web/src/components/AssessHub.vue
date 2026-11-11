@@ -1,18 +1,18 @@
 <script setup>
-/* 评估：基础研究投入与布局的合理性评估（筹建中，占位页） */
+/* 评估：沿首页三个评估维度组织（占位页） */
 import PageHero from './PageHero.vue'
+// 与首页“评估维度”一致
 const dims=[
- {n:'01',t:'投入规模',d:'资助总量与增长节奏，与研究产出、学科发展阶段的匹配程度。',k:['经费增速','产出弹性']},
- {n:'02',t:'方向布局',d:'经费在技术方向与技术点上的分布，与前沿热点、产业需求的契合程度。',k:['方向份额','前沿覆盖']},
- {n:'03',t:'主体结构',d:'承担机构、负责人与地区分布的集中度、新进入与持续性。',k:['集中度','持续产出率']},
- {n:'04',t:'成果转化',d:'论文、专利向企业研发、产品与行业应用的承接效率。',k:['承接时滞','应用覆盖']}]
+ {n:'01',t:'经济效应',q:'科研成果如何转化为产业动能？',d:'连接技术采用、产品发展与企业经营，追踪成果从知识走向应用。',k:['产品创新','技术采用','经营表现']},
+ {n:'02',t:'政策与资源配置',q:'资助与政策如何塑造创新格局？',d:'结合资助布局、研究团队与政策实施，比较方向、机构与地区差异。',k:['资助布局','人才培育','政策作用']},
+ {n:'03',t:'社会影响',q:'创新为经济社会带来哪些改变？',d:'结合应用场景与公开资料，研究就业、技能需求与公共服务的变化。',k:['就业变化','技能需求','公共服务']}]
 </script>
 <template><div class="assess">
- <PageHero eyebrow="评估" title="基础研究投入与布局评估" lead="综合数据底座、短链条分析与长链条分析，评估基础研究的投入规模、方向布局与成果转化是否合理。"/>
+ <PageHero title="基础研究多维评估" lead="以多源全域数据底座为基础，结合短链条分析与长链条案例，从经济效应、政策与资源配置、社会影响三个维度回答基础研究的价值之问。"/>
  <section class="as-panel">
-  <header><h3>评估维度</h3><span>评估框架与指标体系建设中</span></header>
-  <div class="as-grid"><article v-for="d in dims" :key="d.n"><b>{{d.n}}</b><h4>{{d.t}}</h4><p>{{d.d}}</p><div class="as-k"><span v-for="k in d.k" :key="k">{{k}}</span></div></article></div>
-  <div class="as-foot"><span>相关分析</span><router-link :to="{path:'/evolution',query:{domain:'ai'}}">投入与产出 →</router-link><router-link :to="{path:'/chain',query:{domain:'ai',module:'strength'}}">研究团队 →</router-link></div>
+  <header><h3>评估维度</h3></header>
+  <div class="as-grid"><article v-for="d in dims" :key="d.n"><b>{{d.n}}</b><h4>{{d.t}}</h4><p class="q">{{d.q}}</p><p>{{d.d}}</p><div class="as-k"><span v-for="k in d.k" :key="k">{{k}}</span></div></article></div>
+  <div class="as-foot"><span>相关分析</span><router-link :to="{path:'/evolution',query:{domain:'ai'}}">技术演进 · 投入与产出 →</router-link><router-link :to="{path:'/chain',query:{domain:'ai'}}">短链条分析 →</router-link><router-link :to="{path:'/cases',query:{domain:'ai'}}">长链条案例 →</router-link></div>
  </section>
 </div></template>
 <style scoped>
@@ -21,7 +21,8 @@ const dims=[
 .as-panel header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
 .as-panel h3{margin:0;font-size:21px;font-weight:750;color:#232930;padding-left:14px;border-left:4px solid #a21535;line-height:1.2}
 .as-panel header span{font-size:13.5px;color:#9a9296}
-.as-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.as-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.as-grid p.q{flex:none;margin:0 0 6px;font-size:14.5px;font-weight:650;color:#a21535}
 .as-grid article{display:flex;flex-direction:column;padding:22px;border:1px dashed #ddd3cf;border-radius:4px;background:repeating-linear-gradient(135deg,#fff 0 10px,#fcf9f8 10px 20px)}
 .as-grid b{font-size:14px;font-weight:800;color:#a21535}
 .as-grid h4{margin:8px 0;font-size:18px;font-weight:750;color:#232930}

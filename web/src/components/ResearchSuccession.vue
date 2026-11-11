@@ -57,7 +57,7 @@ function flowTip(e,l){const names=records.value.filter(r=>typeGroup(r.earlier_pr
           <g v-for="l in sankey.links" :key="l.a+l.b" class="rs-hit" @mouseenter="flowTip($event,l)" @mousemove="move" @mouseleave="hide"><path :d="l.d" :fill="l.fill" :opacity="l.op"/></g>
           <template v-for="t in ORDER" :key="t">
             <g v-if="sankey.posL[t]"><rect :x="LX" :y="sankey.posL[t].y" :width="NW" :height="sankey.posL[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
-              <text v-if="sankey.posL[t].h>10" :x="LX-16" :y="sankey.posL[t].y+sankey.posL[t].h/2+6" font-size="16" font-weight="500" text-anchor="end" fill="#2a2a2a">{{t==='重点等'?'联合等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
+              <text v-if="sankey.posL[t].h>10" :x="LX-16" :y="sankey.posL[t].y+sankey.posL[t].h/2+6" font-size="16" font-weight="500" text-anchor="end" fill="#2a2a2a">{{t==='重点等'?'联合·重大等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
             <g v-if="sankey.posR[t]"><rect :x="RX" :y="sankey.posR[t].y" :width="NW" :height="sankey.posR[t].h" rx="3" :fill="TYPE_COLOR[t]"/>
               <text v-if="sankey.posR[t].h>10" :x="RX+NW+16" :y="sankey.posR[t].y+sankey.posR[t].h/2+6" font-size="16" font-weight="500" fill="#2a2a2a">{{t==='重点等'?'联合·重大等':TYPE_SHORT[t]=='青年'?'青年项目':TYPE_SHORT[t]=='地区'?'地区项目':'面上项目'}}</text></g>
           </template>

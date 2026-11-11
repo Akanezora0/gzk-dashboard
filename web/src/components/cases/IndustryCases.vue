@@ -17,8 +17,8 @@ const lines=s=>String(s||'').split('\n')
 <template><div class="ic-root">
  <!-- 总览：每个案例一行，沿六个环节展开 -->
  <section v-if="!current" class="ic-board-wrap">
-  <header class="ic-head"><div><h3>从基金支持到产业经济效益</h3><p>四家企业沿基金、论文、专利承接、产品、应用与经济效益六个环节展开，点击案例查看详情。</p></div><span class="ic-hint">左右滑动查看完整链条 →</span></header>
-  <div class="ic-board" tabindex="0" role="region" aria-label="基金、论文、专利、产品、应用、经济效益六环节案例链条">
+  <header class="ic-head"><div><h3>企业案例总览</h3><p>四家企业沿基金、论文、专利承接、产品、应用与经济社会价值六个环节展开，点击案例查看详情。</p></div><span class="ic-hint">左右滑动查看完整链条 →</span></header>
+  <div class="ic-board" tabindex="0" role="region" aria-label="基金、论文、专利承接、产品、应用、经济社会价值六环节案例链条">
    <div class="ic-grid ic-stages"><span class="ic-label">案例</span><b v-for="s in industryStages" :key="s">{{s}}</b></div>
    <button v-for="(c,i) in industryCases" :key="c.id" type="button" class="ic-grid ic-row" :aria-label="`查看${c.name}案例详情`" @click="openCase(c.id)">
     <span class="ic-name"><em>CASE {{String(i+1).padStart(2,'0')}}</em><strong>{{c.name}}</strong><small>{{c.product}}</small><i>查看详情 →</i></span>

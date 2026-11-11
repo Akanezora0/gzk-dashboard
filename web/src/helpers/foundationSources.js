@@ -5,10 +5,10 @@ export function overviewHeadline(data) {
   if (!data?.currentInventory?.counts) return []
   const c = data.currentInventory.counts
   return [
-    {id:'literature',name:'文献数量',value:(c.papers/1e8).toFixed(4)+'亿',unit:'篇',title:`跨来源去重论文：${fmt(c.papers)} 篇`,color:'#ae1833'},
-    {id:'fund',name:'基金项目',value:'42.8万',unit:'条',title:'基金项目：428409条',color:'#377f70'},
-    {id:'patent',name:'专利条数',value:concise(c.national_patents),unit:'条',title:'按公开号去重：'+fmt(c.national_patents),color:'#987aab'},
-    {id:'recruit',name:'招聘数据条数',value:concise(7284624),unit:'条',title:'招聘数据：7284624条',color:'#c56b32'},
+    {id:'literature',name:'论文',value:(c.papers/1e8).toFixed(4)+'亿',unit:'篇',title:`跨来源去重论文：${fmt(c.papers)} 篇`,color:'#ae1833'},
+    {id:'fund',name:'基金项目',value:'73.3万',unit:'项',title:'全库基金项目：733,190 项',color:'#377f70'},
+    {id:'patent',name:'专利',value:concise(c.national_patents),unit:'条',title:'按公开号去重：'+fmt(c.national_patents),color:'#987aab'},
+    {id:'recruit',name:'招聘岗位',value:concise(7284624),unit:'条',title:'招聘岗位：7,284,624 条',color:'#c56b32'},
   ]
 }
 
@@ -48,14 +48,19 @@ const sourceLabels = {
   科研单位: ['科研机构', '家', '科研单位名录'],
   产品厂家单位: ['产品厂商', '家', '产品厂家名录'],
   科研项目: ['专题科研项目', '项', '专题交付中的科研项目记录'],
-  ai_company: ['人工智能企业', '家', '人工智能企业候选名录'],
+  ai_company: ['人工智能企业', '家', '人工智能企业名录'],
   ai_report: ['人工智能与跨行业报告', '份', '报告PDF文件'],
   ai_policy: ['人工智能政策文献', '篇', '人工智能中央与地方政策文本'],
+  policy_central: ['人工智能中央政策文本', '篇', '中央政策原文与发文信息'],
+  policy_local: ['人工智能地方政策文本', '篇', '地方政策原文、地区与发文信息'],
 }
+// 与领域数据页统一口径（2026-11-11）：人工智能企业名录 27,075 家；政策以最新领域数据为准
+const countOverrides = {ai_company: 27075, policy_central: 631, policy_local: 7932}
 export function presentSource(dataset = {}) {
   if(dataset.verified_at==='2026-11-03'&&dataset.description)return {...dataset}
   const label = sourceLabels[dataset.id || dataset.namespace]
-  return label ? {...dataset, name: label[0], unit: label[1], description: label[2]} : {...dataset}
+  const count = countOverrides[dataset.id] ?? dataset.count
+  return label ? {...dataset, count, name: label[0], unit: label[1], description: label[2]} : {...dataset, count}
 }
 
 // All display counts now use accepted stock; legacy demonstration overrides removed.

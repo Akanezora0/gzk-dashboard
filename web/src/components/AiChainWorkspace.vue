@@ -16,7 +16,7 @@ import {fmt} from '../shared'
 const props=defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 // 创新链前三环：基金资助 → 科学研究 → 技术发展；投入产出对照已并入技术演进页
-const hero={title:'创新链与产业链的短链条分析',lead:'以关键技术词表连接领域数据，先建立基金、论文、专利与产品、产业之间的关联依据，再分段分析创新链与产业链。'}
+const hero={title:'创新链与产业链的短链条分析',lead:'以共同技术词表连接领域数据，先建立基金、论文、专利与产品、产业之间的关联依据，再分段分析创新链与产业链。'}
 const modules=[
  {id:'evidence',label:'关联与依据',caption:'由领域数据与技术词表建立的链条关系'},
  {id:'strength',label:'创新链分析',caption:'基金资助 · 科学研究 · 技术发展'},

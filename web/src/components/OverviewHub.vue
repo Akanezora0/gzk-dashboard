@@ -23,7 +23,7 @@ const additions=[
  {id:'lowalt_indicator',name:'经济指标明细',kind:'经营',count:22849,unit:'家',description:'有年度经营指标的企业覆盖'},
  {id:'lowalt_recruit',name:'招聘记录',kind:'招聘',count:226830,unit:'条',description:'低空经济招聘记录'},
  {id:'openscholar_text',name:'OpenScholar文本',kind:'文本',count:277,unit:'GB',description:'OpenScholar文本，277GB',pinBottom:true},
- {id:'fund_projects',name:'基金项目',kind:'基金',count:428409,unit:'条',description:'基金项目记录',core:true},
+ {id:'fund_projects',name:'基金项目',kind:'基金',count:733190,unit:'项',description:'全库基金项目',core:true},
  {id:'recruit_all',name:'招聘数据',kind:'招聘',count:7284624,unit:'条',description:'企业招聘信息',core:true},
 ]
 const datasets=computed(()=>overviewSources(props.data.overview.datasets).filter(d=>d.kind!=='关系'))
@@ -61,7 +61,7 @@ const previousName=computed(()=>history.value.previous_release?.match(/\d{8}/)?.
 import HomeIcon from './HomeIcon.vue'
 const cur=computed(()=>props.data.currentInventory||{})
 const cc=computed(()=>cur.value.counts||{})
-const heroSub={literature:'跨来源去重论文',fund:'基金项目记录',patent:'全国公开文献',recruit:'企业招聘信息'}
+const heroSub={literature:'跨来源去重论文',fund:'全库基金项目',patent:'全国公开文献',recruit:'企业招聘岗位'}
 const kindSources=computed(()=>{const m={};[...datasets.value,...additions].forEach(d=>{(m[d.kind]||(m[d.kind]=[])).push(d)});return m})
 const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name)}<br/>${p.value} 项来源 · 点击筛选`},
  graphic:[{type:'text',left:'center',top:'38%',style:{text:String(types.value.length),fontSize:64,fontWeight:800,fill:'#9c1c38',align:'center'}},{type:'text',left:'center',top:'56%',style:{text:'类数据',fontSize:20,fontWeight:600,fill:'#5d6878',align:'center'}}],
@@ -69,7 +69,7 @@ const ring2=computed(()=>({tooltip:{trigger:'item',formatter:p=>`${escape(p.name
   data:types.value.map(k=>({name:k,value:(kindSources.value[k]||[]).length||1,selected:kind.value===k,itemStyle:{color:palette[k]}}))}]}))
 // 全域来源统计：保持来源记录、统一身份和年份覆盖各自的口径。
 const paperSources=[{name:'arXiv',count:129602309},{name:'DBLP',count:8445422}]
-const fundSources=[{name:'项目记录总量',count:428409,unit:'条'},{name:'历史项目目录',count:370008,unit:'项'}]
+const fundSources=[{name:'全库基金项目',count:733190,unit:'项'},{name:'历史项目目录',count:370008,unit:'项'}]
 const patentSources=[{name:'全国公开文献',count:56903567,unit:'条'},{name:'专利—论文引用',count:13905635,unit:'对'}]
 const recruitSources=[{name:'岗位记录',count:7284624,unit:'条'},{name:'去重后岗位',count:4409592,unit:'条'}]
 const sourceLabel=n=>n>=1e8?(n/1e8).toFixed(3)+' 亿':(n/1e4).toFixed(2)+' 万'
@@ -101,7 +101,7 @@ const activeRel=ref(0)
 <template><div class="data-overview">
 <div class="domain-switch ovd-switch" aria-label="数据总览内容"><div role="tablist" aria-label="数据总览内容" @keydown="moveTab"><button v-for="[id,label] in tabs" :id="'overview-tab-'+id" :key="id" role="tab" :aria-selected="view===id" :aria-controls="'overview-panel-'+id" :tabindex="view===id?0:-1" :class="{active:view===id}" @click="selectView(id)">{{label}}</button></div></div>
 <div v-if="view==='scale'" key="scale" class="pane-swap ovd hero-light" id="overview-panel-scale" role="tabpanel" aria-labelledby="overview-tab-scale">
-<section class="ovd-card ovd-composition"><header class="ovd-card-head ovd-unified-heading"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} 330 C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div><div><p class="ovd-eyebrow">多源数据总览</p><h3>核心数据与来源构成—多源全域数据底座</h3><p>涵盖 {{types.length}} 类数据、{{datasets.length}} 项来源，以论文、基金、专利、招聘为核心，汇集企业、政策、新闻、产品等资料</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
+<section class="ovd-card ovd-composition"><header class="ovd-card-head ovd-unified-heading"><div class="ovd-hero-art" aria-hidden="true"><svg viewBox="0 0 800 300" preserveAspectRatio="xMaxYMid slice"><path v-for="i in 16" :key="i" :d="`M ${-60+i*4} 330 C ${250+i*12} ${250-i*10}, ${470+i*9} ${30+i*9}, 860 ${-30+i*20}`"/></svg></div><div><p class="ovd-eyebrow">多源数据总览</p><h3>多源全域数据底座 · 核心数据与来源构成</h3><p>涵盖 {{types.length}} 类数据、{{datasets.length}} 项来源，以论文、基金、专利、招聘为核心，汇集企业、政策、新闻、产品等资料</p></div><button v-if="kind!=='全部'" class="overview-text-button" @click="kind='全部'">显示全部</button></header>
  <div class="ovd-core"><div v-for="d in headline" :key="d.id" class="ovd-core-item" :style="{'--c':d.color}"><span>{{d.name}}</span><strong :title="d.id==='patent'?'全国公开文献':d.title">{{d.value}}<small>{{d.unit}}</small></strong><em>{{heroSub[d.id]}}</em></div></div>
  <div class="ovd-comp-grid"><div class="ovd-ring"><Chart :option="ring2" :height="480" label="多源数据类别构成" @select="p=>pick(p.name)"/></div>
  <div class="ovd-rows"><div class="ovd-rows-head"><h4>{{kind==='全部'?'主要来源与规模':kind+' · 来源与规模'}}</h4><button class="overview-text-button" :aria-pressed="balanced" @click="balanced=!balanced">{{balanced?'均衡显示':'按数量显示'}} ⇄</button></div>
@@ -110,13 +110,13 @@ const activeRel=ref(0)
   <h4 class="ovd-portraits-title">核心数据统计指标</h4>
   <div class="ovd-portrait-grid">
    <article class="ovd-portrait" :style="{'--c':profileColors.literature}">
-    <header><span class="ovd-portrait-icon"><HomeIcon name="paper"/></span><h4>文献<span>多源学术记录</span></h4></header>
-    <div class="ovd-portrait-stat"><strong>26</strong><span>年中文期刊覆盖<small>中文期刊发表年份 2000—2025</small></span></div>
+    <header><span class="ovd-portrait-icon"><HomeIcon name="paper"/></span><h4>论文<span>多源学术记录</span></h4></header>
+    <div class="ovd-portrait-stat"><strong>26</strong><span>年论文发表覆盖<small>论文发表年份 2000—2025</small></span></div>
     <div class="ovd-year-span"><span>2000</span><i></i><span>2025</span></div>
-    <div class="ovd-source-bars ovd-fund-bars" aria-label="文献来源记录规模">
+    <div class="ovd-source-bars ovd-fund-bars" aria-label="论文来源记录规模">
      <div v-for="item in paperSources" :key="item.name" class="ovd-source-bar"><div><span>{{item.name}}</span><b>{{fmt(item.count)}}<small>条</small></b></div><div class="ovd-source-rail"><i :style="{width:(item.count/paperSources[0].count*100)+'%'}"></i></div></div>
     </div>
-    <div class="ovd-analysis-axes"><span>文献内容<b>标题 · 摘要 · 关键词</b></span><span>时间与主体<b>发表年 · 作者 · 机构</b></span></div>
+    <div class="ovd-analysis-axes"><span>论文内容<b>标题 · 摘要 · 关键词</b></span><span>时间与主体<b>发表年 · 作者 · 机构</b></span></div>
    </article>
    <article class="ovd-portrait" :style="{'--c':profileColors.fund}">
     <header><span class="ovd-portrait-icon"><HomeIcon name="grant"/></span><h4>基金<span>历史目录与官网增量</span></h4></header>

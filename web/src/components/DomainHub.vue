@@ -4,6 +4,7 @@ import {useRoute,useRouter} from 'vue-router'
 import Chart from './Chart.vue'
 import CurrentDomainInventory from './CurrentDomainInventory.vue'
 import RecruitData from './RecruitData.vue'
+import AuthorList from './AuthorList.vue'
 import CountValue from './CountValue.vue'
 import '../domain.css'
 import '../domain_delta.css'
@@ -83,7 +84,7 @@ const field=(view,name)=>view?.fields?.find(f=>f.name===name)?.available??null
 const rankCount=(view,name)=>view?.ranking?.items?.find(r=>r.name===name)?.count??null
 const yearRange=view=>{const ys=(view?.years||[]).map(x=>x.year).filter(Boolean);return ys.length?`${Math.min(...ys)}—${Math.max(...ys)}`:'—'}
 // 耀元政策规范库 v3 展示口径；与 8,563 未跨源去重的历史候选分开标明。
-const policyPresent={total:8563,central:631,local:7932,regions:31,aiLabel:'AI／大模型政策收录',legacyLabel:'历史政策AI相关候选'}
+const policyPresent={total:8563,central:631,local:7932,regions:31,aiLabel:'人工智能政策文本',legacyLabel:'历史政策相关记录'}
 const sourceLabel=ns=>({cnki_paper:'中文期刊文献',nsfc_paper:'国自然资助论文',ai_policy:policyPresent.aiLabel,legacy_policy:policyPresent.legacyLabel})[ns]||sources.value.find(m=>m.namespace===ns)?.name||''
 const sourceCards=computed(()=>sources.value.map(m=>{
  const view=sourceViews.value[m.namespace]
@@ -98,13 +99,13 @@ const kpis=computed(()=>{
  const a=analytics.value,n=(label,value,unit='条',detail='')=>({label,value,unit,detail}),span={label:profile.value.year,value:yearRange(a),text:true,detail:'记录时间范围'}
  if(!a)return []
  switch(type.value){
-  case 'fund':return [n('基金项目候选',a.total,'项'),span,n('含批准号项目',field(a,'批准号'),'项'),n('涉及技术主题',a.topic_count,'项')]
-  case 'patent':return [n('专利公开候选',a.total),span,n('含专利引文记录',field(a,'专利引证')),n('含非专利引文记录',field(a,'非专利引文'))]
-  case 'software':return [n('软著候选记录',a.total),span,n('含工商标识记录',field(a,'工商来源ID')),n('涉及技术主题',a.topic_count,'项')]
-  case 'news':return [n('产业新闻候选',a.total),span,n('含来源信息',field(a,'来源')),n('含相关主体信息',field(a,'相关方'))]
-  case 'report':return [n('行业报告候选',a.total,'份'),n('AI专题报告',rankCount(a,'AI专题报告'),'份'),n('跨行业报告',rankCount(a,'跨行业报告'),'份'),n('涉及技术主题',a.topic_count,'项')]
-  case 'company':return [n('企业名录候选',a.total),n('含省份信息',field(a,'省份')),n('含工商来源标识',field(a,'天眼查ID'))]
-  case 'product':return [n('产品候选记录',a.total),n('含产品型号',field(a,'产品型号')),n('含厂商代码',field(a,'厂商代码'))]
+  case 'fund':return [n('基金项目',a.total,'项'),span,n('含批准号项目',field(a,'批准号'),'项'),n('涉及技术主题',a.topic_count,'项')]
+  case 'patent':return [n('专利公开记录',a.total),span,n('含专利引文记录',field(a,'专利引证')),n('含非专利引文记录',field(a,'非专利引文'))]
+  case 'software':return [n('软著登记',a.total),span,n('含工商标识记录',field(a,'工商来源ID')),n('涉及技术主题',a.topic_count,'项')]
+  case 'news':return [n('产业新闻',a.total),span,n('含来源信息',field(a,'来源')),n('含相关主体信息',field(a,'相关方'))]
+  case 'report':return [n('行业报告',a.total,'份'),n('人工智能专题报告',rankCount(a,'AI专题报告'),'份'),n('跨行业报告',rankCount(a,'跨行业报告'),'份'),n('涉及技术主题',a.topic_count,'项')]
+  case 'company':return [n('企业名录',a.total),n('含省份信息',field(a,'省份')),n('含工商来源标识',field(a,'天眼查ID'))]
+  case 'product':return [n('产品记录',a.total),n('含产品型号',field(a,'产品型号')),n('含厂商代码',field(a,'厂商代码'))]
   default:return []
  }
 })
@@ -128,7 +129,7 @@ const chartPanels=computed(()=>{
  const a=analytics.value;if(!a)return []
  return profile.value.charts.filter(key=>!hasCurrent.value||['topics','ranking'].includes(key)).flatMap(key=>{
   if(key==='years')return a.years?.length?[{key,title:`${profile.value.year}分布`,subtitle:current.value?.name,option:yearChart(a)}]:[]
-  if(key==='topics')return a.topics?.length?[{key,title:'技术主题分布',subtitle:`${current.value?.name} · ${hasCurrent.value?'专题来源样本 · ':''}词表匹配`,option:horizontalChart(a.topics,{topic:true,label:'候选记录'}),topic:true}]:[]
+  if(key==='topics')return a.topics?.length?[{key,title:'技术主题分布',subtitle:`${current.value?.name} · ${hasCurrent.value?'专题来源样本 · ':''}词表匹配`,option:horizontalChart(a.topics,{topic:true,label:'记录'}),topic:true}]:[]
   if(key==='ranking'){
    if(type.value==='policy'){
     const items=[{name:'中央政策',count:policyPresent.central},{name:'地方独立政策',count:policyPresent.local}]
@@ -179,7 +180,7 @@ const brief=computed(()=>{
  if(type.value==='paper'){
   tag='领域数据 · 研究成果';title='论文与研究成果'
   desc=`论文按来源分别计数。中文期刊文献 ${fmt(m('cnki_paper'))} 条，保留题名、作者与期刊信息；国自然资助论文 ${fmt(m('nsfc_paper'))} 篇，为基金项目关联的成果记录。`
-  bullets=['两类来源不能相加为唯一论文总数',yearNote]
+  bullets=['两类来源分别计数',yearNote]
   highlights=[chip('中文期刊文献',m('cnki_paper'),'条'),chip('国自然资助论文',m('nsfc_paper'),'篇'),chip('基金项目',m('nsfc_fund'),'项','fund'),chip('技术主题',topics,'项')]
   add('中文期刊文献',m('cnki_paper'),'条');add('国自然资助论文',m('nsfc_paper'),'篇');if(span&&span!=='—')add('时间范围',span,'',true);add('技术主题',topics,'项');add('作者信息',field(sourceViews.value.cnki_paper,'作者'),'条')
  }else if(type.value==='fund'){
@@ -189,43 +190,43 @@ const brief=computed(()=>{
   highlights=[chip('基金项目',a?.total??m('nsfc_fund'),'项'),chip('资助论文',m('nsfc_paper'),'篇','paper'),chip('技术主题',topics,'项'),chip('含批准号',field(a,'批准号'),'项')]
  }else if(type.value==='patent'){
   tag='领域数据 · 技术创新';title='专利公开记录'
-  desc=`人工智能领域专利公开候选 ${fmt(a?.total??m('legacy_patent'))} 条，保留申请号、申请人与 IPC 分类。本页为领域候选，不是全库专利库存。`
+  desc=`人工智能领域专利公开记录 ${fmt(a?.total??m('legacy_patent'))} 条，保留申请号、申请人与 IPC 分类。`
   bullets=[field(a,'专利引证')!=null?`含专利引文记录 ${fmt(field(a,'专利引证'))} 条`:'',yearNote].filter(Boolean)
-  highlights=[chip('专利公开候选',a?.total??m('legacy_patent'),'条'),chip('软件著作权',m('legacy_software'),'条','software'),chip('技术主题',topics,'项'),chip('专利引文',field(a,'专利引证'),'条')]
+  highlights=[chip('专利公开记录',a?.total??m('legacy_patent'),'条'),chip('软件著作权',m('legacy_software'),'条','software'),chip('技术主题',topics,'项'),chip('专利引文',field(a,'专利引证'),'条')]
  }else if(type.value==='software'){
   tag='领域数据 · 软件著作权';title='软件著作权'
-  desc=`软件著作权登记候选 ${fmt(a?.total??m('legacy_software'))} 条，保留登记单位与工商来源标识。`
+  desc=`软件著作权登记 ${fmt(a?.total??m('legacy_software'))} 条，保留登记单位与工商来源标识。`
   bullets=[span!=='—'?`登记年份覆盖 ${span}`:'',yearNote].filter(Boolean)
-  highlights=[chip('软著登记',a?.total??m('legacy_software'),'条'),chip('专利公开候选',m('legacy_patent'),'条','patent'),chip('技术主题',topics,'项'),chip('登记单位',field(a,'登记单位'),'条')]
+  highlights=[chip('软著登记',a?.total??m('legacy_software'),'条'),chip('专利公开记录',m('legacy_patent'),'条','patent'),chip('技术主题',topics,'项'),chip('登记单位',field(a,'登记单位'),'条')]
  }else if(type.value==='policy'){
   tag='领域数据 · 政策环境';title='政策与创新环境'
-  desc=`政策文本按来源分列。${policyPresent.aiLabel} ${fmt(policyPresent.total)} 篇，为耀元人工智能／大模型政策累计来源收录量，尚未逐篇确认实质相关性；${policyPresent.legacyLabel} ${fmt(m('legacy_policy'))} 篇，与前者尚未跨来源去重，不能直接相加。`
-  bullets=[`中央政策 ${fmt(policyPresent.central)} 篇，地方独立政策 ${fmt(policyPresent.local)} 篇`,`覆盖 ${fmt(policyPresent.regions)} 个省级地区`,'产业新闻与行业报告仍是历史规则候选数，并非全部原始资料数量']
+  desc=`人工智能政策文本 ${fmt(policyPresent.total)} 篇，覆盖中央与地方各级政策；另收录历史政策相关记录 ${fmt(m('legacy_policy'))} 篇，按来源分别统计。`
+  bullets=[`中央政策 ${fmt(policyPresent.central)} 篇，地方独立政策 ${fmt(policyPresent.local)} 篇`,`覆盖 ${fmt(policyPresent.regions)} 个省级地区`]
   highlights=[chip(policyPresent.aiLabel,policyPresent.total,'篇'),chip(policyPresent.legacyLabel,m('legacy_policy'),'篇'),chip('产业新闻',m('legacy_news'),'条','news'),chip('行业报告',m('ai_report'),'份','report')]
  }else if(type.value==='news'){
   tag='领域数据 · 资讯动态';title='产业新闻'
   desc=`已汇聚 ${fmt(a?.total??m('legacy_news'))} 条产业新闻，保留来源与相关主体，可与政策文本、行业报告对照阅读。`
   bullets=[field(a,'来源')!=null?`含来源信息 ${fmt(field(a,'来源'))} 条`:'',field(a,'相关方')!=null?`含相关主体信息 ${fmt(field(a,'相关方'))} 条`:''].filter(Boolean)
-  highlights=[chip('产业新闻',a?.total??m('legacy_news'),'条'),chip(policyPresent.aiLabel,m('ai_policy'),'篇','policy'),chip('行业报告',m('ai_report'),'份','report'),chip('技术主题',topics,'项')]
+  highlights=[chip('产业新闻',a?.total??m('legacy_news'),'条'),chip('含来源信息',field(a,'来源'),'条'),chip('含相关主体信息',field(a,'相关方'),'条'),chip('技术主题',topics,'项')]
  }else if(type.value==='report'){
   tag='领域数据 · 行业研究';title='行业研究报告'
-  desc=`行业报告 PDF ${fmt(a?.total??m('ai_report'))} 份，其中 AI 专题报告 ${fmt(rankCount(a,'AI专题报告'))} 份，跨行业报告 ${fmt(rankCount(a,'跨行业报告'))} 份。`
+  desc=`行业报告 PDF ${fmt(a?.total??m('ai_report'))} 份，其中人工智能专题报告 ${fmt(rankCount(a,'AI专题报告'))} 份，跨行业报告 ${fmt(rankCount(a,'跨行业报告'))} 份。`
   bullets=['按文件内容归入专题或跨行业']
-  highlights=[chip('行业报告',a?.total??m('ai_report'),'份'),chip(policyPresent.aiLabel,m('ai_policy'),'篇','policy'),chip('产业新闻',m('legacy_news'),'条','news'),chip('技术主题',topics,'项')]
+  highlights=[chip('行业报告',a?.total??m('ai_report'),'份'),chip('人工智能专题报告',rankCount(a,'AI专题报告'),'份'),chip('跨行业报告',rankCount(a,'跨行业报告'),'份'),chip('技术主题',topics,'项')]
  }else if(type.value==='company'){
   tag='领域数据 · 创新主体';title='人工智能企业'
-  desc=`人工智能企业候选名录 ${fmt(a?.total??m('ai_company'))} 家，保留省份与工商来源标识。`
+  desc=`人工智能企业名录 ${fmt(a?.total??m('ai_company'))} 家，保留省份与工商来源标识。`
   bullets=[field(a,'省份')!=null?`含省份信息 ${fmt(field(a,'省份'))} 条`:'']
-  highlights=[chip('企业名录',a?.total??m('ai_company'),'条'),chip('专利公开候选',m('legacy_patent'),'条','patent'),chip('软著登记',m('legacy_software'),'条','software'),chip('含省份信息',field(a,'省份'),'条')]
+  highlights=[chip('企业名录',a?.total??m('ai_company'),'条'),chip('专利公开记录',m('legacy_patent'),'条','patent'),chip('软著登记',m('legacy_software'),'条','software'),chip('含省份信息',field(a,'省份'),'条')]
  }else{
   tag='领域数据 · 应用载体';title='产品与应用载体'
-  desc=`产品候选记录 ${fmt(a?.total??m('legacy_product'))} 条，保留产品型号与厂商代码。`
+  desc=`产品记录 ${fmt(a?.total??m('legacy_product'))} 条，保留产品型号与厂商代码。`
   bullets=['当前为已接入的产品目录记录','厂商代码见下方列表']
-  highlights=[chip('产品记录',a?.total??m('legacy_product'),'条'),chip('专利公开候选',m('legacy_patent'),'条','patent'),chip('企业名录',m('ai_company'),'家','company'),chip('含产品型号',field(a,'产品型号'),'条')]
+  highlights=[chip('产品记录',a?.total??m('legacy_product'),'条'),chip('专利公开记录',m('legacy_patent'),'条','patent'),chip('企业名录',m('ai_company'),'家','company'),chip('含产品型号',field(a,'产品型号'),'条')]
  }
  if(type.value!=='paper'){
   add('数据总量',type.value==='policy'?policyPresent.total:(a?.total??m(p.primary)),p.unit);if(span&&span!=='—')add('时间范围',span,'',true)
-  for(const k of kpis.value){if(tiles.length>=6)break;if(String(k.label).includes('候选')||k.label===p.year)continue;add(k.label,k.value,k.text?'':k.unit,!!k.text)}
+  for(const k of kpis.value){if(tiles.length>=6)break;if(k===kpis.value[0]||k.label===p.year)continue;add(k.label,k.value,k.text?'':k.unit,!!k.text)}
  }
  highlights=highlights.filter(h=>h.value!=null&&h.value!=='')
  bullets=bullets.filter(Boolean)
@@ -250,7 +251,7 @@ const brief=computed(()=>{
   <template v-else>
    <div v-if="sources.length>1&&!hasCurrent" class="domain-source-grid">
     <article v-for="s in sourceCards" :key="s.namespace" class="domain-source-card">
-     <div class="domain-source-top"><h3>{{s.name}}</h3><span>领域候选</span></div>
+     <div class="domain-source-top"><h3>{{s.name}}</h3><span>领域数据</span></div>
      <div class="domain-source-total"><strong><CountValue v-if="s.total!=null" :value="s.total"/><span v-else>—</span></strong><span>条</span><small>{{s.years}}</small></div>
      <dl><div v-for="[label,value] in s.facts" :key="label"><dt>{{label}}</dt><dd>{{fmt(value)}}<small>条</small></dd></div></dl>
      <button class="text-button" @click="selectRecordSource(s.namespace,true)">浏览来源记录 →</button>
@@ -286,7 +287,7 @@ const brief=computed(()=>{
    <div v-else-if="recordError" class="notice error">{{recordError}} <button @click="loadRecords">重试</button></div>
    <div v-else-if="!rows.length" class="empty-state compact">暂无匹配记录。</div>
    <div v-else class="table-scroll"><table class="data-table record-table"><thead><tr><th>{{type==='paper'?'论文题名':type==='company'?'企业名称':type==='product'?'产品名称':'标题 / 名称'}}</th><th v-if="showYear">{{profile.year}}</th><th v-if="personColumn">{{profile.person}}</th><th>原文依据</th></tr></thead><tbody>
-    <template v-for="(r,i) in rows" :key="r.id||i"><tr><td><a v-if="r.url" :href="safeUrl(r.url)" target="_blank" rel="noopener">{{r.title}} ↗</a><b v-else>{{r.title||'—'}}</b><small v-if="type==='patent'" class="table-sub">公开公告号 · {{r.source_id}}</small><small v-else-if="type==='company'" class="table-sub">来源编号 · {{r.source_id}}</small></td><td v-if="showYear">{{r.year||'—'}}</td><td v-if="personColumn">{{person(r)}}</td><td><button class="text-button" :aria-expanded="expanded===i" @click="expanded=expanded===i?null:i">{{expanded===i?'收起':'查看'}} {{r.evidence?.length||0}} 项</button></td></tr>
+    <template v-for="(r,i) in rows" :key="r.id||i"><tr><td><a v-if="r.url" :href="safeUrl(r.url)" target="_blank" rel="noopener">{{r.title}} ↗</a><b v-else>{{r.title||'—'}}</b><small v-if="type==='patent'" class="table-sub">公开公告号 · {{r.source_id}}</small><small v-else-if="type==='company'" class="table-sub">来源编号 · {{r.source_id}}</small></td><td v-if="showYear">{{r.year||'—'}}</td><td v-if="personColumn"><AuthorList v-if="type==='paper'&&r.authors" :value="r.authors"/><template v-else>{{person(r)}}</template></td><td><button class="text-button" :aria-expanded="expanded===i" @click="expanded=expanded===i?null:i">{{expanded===i?'收起':'查看'}} {{r.evidence?.length||0}} 项</button></td></tr>
      <tr v-if="expanded===i" class="expanded-row"><td :colspan="recordColspan"><div v-for="(e,j) in (r.evidence||[]).slice(0,8)" :key="j" class="evidence-record"><div><b>{{e.keyword||'匹配依据'}}</b><span>{{fieldLabels[e.field]||'原文匹配'}}</span></div><p>{{e.snippet||'—'}}</p></div><p v-if="!r.evidence?.length">暂无可展示片段。</p></td></tr>
     </template>
    </tbody></table></div>

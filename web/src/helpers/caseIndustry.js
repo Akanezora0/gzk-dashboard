@@ -2,7 +2,7 @@
 import viduSource from '../../content/cases/CASE-02_生数科技_Vidu.md?raw'
 import sparkSource from '../../content/cases/CASE-03_科大讯飞_星火.md?raw'
 import zidongSource from '../../content/cases/CASE-04_紫东太初.md?raw'
-export const industryStages=['基金','论文','专利承接','产品','应用','经济效益']
+export const industryStages=['基金','论文','专利承接','产品','应用','经济社会价值']
 export const industryCases=[
  {
   "id": "zhipu",
