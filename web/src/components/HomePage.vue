@@ -95,7 +95,7 @@ const uses=[
       <p class="home-eyebrow light">多源数据 · 全链条证据 · 多维评估</p>
       <h1 id="home-title">基础研究数据与评估系统</h1>
       <i class="home-hero-rule" aria-hidden="true"></i>
-      <p class="home-hero-description">追踪基础研究从资助投入到经济社会价值的全过程，<br class="desktop-break"/>汇聚基金、论文、专利、企业、产品、招聘与政策等多源数据，为评估其科学、经济与社会价值提供证据。</p>
+      <p class="home-hero-description">追踪基础研究从资助投入到经济社会价值的全过程，汇聚基金、论文、专利、企业、产品、招聘与政策等多源数据，为评估其科学、经济与社会价值提供证据。</p>
       <div class="home-hero-actions"><a class="home-cta light" href="#about" @click.prevent="exploreBelow">了解研究详情 <span aria-hidden="true">↓</span></a><router-link class="home-cta outline" to="/overview">进入数据总览 <span aria-hidden="true">↗</span></router-link></div>
       <div class="home-hero-bottom"><span>基础研究全链条数据系统构建与集成</span><span>中国人民大学 · 基础研究与中国式现代化发展战略研究中心</span></div>
     </div>

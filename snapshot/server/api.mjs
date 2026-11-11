@@ -8,6 +8,18 @@ export function canonical(url) {
  return u.pathname+(u.searchParams.size?'?'+u.searchParams.toString():'')
 }
 const lowerAscii=s=>String(s??'').replace(/[A-Z]/g,c=>c.toLowerCase())
+// 展示整理：去掉知网题名尾部的“附视频”等标记；按领域相关度排序，重复题名后置（技术词表命中 > 核心词 > 泛化词，题名命中 > 关键词 > 摘要），同分按年份新到旧
+const TERM_WEIGHT=id=>id==='core'?6:/^T\d/.test(String(id))?5:id==='context'?1.5:1
+const FIELD_WEIGHT={title:3,keywords:2,abstract:1}
+function cleanRecord(r){if(typeof r.title==='string')r.title=r.title.replace(/\s*附视频\s*$/,'').replace(/\s{2,}/g,' ').trim()}
+function rankByRelevance(list){
+ const score=r=>(r.evidence||[]).reduce((s,e)=>s+TERM_WEIGHT(e.term_id)*(FIELD_WEIGHT[e.field]||1),0)+(r.matched_terms||[]).length
+ // 重复题名（同题名同年份）排到末尾，总数不变
+ const seen=new Map(),dup=r=>{const k=`${r.title}|${r.year}`,n=seen.get(k)||0;seen.set(k,n+1);return n}
+ const keyed=list.map((r,i)=>({r,i,d:dup(r),s:score(r),y:Number(r.year)||0}))
+ keyed.sort((a,b)=>a.d-b.d||b.s-a.s||b.y-a.y||a.i-b.i)
+ keyed.forEach((k,i)=>{list[i]=k.r})
+}
 const invalid=message=>({status:400,body:{error:message}})
 export function createSnapshotApi(root) {
  const index=JSON.parse(readFileSync(path.join(root,'api/index.json'),'utf8')).responses
@@ -24,6 +36,7 @@ export function createSnapshotApi(root) {
    cachedRows=null;cachedNamespace=null
    const result=[]
    for(const part of spec.parts){const raw=gunzipSync(await fs.readFile(path.join(root,'records',part.file))).toString('utf8');for(const line of raw.split('\n'))if(line)result.push(JSON.parse(line))}
+   result.forEach(cleanRecord);rankByRelevance(result)
    cachedNamespace=namespace;cachedRows=result;return result
   })()
   pendingRows=loading
