@@ -6,7 +6,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const props = defineProps({ page: { type: String, required: true } })
 const route = useRoute(), router = useRouter(), frame = ref(null), height = ref(720), ready = ref(false)
-const labels = { data: '领域数据', evolution: '技术演进', chain: '创新链分析', cases: '案例专题' }
+const labels = { data: '领域数据', evolution: '技术演进', chain: '短链条分析', cases: '长链条分析' }
 function cleanQuery() {
   const { domain, ...query } = route.query
   return Object.fromEntries(Object.entries(query).filter(([, value]) => value != null))

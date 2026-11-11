@@ -18,7 +18,7 @@ const route=useRoute(),router=useRouter()
 const hero={title:'基金、知识创新与技术的关联依据',lead:'从基金资助到科学研究，再到技术发展，追踪基础研究如何形成知识创新、带动技术进步，以及支撑这一过程的研究团队如何形成与进阶。'}
 const modules=[
  {id:'evidence',label:'关联与依据',caption:'基金、论文、专利与技术主题的关联'},
- {id:'strength',label:'研究团队',caption:'承担机构、负责人进阶与案例'}]
+ {id:'strength',label:'创新链分析',caption:'基金资助 · 科学研究 · 技术发展'}]
 const active=computed(()=>modules.some(x=>x.id===route.query.module)?route.query.module:'evidence')
 const evidencePerson=ref('')
 const dataset=ref(null),loadError=ref(''),loading=ref(false)

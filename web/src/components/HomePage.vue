@@ -49,7 +49,7 @@ const tones={red:'#a21535',blue:'#2c64a0',plum:'#6f4a94',gold:'#b2772a',teal:'#2
 const chain=[{label:'基金资助',sub:'资助布局与投入'},{label:'科学研究',sub:'论文与知识积累'},{label:'技术发展',sub:'专利与技术突破'},{label:'产业应用',sub:'企业、产品与市场'},{label:'经济社会价值',sub:'增长、就业与公共服务'}]
 const frameSupply=[{n:'基金资助',d:'项目、经费与负责人',icon:'grant'},{n:'论文成果',d:'方法、引用与知识积累',icon:'paper'},{n:'专利技术',d:'技术方案与权利主体',icon:'patent'}]
 const frameDemand=[{n:'企业主体',d:'研发主体与技术承接',icon:'org'},{n:'产品与服务',d:'模型、工具与平台',icon:'industry'},{n:'产业应用',d:'行业任务与经济表现',icon:'growth'}]
-const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','创新链分析'],['/cases','案例专题']]
+const siteLinks=[['/overview','数据总览'],['/data?domain=ai','领域数据'],['/evolution?domain=ai','技术演进'],['/chain?domain=ai','短链条分析'],['/cases','长链条分析']]
 const platformLinks=[['平台简介','https://brain.ruc.edu.cn/jggk/ptjj/index.htm'],['交叉研究','https://brain.ruc.edu.cn/jcyj/index.htm'],['云端平台','https://brain.ruc.edu.cn/ydpt/index.htm'],['学术交流','https://brain.ruc.edu.cn/xsjl/index.htm'],['联系我们','https://brain.ruc.edu.cn/lxwm/index.htm']]
 const casePath=[{title:'科研支持',text:'基金、机构与团队',icon:'grant',tone:'#f2c4cc'},{title:'关键成果',text:'方法、论文与专利',icon:'paper',tone:'#f2c4cc'},{title:'技术应用',text:'后续研发与产品',icon:'tech',tone:'#f2c4cc'},{title:'经济效应',text:'产业与社会影响',icon:'growth',tone:'#f2c4cc'}]
 const uses=[

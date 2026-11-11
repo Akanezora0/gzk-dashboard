@@ -84,9 +84,10 @@ const venueOf=paperId=>papers.value.get(paperId)?.venue||''
           </g>
           <g v-for="(a,i) in arcs" :key="'a'+i"><path :d="a.d" fill="none" stroke="#ae0d28" stroke-width="2" stroke-dasharray="5 4"/><text :x="a.lx" :y="a.ly" font-size="12.5" font-weight="700" fill="#ae0d28" text-anchor="middle">负责人进阶</text></g>
           <g v-for="p in visiblePeople" :key="'n'+p.id" class="rs-hit" @click="openDrawer(p.id)" @mouseenter="show($event,`<b>${p.name}</b> · ${p.projects.length} 个项目<br>${p.verified?'官方负责人身份核验':'按项目负责人字段列示'}<br>点击查看项目与论文`)" @mousemove="move" @mouseleave="hide">
-            <rect x="150" :y="mid(p)-16" width="100" height="32" fill="transparent"/>
+            <rect x="150" :y="mid(p)-18" width="100" height="46" fill="transparent"/>
             <circle cx="162" :cy="mid(p)" r="7" :fill="p.name===hlPerson?'#ae0d28':(p.verified?'#2a2a2a':'#fff')" :stroke="p.name===hlPerson?'#ae0d28':'#57534e'" stroke-width="2"/>
-            <text x="176" :y="mid(p)+6" font-size="17" :font-weight="p.name===hlPerson||p.verified?700:400" :fill="p.name===hlPerson?'#ae0d28':'#2a2a2a'">{{p.name}}</text></g>
+            <text x="176" :y="mid(p)+6" font-size="17" :font-weight="p.name===hlPerson||p.verified?700:400" :fill="p.name===hlPerson?'#ae0d28':'#2a2a2a'">{{p.name}}</text>
+            <text x="176" :y="mid(p)+26" font-size="12" fill="#78716c">查看 →</text></g>
         </svg></div>
         <div v-if="people.length>PAGE_SIZE" class="people-pages"><button class="rs-chip" :disabled="page===0" @click="page--">上一组</button><span>{{page*PAGE_SIZE+1}}—{{Math.min((page+1)*PAGE_SIZE,people.length)}} / {{people.length}} 位负责人</span><button class="rs-chip" :disabled="(page+1)*PAGE_SIZE>=people.length" @click="page++">下一组</button></div>
         <div class="rs-ev-legend"><span><i class="dm"></i>项目批准</span><span><i class="bar"></i>执行期</span><span><i class="pd"></i>关联论文（按发表年）</span><span><i class="dash"></i>同一负责人进阶</span><span><i class="pv"></i>官方身份核验的负责人</span></div>

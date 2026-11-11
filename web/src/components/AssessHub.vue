@@ -8,7 +8,7 @@ const dims=[
  {n:'04',t:'成果转化',d:'论文、专利向企业研发、产品与行业应用的承接效率。',k:['承接时滞','应用覆盖']}]
 </script>
 <template><div class="assess">
- <PageHero eyebrow="评估" title="基础研究投入与布局评估" lead="综合数据底座、创新链分析与案例研究，评估基础研究的投入规模、方向布局与成果转化是否合理。"/>
+ <PageHero eyebrow="评估" title="基础研究投入与布局评估" lead="综合数据底座、短链条分析与长链条分析，评估基础研究的投入规模、方向布局与成果转化是否合理。"/>
  <section class="as-panel">
   <header><h3>评估维度</h3><span>评估框架与指标体系建设中</span></header>
   <div class="as-grid"><article v-for="d in dims" :key="d.n"><b>{{d.n}}</b><h4>{{d.t}}</h4><p>{{d.d}}</p><div class="as-k"><span v-for="k in d.k" :key="k">{{k}}</span></div></article></div>
