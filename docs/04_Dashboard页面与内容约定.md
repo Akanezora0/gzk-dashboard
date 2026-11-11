@@ -140,5 +140,7 @@ AI 保留 **7 类／29 组／70 技术点纵向技术树**，基础模型与架�
 - 短链条分析三个标签：关联与依据（新增 `ChainRelations.vue`“已建立的链条关系”：创新链 基金—论文—专利；产业链 基金—产品—产业—经济社会价值，未接入环节虚线占位）、创新链分析（原研究团队，01 改为“聚焦机构成长与人员培育”，只保留 基金项目 → 人员 → 机构）、产业链分析（`IndustryChainPlan.vue` 框架，待同事页面替换）。
 - 长链条分析：统一页首，标签为“企业长链条 / 政策长链条”。
 - 领域数据新增“招聘”标签（`RecruitData.vue`，数据 `web/content/recruit.json`，来源《大语言模型企业招聘数据清洗流程》）；岗位明细检索待补数据。
+- 领域数据“企业 / 产品 / 经济”标签改为 `components/industry/`（IndustryCompanies / IndustryProducts / IndustryEconomics，共用 IndustryFilters 与 IndustryDrawer）；数据 `snapshot/public/industry/v1/`，由 `scripts/build_industry_panels.py` 从同事交付的 industry-panels 页面抽取（数据日期 2026-11-11：企业与机构 3,761 家、产品 6,212 项、经济指标企业 1,303 家、指标记录 11,769 条），专利按企业编号分 32 片按需读取。
+- 短链条 · 关联与依据：产业链行改用上述数据（技术点关联产品 4,637 项、产品—企业 6,952 对、企业经济指标 11,769 条）；交互证据图新增“技术—产品—企业”“企业—经济指标”两个占位标签。
 
 - 2026-11-11 文案统一：长链条分析改名“长链条案例”，标签“企业案例 / 政策案例”；评估页沿首页三个评估维度；全站去掉“候选”；论文作者按姓名 + 单位角标 + 邮箱角标展示（`AuthorList.vue`、`helpers/authors.js`）。

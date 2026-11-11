@@ -1,5 +1,5 @@
 <script setup>
-/* 关联与依据 · 已建立的链条关系：创新链（基金—论文—专利）与产业链（基金—产品—产业—经济社会价值）；未接入环节以虚线占位 */
+/* 关联与依据 · 已建立的链条关系：创新链（基金—论文—专利）与产业链（基金—产品—产业—经济社会价值） */
 import {computed} from 'vue'
 import {useTip,fmt} from '../helpers/strengthTip.js'
 const props=defineProps({dataset:Object,inventory:Object})
@@ -8,6 +8,8 @@ const C=computed(()=>props.inventory?.counts||{})
 const metric=label=>(props.dataset?.strength?.metrics||[]).find(m=>m.label===label)?.value
 const wan=n=>n==null?'':n>=1e8?(n/1e8).toFixed(2).replace(/0$/,'')+' 亿':n>=1e7?Math.round(n/1e4).toLocaleString('en-US')+' 万':(n/1e4).toFixed(1)+' 万'
 const tones={fund:'#a21535',pap:'#2c64a0',pat:'#23806e',prod:'#b2772a',ind:'#6f4a94',eco:'#6b5a52'}
+// 产业链：领域数据 · 企业／产品／经济（industry/v1，数据日期 2026-11-11）
+const IND={products:6212,techProducts:4637,techs:66,productOwners:6952,owners:2702,companies:3761,econCompanies:1303,econRecords:11769}
 const R1=118,R2=318,XS=[250,610,970],XS2=[250,490,730,970]
 const rows=computed(()=>[
  {y:R1,label:'创新链',sub:'基金 · 论文 · 专利',nodes:[
@@ -17,17 +19,19 @@ const rows=computed(()=>[
   links:[{a:0,b:1,n:metric('基金—论文关系'),u:'对 · 基金—论文',how:'成果登记与论文资助标注',ai:metric('AI基金登记成果关系')},{a:1,b:2,n:metric('已接通专利—论文关系'),u:'对 · 专利引用论文',how:'规范化匹配专利引用的论文'}]},
  {y:R2,label:'产业链',sub:'基金 · 产品 · 产业 · 经济社会价值',nodes:[
   {k:'fund',n:'基金项目',x:XS2[0],all:'经技术主题连接',ai:'80 个技术点',hub:true},
-  {k:'prod',n:'产品',x:XS2[1],all:'产品与软著',ph:true},
-  {k:'ind',n:'产业',x:XS2[2],all:'AI 企业名录',ai:'27,075 家'},
-  {k:'eco',n:'经济社会价值',x:XS2[3],all:'营收、就业等',ph:true}],
-  links:[{a:0,b:1,ph:true,u:'技术—产品'},{a:1,b:2,ph:true,u:'产品—企业'},{a:2,b:3,ph:true,u:'企业—经济指标'}]}
+  {k:'prod',n:'产品',x:XS2[1],all:'产品与模型',ai:`${fmt(IND.products)} 项`},
+  {k:'ind',n:'产业',x:XS2[2],all:'企业与机构',ai:`${fmt(IND.companies)} 家`},
+  {k:'eco',n:'经济社会价值',x:XS2[3],all:'经济指标',ai:`${fmt(IND.econCompanies)} 家企业`}],
+  links:[{a:0,b:1,n:IND.techProducts,unit:'项',u:'项 · 技术点关联产品',how:`产品描述匹配 ${IND.techs} 个关键技术点`},
+   {a:1,b:2,n:IND.productOwners,unit:'对',u:'对 · 产品—企业',how:`${fmt(IND.owners)} 家企业与机构提供产品`},
+   {a:2,b:3,n:IND.econRecords,unit:'条',u:'条 · 企业经济指标',how:'年报、招股书等公开披露 · 每项取最近年度'}]}
 ].map(r=>({...r,links:r.links.map(l=>{const A=r.nodes[l.a],B=r.nodes[l.b],x0=A.x+(A.hub?58:50)+4,x1=B.x-54,xe=x1-16;return {...l,x0,x1,xe,mx:(x0+x1)/2,ca:tones[A.k],cb:tones[B.k],id:A.k+B.k+r.y}})})))
 const pillW=t=>[...String(t)].reduce((w,c)=>w+(/[\x00-\xff]/.test(c)?9:15.5),0)+30
-function linkTip(e,l){if(l.ph)show(e,`<b>${l.u}</b><br>关系数据接入中`);else show(e,`<b>${l.u.split(' · ')[1]}</b>　${fmt(l.n)} 对<br>建立方式：${l.how}${l.ai?`<br>其中 AI 项目登记成果 ${fmt(l.ai)} 条`:''}`)}
+function linkTip(e,l){if(l.ph)show(e,`<b>${l.u}</b><br>关系数据接入中`);else show(e,`<b>${l.u.split(' · ')[1]}</b>　${fmt(l.n)} ${l.unit||'对'}<br>建立方式：${l.how}${l.ai?`<br>其中 AI 项目登记成果 ${fmt(l.ai)} 条`:''}`)}
 </script>
 <template>
  <section class="ev-graph chain-rel">
-  <header class="ev-graph-head"><div><h3>已建立的链条关系</h3><p>领域数据经共同技术词表连接后形成的链条；红色标签为人工智能领域，虚线为数据接入中的环节</p></div></header>
+  <header class="ev-graph-head"><div><h3>已建立的链条关系</h3><p>领域数据经共同技术词表连接后形成的链条；红色标签为人工智能领域</p></div></header>
   <div class="rs-scroll"><svg class="rs-svg chain-rel-svg" viewBox="0 0 1100 430" role="img" aria-label="创新链与产业链已建立的关联关系">
    <defs><linearGradient v-for="l in rows.flatMap(r=>r.links).filter(l=>!l.ph)" :key="'g'+l.id" :id="'crg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".85"/></linearGradient></defs>
    <g v-for="r in rows" :key="r.y">

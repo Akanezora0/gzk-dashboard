@@ -10,7 +10,10 @@ const chain=ref(route.query.chain||({fund_paper:'fund_paper',patent:'patent_tech
 watch(()=>route.query.chain,v=>{if(v){chain.value=v;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}})
 function explore(id){chain.value=id;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}
 if(chain.value==='paper_network') chain.value='mixed'
-const chainTabs=[['mixed','多链关系'],['fund_paper','基金—论文—技术'],['paper_tech','论文—技术'],['patent_tech','专利—技术'],['fund_patent','基金—专利—技术']]
+const chainTabs=[['mixed','多链关系'],['fund_paper','基金—论文—技术'],['paper_tech','论文—技术'],['patent_tech','专利—技术'],['fund_patent','基金—专利—技术'],['tech_product','技术—产品—企业'],['company_economy','企业—经济指标']]
+// 产业链证据：逐条关系数据接入前以占位展示
+const industryTabs={tech_product:{title:'技术—产品—企业',text:'6,212 项产品经 66 个技术点与 2,702 家企业相连，逐条关系依据接入后在此展开。'},company_economy:{title:'企业—经济指标',text:'1,303 家企业的 11,769 条经济指标记录，企业与指标、披露来源的关系图接入后在此展开。'}}
+const industryTab=computed(()=>industryTabs[chain.value]||null)
 const typeLabels={...kindLabel,fund:'基金项目',paper:'论文',patent:'专利',tech_point:'技术主题',technology:'技术主题',tech:'技术主题',institution:'机构',company:'企业'}
 const typeColor={fund:'#a21535',paper:'#2c64a0',patent:'#23806e',tech_point:'#8B63AA',technology:'#8B63AA',tech:'#8B63AA',institution:'#D18A23',company:'#D18A23'}
 const fieldLabels={proj_no:'批准号',proj_school:'依托单位',proj_author:'项目负责人',title:'标题',name:'名称',project_id:'项目编号',project_no:'项目编号',fund_id:'基金编号',paper_id:'论文标识',year:'年份',authors:'作者',institution:'机构',applicant:'申请主体',patent_number:'专利号',namespace:'来源类别',term_id:'技术编号',definition:'技术定义',source_row:'来源行',row_number:'来源行',source:'来源',abstract:'摘要',first_claim:'独立权利要求',evidence_excerpt:'原文摘录',review_summary:'既有原文核验摘要',source_file:'来源文件',topic_id:'技术编号',scope:'筛选范围',url:'原文链接',region:'机构地域'}
@@ -22,7 +25,7 @@ function expandGraph(){nodeBudget.value=Math.min(330,nodeBudget.value+60)}
 function nextSample(){poolOffset.value+=graph.value?.meta?.selected_bundles||1;nodeBudget.value=90}
 function sourceDetails(e){const p=e.source_locator;if(!p)return '';if(Array.isArray(p))return p.map(v=>v.source_path||v.table||v.file||'').filter(Boolean).join(' · ');return [p.table,p.paper_id||p.application_id,p.location].filter(Boolean).join(' · ')}
 let sequence=0,summarySeq=0
-async function fetchGraph(){const seq=++sequence;loading.value=true;error.value='';graph.value=null;selected.value=null;try{
+async function fetchGraph(){const seq=++sequence;if(industryTabs[chain.value]){graph.value=null;selected.value=null;loading.value=false;error.value='';return}loading.value=true;error.value='';graph.value=null;selected.value=null;try{
  let d
  if(scope.value==='ai'){
   const bundle=await loadEvidenceGraphs();if(seq!==sequence)return;graphBundle.value=bundle
@@ -72,7 +75,7 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
  <nav class="ev-chains" role="tablist" aria-label="证据链类型">
   <button v-for="[id,label] in chainTabs" :key="id" role="tab" :aria-selected="chain===id" :class="{active:chain===id}" @click="chain=id">{{label}}</button>
  </nav>
- <div v-if="scope==='ai'" class="ev-filterbar">
+ <div v-if="scope==='ai'&&!industryTab" class="ev-filterbar">
   <div class="ev-category-filters" aria-label="按技术大类筛选">
    <button :class="{active:category==='all'}" :aria-pressed="category==='all'" @click="category='all'">全部技术</button>
    <button v-for="c in graphCategories" :key="c.id" :class="{active:category===c.id}" :aria-pressed="category===c.id" :disabled="!availableCategories.has(c.id)" @click="category=c.id">{{c.name}}</button>
@@ -84,7 +87,8 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
  <div class="ev-graph-body">
   <div class="ev-canvas">
    <div v-if="graph?.nodes?.length" class="ev-legend"><span v-for="t in nodeTypes" :key="t"><i :class="{multi:normType(t)==='technology'}" :style="{'--c':typeColor[t]||'#64748b'}"></i>{{normType(t)==='technology'?'技术主题（按大类着色）':(typeLabels[t]||t)}}</span><span v-if="graph.edges.some(e=>['source_project_id','registered_patent_outcome'].includes(e.kind))" class="ev-legend-edge"><i class="line red"></i>项目成果关联</span><span class="ev-legend-edge"><i class="line"></i>{{chain==='paper_network'?'原文确认使用':'技术主题 / 原文关系'}}</span></div>
-   <div v-if="loading" class="ev-empty"><span class="ev-spin"></span>正在读取 {{activeTitle}}…</div>
+   <div v-if="industryTab" class="ev-empty pending ev-industry"><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="16" cy="30" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="46" r="7"/><rect x="88" y="21" width="28" height="18" rx="4"/><path d="M23 30 53 15M23 30 53 45M67 14 88 28M67 46 88 32"/></svg><b>{{industryTab.title}}</b><p>{{industryTab.text}}</p><router-link class="text-button" :to="{path:'/data',query:{type:chain==='tech_product'?'product':'economy'}}">查看领域数据 →</router-link></div>
+   <div v-else-if="loading" class="ev-empty"><span class="ev-spin"></span>正在读取 {{activeTitle}}…</div>
    <div v-else-if="error" class="ev-empty"><p>{{error}}</p><button class="button" @click="fetchGraph">重试</button></div>
    <template v-else-if="graph?.nodes?.length"><EvidenceGraph ref="chart" :graph="graph" :all-labels="allLabels" :height="540" :type-labels="typeLabels" :selected-id="selected?.kind==='node'?selected.item.id:null" @select="p=>selected=p"/></template>
    <div v-else class="ev-empty pending"><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="16" cy="30" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="46" r="7"/><rect x="88" y="21" width="28" height="18" rx="4"/><path d="M23 30 53 15M23 30 53 45M67 14 88 28M67 46 88 32"/></svg><b>当前筛选暂无关系</b><p>可切换技术大类或查看其他链路。</p></div>

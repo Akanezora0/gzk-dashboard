@@ -4,6 +4,9 @@ import {useRoute,useRouter} from 'vue-router'
 import Chart from './Chart.vue'
 import CurrentDomainInventory from './CurrentDomainInventory.vue'
 import RecruitData from './RecruitData.vue'
+import IndustryCompanies from './industry/IndustryCompanies.vue'
+import IndustryProducts from './industry/IndustryProducts.vue'
+import IndustryEconomics from './industry/IndustryEconomics.vue'
 import AuthorList from './AuthorList.vue'
 import CountValue from './CountValue.vue'
 import '../domain.css'
@@ -13,7 +16,7 @@ import {presentSource} from '../helpers/foundationSources'
 import {groupAiYears,EARLY_YEAR_BUCKET,aiYearLabel} from '../helpers/aiYearBuckets'
 
 const props=defineProps({data:Object}),route=useRoute(),router=useRouter()
-const tabs=[['paper','论文'],['fund','基金'],['patent','专利'],['software','软著'],['policy','政策'],['news','新闻'],['report','报告'],['company','企业'],['product','产品'],['recruit','招聘']]
+const tabs=[['paper','论文'],['fund','基金'],['patent','专利'],['software','软著'],['policy','政策'],['news','新闻'],['report','报告'],['company','企业'],['product','产品'],['economy','经济'],['recruit','招聘']]
 const profiles={
  paper:{primary:'cnki_paper',color:'#AE0D28',title:'论文与研究成果',year:'发表年份',unit:'条',recordTitle:'文献题录',person:'作者',charts:['years','topics','ranking','secondary']},
  fund:{primary:'nsfc_fund',color:'#AD6E20',title:'基础研究资助',year:'批准年份',unit:'项',recordTitle:'基金项目',person:'依托单位',rankTitle:'依托单位 · 项目数',charts:['years','ranking','topics']},
@@ -23,6 +26,7 @@ const profiles={
  news:{primary:'legacy_news',color:'#BD7245',title:'产业动态',year:'发布年份',unit:'条',recordTitle:'产业新闻',rankTitle:'新闻来源 · 记录数',charts:['years','ranking']},
  report:{primary:'ai_report',color:'#437B87',title:'行业研究',unit:'份',recordTitle:'行业报告',rankTitle:'报告类别构成',charts:['topics','ranking']},
  company:{primary:'ai_company',color:'#7563A8',title:'企业与创新主体',unit:'条',recordTitle:'企业名录',rankTitle:'企业省份分布 · 前 10 位',charts:['ranking']},
+ economy:{primary:'',color:'#B2772A',title:'企业经济指标',unit:'家',recordTitle:'企业经济指标',charts:[]},
  recruit:{primary:'',color:'#B2772A',title:'企业招聘',unit:'条',recordTitle:'招聘岗位',charts:[]},
  product:{primary:'legacy_product',color:'#678147',title:'产品与应用载体',unit:'条',recordTitle:'产品名录',rankTitle:'厂商标识与产品记录',charts:[]},
 }
@@ -167,7 +171,9 @@ function armPane(){paneReady.value=false;const token=++paneToken;nextTick(()=>re
 watch(type, armPane, {immediate:true})
 function metricOf(ns){return metricList.value.find(m=>m.namespace===ns)}
 function metricCandidates(ns){return ns==='ai_policy'?policyPresent.total:metricOf(ns)?.ai_candidates}
-function tabCount(id){if(id==='recruit')return concise(7284624);const counts=props.data.currentInventory?.counts;const current={paper:counts?.ai_papers,fund:counts?.ai_funds,patent:counts?.ai_patents}[id];if(current!=null)return concise(current);const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
+// 企业／产品／经济：industry/v1（2026-11-11）
+const industryCounts={recruit:7284624,company:3761,product:6212,economy:1303}
+function tabCount(id){if(industryCounts[id])return concise(industryCounts[id]);const counts=props.data.currentInventory?.counts;const current={paper:counts?.ai_papers,fund:counts?.ai_funds,patent:counts?.ai_patents}[id];if(current!=null)return concise(current);const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
 const brief=computed(()=>{
  const a=analytics.value,p=profile.value,span=yearRange(a)
  const topics=a?.topic_count,top=(a?.topics||[]).slice(0,2).map(t=>t.name)
@@ -240,6 +246,9 @@ const brief=computed(()=>{
 
   <div :key="type" class="pane-swap">
   <RecruitData v-if="type==='recruit'"/>
+  <IndustryCompanies v-else-if="type==='company'" @go="selectType"/>
+  <IndustryProducts v-else-if="type==='product'" @go="selectType"/>
+  <IndustryEconomics v-else-if="type==='economy'"/>
   <template v-else>
   <CurrentDomainInventory v-if="hasCurrent" :inventory="data.currentInventory" :type="type" :tone="profile.color"/>
   <section v-if="brief&&!hasCurrent" class="ai-data-hero" :style="{'--hero-color':profile.color}">
