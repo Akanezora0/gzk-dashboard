@@ -1,10 +1,11 @@
 <script setup>
+import ChainRelations from './ChainRelations.vue'
 import {ref,computed,watch,onMounted,nextTick} from 'vue'
 import {useRoute} from 'vue-router'
 import EvidenceGraph from './EvidenceGraph.vue'
 import {loadEvidenceGraphs,selectEvidenceGraph,evidenceSummary} from '../evidenceGraphData'
 import {api,fmt,colors,kindLabel,safeUrl,escape} from '../shared'
-const props=defineProps({data:Object}),route=useRoute()
+const props=defineProps({data:Object,dataset:Object}),route=useRoute()
 const chain=ref(route.query.chain||({fund_paper:'fund_paper',patent:'patent_tech',contribution:'paper_tech'})[route.query.tab]||'mixed'),scope=ref('ai'),limit=ref(20),summary=ref(null),summaryError=ref(''),graph=ref(null),loading=ref(false),error=ref(''),selected=ref(null),step=ref(0),chart=ref(null),graphShell=ref(null),allLabels=ref(false)
 watch(()=>route.query.chain,v=>{if(v){chain.value=v;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}})
 function explore(id){chain.value=id;nextTick(()=>graphShell.value?.scrollIntoView({block:'start',behavior:'smooth'}))}
@@ -62,6 +63,7 @@ const scopeLabel=computed(()=>({llm:'LLM 明确命中',ai:'AI 宽口径',context
 </script>
 <template><div class="evidence-v2">
 <div v-if="summaryError" class="notice error">{{summaryError}} <button @click="fetchSummary">重试</button></div>
+<ChainRelations v-if="dataset" :dataset="dataset" :inventory="data?.currentInventory"/>
 <section ref="graphShell" class="ev-graph">
  <header class="ev-graph-head">
   <div><h3>交互证据图</h3></div>

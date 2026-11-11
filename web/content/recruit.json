@@ -1,0 +1,418 @@
+{
+ "source": "大语言模型企业招聘数据清洗流程（技能词典 llm_q4_rule_dictionary_2026-09-23）",
+ "summary": {
+  "raw": 7284624,
+  "dedup": 4409592,
+  "llm_dedup": 82318,
+  "llm_share": 1.87,
+  "wage_valid": 5854849,
+  "wage_cov": 80.37,
+  "firms": 3128,
+  "firms_with_postings": 2612,
+  "registry_match": 99.68,
+  "years": [
+   2014,
+   2025
+  ],
+  "skills": 31,
+  "skill_groups": 11,
+  "dup_rate": 39.47,
+  "edu_parse": 99.44
+ },
+ "years": [
+  {
+   "year": 2014,
+   "raw": 206,
+   "dedup": 193,
+   "llm": 0,
+   "llm_share": 0.0,
+   "wage_n": 49,
+   "wage_median": 5000.5,
+   "edu_n": 182,
+   "bachelor_share": 37.36,
+   "text_cov": 38.86
+  },
+  {
+   "year": 2015,
+   "raw": 250,
+   "dedup": 231,
+   "llm": 0,
+   "llm_share": 0.0,
+   "wage_n": 82,
+   "wage_median": 4500.0,
+   "edu_n": 224,
+   "bachelor_share": 19.64,
+   "text_cov": 53.68
+  },
+  {
+   "year": 2016,
+   "raw": 86266,
+   "dedup": 81303,
+   "llm": 440,
+   "llm_share": 0.54,
+   "wage_n": 56767,
+   "wage_median": 10000.0,
+   "edu_n": 79552,
+   "bachelor_share": 53.6,
+   "text_cov": 97.06
+  },
+  {
+   "year": 2017,
+   "raw": 303699,
+   "dedup": 283318,
+   "llm": 2038,
+   "llm_share": 0.72,
+   "wage_n": 221345,
+   "wage_median": 10000.0,
+   "edu_n": 278725,
+   "bachelor_share": 61.75,
+   "text_cov": 97.43
+  },
+  {
+   "year": 2018,
+   "raw": 361587,
+   "dedup": 354852,
+   "llm": 3402,
+   "llm_share": 0.96,
+   "wage_n": 315820,
+   "wage_median": 12500.0,
+   "edu_n": 352163,
+   "bachelor_share": 69.27,
+   "text_cov": 97.9
+  },
+  {
+   "year": 2019,
+   "raw": 437020,
+   "dedup": 328915,
+   "llm": 3977,
+   "llm_share": 1.21,
+   "wage_n": 288747,
+   "wage_median": 15000.0,
+   "edu_n": 327999,
+   "bachelor_share": 74.63,
+   "text_cov": 97.83
+  },
+  {
+   "year": 2020,
+   "raw": 592911,
+   "dedup": 560385,
+   "llm": 9033,
+   "llm_share": 1.61,
+   "wage_n": 510078,
+   "wage_median": 15500.0,
+   "edu_n": 558169,
+   "bachelor_share": 76.55,
+   "text_cov": 96.83
+  },
+  {
+   "year": 2021,
+   "raw": 427939,
+   "dedup": 217864,
+   "llm": 2423,
+   "llm_share": 1.11,
+   "wage_n": 203259,
+   "wage_median": 15000.0,
+   "edu_n": 217065,
+   "bachelor_share": 73.61,
+   "text_cov": 60.18
+  },
+  {
+   "year": 2022,
+   "raw": 2005091,
+   "dedup": 873747,
+   "llm": 7652,
+   "llm_share": 0.88,
+   "wage_n": 774308,
+   "wage_median": 15000.0,
+   "edu_n": 862973,
+   "bachelor_share": 68.95,
+   "text_cov": 51.72
+  },
+  {
+   "year": 2023,
+   "raw": 715129,
+   "dedup": 416306,
+   "llm": 4869,
+   "llm_share": 1.17,
+   "wage_n": 339613,
+   "wage_median": 15500.0,
+   "edu_n": 413180,
+   "bachelor_share": 61.78,
+   "text_cov": 68.68
+  },
+  {
+   "year": 2024,
+   "raw": 1379270,
+   "dedup": 746970,
+   "llm": 21196,
+   "llm_share": 2.84,
+   "wage_n": 603058,
+   "wage_median": 16000.0,
+   "edu_n": 745277,
+   "bachelor_share": 69.83,
+   "text_cov": 69.74
+  },
+  {
+   "year": 2025,
+   "raw": 974058,
+   "dedup": 544310,
+   "llm": 27217,
+   "llm_share": 5.0,
+   "wage_n": 462874,
+   "wage_median": 14000.0,
+   "edu_n": 543248,
+   "bachelor_share": 68.12,
+   "text_cov": 88.87
+  }
+ ],
+ "skills": [
+  {
+   "code": "java",
+   "name": "Java",
+   "group": "programming_language",
+   "hits": 617895,
+   "dedup": 430854,
+   "llm_judge": false
+  },
+  {
+   "code": "python",
+   "name": "Python",
+   "group": "programming_language",
+   "hits": 405944,
+   "dedup": 294300,
+   "llm_judge": false
+  },
+  {
+   "code": "cpp",
+   "name": "C/C++",
+   "group": "programming_language",
+   "hits": 311457,
+   "dedup": 229886,
+   "llm_judge": false
+  },
+  {
+   "code": "sql",
+   "name": "SQL",
+   "group": "data_skill",
+   "hits": 275300,
+   "dedup": 201859,
+   "llm_judge": false
+  },
+  {
+   "code": "spark_hadoop",
+   "name": "Spark与Hadoop",
+   "group": "data_skill",
+   "hits": 121961,
+   "dedup": 91132,
+   "llm_judge": false
+  },
+  {
+   "code": "docker_k8s",
+   "name": "容器与Kubernetes",
+   "group": "cloud_infrastructure",
+   "hits": 84903,
+   "dedup": 58794,
+   "llm_judge": false
+  },
+  {
+   "code": "nlp",
+   "name": "自然语言处理",
+   "group": "ai_domain",
+   "hits": 65829,
+   "dedup": 45329,
+   "llm_judge": false
+  },
+  {
+   "code": "data_governance",
+   "name": "训练数据治理",
+   "group": "data_skill",
+   "hits": 63748,
+   "dedup": 45299,
+   "llm_judge": false
+  },
+  {
+   "code": "api_engineering",
+   "name": "API工程",
+   "group": "software_engineering",
+   "hits": 59841,
+   "dedup": 43957,
+   "llm_judge": false
+  },
+  {
+   "code": "tensorflow",
+   "name": "TensorFlow",
+   "group": "framework",
+   "hits": 60825,
+   "dedup": 43790,
+   "llm_judge": false
+  },
+  {
+   "code": "computer_vision",
+   "name": "计算机视觉",
+   "group": "ai_domain",
+   "hits": 49654,
+   "dedup": 36557,
+   "llm_judge": false
+  },
+  {
+   "code": "llm",
+   "name": "大语言模型",
+   "group": "llm_core",
+   "hits": 47214,
+   "dedup": 34622,
+   "llm_judge": true
+  },
+  {
+   "code": "pytorch",
+   "name": "PyTorch",
+   "group": "framework",
+   "hits": 49010,
+   "dedup": 33853,
+   "llm_judge": false
+  },
+  {
+   "code": "model_compression",
+   "name": "模型压缩",
+   "group": "model_deployment",
+   "hits": 41893,
+   "dedup": 30299,
+   "llm_judge": true
+  },
+  {
+   "code": "inference",
+   "name": "推理部署与服务",
+   "group": "model_deployment",
+   "hits": 19564,
+   "dedup": 14941,
+   "llm_judge": true
+  },
+  {
+   "code": "multimodal",
+   "name": "多模态",
+   "group": "ai_domain",
+   "hits": 15018,
+   "dedup": 11236,
+   "llm_judge": false
+  },
+  {
+   "code": "agent",
+   "name": "智能体与多智能体",
+   "group": "llm_application",
+   "hits": 14170,
+   "dedup": 10247,
+   "llm_judge": true
+  },
+  {
+   "code": "cuda",
+   "name": "CUDA与GPU计算",
+   "group": "cloud_infrastructure",
+   "hits": 11796,
+   "dedup": 9302,
+   "llm_judge": false
+  },
+  {
+   "code": "fine_tuning",
+   "name": "微调与参数高效微调",
+   "group": "model_training",
+   "hits": 10811,
+   "dedup": 8083,
+   "llm_judge": true
+  },
+  {
+   "code": "transformer",
+   "name": "Transformer",
+   "group": "llm_core",
+   "hits": 7682,
+   "dedup": 5518,
+   "llm_judge": true
+  },
+  {
+   "code": "prompt",
+   "name": "提示工程",
+   "group": "llm_application",
+   "hits": 5873,
+   "dedup": 4449,
+   "llm_judge": true
+  },
+  {
+   "code": "pretraining",
+   "name": "预训练与继续训练",
+   "group": "model_training",
+   "hits": 5608,
+   "dedup": 4181,
+   "llm_judge": true
+  },
+  {
+   "code": "rag",
+   "name": "检索增强生成",
+   "group": "llm_application",
+   "hits": 5001,
+   "dedup": 3833,
+   "llm_judge": true
+  },
+  {
+   "code": "distributed_training",
+   "name": "分布式训练",
+   "group": "model_training",
+   "hits": 5004,
+   "dedup": 3643,
+   "llm_judge": true
+  },
+  {
+   "code": "model_evaluation",
+   "name": "模型评测",
+   "group": "model_evaluation",
+   "hits": 4440,
+   "dedup": 3346,
+   "llm_judge": false
+  },
+  {
+   "code": "vector_db",
+   "name": "向量检索与向量库",
+   "group": "llm_application",
+   "hits": 2679,
+   "dedup": 1937,
+   "llm_judge": true
+  },
+  {
+   "code": "langchain",
+   "name": "LangChain",
+   "group": "framework",
+   "hits": 2608,
+   "dedup": 1931,
+   "llm_judge": false
+  },
+  {
+   "code": "alignment",
+   "name": "模型对齐",
+   "group": "model_training",
+   "hits": 1938,
+   "dedup": 1357,
+   "llm_judge": true
+  },
+  {
+   "code": "dify",
+   "name": "Dify",
+   "group": "framework",
+   "hits": 763,
+   "dedup": 631,
+   "llm_judge": false
+  },
+  {
+   "code": "huggingface",
+   "name": "Hugging Face Transformers",
+   "group": "framework",
+   "hits": 761,
+   "dedup": 549,
+   "llm_judge": false
+  },
+  {
+   "code": "llamaindex",
+   "name": "LlamaIndex",
+   "group": "framework",
+   "hits": 626,
+   "dedup": 469,
+   "llm_judge": false
+  }
+ ]
+}

@@ -3,6 +3,7 @@ import {ref,computed,watch,onBeforeUnmount,provide,nextTick} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import Chart from './Chart.vue'
 import CurrentDomainInventory from './CurrentDomainInventory.vue'
+import RecruitData from './RecruitData.vue'
 import CountValue from './CountValue.vue'
 import '../domain.css'
 import '../domain_delta.css'
@@ -11,7 +12,7 @@ import {presentSource} from '../helpers/foundationSources'
 import {groupAiYears,EARLY_YEAR_BUCKET,aiYearLabel} from '../helpers/aiYearBuckets'
 
 const props=defineProps({data:Object}),route=useRoute(),router=useRouter()
-const tabs=[['paper','论文'],['fund','基金'],['patent','专利'],['software','软著'],['policy','政策'],['news','新闻'],['report','报告'],['company','企业'],['product','产品']]
+const tabs=[['paper','论文'],['fund','基金'],['patent','专利'],['software','软著'],['policy','政策'],['news','新闻'],['report','报告'],['company','企业'],['product','产品'],['recruit','招聘']]
 const profiles={
  paper:{primary:'cnki_paper',color:'#AE0D28',title:'论文与研究成果',year:'发表年份',unit:'条',recordTitle:'文献题录',person:'作者',charts:['years','topics','ranking','secondary']},
  fund:{primary:'nsfc_fund',color:'#AD6E20',title:'基础研究资助',year:'批准年份',unit:'项',recordTitle:'基金项目',person:'依托单位',rankTitle:'依托单位 · 项目数',charts:['years','ranking','topics']},
@@ -21,6 +22,7 @@ const profiles={
  news:{primary:'legacy_news',color:'#BD7245',title:'产业动态',year:'发布年份',unit:'条',recordTitle:'产业新闻',rankTitle:'新闻来源 · 记录数',charts:['years','ranking']},
  report:{primary:'ai_report',color:'#437B87',title:'行业研究',unit:'份',recordTitle:'行业报告',rankTitle:'报告类别构成',charts:['topics','ranking']},
  company:{primary:'ai_company',color:'#7563A8',title:'企业与创新主体',unit:'条',recordTitle:'企业名录',rankTitle:'企业省份分布 · 前 10 位',charts:['ranking']},
+ recruit:{primary:'',color:'#B2772A',title:'企业招聘',unit:'条',recordTitle:'招聘岗位',charts:[]},
  product:{primary:'legacy_product',color:'#678147',title:'产品与应用载体',unit:'条',recordTitle:'产品名录',rankTitle:'厂商标识与产品记录',charts:[]},
 }
 const validType=v=>Object.hasOwn(profiles,String(v))?String(v):'paper'
@@ -164,7 +166,7 @@ function armPane(){paneReady.value=false;const token=++paneToken;nextTick(()=>re
 watch(type, armPane, {immediate:true})
 function metricOf(ns){return metricList.value.find(m=>m.namespace===ns)}
 function metricCandidates(ns){return ns==='ai_policy'?policyPresent.total:metricOf(ns)?.ai_candidates}
-function tabCount(id){const counts=props.data.currentInventory?.counts;const current={paper:counts?.ai_papers,fund:counts?.ai_funds,patent:counts?.ai_patents}[id];if(current!=null)return concise(current);const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
+function tabCount(id){if(id==='recruit')return concise(7284624);const counts=props.data.currentInventory?.counts;const current={paper:counts?.ai_papers,fund:counts?.ai_funds,patent:counts?.ai_patents}[id];if(current!=null)return concise(current);const n=metricCandidates(profiles[id].primary);return typeof n==='number'?concise(n):''}
 const brief=computed(()=>{
  const a=analytics.value,p=profile.value,span=yearRange(a)
  const topics=a?.topic_count,top=(a?.topics||[]).slice(0,2).map(t=>t.name)
@@ -236,6 +238,8 @@ const brief=computed(()=>{
   <div class="type-tabs" aria-label="数据类别"><button v-for="[id,label] in tabs" :key="id" :class="{active:type===id}" :aria-pressed="type===id" @click="selectType(id)"><span>{{label}}</span><small v-if="tabCount(id)">{{tabCount(id)}}</small></button></div>
 
   <div :key="type" class="pane-swap">
+  <RecruitData v-if="type==='recruit'"/>
+  <template v-else>
   <CurrentDomainInventory v-if="hasCurrent" :inventory="data.currentInventory" :type="type" :tone="profile.color"/>
   <section v-if="brief&&!hasCurrent" class="ai-data-hero" :style="{'--hero-color':profile.color}">
    <div class="ai-hero-main"><span class="ai-hero-tag">{{brief.tag}}</span><h3 class="ai-hero-title">{{brief.title}}</h3><p class="ai-hero-desc">{{brief.desc}}</p><ul v-if="brief.bullets.length" class="ai-hero-bullets"><li v-for="item in brief.bullets" :key="item">{{item}}</li></ul><p v-if="brief.insight" class="ai-hero-insight">{{brief.insight}}</p></div>
@@ -288,6 +292,7 @@ const brief=computed(()=>{
    </tbody></table></div>
    <div class="pagination"><span>{{recordSource?.name}} · 共 {{fmt(total)}} 条<span v-if="total"> · 第 {{Math.floor(offset/10)+1}} 页</span></span><div><button :disabled="!offset||recordsLoading" @click="offset=Math.max(0,offset-10)">上一页</button><button :disabled="offset+10>=total||recordsLoading" @click="offset+=10">下一页</button></div></div>
   </section>
+  </template>
   </div>
  </div>
 </template>

@@ -1,10 +1,12 @@
 <script setup>
-/* 01 已建立关系：以基金项目为中心向两侧展开；每个节点与关系同时标注全库与人工智能领域 */
+/* 01 聚焦机构成长与人员培育：基金项目 → 人员 → 机构，标注全库与人工智能领域；论文、专利两环见“关联与依据” */
 import {computed,ref} from 'vue'
 import {useTip,fmt} from '../helpers/strengthTip.js'
+import {useMemberGrowth} from '../helpers/memberGrowth.js'
 const props=defineProps({dataset:Object,inventory:Object})
 const {tip,show,move,hide}=useTip()
 const active=ref('')
+const {data:growth}=useMemberGrowth()
 const S=computed(()=>props.dataset?.strength||{})
 const C=computed(()=>props.inventory?.counts||{})
 const metric=label=>(S.value.metrics||[]).find(m=>m.label===label)?.value
@@ -12,16 +14,12 @@ const wan=n=>n==null?'—':n>=1e8?(n/1e8).toFixed(2).replace(/0$/,'')+' 亿':n>=
 const Y=170
 const tones={org:'#6b5a52',per:'#8c6a3a',fund:'#a21535',pap:'#2c64a0',pat:'#23806e'}
 const nodes=computed(()=>[
- {k:'org',n:'机构',x:100,r:54,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`},
- {k:'per',n:'人员',x:365,r:54,ai:`${fmt((props.dataset?.continuity||[]).length)} 位`,aiN:'负责人前后项目进阶'},
- {k:'fund',n:'基金项目',x:645,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
- {k:'pap',n:'论文',x:990,r:54,all:C.value.papers?wan(C.value.papers)+'篇':'',ai:C.value.ai_papers?wan(C.value.ai_papers)+'篇':'',aiN:'AI 论文'},
- {k:'pat',n:'专利',x:1265,r:54,all:C.value.national_patents?wan(C.value.national_patents)+'件':'',ai:C.value.ai_patents?wan(C.value.ai_patents)+'件':'',aiN:'AI 专利'}])
+ {k:'fund',n:'基金项目',x:250,r:80,all:C.value.fund_identities?wan(C.value.fund_identities)+'项':'',ai:`${fmt(metric('AI基金项目'))} 项`,aiN:'AI 基金项目',hub:true},
+ {k:'per',n:'人员',x:680,r:58,ai:`${fmt((props.dataset?.continuity||[]).length)} 位进阶`,aiN:growth.value?`负责人进阶 · 另有 ${fmt(growth.value.cases.length)} 位参与人成长`:'负责人前后项目进阶'},
+ {k:'org',n:'机构',x:1110,r:58,ai:`${fmt(S.value.scope?.institutions)} 家`,aiN:`${S.value.scope?.years?.[0]||2017}—${S.value.scope?.years?.[1]||2021} 年承担 AI 项目`}])
 const links=computed(()=>{const N=nodes.value;return [
- {id:'fp',a:2,b:1,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录'},
- {id:'po',a:1,b:0,n:metric('人员—机构观察'),u:'条',name:'人员—机构',how:'人员署名单位的来源观察'},
- {id:'fl',a:2,b:3,n:metric('基金—论文关系'),u:'对',name:'基金—论文',how:'成果登记与论文资助标注',ai:metric('AI基金登记成果关系')},
- {id:'pp',a:3,b:4,n:metric('已接通专利—论文关系'),u:'对',name:'专利引用论文',how:'规范化匹配专利引用的论文'},
+ {id:'fp',a:0,b:1,n:metric('基金—人员来源记录'),u:'条',name:'基金—人员',how:'NSFC 官方负责人与成员记录'},
+ {id:'po',a:1,b:2,n:metric('人员—机构观察'),u:'条',name:'人员—机构',how:'人员署名单位的来源观察'},
 ].map(l=>{const A=N[l.a],B=N[l.b],dir=B.x>A.x?1:-1,x0=A.x+dir*(A.r+3),x1=B.x-dir*(B.r+4),xe=x1-dir*16;return {...l,dir,x0,x1,xe,mx:(x0+x1)/2,ca:tones[A.k],cb:tones[B.k]}})})
 const cite=computed(()=>metric('论文引用关系'))
 const pillW=t=>[...String(t)].reduce((w,c)=>w+(/[\x00-\xff]/.test(c)?10.5:18),0)+40
@@ -30,19 +28,13 @@ function off(){active.value='';hide()}
 </script>
 <template>
   <section class="rs-page">
-    <header class="rs-head"><span class="rs-no">01</span><h3>已建立关系</h3></header>
+    <header class="rs-head"><span class="rs-no">01</span><h3>聚焦机构成长与人员培育</h3></header>
+    <p class="rs-lead soft">创新链从基金项目出发，落到承担项目的人员与机构：基金项目培养负责人与参与人，人员在依托单位中积累并带动机构成长。</p>
     <div v-if="!S.metrics" class="rs-empty">关系指标尚未生成，请在服务器运行 build_ai_chain.py 更新研究团队数据。</div>
     <template v-else>
     <div class="sb-legend"><span><i class="all"></i>全库</span><span><i class="ai"></i>人工智能领域 · 本页研究对象</span></div>
-    <div class="rs-scroll"><svg class="rs-svg sb-svg" viewBox="0 0 1360 380" role="img" aria-label="基金、人员、机构、论文、专利之间的关联关系，全库与人工智能领域">
+    <div class="rs-scroll"><svg class="rs-svg sb-svg" viewBox="0 0 1360 380" role="img" aria-label="基金项目、人员、机构之间的关联关系，全库与人工智能领域">
       <defs><linearGradient v-for="l in links" :key="'g'+l.id" :id="'sbg'+l.id" gradientUnits="userSpaceOnUse" :x1="l.x0" :x2="l.x1" y1="0" y2="0"><stop offset="0" :stop-color="l.ca" stop-opacity=".6"/><stop offset="1" :stop-color="l.cb" stop-opacity=".85"/></linearGradient></defs>
-      <!-- 论文引用环 -->
-      <g class="rs-hit" @mouseenter="show($event,`<b>论文引用</b>　${fmt(cite)} 对<br>关联库中的论文引用对`)" @mousemove="move" @mouseleave="hide">
-        <path :d="`M${nodes[3].x-22},${Y-50} C${nodes[3].x-62},${Y-148} ${nodes[3].x+62},${Y-148} ${nodes[3].x+22},${Y-50}`" fill="none" stroke="#2c64a0" stroke-opacity=".26" stroke-width="10" stroke-linecap="round"/>
-        <path class="rs-flow" :d="`M${nodes[3].x-22},${Y-50} C${nodes[3].x-62},${Y-148} ${nodes[3].x+62},${Y-148} ${nodes[3].x+22},${Y-50}`" fill="none" stroke="#fff" stroke-width="3.5" stroke-dasharray="2 22" stroke-linecap="round"/>
-        <text :x="nodes[3].x+64" :y="Y-104" font-size="22" font-weight="750" fill="#2a2a2a">{{fmt(cite)}}</text>
-        <text :x="nodes[3].x+64" :y="Y-84" font-size="13" fill="#78716c">对 · 论文引用</text>
-      </g>
       <g v-for="l in links" :key="l.id" class="rs-hit" :opacity="active&&active!==l.id?.4:1" @mouseenter="linkTip($event,l)" @mousemove="move" @mouseleave="off">
         <rect :x="Math.min(l.x0,l.x1)" :y="Y-26" :width="Math.abs(l.x1-l.x0)" height="52" fill="transparent"/>
         <path :d="`M${l.x0},${Y-7} L${l.xe},${Y-7} L${l.xe},${Y-12} L${l.x1},${Y} L${l.xe},${Y+12} L${l.xe},${Y+7} L${l.x0},${Y+7} Z`" :fill="`url(#sbg${l.id})`" stroke-linejoin="round"/>
@@ -53,7 +45,7 @@ function off(){active.value='';hide()}
           <text :x="l.mx" :y="Y+43" font-size="17" font-weight="800" text-anchor="middle" fill="#fff">AI {{fmt(l.ai)}} 条</text>
           <text :x="l.mx" :y="Y+72" font-size="12.5" text-anchor="middle" fill="#8a8286">AI 项目登记成果</text></g>
       </g>
-      <circle class="rs-pulse sb-pulse" :cx="nodes[2].x" :cy="Y" r="84" fill="none" stroke="#a21535" stroke-width="2" pointer-events="none"/>
+      <circle class="rs-pulse sb-pulse" :cx="nodes[0].x" :cy="Y" r="84" fill="none" stroke="#a21535" stroke-width="2" pointer-events="none"/>
       <g v-for="n in nodes" :key="n.k">
         <circle v-if="n.hub" :cx="n.x" :cy="Y" :r="n.r+14" fill="#a21535" opacity=".07"/>
         <circle :cx="n.x" :cy="Y" :r="n.r" :fill="n.hub?'#a21535':'#fff'" :stroke="n.hub?'none':tones[n.k]" stroke-width="2.5"/>

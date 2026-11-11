@@ -1,5 +1,5 @@
 <script setup>
-/* 案例专题：产业链 · 企业与产品 / 政策链 · 政策工具与影响 */
+/* 长链条分析：企业长链条 / 政策长链条 */
 import {computed} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import PageHero from '../PageHero.vue'
@@ -7,9 +7,10 @@ import IndustryCases from './IndustryCases.vue'
 import '../../chain-page.css'
 defineProps({data:Object})
 const route=useRoute(),router=useRouter()
+const hero={title:'从基金资助到经济社会价值的长链条分析',lead:'把创新链与产业链连成一条并纳入政策链，沿基金、论文、专利、产品、应用与经济效益追踪代表性企业，观察政策工具在各环节的作用。'}
 const topics=[
- {id:'industry',label:'产业链 · 企业与产品',caption:'企业研发、产品应用与经营表现',title:'从基础研究到企业与产品',lead:'选取智谱、生数科技、科大讯飞、紫东太初四家企业，沿基金、论文、专利、产品、应用与经济效益六个环节，追踪基础研究进入企业与产业的路径。'},
- {id:'policy',label:'政策链 · 政策工具与影响',caption:'政策工具、技术定位与实施影响',title:'政策工具与创新、产业的互动',lead:'结合政策时间、地域与作用对象，研究政策工具如何定位技术方向，并与创新、产业形成互动。'}]
+ {id:'industry',label:'企业长链条',caption:'基金 → 论文 → 专利 → 产品 → 应用 → 经济效益'},
+ {id:'policy',label:'政策长链条',caption:'政策工具 → 技术定位 → 实施影响'}]
 const active=computed(()=>topics.find(t=>t.id===route.query.topic)||topics[0])
 function choose(id){router.replace({query:{...route.query,topic:id,case:undefined}})}
 const policyPlan=[
@@ -18,8 +19,8 @@ const policyPlan=[
  {n:'03',t:'实施影响',d:'结合基金布局、企业与产品数据，比较政策出台前后相关技术方向的投入与产出。'}]
 </script>
 <template><div class="case-hub">
- <PageHero eyebrow="案例专题" :title="active.title" :lead="active.lead">
-  <template #tabs><nav class="chain-modules two" role="tablist" aria-label="案例专题">
+ <PageHero :title="hero.title" :lead="hero.lead">
+  <template #tabs><nav class="chain-modules two" role="tablist" aria-label="长链条分析">
    <button v-for="(t,i) in topics" :key="t.id" role="tab" :aria-selected="active.id===t.id" :class="{active:active.id===t.id}" @click="choose(t.id)">
     <i>{{String(i+1).padStart(2,'0')}}</i>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path v-if="t.id==='industry'" d="M3 21V11l5 3V11l5 3V4h8v17Z"/><path v-else d="M3 9 12 4l9 5ZM5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/></svg>
@@ -29,7 +30,7 @@ const policyPlan=[
  <div :key="active.id" class="pane-swap">
   <IndustryCases v-if="active.id==='industry'"/>
   <section v-else class="policy-plan">
-   <header><h3>政策链专题</h3><p>以人工智能领域为示范，围绕政策工具、技术定位与实施影响组织研究。</p></header>
+   <header><h3>政策长链条</h3><p>以人工智能领域为示范，围绕政策工具、技术定位与实施影响组织研究。</p></header>
    <div class="pp-grid"><article v-for="p in policyPlan" :key="p.n"><b>{{p.n}}</b><h4>{{p.t}}</h4><p>{{p.d}}</p></article></div>
    <div class="pp-foot"><span>政策文本已纳入数据底座，可在领域数据中按层级与时间检索。</span><router-link to="/data?type=policy&domain=ai">查看政策数据 →</router-link></div>
   </section>

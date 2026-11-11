@@ -3,22 +3,24 @@ import {ref,computed,watch,nextTick,defineAsyncComponent} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import EvidenceHub from './EvidenceHub.vue'
 import StrengthBase from './StrengthBase.vue'
+import IndustryChainPlan from './IndustryChainPlan.vue'
+import '../strength.css'
 import StrengthTrend from './StrengthTrend.vue'
 import ResearchAtlas from './ResearchAtlas.vue'
 import ResearchSuccession from './ResearchSuccession.vue'
 import MemberGrowth from './MemberGrowth.vue'
 const EvidenceExplorer=defineAsyncComponent(()=>import('./EvidenceExplorer.vue'))
-import '../strength.css'
 import '../chain-page.css'
 import PageHero from './PageHero.vue'
 import {fmt} from '../shared'
 const props=defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 // 创新链前三环：基金资助 → 科学研究 → 技术发展；投入产出对照已并入技术演进页
-const hero={title:'基金、知识创新与技术的关联依据',lead:'从基金资助到科学研究，再到技术发展，追踪基础研究如何形成知识创新、带动技术进步，以及支撑这一过程的研究团队如何形成与进阶。'}
+const hero={title:'创新链与产业链的短链条分析',lead:'以关键技术词表连接领域数据，先建立基金、论文、专利与产品、产业之间的关联依据，再分段分析创新链与产业链。'}
 const modules=[
- {id:'evidence',label:'关联与依据',caption:'基金、论文、专利与技术主题的关联'},
- {id:'strength',label:'创新链分析',caption:'基金资助 · 科学研究 · 技术发展'}]
+ {id:'evidence',label:'关联与依据',caption:'由领域数据与技术词表建立的链条关系'},
+ {id:'strength',label:'创新链分析',caption:'基金资助 · 科学研究 · 技术发展'},
+ {id:'industry',label:'产业链分析',caption:'技术发展 · 产业应用 · 经济社会价值'}]
 const active=computed(()=>modules.some(x=>x.id===route.query.module)?route.query.module:'evidence')
 const evidencePerson=ref('')
 const dataset=ref(null),loadError=ref(''),loading=ref(false)
@@ -28,16 +30,17 @@ async function showGrowth(){evidenceTab.value='';await nextTick();evidenceTab.va
 async function explore(name){evidenceTab.value='';await nextTick();evidenceTab.value='projects';evidencePerson.value='';await nextTick();evidencePerson.value=name||'';nextTick(()=>document.getElementById('rs-evidence')?.scrollIntoView({behavior:'smooth',block:'start'}))}
 async function load(){if(dataset.value||loading.value)return;loading.value=true;loadError.value='';try{const r=await fetch('/chain-analysis/v1/research.json');if(!r.ok)throw new Error('读取失败');dataset.value=await r.json()}catch{loadError.value='研究团队数据暂时无法读取，请重试。'}finally{loading.value=false}}
 watch(()=>route.query.module,m=>{if(m==='investment')router.replace({path:'/evolution',query:{domain:'ai'}})},{immediate:true})
-watch(active,v=>{if(v==='strength')load()},{immediate:true})
+watch(active,v=>{if(v!=='industry')load()},{immediate:true})
 </script>
 <template>
   <section class="ai-chain-workspace" :data-module="active">
     <PageHero :title="hero.title" :lead="hero.lead">
-      <template #tabs><nav class="chain-modules two" role="tablist" aria-label="分析模块">
+      <template #tabs><nav class="chain-modules" role="tablist" aria-label="分析模块">
         <button v-for="(m,i) in modules" :key="m.id" role="tab" :aria-selected="active===m.id" :class="{active:active===m.id}" @click="choose(m.id)">
           <i>{{String(i+1).padStart(2,'0')}}</i>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <template v-if="m.id==='evidence'"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h7a2 2 0 0 1 2 2v7M6 9v7a2 2 0 0 0 2 2h7"/></template>
+            <template v-else-if="m.id==='industry'"><path d="M3 21V11l5 3V11l5 3V4h8v17Z"/></template>
             <template v-else><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></template>
           </svg>
           <span><b>{{m.label}}</b><small>{{m.caption}}</small></span>
@@ -45,7 +48,8 @@ watch(active,v=>{if(v==='strength')load()},{immediate:true})
       </nav></template>
     </PageHero>
     <div :key="active" class="pane-swap">
-    <EvidenceHub v-if="active==='evidence'" :data="data"/>
+    <EvidenceHub v-if="active==='evidence'" :data="data" :dataset="dataset"/>
+    <IndustryChainPlan v-else-if="active==='industry'"/>
     <template v-else>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
