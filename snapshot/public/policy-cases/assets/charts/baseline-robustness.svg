@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="340" viewBox="0 0 760 340" role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">基准与样本稳健性估计</title>
+<desc id="chart-desc">三个模型的系数和95%置信区间。基准0.160，区间0.076至0.244；剔除直辖市0.162，区间0.076至0.248；剔除2025年0.137，区间0.070至0.204。</desc>
+<rect width="760" height="340" fill="#FFFFFF"/>
+<g font-family="PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="16" fill="#272B33" style="font-variant-numeric:tabular-nums">
+<line x1="154.0" y1="45" x2="154.0" y2="245" stroke="#66717E" stroke-width="1" stroke-dasharray="4 4"></line>
+<text x="154.0" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.0</text>
+<line x1="266.6666666666667" y1="45" x2="266.6666666666667" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="266.6666666666667" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.1</text>
+<line x1="379.33333333333337" y1="45" x2="379.33333333333337" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="379.33333333333337" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.2</text>
+<line x1="492.0" y1="45" x2="492.0" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="492.0" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.3</text>
+<text x="529" y="29" font-size="14" fill="#66717E">系数 [95% CI]</text>
+<text x="16" y="88" font-size="16">基准模型</text>
+<line x1="239.62666666666667" y1="82" x2="428.90666666666664" y2="82" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="239.62666666666667" y1="76" x2="239.62666666666667" y2="88" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="428.90666666666664" y1="76" x2="428.90666666666664" y2="88" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="334.26666666666665" cy="82" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="529" y="88" font-size="15">0.160 [0.076, 0.244]</text>
+<text x="16" y="157" font-size="16">剔除直辖市</text>
+<line x1="239.62666666666667" y1="151" x2="433.41333333333336" y2="151" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="239.62666666666667" y1="145" x2="239.62666666666667" y2="157" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="433.41333333333336" y1="145" x2="433.41333333333336" y2="157" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="336.52" cy="151" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="529" y="157" font-size="15">0.162 [0.076, 0.248]</text>
+<text x="16" y="226" font-size="16">剔除2025年</text>
+<line x1="232.86666666666667" y1="220" x2="383.84000000000003" y2="220" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="232.86666666666667" y1="214" x2="232.86666666666667" y2="226" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="383.84000000000003" y1="214" x2="383.84000000000003" y2="226" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="308.35333333333335" cy="220" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="529" y="226" font-size="15">0.137 [0.070, 0.204]</text>
+<text x="323.0" y="315" font-size="16" fill="#66717E" text-anchor="middle">系数与 95% 置信区间</text>
+</g>
+</svg>

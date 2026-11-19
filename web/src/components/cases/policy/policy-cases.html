@@ -1,0 +1,130 @@
+<section class="policy-case-app" id="policy-cases">
+
+  <div class="pc-case-tabs" role="tablist" aria-label="政策研究案例">
+    <button class="pc-case-tab is-active" id="pc-tab-innovation" role="tab" aria-selected="true" aria-controls="pc-innovation" tabindex="0" data-case="innovation">
+      <span class="pc-tab-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 18h6m-6 3h6M8 15a7 7 0 1 1 8 0c-1 1-1 2-1 3H9c0-1 0-2-1-3Z"/><path d="M12 1V0M3 5 1 3m20 2 2-2"/></svg></span>
+      <span class="pc-tab-copy"><span class="pc-tab-meta">案例一 <span class="pc-tag">实证结果</span></span><strong>政策实施与技术创新</strong><span>政策文本与专利数据匹配</span></span><span class="pc-tab-check" aria-hidden="true">✓</span>
+    </button>
+    <button class="pc-case-tab" id="pc-tab-economy" role="tab" aria-selected="false" aria-controls="pc-economy" tabindex="-1" data-case="economy">
+      <span class="pc-tab-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 21h18M5 17v-5h3v5m3 0V8h3v9m3 0V3h3v14"/></svg></span>
+      <span class="pc-tab-copy"><span class="pc-tab-meta">案例二 <span class="pc-tag pc-tag-muted">研究中</span></span><strong>政策实施与经济效益</strong><span>政策文本与企业运营数据匹配</span></span><span class="pc-tab-check" aria-hidden="true">✓</span>
+    </button>
+  </div>
+
+  <article id="pc-innovation" role="tabpanel" aria-labelledby="pc-tab-innovation">
+    <section class="pc-hero" aria-labelledby="pc-case-title">
+      <div class="pc-hero-main"><div class="pc-hero-copy"><p class="pc-eyebrow">政策文本 × 专利数据</p><h2 id="pc-case-title">政策实施如何影响<br>城市技术创新？</h2><p>利用人工智能和大模型政策文本以及城市专利面板数据，评价政策对技术创新的影响效应。</p><a class="pc-text-link" href="#pc-results">查看核心结果 <svg aria-hidden="true" viewBox="0 0 20 20"><path d="m5 7 5 5 5-5"/></svg></a></div>
+      <aside class="pc-key-result"><span>政策实施的影响效应</span><strong>0.160<sup>***</sup></strong><p>95% 置信区间 [0.076, 0.244] · 1% 水平显著</p><div class="pc-result-rule"></div><b>二元政策实施模型得到正向估计</b><p class="pc-key-explanation">估计结果表明，相关政策有助于提高样本城市的关键词专利产出，对技术创新具有促进作用。</p></aside></div>
+      <div class="pc-sample-strip"><div><strong>296<span>城</span></strong><p>城市样本</p></div><div><strong>2013<span>—</span>2025</strong><p>原始面板观察期</p></div><div><strong>3,848<span>个</span></strong><p>原始城市年度观测</p></div><div><strong>3,222<span>个</span></strong><p>基准回归观测</p></div></div>
+    </section>
+
+    <nav class="pc-section-nav" aria-label="案例一内容导航"><a href="#pc-design" class="is-active">研究设计</a><a href="#pc-descriptive">描述性分析</a><a href="#pc-results">核心结果</a><a href="#pc-dynamics">动态检验</a><a href="#pc-chain">产业链差异</a><a href="#pc-outlook">不足与展望</a></nav>
+
+    <section class="pc-section" id="pc-design" aria-labelledby="pc-design-title">
+      <div class="pc-section-heading"><div><p class="pc-eyebrow">研究设计</p><h2 id="pc-design-title">把政策文本接入城市创新面板</h2></div><span class="pc-section-caption">匹配单位：城市 × 年份</span></div>
+      <div class="pc-flow" aria-label="数据匹配与分析流程">
+        <div class="pc-flow-step"><svg aria-hidden="true" viewBox="0 0 28 28"><path d="M7 3h10l5 5v17H7ZM17 3v6h5M10 13h9m-9 4h9m-9 4h6"/></svg><h3>政策文本结构化</h3><p>整理出台年份与作用地域<br>形成累计篇数与累计评分</p></div>
+        <div class="pc-flow-step"><svg aria-hidden="true" viewBox="0 0 28 28"><path d="M3 7h22v18H3ZM3 12h22M8 3v7m12-7v7M8 17h3m6 0h3m-12 4h3m6 0h3"/></svg><h3>城市年度匹配</h3><p>对齐城市代码和年份<br>构建 296 城连续观察面板</p></div>
+        <div class="pc-flow-step"><svg aria-hidden="true" viewBox="0 0 28 28"><path d="M5 24V11h5v13m4 0V4h5v20m4 0V15h3v9M2 25h25"/></svg><h3>测度技术创新</h3><p>汇总关键词专利件数<br>区分上游、中游与下游</p></div>
+        <div class="pc-flow-step"><svg aria-hidden="true" viewBox="0 0 28 28"><path d="M4 3v22h22M8 18l5-7 5 3 7-9M21 5h4v4"/></svg><h3>识别政策影响</h3><p>固定效应与动态双重差分<br>结合安慰剂和替代样本检验</p></div>
+      </div>
+      <div class="pc-card pc-method-wide"><div><h3>如何定义政策实施？</h3><p>从某城市累计目标政策篇数首次为正的当年起，政策实施指标 <b>D = 1</b>，此前为 0。利用各城市首次出台政策的时间差异，比较政策实施前后的专利变化。</p></div><div><div class="pc-formula" aria-label="回归模型">ln(1 + 专利<sub>it</sub>) = β D<sub>it</sub> + γ X<sub>it</sub> + α<sub>i</sub> + λ<sub>t</sub> + ε<sub>it</sub></div><p class="pc-formula-symbols">其中，专利为关键词专利件数；i、t 为城市和年份，D 为政策实施指标，X 为五项控制变量，β、γ 为对应系数，α、λ 为城市和年份固定效应，ε 为误差项，ln 为自然对数。</p><p class="pc-note">模型纳入城市和年份固定效应，标准误按城市聚类。</p></div></div>
+    </section>
+
+    <section class="pc-section" id="pc-descriptive" aria-labelledby="pc-descriptive-title">
+      <div class="pc-section-heading"><div><p class="pc-eyebrow">描述性分析</p><h2 id="pc-descriptive-title">政策扩散与创新产出的时空分布</h2></div></div>
+      <div class="pc-descriptive-metrics"><div><span>截至 2025 年累计政策</span><strong>1,913<small>篇</small></strong><p>2025 年净增 628 篇</p></div><div><span>已有政策记录的城市</span><strong>155<small>/ 296 城</small></strong><p>样本城市覆盖率 52.36%</p></div><div><span>2013—2025 年关键词专利</span><strong>23,287<small>件</small></strong><p>2025 年度 12,521 件</p></div><div><span>2025 年当年前十城市专利占比</span><strong>73.3<small>%</small></strong><p>较 2023 年的 80.8% 回落</p></div></div>
+
+      <div class="pc-figure-gallery">
+        <div class="pc-gallery-top"><div><h3>政策扩散与专利产出</h3><p>从时间、城市空间和省域产业链三个角度查看研究样本。</p></div></div>
+        <div class="pc-gallery-tabs" role="tablist" aria-label="描述性分析组图">
+          <button id="pc-gallery-tab-time" role="tab" aria-selected="true" aria-controls="pc-gallery-time" tabindex="0" class="is-active" data-gallery="time">时间演进<span>政策数量 · 覆盖 · 专利</span></button>
+          <button id="pc-gallery-tab-space" role="tab" aria-selected="false" aria-controls="pc-gallery-space" tabindex="-1" data-gallery="space">空间分布<span>城市政策 · 专利集聚</span></button>
+          <button id="pc-gallery-tab-structure" role="tab" aria-selected="false" aria-controls="pc-gallery-structure" tabindex="-1" data-gallery="structure">省域与产业链<span>省域政策 · 环节变化</span></button>
+        </div>
+        <div class="pc-gallery-panel" id="pc-gallery-time" role="tabpanel" aria-labelledby="pc-gallery-tab-time">
+          <div class="pc-gallery-pair">
+            <figure class="pc-gallery-figure"><h4>年度政策篇数与评分</h4><button class="pc-gallery-image" data-zoom="assets/charts/policy-evolution.svg" data-caption="年度政策篇数与评分" aria-label="放大年度政策篇数与评分组图"><img src="assets/charts/policy-evolution.svg" alt="报告图1，年末累计政策数量与年度新增政策数量及篇均评分的两幅子图" loading="eager"></button><figcaption>柱形展示累计和新增政策篇数，折线展示新增政策篇均评分；年度新增按累计值差分计算，2013 年新增与篇均评分留空。</figcaption></figure>
+            <figure class="pc-gallery-figure"><h4>政策扩散与关键词专利时间序列</h4><button class="pc-gallery-image" data-zoom="assets/charts/diffusion-patents.svg" data-caption="政策扩散与关键词专利时间序列" aria-label="放大政策扩散与专利时间序列组图"><img src="assets/charts/diffusion-patents.svg" alt="报告图2，首次观察到政策的城市及覆盖率、年度关键词专利、按当年政策覆盖分组的城市专利均值三幅子图" loading="eager"></button><figcaption>依次展示政策覆盖、年度专利总量与分组城市均值；专利总量和城市均值均采用 ln(1+x) 变换。</figcaption></figure>
+          </div>
+          <div class="pc-gallery-reading"><div><h4>政策覆盖继续扩展</h4><p>2025 年有政策记录的城市增至 <b>155 城</b>，其中 <b>25 城</b>首次出现正值；当年政策净增 <b>628 篇</b>，高于 2024 年的 374 篇。</p></div><div><h4>专利计数高度集中于近年</h4><p>2023—2025 年分别为 <b>2,238、8,470、12,521 件</b>，占全期 99.75%。</p></div></div>
+        </div>
+        <div class="pc-gallery-panel" id="pc-gallery-space" role="tabpanel" aria-labelledby="pc-gallery-tab-space" hidden>
+          <div class="pc-gallery-pair">
+            <figure class="pc-gallery-figure"><h4>城市累计政策的空间分布</h4><button class="pc-gallery-image" data-zoom="assets/charts/city-policy-spatial-themed.svg" data-caption="城市累计政策篇数与累计评分空间分布" aria-label="放大城市政策空间分布组图"><img src="assets/charts/city-policy-spatial-themed.svg" alt="报告图3，对比2018年与2025年样本城市累计政策数量与累计政策评分的四幅地图" loading="eager"></button><figcaption>同一指标采用统一色阶比较 2018、2025 年城市累计政策篇数与评分；灰色为样本外地区，白色为零值。</figcaption></figure>
+            <figure class="pc-gallery-figure"><h4>关键词专利产出的城市空间分布</h4><button class="pc-gallery-image" data-zoom="assets/charts/city-patent-spatial-themed.svg" data-caption="关键词专利产出城市空间分布" aria-label="放大专利空间分布组图"><img src="assets/charts/city-patent-spatial-themed.svg" alt="报告图4，2023至2025年度关键词专利城市分布地图及当年前十城市份额柱状图" loading="eager"></button><figcaption>采用统一色阶展示 2023—2025 年城市专利数量；柱形比较各年专利最多的十个城市的份额。</figcaption></figure>
+          </div>
+          <div class="pc-gallery-reading"><div><h4>城市间的政策记录存在差异</h4><p>2025 年累计政策篇数居前的城市为<b>北京（156）、上海（149）、重庆（114）</b>。累计评分同时受到政策数量与单篇评分影响。</p></div><div><h4>专利集中度回落，仍处于较高水平</h4><p>当年前十城市份额从 2023 年的 <b>80.8%</b>，变为 2024 年的 <b>79.3%</b> 和 2025 年的 <b>73.3%</b>，专利产出向更多城市扩散。</p></div></div>
+        </div>
+        <div class="pc-gallery-panel" id="pc-gallery-structure" role="tabpanel" aria-labelledby="pc-gallery-tab-structure" hidden>
+          <div class="pc-gallery-pair">
+            <figure class="pc-gallery-figure"><h4>按省域汇总的样本城市政策</h4><button class="pc-gallery-image" data-zoom="assets/charts/province-policy-spatial-themed.svg" data-caption="按省域汇总的样本城市政策分布" aria-label="放大省域政策分布组图"><img src="assets/charts/province-policy-spatial-themed.svg" alt="报告图10，2018年与2025年按省域汇总的样本城市累计政策数量及评分四幅地图" loading="eager"></button><figcaption>按省域汇总省内样本城市的累计政策篇数与评分，对比 2018 年和 2025 年的空间分布。</figcaption></figure>
+            <figure class="pc-gallery-figure"><h4>产业链分段政策与关键词专利</h4><button class="pc-gallery-image" data-zoom="assets/charts/chain-trends.svg" data-caption="产业链分段政策和关键词专利" aria-label="放大产业链分段趋势组图"><img src="assets/charts/chain-trends.svg" alt="报告图5，上中下游累计政策篇数与关键词专利年度总量的两幅趋势图" loading="eager"></button><figcaption>折线按上游、中游、下游展示累计政策篇数与年度专利总量；专利总量采用 ln(1+x) 变换。</figcaption></figure>
+          </div>
+          <div class="pc-gallery-reading"><div><h4>省域汇总呈现不同的政策规模</h4><p>政策数量与评分按省内样本城市汇总，各地区精确数值见下方分地区统计。</p></div><div><h4>各产业链环节同时受到政策关注</h4><p>截至 2025 年，上、中、下游累计政策记录分别为 <b>681、839、1,356 篇</b>，同一政策可同时涉及多个环节。</p></div></div>
+        </div>
+      </div>
+
+      <div class="pc-regional-block">
+        <div class="pc-subsection-heading"><div><h3>分地区统计</h3><p>296 个样本城市，政策为 2025 年累计值，专利为 2025 年年度值。</p></div><a href="data/four-region-summary.csv" download class="pc-quiet-link">下载四地区统计</a></div>
+        <div class="pc-card pc-region-comparison"><div class="pc-table-scroll"><table class="pc-regional-table"><caption>四地区政策覆盖与专利分布（2025 年）</caption><thead><tr><th scope="col">地区</th><th scope="col">样本城市</th><th scope="col">有政策城市 / 覆盖率</th><th scope="col">累计政策 / 样本份额</th><th scope="col">年度专利 / 样本份额</th></tr></thead><tbody id="pc-region-rows"></tbody><tfoot><tr><th scope="row">样本合计</th><td>296 城</td><td>155 城 / 52.36%</td><td>1,913 篇 / 100%</td><td>12,521 件 / 100%</td></tr></tfoot></table></div><div class="pc-region-reading" id="pc-region-reading"></div><p class="pc-note">按东部、中部、西部、东北展示地区分布；覆盖率为有政策记录的城市数占本地区样本城市数的比例。</p></div>
+        <div class="pc-card pc-province-rank"><div class="pc-card-head"><div><h3>省域分布对比</h3><p class="pc-note">展示前六省级单元，可展开完整 31 省统计</p></div><div class="pc-segment" role="group" aria-label="省域排名指标"><button data-region-metric="policy" class="is-active" aria-pressed="true">累计政策</button><button data-region-metric="patent" aria-pressed="false">2025 年专利</button></div></div><div class="pc-province-chart" id="pc-province-chart" aria-live="polite"></div><p class="pc-note" id="pc-province-note"></p></div>
+        <details class="pc-details"><summary>展开 31 省完整统计与地区划分 <span aria-hidden="true">＋</span></summary><div class="pc-details-body"><p class="pc-expanded-conclusion"><b>结果解读：</b>广东样本城市的累计政策合计 <b>339 篇</b>，位居首位；北京的 2025 年专利计数为 <b>3,028 件</b>，数量最多。两类指标的前列地区有所不同，反映了政策记录规模与专利产出分布的差异。</p><div class="pc-table-scroll"><table><caption>各省级单元的样本统计</caption><thead><tr><th scope="col">省级单元</th><th scope="col">地区</th><th scope="col">样本城市</th><th scope="col">有政策城市</th><th scope="col">2025 累计政策（篇）</th><th scope="col">2025 专利（件）</th><th scope="col">2013—2025 专利（件）</th></tr></thead><tbody id="pc-province-rows"></tbody></table></div><a href="data/regional-summary.csv" download class="pc-quiet-link">下载完整省域统计</a><div class="pc-region-mapping" id="pc-region-mapping"></div></div></details>
+      </div>
+    </section>
+
+    <section class="pc-section" id="pc-results" aria-labelledby="pc-results-title">
+      <div class="pc-section-heading"><div><p class="pc-eyebrow">核心结果</p><h2 id="pc-results-title">政策实施后的创新响应为正</h2></div><a href="data/regression-results.csv" download class="pc-quiet-link"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 2v10m-4-4 4 4 4-4M3 13v4h14v-4"/></svg>下载结果数据</a></div>
+      <div class="pc-evidence-grid"><div class="pc-evidence-copy"><span class="pc-pill">双向固定效应</span><h3>替代样本下，正向估计仍然保留，<br>结果具有稳健性</h3><p>纳入五项控制后，政策实施系数为 <b>0.160</b>，在 1% 水平显著。剔除四个直辖市、剔除 2025 年后，估计系数分别为 <b>0.162</b> 和 <b>0.137</b>，对应置信区间均高于零。</p><p class="pc-result-explanation">这意味着，剔除直辖市或 2025 年数据后，政策促进创新的正向结论依然保留。在这两种样本调整下，估计方向和显著性保持一致，说明主要结果对样本范围的变化较为稳定。</p></div><figure class="pc-card pc-chart-card"><div class="pc-card-head"><h3>基准与稳健性估计</h3><div class="pc-chart-actions"><span class="pc-legend"><i></i>点估计与 95% 置信区间</span><button class="pc-icon-button" data-zoom="assets/charts/baseline-robustness.svg" data-caption="基准与稳健性估计" aria-label="放大基准与稳健性图"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m6 0h4v-4"/></svg></button></div></div><img src="assets/charts/baseline-robustness.svg" alt="基准政策实施系数0.160，剔除直辖市0.162，剔除2025年0.137，三个95%置信区间均高于零" loading="eager"><figcaption>圆点为政策实施系数，横线为 95% 置信区间，虚线标示零值；三行分别对应基准及两种替代样本估计。</figcaption></figure></div>
+      <details class="pc-details"><summary>展开基准回归与政策强度结果 <span aria-hidden="true">＋</span></summary><div class="pc-details-body"><div class="pc-expanded-reading"><h4>结果解读</h4><p>二元模型观察“是否实施政策”，数量和评分强度模型进一步观察政策积累程度。二元模型的政策实施系数在 1% 水平显著，支持政策实施有助于促进创新；两项强度交互项也为正，分别在 5% 和 10% 水平显著，显示政策积累与创新响应存在正向联系。</p><p>从政策实施前的情况看，二元模型的事前联合检验在 5% 水平未拒绝，而两种强度模型已经存在显著事前差异。强度结果可作为补充关联证据。</p></div><div class="pc-table-scroll"><table><caption>含五项控制的回归规格</caption><thead><tr><th scope="col">政策变量</th><th scope="col">系数</th><th scope="col">城市聚类标准误</th><th scope="col">事前联合检验 p 值</th><th scope="col">结果解读</th></tr></thead><tbody><tr><th scope="row">二元政策实施 D</th><td class="pc-number">0.160***</td><td>0.043</td><td>0.10059</td><td>5% 水平未拒绝事前联合检验</td></tr><tr><th scope="row">D × 数量强度</th><td class="pc-number">0.072**</td><td>0.033</td><td>0.00281</td><td>存在显著事前差异</td></tr><tr><th scope="row">D × 评分强度</th><td class="pc-number">0.074*</td><td>0.042</td><td>0.00259</td><td>存在显著事前差异</td></tr></tbody></table></div><p class="pc-note">每个规格 N = 3,222，城市数 = 296。*、**、*** 对应 10%、5%、1% 显著性水平。事前检验列展示各模型对应政策变量的联合检验结果，强度模型对应其交互项。</p></div></details>
+    </section>
+
+    <section class="pc-section" id="pc-dynamics" aria-labelledby="pc-dynamics-title">
+      <div class="pc-section-heading"><div><p class="pc-eyebrow">动态检验</p><h2 id="pc-dynamics-title">创新响应何时出现？</h2></div><span class="pc-section-caption">关注政策时序与识别假设</span></div>
+      <div class="pc-dynamic-layout"><figure class="pc-card pc-original-chart"><div class="pc-card-head"><h3>分组时期双重差分 · CSDID</h3><button class="pc-icon-button" data-zoom="assets/charts/csdid-event-study-themed.svg" data-caption="分组时期双重差分动态估计" aria-label="放大CSDID图表"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m6 0h4v-4M3 3l5 5m9-5-5 5m-9 9 5-5m9 5-5-5"/></svg></button></div><img src="assets/charts/csdid-event-study-themed.svg" alt="报告图8：CSDID事件研究。事前联合检验p值0.442，政策后0至4期置信区间跨零，至少5期的端点合并估计为正" loading="eager"><figcaption>三角形为各期估计值，竖线为点态 95% 置信区间；−1 为基期，≤−5 与 ≥+5 分别合并两端时期。</figcaption></figure><aside class="pc-dynamic-reading"><div><span class="pc-pill">政策前</span><h3>未拒绝事前联合检验</h3><p>原图报告 p = <b>0.442</b>。这一检验为平行趋势假设提供支持。</p></div><div><span class="pc-pill">政策后</span><h3>较长期合并期呈正向响应</h3><p>0—4 期的置信区间均跨零，短期效应尚不明确；≥+5 的合并期置信区间高于零，提示创新响应可能需要时间积累。</p></div><p class="pc-note">使用 2013—2025 年观察期，对照组包含始终未发文及比较时点尚未发文的城市；≥+5 为第 5 年及以后各期的合并估计。</p></aside></div>
+      <div class="pc-check-grid"><details class="pc-details pc-check"><summary><span><b>传统事件研究</b><small>二元政策事前检验 p = 0.10059</small></span><span aria-hidden="true">＋</span></summary><div class="pc-details-body"><p>传统二元政策模型在政策后的估计逐渐升高，提示创新响应可能随着时间推移逐步显现。政策前联合检验 p = <b>0.10059</b>，在 5% 水平未拒绝，为政策前走势的可比性提供支持。</p><p class="pc-expanded-conclusion"><b>结果解读：</b>结合 CSDID，较明确的正向响应主要出现在较长期合并期，说明政策作用于创新可能需要时间积累。</p><button class="pc-image-button" data-zoom="assets/charts/twfe-event-study-themed.svg" data-caption="传统双向固定效应事件研究"><img src="assets/charts/twfe-event-study-themed.svg" alt="报告图6传统事件研究，包含二元政策与两种政策强度规格" loading="eager"><span>查看图表</span></button><p class="pc-note">以发文前一年为参照，圆点为估计值，误差线为 95% 置信区间；−5、+5 均表示单一期。</p></div></details><details class="pc-details pc-check"><summary><span><b>随机置换安慰剂</b><small>二元政策经验 p = 0.002</small></span><span aria-hidden="true">＋</span></summary><div class="pc-details-body"><p>随机置换处理安排，三个模型各有 500 次有效置换。二元、篇数、评分模型经验 p 值分别为 0.002、0.040、0.100。</p><p class="pc-expanded-conclusion"><b>结果解读：</b>随机打乱政策安排后，很少出现与二元模型实际结果同样极端的估计，对主结果形成支持。数量强度结果也有一定支持，评分强度结果与随机估计的区分则相对较弱。</p><button class="pc-image-button" data-zoom="assets/charts/placebo-test-themed.svg" data-caption="随机置换处理安排的安慰剂检验"><img src="assets/charts/placebo-test-themed.svg" alt="报告图7：三种模型各500次置换所得系数分布及实际估计位置" loading="eager"><span>查看图表</span></button><p class="pc-note">直方图展示 500 次随机置换的系数分布，深酒红虚线为实际估计，灰线标示零值。</p></div></details></div>
+    </section>
+
+    <section class="pc-section" id="pc-chain" aria-labelledby="pc-chain-title"><div class="pc-section-heading"><div><p class="pc-eyebrow">产业链差异</p><h2 id="pc-chain-title">沿产业链观察政策与创新的联系</h2></div><span class="pc-section-caption">分开观察政策定位与专利构成</span></div>
+      <div class="pc-chain-layout"><figure class="pc-card pc-chart-card"><div class="pc-card-head"><h3>各环节政策与总体关键词专利</h3><div class="pc-chart-actions"><span class="pc-legend"><i></i>95% 置信区间</span><button class="pc-icon-button" data-zoom="assets/charts/chain-effects.svg" data-caption="各环节政策与总体关键词专利" aria-label="放大产业链系数图"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m6 0h4v-4"/></svg></button></div></div><img src="assets/charts/chain-effects.svg" alt="总体、上游、中游、下游政策对应总体关键词专利的估计系数依次为0.160、0.541、0.363、0.257" loading="eager"><figcaption>圆点和横线分别表示系数与 95% 置信区间；各行对应总体及上、中、下游政策，因变量均为总体关键词专利。</figcaption></figure><div class="pc-chain-copy"><h3>分环节政策均得到正向估计</h3><p>上游、中游、下游政策对应的总体关键词专利估计系数分别为 <b>0.541、0.363、0.257</b>，均在 1% 水平显著。</p><p class="pc-result-explanation">三个环节的政策均与城市总体关键词专利创新的提升相联系，说明政策布局与创新响应之间的正向联系覆盖了不同产业链环节。本组估计中，上游政策的点估计较高，可作为进一步研究政策传导机制的线索。</p><button class="pc-quiet-link" data-zoom="assets/charts/chain-original-themed.svg" data-caption="产业链政策和专利的分项估计">查看完整分项估计图 <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m6 0h4v-4"/></svg></button>
+        <section class="pc-chain-criteria" aria-labelledby="pc-chain-criteria-title">
+          <h4 id="pc-chain-criteria-title">产业链划分标准</h4>
+          <dl>
+            <div><dt>上游</dt><dd>算力硬件、计算基础设施、训练数据与语料</dd></div>
+            <div><dt>中游</dt><dd>模型架构、训练、微调、推理优化与评测</dd></div>
+            <div><dt>下游</dt><dd>问答、检索增强、智能体和行业应用</dd></div>
+          </dl>
+        </section>
+      </div></div>
+      <section class="pc-spillover-block" aria-labelledby="pc-spillover-title">
+        <div class="pc-spillover-heading"><div><p class="pc-eyebrow">产业链溢出效应</p><h3 id="pc-spillover-title">从跨环节关联理解政策传导</h3></div><span>分项估计与机制分析</span></div>
+        <p class="pc-spillover-intro">分项估计显示，一类环节政策的正向关联也出现在其他环节的专利产出中。下面结合图中的跨环节响应，从技术供给、成果转化和需求反馈讨论可能的溢出路径。</p>
+        <div class="pc-spillover-grid">
+          <article><span class="pc-spillover-label">上游 · 供给传导</span><h4>上游支持向中下游扩散</h4><p>上游政策对应的中游、下游专利均得到正向估计，表明其与创新产出的联系延伸到了后续环节。</p><p class="pc-spillover-mechanism"><b>可能的传导机制：</b>上游研发条件与技术供给的改善，可能为中下游提供技术支撑，降低后续研发门槛，带动更多创新。</p></article>
+          <article><span class="pc-spillover-label">中游 · 承接扩散</span><h4>中游连接上下游创新</h4><p>中游政策与上游、下游专利均呈正向关联，呈现中游与产业链两端之间的创新联动。</p><p class="pc-spillover-mechanism"><b>可能的传导机制：</b>中游通过技术整合与成果转化，可能承接上游技术供给，并推动技术向下游应用扩散，发挥承上启下的作用。</p></article>
+          <article><span class="pc-spillover-label">下游 · 需求反馈</span><h4>下游需求向前端反馈</h4><p>下游政策与中游专利的正向联系较清晰，与上游专利的关联相对较弱，体现出不同环节响应的差异。</p><p class="pc-spillover-mechanism"><b>可能的传导机制：</b>下游需求和应用场景的拓展，可能推动中游技术改进，并进一步为上游研发提出新的需求，形成向前端反馈的路径。</p></article>
+        </div>
+      </section>
+      <div class="pc-chain-composition"><div><h3>关键词专利主要分布在下游</h3><p>2013—2025 年原始面板汇总，共 <b>23,287</b> 件。</p><p class="pc-composition-reading">下游占全期专利计数的 <b>81.28%</b>，是样本中专利产出最集中的环节，中游次之。</p></div><div class="pc-composition-chart"><div class="pc-stacked-bar" role="img" aria-label="上游416件，占1.79%；中游3944件，占16.94%；下游18927件，占81.28%"><span style="width:1.7864%" class="pc-up"></span><span style="width:16.9365%" class="pc-mid"></span><span style="width:81.2771%" class="pc-down"></span></div><div class="pc-composition-legend"><span><i class="pc-up"></i>上游 <b>416</b><small>1.79%</small></span><span><i class="pc-mid"></i>中游 <b>3,944</b><small>16.94%</small></span><span><i class="pc-down"></i>下游 <b>18,927</b><small>81.28%</small></span></div></div></div>
+    </section>
+    <section class="pc-section" id="pc-outlook" aria-labelledby="pc-outlook-title">
+      <div class="pc-section-heading"><div><p class="pc-eyebrow">不足与展望</p><h2 id="pc-outlook-title">现有分析的局限与后续完善方向</h2></div></div>
+      <div class="pc-card pc-outlook-card">
+        <p class="pc-outlook-lead">现有结果表明，政策出台与目标专利创新之间具有较稳定的正向联系。政策如何执行、支持积累如何影响创新，以及创新如何沿产业链传递，仍需要更完整的数据覆盖、实际投入和技术证据加以说明。</p>
+        <div class="pc-outlook-grid">
+          <article><h3>数据覆盖与零值核验</h3><p>仍需区分真实零值与未匹配记录，持续完善近期专利覆盖，并核验控制变量的补录、插补及统计口径，提升数据完整性与可追溯性。</p></article>
+          <article><h3>政策执行与评分口径</h3><p>当前对政策执行范围、实际投入和持续落实过程的刻画仍有限。政策文本量化评分的标准、权重与适用口径也需进一步统一，以提升政策强度在地区和时期之间的可比性。</p></article>
+          <article><h3>识别设定与传导机制</h3><p>强度模型存在事前差异，分环节估计主要反映跨环节关联。后续需统一并透明呈现关键样本与估计设定，结合技术关联证据，进一步检验政策作用和产业链传导机制。</p></article>
+        </div>
+        <div class="pc-outlook-next"><h3>后续完善方向</h3><p>后续评估将持续核验零值及未匹配记录，完善近期专利与控制变量数据，拓宽数据采集渠道，完善政策文本量化评分规范，并依据统一且透明的识别设定深化机制分析。</p></div>
+      </div>
+    </section>
+    <div class="pc-next-case"><div><span class="pc-eyebrow">下一案例</span><h3>政策如何传导至企业经济效益？</h3><p>从创新响应延伸到企业经营表现。</p></div><button class="pc-button pc-button-outline" data-open-case="economy">查看案例二</button></div>
+  </article>
+
+  <article id="pc-economy" role="tabpanel" aria-labelledby="pc-tab-economy" hidden>
+    <section class="pc-economy-hero"><span class="pc-pill">案例二 · 研究中</span><h2>政策实施与经济效益</h2><p class="pc-economy-lead">匹配政策文本与企业运营数据，研究政策实施对企业经营表现的影响。</p><div class="pc-economy-path"><span>政策文本</span><i aria-hidden="true"></i><span>企业匹配</span><i aria-hidden="true"></i><span>经营表现</span><i aria-hidden="true"></i><span>因果评估</span></div><div class="pc-empty"><svg aria-hidden="true" viewBox="0 0 64 64"><path d="M14 8h25l11 11v37H14ZM39 8v12h11M22 43V32h5v11m7 0V27h5v16m7 0v-7M21 48h24"/></svg><h3>研究进行中</h3><p>将呈现数据样本、识别策略、经济效益结果与稳健性检验。</p></div><div class="pc-future-sections"><div><h3>数据与样本</h3><p>政策与企业数据的匹配范围及指标口径</p></div><div><h3>核心结果</h3><p>经济效益估计及置信区间</p></div><div><h3>机制与检验</h3><p>政策传导机制及稳健性分析</p></div></div><button class="pc-button pc-button-outline" data-open-case="innovation">返回案例一</button></section>
+  </article>
+  <footer class="pc-footer"><span>人工智能领域 · 政策长链条案例</span><span>数据来源：296 城城市面板（2013—2025 年）与人工智能产业政策实证分析</span></footer>
+  <dialog class="pc-lightbox" aria-labelledby="pc-lightbox-caption"><div class="pc-lightbox-header"><h2 id="pc-lightbox-caption">研究图表</h2><button class="pc-icon-button" data-close-dialog aria-label="关闭图表"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m4 4 12 12M16 4 4 16"/></svg></button></div><div class="pc-lightbox-body"><img alt=""></div><div class="pc-lightbox-footer"><span></span><a download class="pc-quiet-link">下载图表</a></div></dialog>
+</section>

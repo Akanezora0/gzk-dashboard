@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="820" viewBox="0 0 1000 820" role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">政策扩散与关键词专利时间序列</title>
+<desc id="chart-desc">政策城市扩散、年度关键词专利总量和按当年政策覆盖划分的城市专利均值。专利总量与城市均值均使用先汇总后ln(1+x)变换，并以线性纵轴绘制。</desc>
+<metadata id="chart-series">{&quot;years&quot;:[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],&quot;figure&quot;:&quot;figure2&quot;,&quot;source&quot;:{&quot;baseFile&quot;:&quot;panel_data.xlsx&quot;,&quot;baseSheet&quot;:&quot;Sheet1&quot;,&quot;chainFile&quot;:&quot;panel_data_chain.xlsx&quot;,&quot;chainSheet&quot;:&quot;Sheet1&quot;,&quot;sha256&quot;:{&quot;panel_data.xlsx&quot;:&quot;b868ff35095b4115cdce55c95fcb5ea1582992179879517ad75fc5bacb0f05f6&quot;,&quot;panel_data_chain.xlsx&quot;:&quot;e2dbe756f2c04e5e393152b77600f786199c251810085d1fda0eff670a2e74c3&quot;},&quot;reportFigures&quot;:[&quot;图1 / image1.png&quot;,&quot;图2 / image2.png&quot;,&quot;图5 / image5.png&quot;],&quot;method&quot;:&quot;仅用Excel原始城市年主表精确汇总、分组和自然对数变换；未重新估计回归，未从图像反推数据。&quot;},&quot;series&quot;:{&quot;title&quot;:&quot;政策扩散与关键词专利时间序列&quot;,&quot;a&quot;:{&quot;title&quot;:&quot;首次观察到市级政策的城市及覆盖率&quot;,&quot;firstCities&quot;:[1,3,8,6,13,26,15,13,10,7,4,24,25],&quot;coveredCities&quot;:[1,4,12,18,31,57,72,85,95,102,106,130,155],&quot;coverageShare&quot;:[0.0033783783783783786,0.013513513513513514,0.04054054054054054,0.060810810810810814,0.10472972972972973,0.19256756756756757,0.24324324324324326,0.28716216216216217,0.32094594594594594,0.34459459459459457,0.3581081081081081,0.4391891891891892,0.5236486486486487],&quot;originalLeftYTicks&quot;:[0,10,20,30],&quot;originalRightYTicks&quot;:[0,0.2,0.4,0.6],&quot;note&quot;:&quot;首发城数是在观察窗内首次pol_acc&gt;0的城市数，2013的1城属于首年已记录，不断言实际首发于2013。覆盖率分母每年均为296。&quot;},&quot;b&quot;:{&quot;title&quot;:&quot;关键词检索专利年度总量&quot;,&quot;rawCounts&quot;:[2,3,3,1,6,5,5,1,10,22,2238,8470,12521],&quot;y&quot;:[1.0986122886681098,1.3862943611198906,1.3862943611198906,0.6931471805599453,1.9459101490553132,1.791759469228055,1.791759469228055,0.6931471805599453,2.3978952727983707,3.1354942159291497,7.713784616598755,9.044403844431551,9.435242376305256],&quot;transform&quot;:&quot;ln(1+各年度296城专利总件数)&quot;,&quot;axisType&quot;:&quot;linear&quot;,&quot;originalYTicks&quot;:[0,2.5,5,7.5,10],&quot;rawLabelsYears&quot;:[2023,2024,2025]},&quot;c&quot;:{&quot;title&quot;:&quot;按当年政策覆盖分组的城市专利均值&quot;,&quot;covered&quot;:{&quot;cityCounts&quot;:[1,4,12,18,31,57,72,85,95,102,106,130,155],&quot;rawPatentTotals&quot;:[0,0,1,0,2,4,5,1,9,22,2194,8344,12239],&quot;rawPatentMeans&quot;:[0.0,0.0,0.08333333333333333,0.0,0.06451612903225806,0.07017543859649122,0.06944444444444445,0.011764705882352941,0.09473684210526316,0.21568627450980393,20.69811320754717,64.18461538461538,78.96129032258065],&quot;y&quot;:[0.0,0.0,0.08004270767353643,0.0,0.06252035698133399,0.06782259633876109,0.06713930283762855,0.011696039763191278,0.09051400754083183,0.1953087523207658,3.077225307805174,4.177223480730922,4.3815426466028065]},&quot;uncovered&quot;:{&quot;cityCounts&quot;:[295,292,284,278,265,239,224,211,201,194,190,166,141],&quot;rawPatentTotals&quot;:[2,3,2,1,4,1,0,0,1,0,44,126,282],&quot;rawPatentMeans&quot;:[0.006779661016949152,0.010273972602739725,0.007042253521126761,0.0035971223021582736,0.01509433962264151,0.0041841004184100415,0.0,0.0,0.004975124378109453,0.0,0.23157894736842105,0.7590361445783133,2.0],&quot;y&quot;:[0.006756782462879793,0.010221554071538077,0.007017572658646549,0.0035906681307285625,0.014981553615616898,0.004175371410480636,0.0,0.0,0.004962789342129009,0.0,0.2082970431972153,0.5647660139117385,1.0986122886681098]},&quot;groupRule&quot;:&quot;当年pol_acc&gt;0为已有政策；pol_acc=0为尚无政策。城市组别随年份可变。&quot;,&quot;transform&quot;:&quot;ln(1+组内IPAG_K算术均值)，先均值后对数，不能替换成组内ln(1+IPAG_K)的均值。&quot;,&quot;axisType&quot;:&quot;linear&quot;,&quot;originalYTicks&quot;:[0,1,2,3,4]}}}</metadata>
+<style>text{font-family:PingFang SC,Microsoft YaHei,Noto Sans CJK SC,Arial,sans-serif;fill:#4B3842;font-size:14px}.panel-title{font-size:18px;font-weight:600}.tick{font-size:14px}.legend{font-size:15px}.unit{font-size:14px}</style>
+<rect width="1000" height="820" fill="#FFFFFF"/>
+<text x="85.000" y="28.000" text-anchor="start" class="panel-title">(a)  首次观察到市级政策的城市及覆盖率</text>
+<rect x="99.000" y="51.000" width="28.000" height="12.000" rx="1.5" fill="#AE0D28" fill-opacity="0.25"></rect>
+<text x="139.000" y="62.000" text-anchor="start" class="legend">首次观察到政策的城市</text>
+<line x1="465.000" y1="57.000" x2="495.000" y2="57.000" stroke="#AE0D28" stroke-width="2.8"/>
+<circle cx="480.000" cy="57.000" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"></circle>
+<text x="505.000" y="62.000" text-anchor="start" class="legend">年末政策覆盖率</text>
+<line x1="85.000" y1="235.000" x2="915.000" y2="235.000" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="235.000" x2="80.000" y2="235.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="240.000" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="190.152" x2="915.000" y2="190.152" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="190.152" x2="80.000" y2="190.152" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="195.152" text-anchor="end" class="tick" style="fill:#4B3842">10</text>
+<line x1="85.000" y1="145.303" x2="915.000" y2="145.303" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="145.303" x2="80.000" y2="145.303" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="150.303" text-anchor="end" class="tick" style="fill:#4B3842">20</text>
+<line x1="85.000" y1="100.455" x2="915.000" y2="100.455" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="100.455" x2="80.000" y2="100.455" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="105.455" text-anchor="end" class="tick" style="fill:#4B3842">30</text>
+<line x1="85.000" y1="87.000" x2="85.000" y2="235.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="235.000" x2="915.000" y2="235.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="235.000" x2="116.923" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="180.769" y1="235.000" x2="180.769" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="244.615" y1="235.000" x2="244.615" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="308.462" y1="235.000" x2="308.462" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="372.308" y1="235.000" x2="372.308" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="436.154" y1="235.000" x2="436.154" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="500.000" y1="235.000" x2="500.000" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="563.846" y1="235.000" x2="563.846" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="627.692" y1="235.000" x2="627.692" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="691.538" y1="235.000" x2="691.538" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="755.385" y1="235.000" x2="755.385" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="819.231" y1="235.000" x2="819.231" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="883.077" y1="235.000" x2="883.077" y2="240.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="24.000" y="161.000" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 161.000)">城市数</text>
+<rect x="99.923" y="230.515" width="34.000" height="4.485" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2013年 首次观察到政策城市数：1</title></rect>
+<rect x="163.769" y="221.545" width="34.000" height="13.455" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2014年 首次观察到政策城市数：3</title></rect>
+<rect x="227.615" y="199.121" width="34.000" height="35.879" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2015年 首次观察到政策城市数：8</title></rect>
+<rect x="291.462" y="208.091" width="34.000" height="26.909" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2016年 首次观察到政策城市数：6</title></rect>
+<rect x="355.308" y="176.697" width="34.000" height="58.303" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2017年 首次观察到政策城市数：13</title></rect>
+<rect x="419.154" y="118.394" width="34.000" height="116.606" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2018年 首次观察到政策城市数：26</title></rect>
+<rect x="483.000" y="167.727" width="34.000" height="67.273" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2019年 首次观察到政策城市数：15</title></rect>
+<rect x="546.846" y="176.697" width="34.000" height="58.303" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2020年 首次观察到政策城市数：13</title></rect>
+<rect x="610.692" y="190.152" width="34.000" height="44.848" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2021年 首次观察到政策城市数：10</title></rect>
+<rect x="674.538" y="203.606" width="34.000" height="31.394" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2022年 首次观察到政策城市数：7</title></rect>
+<rect x="738.385" y="217.061" width="34.000" height="17.939" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2023年 首次观察到政策城市数：4</title></rect>
+<rect x="802.231" y="127.364" width="34.000" height="107.636" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2024年 首次观察到政策城市数：24</title></rect>
+<rect x="866.077" y="122.879" width="34.000" height="112.121" rx="1.5" fill="#AE0D28" fill-opacity="0.25"><title>2025年 首次观察到政策城市数：25</title></rect>
+<line x1="915.000" y1="235.000" x2="920.000" y2="235.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="240.000" text-anchor="start" class="tick" style="fill:#AE0D28">0%</text>
+<line x1="915.000" y1="192.714" x2="920.000" y2="192.714" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="197.714" text-anchor="start" class="tick" style="fill:#AE0D28">20%</text>
+<line x1="915.000" y1="150.429" x2="920.000" y2="150.429" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="155.429" text-anchor="start" class="tick" style="fill:#AE0D28">40%</text>
+<line x1="915.000" y1="108.143" x2="920.000" y2="108.143" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="113.143" text-anchor="start" class="tick" style="fill:#AE0D28">60%</text>
+<line x1="915.000" y1="87.000" x2="915.000" y2="235.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<text x="982.000" y="161.000" text-anchor="middle" class="unit" style="fill:#AE0D28" transform="rotate(-90 982.000 161.000)">覆盖率</text>
+<polyline points="116.923,234.286 180.769,232.143 244.615,226.429 308.462,222.143 372.308,212.857 436.154,194.286 500.000,183.571 563.846,174.286 627.692,167.143 691.538,162.143 755.385,159.286 819.231,142.143 883.077,124.286" fill="none" stroke="#AE0D28" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="116.923" cy="234.286" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2013年 年末政策覆盖率：0.00337837837838</title></circle>
+<circle cx="180.769" cy="232.143" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2014年 年末政策覆盖率：0.0135135135135</title></circle>
+<circle cx="244.615" cy="226.429" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2015年 年末政策覆盖率：0.0405405405405</title></circle>
+<circle cx="308.462" cy="222.143" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2016年 年末政策覆盖率：0.0608108108108</title></circle>
+<circle cx="372.308" cy="212.857" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2017年 年末政策覆盖率：0.10472972973</title></circle>
+<circle cx="436.154" cy="194.286" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2018年 年末政策覆盖率：0.192567567568</title></circle>
+<circle cx="500.000" cy="183.571" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2019年 年末政策覆盖率：0.243243243243</title></circle>
+<circle cx="563.846" cy="174.286" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2020年 年末政策覆盖率：0.287162162162</title></circle>
+<circle cx="627.692" cy="167.143" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2021年 年末政策覆盖率：0.320945945946</title></circle>
+<circle cx="691.538" cy="162.143" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2022年 年末政策覆盖率：0.344594594595</title></circle>
+<circle cx="755.385" cy="159.286" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2023年 年末政策覆盖率：0.358108108108</title></circle>
+<circle cx="819.231" cy="142.143" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2024年 年末政策覆盖率：0.439189189189</title></circle>
+<circle cx="883.077" cy="124.286" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2025年 年末政策覆盖率：0.523648648649</title></circle>
+<text x="85.000" y="282.000" text-anchor="start" class="panel-title">(b)  关键词检索专利年度总量</text>
+<line x1="85.000" y1="486.000" x2="915.000" y2="486.000" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="486.000" x2="80.000" y2="486.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="491.000" text-anchor="end" class="tick" style="fill:#4B3842">0.0</text>
+<line x1="85.000" y1="447.404" x2="915.000" y2="447.404" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="447.404" x2="80.000" y2="447.404" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="452.404" text-anchor="end" class="tick" style="fill:#4B3842">2.5</text>
+<line x1="85.000" y1="408.807" x2="915.000" y2="408.807" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="408.807" x2="80.000" y2="408.807" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="413.807" text-anchor="end" class="tick" style="fill:#4B3842">5.0</text>
+<line x1="85.000" y1="370.211" x2="915.000" y2="370.211" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="370.211" x2="80.000" y2="370.211" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="375.211" text-anchor="end" class="tick" style="fill:#4B3842">7.5</text>
+<line x1="85.000" y1="331.614" x2="915.000" y2="331.614" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="331.614" x2="80.000" y2="331.614" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="336.614" text-anchor="end" class="tick" style="fill:#4B3842">10.0</text>
+<line x1="85.000" y1="310.000" x2="85.000" y2="486.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="486.000" x2="915.000" y2="486.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="486.000" x2="116.923" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="180.769" y1="486.000" x2="180.769" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="244.615" y1="486.000" x2="244.615" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="308.462" y1="486.000" x2="308.462" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="372.308" y1="486.000" x2="372.308" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="436.154" y1="486.000" x2="436.154" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="500.000" y1="486.000" x2="500.000" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="563.846" y1="486.000" x2="563.846" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="627.692" y1="486.000" x2="627.692" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="691.538" y1="486.000" x2="691.538" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="755.385" y1="486.000" x2="755.385" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="819.231" y1="486.000" x2="819.231" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="883.077" y1="486.000" x2="883.077" y2="491.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="24.000" y="398.000" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 398.000)">ln(1 + 件数)</text>
+<rect x="99.923" y="469.039" width="34.000" height="16.961" rx="1.5" fill="#D6B6C1"><title>2013年 ln(1+年度专利总件数)：1.0986122886681098</title></rect>
+<rect x="163.769" y="464.598" width="34.000" height="21.402" rx="1.5" fill="#D6B6C1"><title>2014年 ln(1+年度专利总件数)：1.3862943611198906</title></rect>
+<rect x="227.615" y="464.598" width="34.000" height="21.402" rx="1.5" fill="#D6B6C1"><title>2015年 ln(1+年度专利总件数)：1.3862943611198906</title></rect>
+<rect x="291.462" y="475.299" width="34.000" height="10.701" rx="1.5" fill="#D6B6C1"><title>2016年 ln(1+年度专利总件数)：0.6931471805599453</title></rect>
+<rect x="355.308" y="455.958" width="34.000" height="30.042" rx="1.5" fill="#D6B6C1"><title>2017年 ln(1+年度专利总件数)：1.9459101490553132</title></rect>
+<rect x="419.154" y="458.338" width="34.000" height="27.662" rx="1.5" fill="#D6B6C1"><title>2018年 ln(1+年度专利总件数)：1.791759469228055</title></rect>
+<rect x="483.000" y="458.338" width="34.000" height="27.662" rx="1.5" fill="#D6B6C1"><title>2019年 ln(1+年度专利总件数)：1.791759469228055</title></rect>
+<rect x="546.846" y="475.299" width="34.000" height="10.701" rx="1.5" fill="#D6B6C1"><title>2020年 ln(1+年度专利总件数)：0.6931471805599453</title></rect>
+<rect x="610.692" y="448.980" width="34.000" height="37.020" rx="1.5" fill="#D6B6C1"><title>2021年 ln(1+年度专利总件数)：2.3978952727983707</title></rect>
+<rect x="674.538" y="437.592" width="34.000" height="48.408" rx="1.5" fill="#D6B6C1"><title>2022年 ln(1+年度专利总件数)：3.1354942159291497</title></rect>
+<rect x="738.385" y="366.910" width="34.000" height="119.090" rx="1.5" fill="#AE0D28"><title>2023年 ln(1+年度专利总件数)：7.713784616598755</title></rect>
+<rect x="802.231" y="346.367" width="34.000" height="139.633" rx="1.5" fill="#AE0D28"><title>2024年 ln(1+年度专利总件数)：9.044403844431551</title></rect>
+<rect x="866.077" y="340.333" width="34.000" height="145.667" rx="1.5" fill="#AE0D28"><title>2025年 ln(1+年度专利总件数)：9.435242376305256</title></rect>
+<text x="755.385" y="357.910" text-anchor="middle">2,238</text>
+<text x="819.231" y="337.367" text-anchor="middle">8,470</text>
+<text x="883.077" y="331.333" text-anchor="middle">12,521</text>
+<text x="85.000" y="535.000" text-anchor="start" class="panel-title">(c)  按当年政策覆盖分组的城市专利均值</text>
+<line x1="99.000" y1="563.000" x2="129.000" y2="563.000" stroke="#AE0D28" stroke-width="2.8"/>
+<circle cx="114.000" cy="563.000" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"></circle>
+<text x="139.000" y="568.000" text-anchor="start" class="legend">当年已有政策</text>
+<line x1="365.000" y1="563.000" x2="395.000" y2="563.000" stroke="#607D91" stroke-width="2.8"/>
+<rect x="376.300" y="559.300" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"></rect>
+<text x="405.000" y="568.000" text-anchor="start" class="legend">当年尚无政策</text>
+<line x1="85.000" y1="755.463" x2="915.000" y2="755.463" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="755.463" x2="80.000" y2="755.463" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="760.463" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="720.095" x2="915.000" y2="720.095" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="720.095" x2="80.000" y2="720.095" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="725.095" text-anchor="end" class="tick" style="fill:#4B3842">1</text>
+<line x1="85.000" y1="684.726" x2="915.000" y2="684.726" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="684.726" x2="80.000" y2="684.726" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="689.726" text-anchor="end" class="tick" style="fill:#4B3842">2</text>
+<line x1="85.000" y1="649.358" x2="915.000" y2="649.358" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="649.358" x2="80.000" y2="649.358" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="654.358" text-anchor="end" class="tick" style="fill:#4B3842">3</text>
+<line x1="85.000" y1="613.989" x2="915.000" y2="613.989" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="613.989" x2="80.000" y2="613.989" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="618.989" text-anchor="end" class="tick" style="fill:#4B3842">4</text>
+<line x1="85.000" y1="591.000" x2="85.000" y2="759.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="759.000" x2="915.000" y2="759.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="759.000" x2="116.923" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="116.923" y="785.000" text-anchor="middle" class="tick">2013</text>
+<line x1="180.769" y1="759.000" x2="180.769" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="180.769" y="785.000" text-anchor="middle" class="tick">2014</text>
+<line x1="244.615" y1="759.000" x2="244.615" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="244.615" y="785.000" text-anchor="middle" class="tick">2015</text>
+<line x1="308.462" y1="759.000" x2="308.462" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="308.462" y="785.000" text-anchor="middle" class="tick">2016</text>
+<line x1="372.308" y1="759.000" x2="372.308" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="372.308" y="785.000" text-anchor="middle" class="tick">2017</text>
+<line x1="436.154" y1="759.000" x2="436.154" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="436.154" y="785.000" text-anchor="middle" class="tick">2018</text>
+<line x1="500.000" y1="759.000" x2="500.000" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="500.000" y="785.000" text-anchor="middle" class="tick">2019</text>
+<line x1="563.846" y1="759.000" x2="563.846" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="563.846" y="785.000" text-anchor="middle" class="tick">2020</text>
+<line x1="627.692" y1="759.000" x2="627.692" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="627.692" y="785.000" text-anchor="middle" class="tick">2021</text>
+<line x1="691.538" y1="759.000" x2="691.538" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="691.538" y="785.000" text-anchor="middle" class="tick">2022</text>
+<line x1="755.385" y1="759.000" x2="755.385" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="755.385" y="785.000" text-anchor="middle" class="tick">2023</text>
+<line x1="819.231" y1="759.000" x2="819.231" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="819.231" y="785.000" text-anchor="middle" class="tick">2024</text>
+<line x1="883.077" y1="759.000" x2="883.077" y2="764.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="883.077" y="785.000" text-anchor="middle" class="tick">2025</text>
+<text x="24.000" y="675.000" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 675.000)">ln(1 + 城市平均件数)</text>
+<polyline points="116.923,755.463 180.769,755.463 244.615,752.632 308.462,755.463 372.308,753.252 436.154,753.064 500.000,753.089 563.846,755.049 627.692,752.262 691.538,748.555 755.385,646.627 819.231,607.721 883.077,600.495" fill="none" stroke="#AE0D28" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="116.923" cy="755.463" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2013年 ln(1+已有政策组内城市专利均值)：0；原始值：0.0</title></circle>
+<circle cx="180.769" cy="755.463" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2014年 ln(1+已有政策组内城市专利均值)：0；原始值：0.0</title></circle>
+<circle cx="244.615" cy="752.632" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2015年 ln(1+已有政策组内城市专利均值)：0.0800427076735；原始值：0.08333333333333333</title></circle>
+<circle cx="308.462" cy="755.463" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2016年 ln(1+已有政策组内城市专利均值)：0；原始值：0.0</title></circle>
+<circle cx="372.308" cy="753.252" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2017年 ln(1+已有政策组内城市专利均值)：0.0625203569813；原始值：0.06451612903225806</title></circle>
+<circle cx="436.154" cy="753.064" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2018年 ln(1+已有政策组内城市专利均值)：0.0678225963388；原始值：0.07017543859649122</title></circle>
+<circle cx="500.000" cy="753.089" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2019年 ln(1+已有政策组内城市专利均值)：0.0671393028376；原始值：0.06944444444444445</title></circle>
+<circle cx="563.846" cy="755.049" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2020年 ln(1+已有政策组内城市专利均值)：0.0116960397632；原始值：0.011764705882352941</title></circle>
+<circle cx="627.692" cy="752.262" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2021年 ln(1+已有政策组内城市专利均值)：0.0905140075408；原始值：0.09473684210526316</title></circle>
+<circle cx="691.538" cy="748.555" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2022年 ln(1+已有政策组内城市专利均值)：0.195308752321；原始值：0.21568627450980393</title></circle>
+<circle cx="755.385" cy="646.627" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2023年 ln(1+已有政策组内城市专利均值)：3.07722530781；原始值：20.69811320754717</title></circle>
+<circle cx="819.231" cy="607.721" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2024年 ln(1+已有政策组内城市专利均值)：4.17722348073；原始值：64.18461538461538</title></circle>
+<circle cx="883.077" cy="600.495" r="3.8" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2025年 ln(1+已有政策组内城市专利均值)：4.3815426466；原始值：78.96129032258065</title></circle>
+<polyline points="116.923,755.224 180.769,755.102 244.615,755.215 308.462,755.336 372.308,754.933 436.154,755.315 500.000,755.463 563.846,755.463 627.692,755.288 691.538,755.463 755.385,748.096 819.231,735.488 883.077,716.607" fill="none" stroke="#607D91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="113.223" y="751.524" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2013年 ln(1+尚无政策组内城市专利均值)：0.00675678246288；原始值：0.006779661016949152</title></rect>
+<rect x="177.069" y="751.402" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2014年 ln(1+尚无政策组内城市专利均值)：0.0102215540715；原始值：0.010273972602739725</title></rect>
+<rect x="240.915" y="751.515" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2015年 ln(1+尚无政策组内城市专利均值)：0.00701757265865；原始值：0.007042253521126761</title></rect>
+<rect x="304.762" y="751.636" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2016年 ln(1+尚无政策组内城市专利均值)：0.00359066813073；原始值：0.0035971223021582736</title></rect>
+<rect x="368.608" y="751.233" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2017年 ln(1+尚无政策组内城市专利均值)：0.0149815536156；原始值：0.01509433962264151</title></rect>
+<rect x="432.454" y="751.615" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2018年 ln(1+尚无政策组内城市专利均值)：0.00417537141048；原始值：0.0041841004184100415</title></rect>
+<rect x="496.300" y="751.763" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2019年 ln(1+尚无政策组内城市专利均值)：0；原始值：0.0</title></rect>
+<rect x="560.146" y="751.763" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2020年 ln(1+尚无政策组内城市专利均值)：0；原始值：0.0</title></rect>
+<rect x="623.992" y="751.588" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2021年 ln(1+尚无政策组内城市专利均值)：0.00496278934213；原始值：0.004975124378109453</title></rect>
+<rect x="687.838" y="751.763" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2022年 ln(1+尚无政策组内城市专利均值)：0；原始值：0.0</title></rect>
+<rect x="751.685" y="744.396" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2023年 ln(1+尚无政策组内城市专利均值)：0.208297043197；原始值：0.23157894736842105</title></rect>
+<rect x="815.531" y="731.788" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2024年 ln(1+尚无政策组内城市专利均值)：0.564766013912；原始值：0.7590361445783133</title></rect>
+<rect x="879.377" y="712.907" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2025年 ln(1+尚无政策组内城市专利均值)：1.09861228867；原始值：2.0</title></rect>
+</svg>

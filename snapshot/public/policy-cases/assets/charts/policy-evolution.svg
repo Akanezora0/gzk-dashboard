@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="650" viewBox="0 0 1000 650" role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">年度政策篇数与评分</title>
+<desc id="chart-desc">2013—2025年296个样本城市的政策累计篇数、年度新增篇数和新增政策篇均评分。2013年年度差分缺少上年参照，保持空值。</desc>
+<metadata id="chart-series">{&quot;years&quot;:[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],&quot;figure&quot;:&quot;figure1&quot;,&quot;source&quot;:{&quot;baseFile&quot;:&quot;panel_data.xlsx&quot;,&quot;baseSheet&quot;:&quot;Sheet1&quot;,&quot;chainFile&quot;:&quot;panel_data_chain.xlsx&quot;,&quot;chainSheet&quot;:&quot;Sheet1&quot;,&quot;sha256&quot;:{&quot;panel_data.xlsx&quot;:&quot;b868ff35095b4115cdce55c95fcb5ea1582992179879517ad75fc5bacb0f05f6&quot;,&quot;panel_data_chain.xlsx&quot;:&quot;e2dbe756f2c04e5e393152b77600f786199c251810085d1fda0eff670a2e74c3&quot;},&quot;reportFigures&quot;:[&quot;图1 / image1.png&quot;,&quot;图2 / image2.png&quot;,&quot;图5 / image5.png&quot;],&quot;method&quot;:&quot;仅用Excel原始城市年主表精确汇总、分组和自然对数变换；未重新估计回归，未从图像反推数据。&quot;},&quot;series&quot;:{&quot;title&quot;:&quot;年度政策篇数与评分&quot;,&quot;a&quot;:{&quot;title&quot;:&quot;年末累计政策数量&quot;,&quot;y&quot;:[1,4,17,26,65,163,255,393,581,748,911,1285,1913],&quot;unit&quot;:&quot;篇&quot;,&quot;transform&quot;:&quot;none&quot;,&quot;originalYTicks&quot;:[0,500,1000,1500,2000]},&quot;b&quot;:{&quot;title&quot;:&quot;年度新增政策数量及篇均评分&quot;,&quot;policyNew&quot;:[null,3,13,9,39,98,92,138,188,167,163,374,628],&quot;meanScore&quot;:[null,0.59,0.45692307692307693,0.5377777777777778,0.4235897435897436,0.4013265306122449,0.4175,0.40492753623188404,0.3223404255319149,0.3270059880239521,0.37147239263803683,0.42502673796791446,0.43977707006369426],&quot;scoreNew&quot;:[null,1.77,5.94,4.84,16.52,39.33,38.41,55.88,60.6,54.61,60.55,158.96,276.18],&quot;countUnit&quot;:&quot;篇&quot;,&quot;scoreUnit&quot;:&quot;分/篇&quot;,&quot;transform&quot;:&quot;相邻年度累计值相减；新增评分/新增篇数&quot;,&quot;originalLeftYTicks&quot;:[0,200,400,600],&quot;originalRightYTicks&quot;:[0.4,0.5,0.6],&quot;baselineNote&quot;:&quot;2013为首个观测年；其年度新增和篇均评分均为null，绘图留空。2013累计值1篇和0.6分是已知存量，不能直接作新增。&quot;}}}</metadata>
+<style>text{font-family:PingFang SC,Microsoft YaHei,Noto Sans CJK SC,Arial,sans-serif;fill:#4B3842;font-size:14px}.panel-title{font-size:18px;font-weight:600}.tick{font-size:14px}.legend{font-size:15px}.unit{font-size:14px}</style>
+<rect width="1000" height="650" fill="#FFFFFF"/>
+<text x="85.000" y="28.000" text-anchor="start" class="panel-title">(a)  年末累计政策数量</text>
+<line x1="85.000" y1="277.000" x2="915.000" y2="277.000" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="277.000" x2="80.000" y2="277.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="282.000" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="226.318" x2="915.000" y2="226.318" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="226.318" x2="80.000" y2="226.318" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="231.318" text-anchor="end" class="tick" style="fill:#4B3842">500</text>
+<line x1="85.000" y1="175.636" x2="915.000" y2="175.636" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="175.636" x2="80.000" y2="175.636" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="180.636" text-anchor="end" class="tick" style="fill:#4B3842">1,000</text>
+<line x1="85.000" y1="124.955" x2="915.000" y2="124.955" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="124.955" x2="80.000" y2="124.955" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="129.955" text-anchor="end" class="tick" style="fill:#4B3842">1,500</text>
+<line x1="85.000" y1="74.273" x2="915.000" y2="74.273" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="74.273" x2="80.000" y2="74.273" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="79.273" text-anchor="end" class="tick" style="fill:#4B3842">2,000</text>
+<line x1="85.000" y1="54.000" x2="85.000" y2="277.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="277.000" x2="915.000" y2="277.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="277.000" x2="116.923" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="180.769" y1="277.000" x2="180.769" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="244.615" y1="277.000" x2="244.615" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="308.462" y1="277.000" x2="308.462" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="372.308" y1="277.000" x2="372.308" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="436.154" y1="277.000" x2="436.154" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="500.000" y1="277.000" x2="500.000" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="563.846" y1="277.000" x2="563.846" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="627.692" y1="277.000" x2="627.692" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="691.538" y1="277.000" x2="691.538" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="755.385" y1="277.000" x2="755.385" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="819.231" y1="277.000" x2="819.231" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="883.077" y1="277.000" x2="883.077" y2="282.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="24.000" y="165.500" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 165.500)">篇</text>
+<rect x="99.923" y="276.899" width="34.000" height="0.101" rx="1.5" fill="#AE0D28"><title>2013年 累计政策篇数：1</title></rect>
+<rect x="163.769" y="276.595" width="34.000" height="0.405" rx="1.5" fill="#AE0D28"><title>2014年 累计政策篇数：4</title></rect>
+<rect x="227.615" y="275.277" width="34.000" height="1.723" rx="1.5" fill="#AE0D28"><title>2015年 累计政策篇数：17</title></rect>
+<rect x="291.462" y="274.365" width="34.000" height="2.635" rx="1.5" fill="#AE0D28"><title>2016年 累计政策篇数：26</title></rect>
+<rect x="355.308" y="270.411" width="34.000" height="6.589" rx="1.5" fill="#AE0D28"><title>2017年 累计政策篇数：65</title></rect>
+<rect x="419.154" y="260.478" width="34.000" height="16.522" rx="1.5" fill="#AE0D28"><title>2018年 累计政策篇数：163</title></rect>
+<rect x="483.000" y="251.152" width="34.000" height="25.848" rx="1.5" fill="#AE0D28"><title>2019年 累计政策篇数：255</title></rect>
+<rect x="546.846" y="237.164" width="34.000" height="39.836" rx="1.5" fill="#AE0D28"><title>2020年 累计政策篇数：393</title></rect>
+<rect x="610.692" y="218.108" width="34.000" height="58.892" rx="1.5" fill="#AE0D28"><title>2021年 累计政策篇数：581</title></rect>
+<rect x="674.538" y="201.180" width="34.000" height="75.820" rx="1.5" fill="#AE0D28"><title>2022年 累计政策篇数：748</title></rect>
+<rect x="738.385" y="184.658" width="34.000" height="92.342" rx="1.5" fill="#AE0D28"><title>2023年 累计政策篇数：911</title></rect>
+<rect x="802.231" y="146.748" width="34.000" height="130.252" rx="1.5" fill="#AE0D28"><title>2024年 累计政策篇数：1,285</title></rect>
+<rect x="866.077" y="83.091" width="34.000" height="193.909" rx="1.5" fill="#AE0D28"><title>2025年 累计政策篇数：1,913</title></rect>
+<text x="819.231" y="136.748" text-anchor="middle">1,285</text>
+<text x="883.077" y="73.091" text-anchor="middle">1,913</text>
+<text x="85.000" y="332.000" text-anchor="start" class="panel-title">(b)  年度新增政策数量及篇均评分</text>
+<rect x="99.000" y="354.000" width="28.000" height="12.000" rx="1.5" fill="#AE0D28"></rect>
+<text x="139.000" y="365.000" text-anchor="start" class="legend">新增篇数</text>
+<line x1="295.000" y1="360.000" x2="325.000" y2="360.000" stroke="#607D91" stroke-width="2.8"/>
+<circle cx="310.000" cy="360.000" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"></circle>
+<text x="335.000" y="365.000" text-anchor="start" class="legend">新增政策篇均评分</text>
+<line x1="85.000" y1="588.000" x2="915.000" y2="588.000" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="588.000" x2="80.000" y2="588.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="593.000" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="527.697" x2="915.000" y2="527.697" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="527.697" x2="80.000" y2="527.697" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="532.697" text-anchor="end" class="tick" style="fill:#4B3842">200</text>
+<line x1="85.000" y1="467.394" x2="915.000" y2="467.394" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="467.394" x2="80.000" y2="467.394" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="472.394" text-anchor="end" class="tick" style="fill:#4B3842">400</text>
+<line x1="85.000" y1="407.091" x2="915.000" y2="407.091" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="407.091" x2="80.000" y2="407.091" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="412.091" text-anchor="end" class="tick" style="fill:#4B3842">600</text>
+<line x1="85.000" y1="389.000" x2="85.000" y2="588.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="588.000" x2="915.000" y2="588.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="588.000" x2="116.923" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="116.923" y="614.000" text-anchor="middle" class="tick">2013</text>
+<line x1="180.769" y1="588.000" x2="180.769" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="180.769" y="614.000" text-anchor="middle" class="tick">2014</text>
+<line x1="244.615" y1="588.000" x2="244.615" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="244.615" y="614.000" text-anchor="middle" class="tick">2015</text>
+<line x1="308.462" y1="588.000" x2="308.462" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="308.462" y="614.000" text-anchor="middle" class="tick">2016</text>
+<line x1="372.308" y1="588.000" x2="372.308" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="372.308" y="614.000" text-anchor="middle" class="tick">2017</text>
+<line x1="436.154" y1="588.000" x2="436.154" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="436.154" y="614.000" text-anchor="middle" class="tick">2018</text>
+<line x1="500.000" y1="588.000" x2="500.000" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="500.000" y="614.000" text-anchor="middle" class="tick">2019</text>
+<line x1="563.846" y1="588.000" x2="563.846" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="563.846" y="614.000" text-anchor="middle" class="tick">2020</text>
+<line x1="627.692" y1="588.000" x2="627.692" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="627.692" y="614.000" text-anchor="middle" class="tick">2021</text>
+<line x1="691.538" y1="588.000" x2="691.538" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="691.538" y="614.000" text-anchor="middle" class="tick">2022</text>
+<line x1="755.385" y1="588.000" x2="755.385" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="755.385" y="614.000" text-anchor="middle" class="tick">2023</text>
+<line x1="819.231" y1="588.000" x2="819.231" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="819.231" y="614.000" text-anchor="middle" class="tick">2024</text>
+<line x1="883.077" y1="588.000" x2="883.077" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="883.077" y="614.000" text-anchor="middle" class="tick">2025</text>
+<text x="24.000" y="488.500" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 488.500)">篇</text>
+<rect x="163.769" y="587.095" width="34.000" height="0.905" rx="1.5" fill="#AE0D28"><title>2014年 新增政策篇数：3</title></rect>
+<rect x="227.615" y="584.080" width="34.000" height="3.920" rx="1.5" fill="#AE0D28"><title>2015年 新增政策篇数：13</title></rect>
+<rect x="291.462" y="585.286" width="34.000" height="2.714" rx="1.5" fill="#AE0D28"><title>2016年 新增政策篇数：9</title></rect>
+<rect x="355.308" y="576.241" width="34.000" height="11.759" rx="1.5" fill="#AE0D28"><title>2017年 新增政策篇数：39</title></rect>
+<rect x="419.154" y="558.452" width="34.000" height="29.548" rx="1.5" fill="#AE0D28"><title>2018年 新增政策篇数：98</title></rect>
+<rect x="483.000" y="560.261" width="34.000" height="27.739" rx="1.5" fill="#AE0D28"><title>2019年 新增政策篇数：92</title></rect>
+<rect x="546.846" y="546.391" width="34.000" height="41.609" rx="1.5" fill="#AE0D28"><title>2020年 新增政策篇数：138</title></rect>
+<rect x="610.692" y="531.315" width="34.000" height="56.685" rx="1.5" fill="#AE0D28"><title>2021年 新增政策篇数：188</title></rect>
+<rect x="674.538" y="537.647" width="34.000" height="50.353" rx="1.5" fill="#AE0D28"><title>2022年 新增政策篇数：167</title></rect>
+<rect x="738.385" y="538.853" width="34.000" height="49.147" rx="1.5" fill="#AE0D28"><title>2023年 新增政策篇数：163</title></rect>
+<rect x="802.231" y="475.233" width="34.000" height="112.767" rx="1.5" fill="#AE0D28"><title>2024年 新增政策篇数：374</title></rect>
+<rect x="866.077" y="398.648" width="34.000" height="189.352" rx="1.5" fill="#AE0D28"><title>2025年 新增政策篇数：628</title></rect>
+<line x1="915.000" y1="536.087" x2="920.000" y2="536.087" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="541.087" text-anchor="start" class="tick" style="fill:#607D91">0.4</text>
+<line x1="915.000" y1="478.406" x2="920.000" y2="478.406" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="483.406" text-anchor="start" class="tick" style="fill:#607D91">0.5</text>
+<line x1="915.000" y1="420.725" x2="920.000" y2="420.725" stroke="#B8A4AD" stroke-width="1"/>
+<text x="927.000" y="425.725" text-anchor="start" class="tick" style="fill:#607D91">0.6</text>
+<line x1="915.000" y1="389.000" x2="915.000" y2="588.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<text x="982.000" y="488.500" text-anchor="middle" class="unit" style="fill:#607D91" transform="rotate(-90 982.000 488.500)">分 / 篇</text>
+<polyline points="180.769,426.493 244.615,503.253 308.462,456.615 372.308,522.480 436.154,535.322 500.000,525.993 563.846,533.245 627.692,580.882 691.538,578.191 755.385,552.542 819.231,521.651 883.077,513.143" fill="none" stroke="#607D91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="180.769" cy="426.493" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2014年 新增政策篇均评分：0.59</title></circle>
+<circle cx="244.615" cy="503.253" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2015年 新增政策篇均评分：0.456923076923</title></circle>
+<circle cx="308.462" cy="456.615" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2016年 新增政策篇均评分：0.537777777778</title></circle>
+<circle cx="372.308" cy="522.480" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2017年 新增政策篇均评分：0.42358974359</title></circle>
+<circle cx="436.154" cy="535.322" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2018年 新增政策篇均评分：0.401326530612</title></circle>
+<circle cx="500.000" cy="525.993" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2019年 新增政策篇均评分：0.4175</title></circle>
+<circle cx="563.846" cy="533.245" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2020年 新增政策篇均评分：0.404927536232</title></circle>
+<circle cx="627.692" cy="580.882" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2021年 新增政策篇均评分：0.322340425532</title></circle>
+<circle cx="691.538" cy="578.191" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2022年 新增政策篇均评分：0.327005988024</title></circle>
+<circle cx="755.385" cy="552.542" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2023年 新增政策篇均评分：0.371472392638</title></circle>
+<circle cx="819.231" cy="521.651" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2024年 新增政策篇均评分：0.425026737968</title></circle>
+<circle cx="883.077" cy="513.143" r="3.8" fill="white" stroke="#607D91" stroke-width="2.5"><title>2025年 新增政策篇均评分：0.439777070064</title></circle>
+</svg>

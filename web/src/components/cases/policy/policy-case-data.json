@@ -1,0 +1,1487 @@
+{
+  "provenance": {
+    "base": "panel_data.xlsx / Sheet1",
+    "chain": "panel_data_chain.xlsx / Sheet1",
+    "method": "按year分组，对同一年度296城市求和。累计政策仅作当年存量展示，禁止跨年累加。"
+  },
+  "sample": {
+    "cities": 296,
+    "startYear": 2013,
+    "endYear": 2025,
+    "years": 13,
+    "cityYears": 3848
+  },
+  "yearly": [
+    {
+      "IPAG_K": 2,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 2,
+      "pol_acc": 1,
+      "upol_acc": 0,
+      "mpol_acc": 0,
+      "dpol_acc": 1,
+      "year": 2013,
+      "cities": 296,
+      "cities_with_policy": 1,
+      "policy_score_cumulative_sum": 0.6,
+      "policy_cumulative_change": null
+    },
+    {
+      "IPAG_K": 3,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 3,
+      "pol_acc": 4,
+      "upol_acc": 0,
+      "mpol_acc": 0,
+      "dpol_acc": 4,
+      "year": 2014,
+      "cities": 296,
+      "cities_with_policy": 4,
+      "policy_score_cumulative_sum": 2.37,
+      "policy_cumulative_change": 3
+    },
+    {
+      "IPAG_K": 3,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 3,
+      "pol_acc": 17,
+      "upol_acc": 1,
+      "mpol_acc": 3,
+      "dpol_acc": 13,
+      "year": 2015,
+      "cities": 296,
+      "cities_with_policy": 12,
+      "policy_score_cumulative_sum": 8.31,
+      "policy_cumulative_change": 13
+    },
+    {
+      "IPAG_K": 1,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 1,
+      "pol_acc": 26,
+      "upol_acc": 2,
+      "mpol_acc": 5,
+      "dpol_acc": 20,
+      "year": 2016,
+      "cities": 296,
+      "cities_with_policy": 18,
+      "policy_score_cumulative_sum": 13.15,
+      "policy_cumulative_change": 9
+    },
+    {
+      "IPAG_K": 6,
+      "IPAG_KU": 0,
+      "IPAG_KM": 1,
+      "IPAG_KD": 5,
+      "pol_acc": 65,
+      "upol_acc": 10,
+      "mpol_acc": 22,
+      "dpol_acc": 42,
+      "year": 2017,
+      "cities": 296,
+      "cities_with_policy": 31,
+      "policy_score_cumulative_sum": 29.669999999999998,
+      "policy_cumulative_change": 39
+    },
+    {
+      "IPAG_K": 5,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 5,
+      "pol_acc": 163,
+      "upol_acc": 27,
+      "mpol_acc": 70,
+      "dpol_acc": 93,
+      "year": 2018,
+      "cities": 296,
+      "cities_with_policy": 57,
+      "policy_score_cumulative_sum": 69.0,
+      "policy_cumulative_change": 98
+    },
+    {
+      "IPAG_K": 5,
+      "IPAG_KU": 0,
+      "IPAG_KM": 1,
+      "IPAG_KD": 4,
+      "pol_acc": 255,
+      "upol_acc": 55,
+      "mpol_acc": 99,
+      "dpol_acc": 159,
+      "year": 2019,
+      "cities": 296,
+      "cities_with_policy": 72,
+      "policy_score_cumulative_sum": 107.41,
+      "policy_cumulative_change": 92
+    },
+    {
+      "IPAG_K": 1,
+      "IPAG_KU": 0,
+      "IPAG_KM": 0,
+      "IPAG_KD": 1,
+      "pol_acc": 393,
+      "upol_acc": 82,
+      "mpol_acc": 143,
+      "dpol_acc": 253,
+      "year": 2020,
+      "cities": 296,
+      "cities_with_policy": 85,
+      "policy_score_cumulative_sum": 163.29,
+      "policy_cumulative_change": 138
+    },
+    {
+      "IPAG_K": 10,
+      "IPAG_KU": 0,
+      "IPAG_KM": 1,
+      "IPAG_KD": 9,
+      "pol_acc": 581,
+      "upol_acc": 117,
+      "mpol_acc": 220,
+      "dpol_acc": 368,
+      "year": 2021,
+      "cities": 296,
+      "cities_with_policy": 95,
+      "policy_score_cumulative_sum": 223.89000000000001,
+      "policy_cumulative_change": 188
+    },
+    {
+      "IPAG_K": 22,
+      "IPAG_KU": 0,
+      "IPAG_KM": 6,
+      "IPAG_KD": 16,
+      "pol_acc": 748,
+      "upol_acc": 148,
+      "mpol_acc": 285,
+      "dpol_acc": 478,
+      "year": 2022,
+      "cities": 296,
+      "cities_with_policy": 102,
+      "policy_score_cumulative_sum": 278.5,
+      "policy_cumulative_change": 167
+    },
+    {
+      "IPAG_K": 2238,
+      "IPAG_KU": 37,
+      "IPAG_KM": 357,
+      "IPAG_KD": 1844,
+      "pol_acc": 911,
+      "upol_acc": 210,
+      "mpol_acc": 363,
+      "dpol_acc": 583,
+      "year": 2023,
+      "cities": 296,
+      "cities_with_policy": 106,
+      "policy_score_cumulative_sum": 339.05,
+      "policy_cumulative_change": 163
+    },
+    {
+      "IPAG_K": 8470,
+      "IPAG_KU": 147,
+      "IPAG_KM": 1509,
+      "IPAG_KD": 6814,
+      "pol_acc": 1285,
+      "upol_acc": 386,
+      "mpol_acc": 555,
+      "dpol_acc": 857,
+      "year": 2024,
+      "cities": 296,
+      "cities_with_policy": 130,
+      "policy_score_cumulative_sum": 498.01,
+      "policy_cumulative_change": 374
+    },
+    {
+      "IPAG_K": 12521,
+      "IPAG_KU": 232,
+      "IPAG_KM": 2069,
+      "IPAG_KD": 10220,
+      "pol_acc": 1913,
+      "upol_acc": 681,
+      "mpol_acc": 839,
+      "dpol_acc": 1356,
+      "year": 2025,
+      "cities": 296,
+      "cities_with_policy": 155,
+      "policy_score_cumulative_sum": 774.19,
+      "policy_cumulative_change": 628
+    }
+  ],
+  "patentChainTotals": {
+    "total": 23287,
+    "upstream": 416,
+    "midstream": 3944,
+    "downstream": 18927,
+    "note": "2013—2025年所有城市年度计数相加；产业链分项在全部3848行可加性状态见audit，不代表已验证专利级互斥。"
+  },
+  "regional": {
+    "meta": {
+      "sourceFile": "panel_data.xlsx",
+      "sourceSheet": "Sheet1",
+      "sourceSha256": "b868ff35095b4115cdce55c95fcb5ea1582992179879517ad75fc5bacb0f05f6",
+      "provinceField": "prov",
+      "cityField": "city_code",
+      "yearField": "year",
+      "startYear": 2013,
+      "endYear": 2025,
+      "provinceCount": 31,
+      "geography": "使用源表prov字段的31个省级单元，包含4个直辖市；仅覆盖原研究样本296城市，不等同于各省全域全部城市。",
+      "regionGrouping": "页面新增描述分组，按《中国统计年鉴2025》编者说明第四条四大地区划分，不是原报告EAST分组。原表EAST将辽宁计入东部；本四区映射将辽宁计入东北。",
+      "regionGroupingSource": {
+        "title": "国家统计局《中国统计年鉴2025》编者说明 第四条",
+        "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/note.htm",
+        "verifiedDate": "2026-11-19"
+      },
+      "policyMetric": "截至2025年年末，各样本城市目标政策累计篇数pol_acc的省内求和。政策按发布地匹配城市，不按失效废止扣除；跨年不相加。",
+      "patentAnnualMetric": "2025年各省样本城市IPAG_K年度计数求和。专利检索范围沿用原研究，不扩大解释为全部人工智能专利。",
+      "patentPeriodMetric": "2013—2025年各省样本城市IPAG_K年度计数相加。",
+      "policyCityMetric": "2025年pol_acc>0的样本城市数；省内比例的分母为该省在本面板中的样本城市数。",
+      "rankingMethod": "按数值降序；排名采用竞争排名，同值同名次。排序稳定性并列以另一展示指标/省名处理。",
+      "shareMethod": "省域指标占同口径296城总计的比例，未进行人口、经济规模或城市数量标准化。",
+      "interpretation": "省域统计为描述分析。不同省域计数或排名不能直接解释为政策效果差异，也不是各省因果系数。"
+    },
+    "totals": {
+      "sampleCityCount": 296,
+      "cityYearCount": 3848,
+      "policyCumulative2025": 1913,
+      "citiesWithPolicy2025": 155,
+      "patents2025": 12521,
+      "patents2013to2025": 23287
+    },
+    "provinces": [
+      {
+        "province": "广东省",
+        "sampleCityCount": 21,
+        "cityYearCount": 273,
+        "policyCumulative2025": 339,
+        "citiesWithPolicy2025": 10,
+        "patents2025": 1602,
+        "patents2013to2025": 3342,
+        "policyCumulative2025Share": 0.17720857292211187,
+        "policyCumulative2025Rank": 1,
+        "patents2025Share": 0.12794505231211564,
+        "patents2025Rank": 2,
+        "patents2013to2025Share": 0.1435135483316872,
+        "patents2013to2025Rank": 2,
+        "citiesWithPolicy2025Share": 0.47619047619047616
+      },
+      {
+        "province": "北京市",
+        "sampleCityCount": 1,
+        "cityYearCount": 13,
+        "policyCumulative2025": 156,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 3028,
+        "patents2013to2025": 6171,
+        "policyCumulative2025Share": 0.08154730789336122,
+        "policyCumulative2025Rank": 2,
+        "patents2025Share": 0.2418337193514895,
+        "patents2025Rank": 1,
+        "patents2013to2025Share": 0.2649976381672178,
+        "patents2013to2025Rank": 1,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "上海市",
+        "sampleCityCount": 1,
+        "cityYearCount": 13,
+        "policyCumulative2025": 149,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 1091,
+        "patents2013to2025": 2212,
+        "policyCumulative2025Share": 0.07788813382122321,
+        "policyCumulative2025Rank": 3,
+        "patents2025Share": 0.08713361552591646,
+        "patents2025Rank": 4,
+        "patents2013to2025Share": 0.09498862026023103,
+        "patents2013to2025Rank": 4,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "山东省",
+        "sampleCityCount": 16,
+        "cityYearCount": 208,
+        "policyCumulative2025": 149,
+        "citiesWithPolicy2025": 15,
+        "patents2025": 788,
+        "patents2013to2025": 1295,
+        "policyCumulative2025Share": 0.07788813382122321,
+        "policyCumulative2025Rank": 3,
+        "patents2025Share": 0.06293427042568485,
+        "patents2025Rank": 6,
+        "patents2013to2025Share": 0.05561042641817323,
+        "patents2013to2025Rank": 6,
+        "citiesWithPolicy2025Share": 0.9375
+      },
+      {
+        "province": "江苏省",
+        "sampleCityCount": 13,
+        "cityYearCount": 169,
+        "policyCumulative2025": 130,
+        "citiesWithPolicy2025": 13,
+        "patents2025": 931,
+        "patents2013to2025": 1568,
+        "policyCumulative2025Share": 0.06795608991113435,
+        "policyCumulative2025Rank": 5,
+        "patents2025Share": 0.07435508345978756,
+        "patents2025Rank": 5,
+        "patents2013to2025Share": 0.06733370550092327,
+        "patents2013to2025Rank": 5,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "福建省",
+        "sampleCityCount": 9,
+        "cityYearCount": 117,
+        "policyCumulative2025": 128,
+        "citiesWithPolicy2025": 8,
+        "patents2025": 252,
+        "patents2013to2025": 463,
+        "policyCumulative2025Share": 0.0669106116048092,
+        "policyCumulative2025Rank": 6,
+        "patents2025Share": 0.02012618800415302,
+        "patents2025Rank": 12,
+        "patents2013to2025Share": 0.019882337785030273,
+        "patents2013to2025Rank": 10,
+        "citiesWithPolicy2025Share": 0.8888888888888888
+      },
+      {
+        "province": "浙江省",
+        "sampleCityCount": 11,
+        "cityYearCount": 143,
+        "policyCumulative2025": 122,
+        "citiesWithPolicy2025": 11,
+        "patents2025": 1419,
+        "patents2013to2025": 2659,
+        "policyCumulative2025Share": 0.06377417668583377,
+        "policyCumulative2025Rank": 7,
+        "patents2025Share": 0.11332960626148071,
+        "patents2025Rank": 3,
+        "patents2013to2025Share": 0.11418387941770086,
+        "patents2013to2025Rank": 3,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "重庆市",
+        "sampleCityCount": 1,
+        "cityYearCount": 13,
+        "policyCumulative2025": 114,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 234,
+        "patents2013to2025": 371,
+        "policyCumulative2025Share": 0.059592263460533194,
+        "policyCumulative2025Rank": 8,
+        "patents2025Share": 0.01868860314671352,
+        "patents2025Rank": 13,
+        "patents2013to2025Share": 0.015931635676557736,
+        "patents2013to2025Rank": 13,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "天津市",
+        "sampleCityCount": 1,
+        "cityYearCount": 13,
+        "policyCumulative2025": 81,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 209,
+        "patents2013to2025": 330,
+        "policyCumulative2025Share": 0.042341871406168324,
+        "policyCumulative2025Rank": 9,
+        "patents2025Share": 0.01669195751138088,
+        "patents2025Rank": 14,
+        "patents2013to2025Share": 0.014170996693434105,
+        "patents2013to2025Rank": 14,
+        "citiesWithPolicy2025Share": 1.0
+      },
+      {
+        "province": "安徽省",
+        "sampleCityCount": 16,
+        "cityYearCount": 208,
+        "policyCumulative2025": 76,
+        "citiesWithPolicy2025": 9,
+        "patents2025": 412,
+        "patents2013to2025": 801,
+        "policyCumulative2025Share": 0.03972817564035546,
+        "policyCumulative2025Rank": 10,
+        "patents2025Share": 0.032904720070281925,
+        "patents2025Rank": 9,
+        "patents2013to2025Share": 0.0343968737922446,
+        "patents2013to2025Rank": 8,
+        "citiesWithPolicy2025Share": 0.5625
+      },
+      {
+        "province": "四川省",
+        "sampleCityCount": 18,
+        "cityYearCount": 234,
+        "policyCumulative2025": 73,
+        "citiesWithPolicy2025": 11,
+        "patents2025": 517,
+        "patents2013to2025": 825,
+        "policyCumulative2025Share": 0.038159958180867745,
+        "policyCumulative2025Rank": 11,
+        "patents2025Share": 0.04129063173867902,
+        "patents2025Rank": 7,
+        "patents2013to2025Share": 0.03542749173358526,
+        "patents2013to2025Rank": 7,
+        "citiesWithPolicy2025Share": 0.6111111111111112
+      },
+      {
+        "province": "河南省",
+        "sampleCityCount": 17,
+        "cityYearCount": 221,
+        "policyCumulative2025": 70,
+        "citiesWithPolicy2025": 15,
+        "patents2025": 124,
+        "patents2013to2025": 215,
+        "policyCumulative2025Share": 0.03659174072138003,
+        "policyCumulative2025Rank": 12,
+        "patents2025Share": 0.0099033623512499,
+        "patents2025Rank": 16,
+        "patents2013to2025Share": 0.009232619057843432,
+        "patents2013to2025Rank": 16,
+        "citiesWithPolicy2025Share": 0.8823529411764706
+      },
+      {
+        "province": "湖北省",
+        "sampleCityCount": 12,
+        "cityYearCount": 156,
+        "policyCumulative2025": 64,
+        "citiesWithPolicy2025": 6,
+        "patents2025": 428,
+        "patents2013to2025": 688,
+        "policyCumulative2025Share": 0.0334553058024046,
+        "policyCumulative2025Rank": 13,
+        "patents2025Share": 0.03418257327689481,
+        "patents2025Rank": 8,
+        "patents2013to2025Share": 0.029544380985098984,
+        "patents2013to2025Rank": 9,
+        "citiesWithPolicy2025Share": 0.5
+      },
+      {
+        "province": "辽宁省",
+        "sampleCityCount": 14,
+        "cityYearCount": 182,
+        "policyCumulative2025": 52,
+        "citiesWithPolicy2025": 3,
+        "patents2025": 182,
+        "patents2013to2025": 258,
+        "policyCumulative2025Share": 0.027182435964453737,
+        "policyCumulative2025Rank": 14,
+        "patents2025Share": 0.014535580225221627,
+        "patents2025Rank": 15,
+        "patents2013to2025Share": 0.011079142869412119,
+        "patents2013to2025Rank": 15,
+        "citiesWithPolicy2025Share": 0.21428571428571427
+      },
+      {
+        "province": "湖南省",
+        "sampleCityCount": 13,
+        "cityYearCount": 169,
+        "policyCumulative2025": 41,
+        "citiesWithPolicy2025": 3,
+        "patents2025": 273,
+        "patents2013to2025": 456,
+        "policyCumulative2025Share": 0.021432305279665446,
+        "policyCumulative2025Rank": 15,
+        "patents2025Share": 0.02180337033783244,
+        "patents2025Rank": 10,
+        "patents2013to2025Share": 0.01958174088547258,
+        "patents2013to2025Rank": 11,
+        "citiesWithPolicy2025Share": 0.23076923076923078
+      },
+      {
+        "province": "广西壮族自治区",
+        "sampleCityCount": 14,
+        "cityYearCount": 182,
+        "policyCumulative2025": 27,
+        "citiesWithPolicy2025": 4,
+        "patents2025": 72,
+        "patents2013to2025": 110,
+        "policyCumulative2025Share": 0.014113957135389441,
+        "policyCumulative2025Rank": 16,
+        "patents2025Share": 0.005750339429758006,
+        "patents2025Rank": 22,
+        "patents2013to2025Share": 0.004723665564478035,
+        "patents2013to2025Rank": 23,
+        "citiesWithPolicy2025Share": 0.2857142857142857
+      },
+      {
+        "province": "陕西省",
+        "sampleCityCount": 10,
+        "cityYearCount": 130,
+        "policyCumulative2025": 21,
+        "citiesWithPolicy2025": 3,
+        "patents2025": 261,
+        "patents2013to2025": 401,
+        "policyCumulative2025Share": 0.01097752221641401,
+        "policyCumulative2025Rank": 17,
+        "patents2025Share": 0.020844980432872775,
+        "patents2025Rank": 11,
+        "patents2013to2025Share": 0.017219908103233563,
+        "patents2013to2025Rank": 12,
+        "citiesWithPolicy2025Share": 0.3
+      },
+      {
+        "province": "河北省",
+        "sampleCityCount": 11,
+        "cityYearCount": 143,
+        "policyCumulative2025": 21,
+        "citiesWithPolicy2025": 6,
+        "patents2025": 94,
+        "patents2013to2025": 164,
+        "policyCumulative2025Share": 0.01097752221641401,
+        "policyCumulative2025Rank": 17,
+        "patents2025Share": 0.007507387588850731,
+        "patents2025Rank": 19,
+        "patents2013to2025Share": 0.007042555932494525,
+        "patents2013to2025Rank": 18,
+        "citiesWithPolicy2025Share": 0.5454545454545454
+      },
+      {
+        "province": "贵州省",
+        "sampleCityCount": 6,
+        "cityYearCount": 78,
+        "policyCumulative2025": 18,
+        "citiesWithPolicy2025": 2,
+        "patents2025": 67,
+        "patents2013to2025": 111,
+        "policyCumulative2025Share": 0.009409304756926294,
+        "policyCumulative2025Rank": 19,
+        "patents2025Share": 0.0053510103026914784,
+        "patents2025Rank": 23,
+        "patents2013to2025Share": 0.004766607978700562,
+        "patents2013to2025Rank": 22,
+        "citiesWithPolicy2025Share": 0.3333333333333333
+      },
+      {
+        "province": "宁夏回族自治区",
+        "sampleCityCount": 5,
+        "cityYearCount": 65,
+        "policyCumulative2025": 15,
+        "citiesWithPolicy2025": 3,
+        "patents2025": 13,
+        "patents2013to2025": 18,
+        "policyCumulative2025Share": 0.007841087297438577,
+        "policyCumulative2025Rank": 20,
+        "patents2025Share": 0.0010382557303729733,
+        "patents2025Rank": 29,
+        "patents2013to2025Share": 0.0007729634560054966,
+        "patents2013to2025Rank": 29,
+        "citiesWithPolicy2025Share": 0.6
+      },
+      {
+        "province": "内蒙古自治区",
+        "sampleCityCount": 9,
+        "cityYearCount": 117,
+        "policyCumulative2025": 14,
+        "citiesWithPolicy2025": 5,
+        "patents2025": 25,
+        "patents2013to2025": 33,
+        "policyCumulative2025Share": 0.007318348144276007,
+        "policyCumulative2025Rank": 21,
+        "patents2025Share": 0.001996645635332641,
+        "patents2025Rank": 26,
+        "patents2013to2025Share": 0.0014170996693434106,
+        "patents2013to2025Rank": 27,
+        "citiesWithPolicy2025Share": 0.5555555555555556
+      },
+      {
+        "province": "江西省",
+        "sampleCityCount": 11,
+        "cityYearCount": 143,
+        "policyCumulative2025": 10,
+        "citiesWithPolicy2025": 5,
+        "patents2025": 73,
+        "patents2013to2025": 115,
+        "policyCumulative2025Share": 0.005227391531625719,
+        "policyCumulative2025Rank": 22,
+        "patents2025Share": 0.005830205255171312,
+        "patents2025Rank": 21,
+        "patents2013to2025Share": 0.004938377635590673,
+        "patents2013to2025Rank": 21,
+        "citiesWithPolicy2025Share": 0.45454545454545453
+      },
+      {
+        "province": "黑龙江省",
+        "sampleCityCount": 12,
+        "cityYearCount": 156,
+        "policyCumulative2025": 9,
+        "citiesWithPolicy2025": 4,
+        "patents2025": 109,
+        "patents2013to2025": 185,
+        "policyCumulative2025Share": 0.004704652378463147,
+        "policyCumulative2025Rank": 23,
+        "patents2025Share": 0.008705374970050316,
+        "patents2025Rank": 17,
+        "patents2013to2025Share": 0.007944346631167604,
+        "patents2013to2025Rank": 17,
+        "citiesWithPolicy2025Share": 0.3333333333333333
+      },
+      {
+        "province": "吉林省",
+        "sampleCityCount": 8,
+        "cityYearCount": 104,
+        "policyCumulative2025": 9,
+        "citiesWithPolicy2025": 2,
+        "patents2025": 95,
+        "patents2013to2025": 133,
+        "policyCumulative2025Share": 0.004704652378463147,
+        "policyCumulative2025Rank": 23,
+        "patents2025Share": 0.007587253414264037,
+        "patents2025Rank": 18,
+        "patents2013to2025Share": 0.00571134109159617,
+        "patents2013to2025Rank": 20,
+        "citiesWithPolicy2025Share": 0.25
+      },
+      {
+        "province": "山西省",
+        "sampleCityCount": 11,
+        "cityYearCount": 143,
+        "policyCumulative2025": 9,
+        "citiesWithPolicy2025": 5,
+        "patents2025": 36,
+        "patents2013to2025": 61,
+        "policyCumulative2025Share": 0.004704652378463147,
+        "policyCumulative2025Rank": 23,
+        "patents2025Share": 0.002875169714879003,
+        "patents2025Rank": 24,
+        "patents2013to2025Share": 0.002619487267574183,
+        "patents2013to2025Rank": 24,
+        "citiesWithPolicy2025Share": 0.45454545454545453
+      },
+      {
+        "province": "甘肃省",
+        "sampleCityCount": 12,
+        "cityYearCount": 156,
+        "policyCumulative2025": 9,
+        "citiesWithPolicy2025": 6,
+        "patents2025": 36,
+        "patents2013to2025": 61,
+        "policyCumulative2025Share": 0.004704652378463147,
+        "policyCumulative2025Rank": 23,
+        "patents2025Share": 0.002875169714879003,
+        "patents2025Rank": 24,
+        "patents2013to2025Share": 0.002619487267574183,
+        "patents2013to2025Rank": 24,
+        "citiesWithPolicy2025Share": 0.5
+      },
+      {
+        "province": "云南省",
+        "sampleCityCount": 8,
+        "cityYearCount": 104,
+        "policyCumulative2025": 5,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 86,
+        "patents2013to2025": 135,
+        "policyCumulative2025Share": 0.0026136957658128594,
+        "policyCumulative2025Rank": 27,
+        "patents2025Share": 0.006868460985544286,
+        "patents2025Rank": 20,
+        "patents2013to2025Share": 0.005797225920041225,
+        "patents2013to2025Rank": 19,
+        "citiesWithPolicy2025Share": 0.125
+      },
+      {
+        "province": "西藏自治区",
+        "sampleCityCount": 6,
+        "cityYearCount": 78,
+        "policyCumulative2025": 2,
+        "citiesWithPolicy2025": 1,
+        "patents2025": 5,
+        "patents2013to2025": 9,
+        "policyCumulative2025Share": 0.0010454783063251437,
+        "policyCumulative2025Rank": 28,
+        "patents2025Share": 0.0003993291270665282,
+        "patents2025Rank": 31,
+        "patents2013to2025Share": 0.0003864817280027483,
+        "patents2013to2025Rank": 31,
+        "citiesWithPolicy2025Share": 0.16666666666666666
+      },
+      {
+        "province": "新疆维吾尔自治区",
+        "sampleCityCount": 4,
+        "cityYearCount": 52,
+        "policyCumulative2025": 0,
+        "citiesWithPolicy2025": 0,
+        "patents2025": 25,
+        "patents2013to2025": 30,
+        "policyCumulative2025Share": 0.0,
+        "policyCumulative2025Rank": 29,
+        "patents2025Share": 0.001996645635332641,
+        "patents2025Rank": 26,
+        "patents2013to2025Share": 0.0012882724266758277,
+        "patents2013to2025Rank": 28,
+        "citiesWithPolicy2025Share": 0.0
+      },
+      {
+        "province": "海南省",
+        "sampleCityCount": 3,
+        "cityYearCount": 39,
+        "policyCumulative2025": 0,
+        "citiesWithPolicy2025": 0,
+        "patents2025": 24,
+        "patents2013to2025": 54,
+        "policyCumulative2025Share": 0.0,
+        "policyCumulative2025Rank": 29,
+        "patents2025Share": 0.0019167798099193356,
+        "patents2025Rank": 28,
+        "patents2013to2025Share": 0.0023188903680164898,
+        "patents2013to2025Rank": 26,
+        "citiesWithPolicy2025Share": 0.0
+      },
+      {
+        "province": "青海省",
+        "sampleCityCount": 2,
+        "cityYearCount": 26,
+        "policyCumulative2025": 0,
+        "citiesWithPolicy2025": 0,
+        "patents2025": 10,
+        "patents2013to2025": 13,
+        "policyCumulative2025Share": 0.0,
+        "policyCumulative2025Rank": 29,
+        "patents2025Share": 0.0007986582541330564,
+        "patents2025Rank": 30,
+        "patents2013to2025Share": 0.0005582513848928586,
+        "patents2013to2025Rank": 30,
+        "citiesWithPolicy2025Share": 0.0
+      }
+    ],
+    "rankings": {
+      "policyCumulative2025": [
+        {
+          "province": "广东省",
+          "value": 339,
+          "share": 0.17720857292211187
+        },
+        {
+          "province": "北京市",
+          "value": 156,
+          "share": 0.08154730789336122
+        },
+        {
+          "province": "上海市",
+          "value": 149,
+          "share": 0.07788813382122321
+        },
+        {
+          "province": "山东省",
+          "value": 149,
+          "share": 0.07788813382122321
+        },
+        {
+          "province": "江苏省",
+          "value": 130,
+          "share": 0.06795608991113435
+        },
+        {
+          "province": "福建省",
+          "value": 128,
+          "share": 0.0669106116048092
+        },
+        {
+          "province": "浙江省",
+          "value": 122,
+          "share": 0.06377417668583377
+        },
+        {
+          "province": "重庆市",
+          "value": 114,
+          "share": 0.059592263460533194
+        },
+        {
+          "province": "天津市",
+          "value": 81,
+          "share": 0.042341871406168324
+        },
+        {
+          "province": "安徽省",
+          "value": 76,
+          "share": 0.03972817564035546
+        },
+        {
+          "province": "四川省",
+          "value": 73,
+          "share": 0.038159958180867745
+        },
+        {
+          "province": "河南省",
+          "value": 70,
+          "share": 0.03659174072138003
+        },
+        {
+          "province": "湖北省",
+          "value": 64,
+          "share": 0.0334553058024046
+        },
+        {
+          "province": "辽宁省",
+          "value": 52,
+          "share": 0.027182435964453737
+        },
+        {
+          "province": "湖南省",
+          "value": 41,
+          "share": 0.021432305279665446
+        },
+        {
+          "province": "广西壮族自治区",
+          "value": 27,
+          "share": 0.014113957135389441
+        },
+        {
+          "province": "河北省",
+          "value": 21,
+          "share": 0.01097752221641401
+        },
+        {
+          "province": "陕西省",
+          "value": 21,
+          "share": 0.01097752221641401
+        },
+        {
+          "province": "贵州省",
+          "value": 18,
+          "share": 0.009409304756926294
+        },
+        {
+          "province": "宁夏回族自治区",
+          "value": 15,
+          "share": 0.007841087297438577
+        },
+        {
+          "province": "内蒙古自治区",
+          "value": 14,
+          "share": 0.007318348144276007
+        },
+        {
+          "province": "江西省",
+          "value": 10,
+          "share": 0.005227391531625719
+        },
+        {
+          "province": "吉林省",
+          "value": 9,
+          "share": 0.004704652378463147
+        },
+        {
+          "province": "山西省",
+          "value": 9,
+          "share": 0.004704652378463147
+        },
+        {
+          "province": "甘肃省",
+          "value": 9,
+          "share": 0.004704652378463147
+        },
+        {
+          "province": "黑龙江省",
+          "value": 9,
+          "share": 0.004704652378463147
+        },
+        {
+          "province": "云南省",
+          "value": 5,
+          "share": 0.0026136957658128594
+        },
+        {
+          "province": "西藏自治区",
+          "value": 2,
+          "share": 0.0010454783063251437
+        },
+        {
+          "province": "新疆维吾尔自治区",
+          "value": 0,
+          "share": 0.0
+        },
+        {
+          "province": "海南省",
+          "value": 0,
+          "share": 0.0
+        },
+        {
+          "province": "青海省",
+          "value": 0,
+          "share": 0.0
+        }
+      ],
+      "patents2025": [
+        {
+          "province": "北京市",
+          "value": 3028,
+          "share": 0.2418337193514895
+        },
+        {
+          "province": "广东省",
+          "value": 1602,
+          "share": 0.12794505231211564
+        },
+        {
+          "province": "浙江省",
+          "value": 1419,
+          "share": 0.11332960626148071
+        },
+        {
+          "province": "上海市",
+          "value": 1091,
+          "share": 0.08713361552591646
+        },
+        {
+          "province": "江苏省",
+          "value": 931,
+          "share": 0.07435508345978756
+        },
+        {
+          "province": "山东省",
+          "value": 788,
+          "share": 0.06293427042568485
+        },
+        {
+          "province": "四川省",
+          "value": 517,
+          "share": 0.04129063173867902
+        },
+        {
+          "province": "湖北省",
+          "value": 428,
+          "share": 0.03418257327689481
+        },
+        {
+          "province": "安徽省",
+          "value": 412,
+          "share": 0.032904720070281925
+        },
+        {
+          "province": "湖南省",
+          "value": 273,
+          "share": 0.02180337033783244
+        },
+        {
+          "province": "陕西省",
+          "value": 261,
+          "share": 0.020844980432872775
+        },
+        {
+          "province": "福建省",
+          "value": 252,
+          "share": 0.02012618800415302
+        },
+        {
+          "province": "重庆市",
+          "value": 234,
+          "share": 0.01868860314671352
+        },
+        {
+          "province": "天津市",
+          "value": 209,
+          "share": 0.01669195751138088
+        },
+        {
+          "province": "辽宁省",
+          "value": 182,
+          "share": 0.014535580225221627
+        },
+        {
+          "province": "河南省",
+          "value": 124,
+          "share": 0.0099033623512499
+        },
+        {
+          "province": "黑龙江省",
+          "value": 109,
+          "share": 0.008705374970050316
+        },
+        {
+          "province": "吉林省",
+          "value": 95,
+          "share": 0.007587253414264037
+        },
+        {
+          "province": "河北省",
+          "value": 94,
+          "share": 0.007507387588850731
+        },
+        {
+          "province": "云南省",
+          "value": 86,
+          "share": 0.006868460985544286
+        },
+        {
+          "province": "江西省",
+          "value": 73,
+          "share": 0.005830205255171312
+        },
+        {
+          "province": "广西壮族自治区",
+          "value": 72,
+          "share": 0.005750339429758006
+        },
+        {
+          "province": "贵州省",
+          "value": 67,
+          "share": 0.0053510103026914784
+        },
+        {
+          "province": "山西省",
+          "value": 36,
+          "share": 0.002875169714879003
+        },
+        {
+          "province": "甘肃省",
+          "value": 36,
+          "share": 0.002875169714879003
+        },
+        {
+          "province": "内蒙古自治区",
+          "value": 25,
+          "share": 0.001996645635332641
+        },
+        {
+          "province": "新疆维吾尔自治区",
+          "value": 25,
+          "share": 0.001996645635332641
+        },
+        {
+          "province": "海南省",
+          "value": 24,
+          "share": 0.0019167798099193356
+        },
+        {
+          "province": "宁夏回族自治区",
+          "value": 13,
+          "share": 0.0010382557303729733
+        },
+        {
+          "province": "青海省",
+          "value": 10,
+          "share": 0.0007986582541330564
+        },
+        {
+          "province": "西藏自治区",
+          "value": 5,
+          "share": 0.0003993291270665282
+        }
+      ],
+      "patents2013to2025": [
+        {
+          "province": "北京市",
+          "value": 6171,
+          "share": 0.2649976381672178
+        },
+        {
+          "province": "广东省",
+          "value": 3342,
+          "share": 0.1435135483316872
+        },
+        {
+          "province": "浙江省",
+          "value": 2659,
+          "share": 0.11418387941770086
+        },
+        {
+          "province": "上海市",
+          "value": 2212,
+          "share": 0.09498862026023103
+        },
+        {
+          "province": "江苏省",
+          "value": 1568,
+          "share": 0.06733370550092327
+        },
+        {
+          "province": "山东省",
+          "value": 1295,
+          "share": 0.05561042641817323
+        },
+        {
+          "province": "四川省",
+          "value": 825,
+          "share": 0.03542749173358526
+        },
+        {
+          "province": "安徽省",
+          "value": 801,
+          "share": 0.0343968737922446
+        },
+        {
+          "province": "湖北省",
+          "value": 688,
+          "share": 0.029544380985098984
+        },
+        {
+          "province": "福建省",
+          "value": 463,
+          "share": 0.019882337785030273
+        },
+        {
+          "province": "湖南省",
+          "value": 456,
+          "share": 0.01958174088547258
+        },
+        {
+          "province": "陕西省",
+          "value": 401,
+          "share": 0.017219908103233563
+        },
+        {
+          "province": "重庆市",
+          "value": 371,
+          "share": 0.015931635676557736
+        },
+        {
+          "province": "天津市",
+          "value": 330,
+          "share": 0.014170996693434105
+        },
+        {
+          "province": "辽宁省",
+          "value": 258,
+          "share": 0.011079142869412119
+        },
+        {
+          "province": "河南省",
+          "value": 215,
+          "share": 0.009232619057843432
+        },
+        {
+          "province": "黑龙江省",
+          "value": 185,
+          "share": 0.007944346631167604
+        },
+        {
+          "province": "河北省",
+          "value": 164,
+          "share": 0.007042555932494525
+        },
+        {
+          "province": "云南省",
+          "value": 135,
+          "share": 0.005797225920041225
+        },
+        {
+          "province": "吉林省",
+          "value": 133,
+          "share": 0.00571134109159617
+        },
+        {
+          "province": "江西省",
+          "value": 115,
+          "share": 0.004938377635590673
+        },
+        {
+          "province": "贵州省",
+          "value": 111,
+          "share": 0.004766607978700562
+        },
+        {
+          "province": "广西壮族自治区",
+          "value": 110,
+          "share": 0.004723665564478035
+        },
+        {
+          "province": "山西省",
+          "value": 61,
+          "share": 0.002619487267574183
+        },
+        {
+          "province": "甘肃省",
+          "value": 61,
+          "share": 0.002619487267574183
+        },
+        {
+          "province": "海南省",
+          "value": 54,
+          "share": 0.0023188903680164898
+        },
+        {
+          "province": "内蒙古自治区",
+          "value": 33,
+          "share": 0.0014170996693434106
+        },
+        {
+          "province": "新疆维吾尔自治区",
+          "value": 30,
+          "share": 0.0012882724266758277
+        },
+        {
+          "province": "宁夏回族自治区",
+          "value": 18,
+          "share": 0.0007729634560054966
+        },
+        {
+          "province": "青海省",
+          "value": 13,
+          "share": 0.0005582513848928586
+        },
+        {
+          "province": "西藏自治区",
+          "value": 9,
+          "share": 0.0003864817280027483
+        }
+      ]
+    },
+    "concentration": {
+      "policyCumulative2025": {
+        "top3": {
+          "count": 644,
+          "share": 0.3366440146366963,
+          "provinces": [
+            "广东省",
+            "北京市",
+            "上海市"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top5": {
+          "count": 923,
+          "share": 0.48248823836905386,
+          "provinces": [
+            "广东省",
+            "北京市",
+            "上海市",
+            "山东省",
+            "江苏省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top10": {
+          "count": 1444,
+          "share": 0.7548353371667538,
+          "provinces": [
+            "广东省",
+            "北京市",
+            "上海市",
+            "山东省",
+            "江苏省",
+            "福建省",
+            "浙江省",
+            "重庆市",
+            "天津市",
+            "安徽省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        }
+      },
+      "patents2025": {
+        "top3": {
+          "count": 6049,
+          "share": 0.4831083779250859,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top5": {
+          "count": 8071,
+          "share": 0.6445970769107898,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省",
+            "上海市",
+            "江苏省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top10": {
+          "count": 10489,
+          "share": 0.8377126427601629,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省",
+            "上海市",
+            "江苏省",
+            "山东省",
+            "四川省",
+            "湖北省",
+            "安徽省",
+            "湖南省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        }
+      },
+      "patents2013to2025": {
+        "top3": {
+          "count": 12172,
+          "share": 0.5226950659166059,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top5": {
+          "count": 15952,
+          "share": 0.6850173916777601,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省",
+            "上海市",
+            "江苏省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        },
+        "top10": {
+          "count": 20024,
+          "share": 0.8598789023918925,
+          "provinces": [
+            "北京市",
+            "广东省",
+            "浙江省",
+            "上海市",
+            "江苏省",
+            "山东省",
+            "四川省",
+            "安徽省",
+            "湖北省",
+            "福建省"
+          ],
+          "note": "按当前指标排序取前N个省级单元，包含直辖市；并列按名称排序。"
+        }
+      }
+    },
+    "regionProvinceMapping": {
+      "东部": [
+        "北京市",
+        "天津市",
+        "河北省",
+        "上海市",
+        "江苏省",
+        "浙江省",
+        "福建省",
+        "山东省",
+        "广东省",
+        "海南省"
+      ],
+      "中部": [
+        "山西省",
+        "安徽省",
+        "江西省",
+        "河南省",
+        "湖北省",
+        "湖南省"
+      ],
+      "西部": [
+        "内蒙古自治区",
+        "广西壮族自治区",
+        "重庆市",
+        "四川省",
+        "贵州省",
+        "云南省",
+        "西藏自治区",
+        "陕西省",
+        "甘肃省",
+        "青海省",
+        "宁夏回族自治区",
+        "新疆维吾尔自治区"
+      ],
+      "东北": [
+        "辽宁省",
+        "吉林省",
+        "黑龙江省"
+      ]
+    },
+    "regions": [
+      {
+        "region": "东部",
+        "provinces": [
+          "北京市",
+          "天津市",
+          "河北省",
+          "上海市",
+          "江苏省",
+          "浙江省",
+          "福建省",
+          "山东省",
+          "广东省",
+          "海南省"
+        ],
+        "provinceCount": 10,
+        "sampleCityCount": 87,
+        "cityYearCount": 1131,
+        "policyCumulative2025": 1275,
+        "citiesWithPolicy2025": 66,
+        "patents2025": 9438,
+        "patents2013to2025": 18258,
+        "policyCumulative2025Share": 0.6664924202822792,
+        "patents2025Share": 0.7537736602507787,
+        "patents2013to2025Share": 0.7840425988749088,
+        "citiesWithPolicy2025Share": 0.7586206896551724
+      },
+      {
+        "region": "中部",
+        "provinces": [
+          "山西省",
+          "安徽省",
+          "江西省",
+          "河南省",
+          "湖北省",
+          "湖南省"
+        ],
+        "provinceCount": 6,
+        "sampleCityCount": 80,
+        "cityYearCount": 1040,
+        "policyCumulative2025": 270,
+        "citiesWithPolicy2025": 43,
+        "patents2025": 1346,
+        "patents2013to2025": 2336,
+        "policyCumulative2025Share": 0.1411395713538944,
+        "patents2025Share": 0.1074994010063094,
+        "patents2013to2025Share": 0.10031347962382445,
+        "citiesWithPolicy2025Share": 0.5375
+      },
+      {
+        "region": "西部",
+        "provinces": [
+          "内蒙古自治区",
+          "广西壮族自治区",
+          "重庆市",
+          "四川省",
+          "贵州省",
+          "云南省",
+          "西藏自治区",
+          "陕西省",
+          "甘肃省",
+          "青海省",
+          "宁夏回族自治区",
+          "新疆维吾尔自治区"
+        ],
+        "provinceCount": 12,
+        "sampleCityCount": 95,
+        "cityYearCount": 1235,
+        "policyCumulative2025": 298,
+        "citiesWithPolicy2025": 37,
+        "patents2025": 1351,
+        "patents2013to2025": 2117,
+        "policyCumulative2025Share": 0.15577626764244643,
+        "patents2025Share": 0.10789873013337593,
+        "patents2013to2025Share": 0.09090909090909091,
+        "citiesWithPolicy2025Share": 0.3894736842105263
+      },
+      {
+        "region": "东北",
+        "provinces": [
+          "辽宁省",
+          "吉林省",
+          "黑龙江省"
+        ],
+        "provinceCount": 3,
+        "sampleCityCount": 34,
+        "cityYearCount": 442,
+        "policyCumulative2025": 70,
+        "citiesWithPolicy2025": 9,
+        "patents2025": 386,
+        "patents2013to2025": 576,
+        "policyCumulative2025Share": 0.03659174072138003,
+        "patents2025Share": 0.03082820860953598,
+        "patents2013to2025Share": 0.02473483059217589,
+        "citiesWithPolicy2025Share": 0.2647058823529412
+      }
+    ]
+  }
+}

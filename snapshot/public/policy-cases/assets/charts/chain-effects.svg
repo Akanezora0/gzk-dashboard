@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="340" viewBox="0 0 760 340" role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">不同产业链政策与总体关键词专利的估计</title>
+<desc id="chart-desc">因变量均为总体关键词专利。总体政策0.160，区间0.076至0.244，观测数3222；上游政策0.541，区间0.378至0.703，观测数3305；中游政策0.363，区间0.225至0.501，观测数3381；下游政策0.257，区间0.161至0.353，观测数3232。</desc>
+<rect width="760" height="340" fill="#FFFFFF"/>
+<g font-family="PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif" font-size="16" fill="#272B33" style="font-variant-numeric:tabular-nums">
+<line x1="133.0" y1="45" x2="133.0" y2="245" stroke="#66717E" stroke-width="1" stroke-dasharray="4 4"></line>
+<text x="133.0" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.0</text>
+<line x1="207.5" y1="45" x2="207.5" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="207.5" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.2</text>
+<line x1="282.0" y1="45" x2="282.0" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="282.0" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.4</text>
+<line x1="356.5" y1="45" x2="356.5" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="356.5" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.6</text>
+<line x1="431.0" y1="45" x2="431.0" y2="245" stroke="#E9E4E5" stroke-width="1" stroke-dasharray="none"></line>
+<text x="431.0" y="269" fill="#66717E" font-size="14" text-anchor="middle">0.8</text>
+<text x="460" y="29" font-size="14" fill="#66717E">系数 [95% CI]</text>
+<text x="738" y="29" font-size="14" fill="#66717E" text-anchor="end">观测数</text>
+<text x="16" y="75" font-size="16">总体政策</text>
+<line x1="161.31" y1="69" x2="223.89" y2="69" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="161.31" y1="63" x2="161.31" y2="75" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="223.89" y1="63" x2="223.89" y2="75" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="192.6" cy="69" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="460" y="75" font-size="15">0.160 [0.076, 0.244]</text>
+<text x="738" y="75" font-size="14" fill="#66717E" text-anchor="end">3,222</text>
+<text x="16" y="126" font-size="16">上游政策</text>
+<line x1="273.805" y1="120" x2="394.8675" y2="120" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="273.805" y1="114" x2="273.805" y2="126" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="394.8675" y1="114" x2="394.8675" y2="126" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="334.52250000000004" cy="120" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="460" y="126" font-size="15">0.541 [0.378, 0.703]</text>
+<text x="738" y="126" font-size="14" fill="#66717E" text-anchor="end">3,305</text>
+<text x="16" y="177" font-size="16">中游政策</text>
+<line x1="216.8125" y1="171" x2="319.6225" y2="171" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="216.8125" y1="165" x2="216.8125" y2="177" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="319.6225" y1="165" x2="319.6225" y2="177" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="268.2175" cy="171" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="460" y="177" font-size="15">0.363 [0.225, 0.501]</text>
+<text x="738" y="177" font-size="14" fill="#66717E" text-anchor="end">3,381</text>
+<text x="16" y="228" font-size="16">下游政策</text>
+<line x1="192.9725" y1="222" x2="264.49249999999995" y2="222" stroke="#AE0D28" stroke-width="3" stroke-linecap="round"></line>
+<line x1="192.9725" y1="216" x2="192.9725" y2="228" stroke="#AE0D28" stroke-width="2"></line>
+<line x1="264.49249999999995" y1="216" x2="264.49249999999995" y2="228" stroke="#AE0D28" stroke-width="2"></line>
+<circle cx="228.7325" cy="222" r="6" fill="#AE0D28" stroke="#FFFFFF" stroke-width="2"></circle>
+<text x="460" y="228" font-size="15">0.257 [0.161, 0.353]</text>
+<text x="738" y="228" font-size="14" fill="#66717E" text-anchor="end">3,232</text>
+<text x="282.0" y="315" font-size="16" fill="#66717E" text-anchor="middle">系数与 95% 置信区间</text>
+</g>
+</svg>

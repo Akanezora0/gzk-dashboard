@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="650" viewBox="0 0 1000 650" role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">产业链分段政策和关键词专利</title>
+<desc id="chart-desc">2013—2025年296个样本城市上中下游环节的政策累计篇数和年度关键词专利。政策分类可重叠；环节专利件数按城市年相加等于总量。专利纵轴为ln(1+年度合计件数)数值的线性坐标。</desc>
+<metadata id="chart-series">{&quot;years&quot;:[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],&quot;figure&quot;:&quot;figure5&quot;,&quot;source&quot;:{&quot;baseFile&quot;:&quot;panel_data.xlsx&quot;,&quot;baseSheet&quot;:&quot;Sheet1&quot;,&quot;chainFile&quot;:&quot;panel_data_chain.xlsx&quot;,&quot;chainSheet&quot;:&quot;Sheet1&quot;,&quot;sha256&quot;:{&quot;panel_data.xlsx&quot;:&quot;b868ff35095b4115cdce55c95fcb5ea1582992179879517ad75fc5bacb0f05f6&quot;,&quot;panel_data_chain.xlsx&quot;:&quot;e2dbe756f2c04e5e393152b77600f786199c251810085d1fda0eff670a2e74c3&quot;},&quot;reportFigures&quot;:[&quot;图1 / image1.png&quot;,&quot;图2 / image2.png&quot;,&quot;图5 / image5.png&quot;],&quot;method&quot;:&quot;仅用Excel原始城市年主表精确汇总、分组和自然对数变换；未重新估计回归，未从图像反推数据。&quot;},&quot;series&quot;:{&quot;title&quot;:&quot;产业链分段政策和关键词专利&quot;,&quot;a&quot;:{&quot;title&quot;:&quot;分段累计政策篇数（同一政策可覆盖多段）&quot;,&quot;upstream&quot;:[0,0,1,2,10,27,55,82,117,148,210,386,681],&quot;midstream&quot;:[0,0,3,5,22,70,99,143,220,285,363,555,839],&quot;downstream&quot;:[1,4,13,20,42,93,159,253,368,478,583,857,1356],&quot;unit&quot;:&quot;篇&quot;,&quot;transform&quot;:&quot;none&quot;,&quot;originalYTicks&quot;:[0,250,500,750,1000,1250]},&quot;b&quot;:{&quot;title&quot;:&quot;分段关键词专利年度总量&quot;,&quot;upstream&quot;:[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.6375861597263857,4.997212273764115,5.4510384535657],&quot;midstream&quot;:[0.0,0.0,0.0,0.0,0.6931471805599453,0.0,0.6931471805599453,0.0,0.6931471805599453,1.9459101490553132,5.8805329864007,7.31986492980897,7.635303886259415],&quot;downstream&quot;:[1.0986122886681098,1.3862943611198906,1.3862943611198906,0.6931471805599453,1.791759469228055,1.791759469228055,1.6094379124341003,0.6931471805599453,2.302585092994046,2.833213344056216,7.520234556474628,8.826881344130634,9.232199706329077],&quot;rawUpstream&quot;:[0,0,0,0,0,0,0,0,0,0,37,147,232],&quot;rawMidstream&quot;:[0,0,0,0,1,0,1,0,1,6,357,1509,2069],&quot;rawDownstream&quot;:[2,3,3,1,5,5,4,1,9,16,1844,6814,10220],&quot;transform&quot;:&quot;每个环节分别ln(1+当年296城环节专利合计件数)&quot;,&quot;axisType&quot;:&quot;linear&quot;,&quot;originalYTicks&quot;:[0,2,4,6,8]}}}</metadata>
+<style>text{font-family:PingFang SC,Microsoft YaHei,Noto Sans CJK SC,Arial,sans-serif;fill:#4B3842;font-size:14px}.panel-title{font-size:18px;font-weight:600}.tick{font-size:14px}.legend{font-size:15px}.unit{font-size:14px}</style>
+<rect width="1000" height="650" fill="#FFFFFF"/>
+<text x="85.000" y="28.000" text-anchor="start" class="panel-title">(a)  分段累计政策篇数（同一政策可覆盖多段）</text>
+<line x1="99.000" y1="58.000" x2="129.000" y2="58.000" stroke="#BD945F" stroke-width="2.8"/>
+<circle cx="114.000" cy="58.000" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"></circle>
+<text x="139.000" y="63.000" text-anchor="start" class="legend">上游</text>
+<line x1="269.000" y1="58.000" x2="299.000" y2="58.000" stroke="#607D91" stroke-width="2.8"/>
+<rect x="280.300" y="54.300" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"></rect>
+<text x="309.000" y="63.000" text-anchor="start" class="legend">中游</text>
+<line x1="439.000" y1="58.000" x2="469.000" y2="58.000" stroke="#AE0D28" stroke-width="2.8"/>
+<path d="M454.000 53.200 L449.500 61.700 L458.500 61.700 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"></path>
+<text x="479.000" y="63.000" text-anchor="start" class="legend">下游</text>
+<line x1="85.000" y1="269.074" x2="915.000" y2="269.074" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="269.074" x2="80.000" y2="269.074" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="274.074" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="237.195" x2="915.000" y2="237.195" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="237.195" x2="80.000" y2="237.195" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="242.195" text-anchor="end" class="tick" style="fill:#4B3842">250</text>
+<line x1="85.000" y1="205.315" x2="915.000" y2="205.315" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="205.315" x2="80.000" y2="205.315" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="210.315" text-anchor="end" class="tick" style="fill:#4B3842">500</text>
+<line x1="85.000" y1="173.436" x2="915.000" y2="173.436" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="173.436" x2="80.000" y2="173.436" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="178.436" text-anchor="end" class="tick" style="fill:#4B3842">750</text>
+<line x1="85.000" y1="141.557" x2="915.000" y2="141.557" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="141.557" x2="80.000" y2="141.557" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="146.557" text-anchor="end" class="tick" style="fill:#4B3842">1,000</text>
+<line x1="85.000" y1="109.678" x2="915.000" y2="109.678" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="109.678" x2="80.000" y2="109.678" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="114.678" text-anchor="end" class="tick" style="fill:#4B3842">1,250</text>
+<line x1="85.000" y1="88.000" x2="85.000" y2="278.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="278.000" x2="915.000" y2="278.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="278.000" x2="116.923" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="180.769" y1="278.000" x2="180.769" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="244.615" y1="278.000" x2="244.615" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="308.462" y1="278.000" x2="308.462" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="372.308" y1="278.000" x2="372.308" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="436.154" y1="278.000" x2="436.154" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="500.000" y1="278.000" x2="500.000" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="563.846" y1="278.000" x2="563.846" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="627.692" y1="278.000" x2="627.692" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="691.538" y1="278.000" x2="691.538" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="755.385" y1="278.000" x2="755.385" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="819.231" y1="278.000" x2="819.231" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<line x1="883.077" y1="278.000" x2="883.077" y2="283.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="24.000" y="183.000" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 183.000)">篇</text>
+<polyline points="116.923,269.074 180.769,269.074 244.615,268.946 308.462,268.819 372.308,267.799 436.154,265.631 500.000,262.060 563.846,258.617 627.692,254.154 691.538,250.201 755.385,242.295 819.231,219.852 883.077,182.235" fill="none" stroke="#BD945F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="116.923" cy="269.074" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2013年 上游累计政策篇数：0</title></circle>
+<circle cx="180.769" cy="269.074" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2014年 上游累计政策篇数：0</title></circle>
+<circle cx="244.615" cy="268.946" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2015年 上游累计政策篇数：1</title></circle>
+<circle cx="308.462" cy="268.819" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2016年 上游累计政策篇数：2</title></circle>
+<circle cx="372.308" cy="267.799" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2017年 上游累计政策篇数：10</title></circle>
+<circle cx="436.154" cy="265.631" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2018年 上游累计政策篇数：27</title></circle>
+<circle cx="500.000" cy="262.060" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2019年 上游累计政策篇数：55</title></circle>
+<circle cx="563.846" cy="258.617" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2020年 上游累计政策篇数：82</title></circle>
+<circle cx="627.692" cy="254.154" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2021年 上游累计政策篇数：117</title></circle>
+<circle cx="691.538" cy="250.201" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2022年 上游累计政策篇数：148</title></circle>
+<circle cx="755.385" cy="242.295" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2023年 上游累计政策篇数：210</title></circle>
+<circle cx="819.231" cy="219.852" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2024年 上游累计政策篇数：386</title></circle>
+<circle cx="883.077" cy="182.235" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2025年 上游累计政策篇数：681</title></circle>
+<polyline points="116.923,269.074 180.769,269.074 244.615,268.691 308.462,268.436 372.308,266.268 436.154,260.148 500.000,256.450 563.846,250.839 627.692,241.020 691.538,232.732 755.385,222.785 819.231,198.302 883.077,162.087" fill="none" stroke="#607D91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="113.223" y="265.374" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2013年 中游累计政策篇数：0</title></rect>
+<rect x="177.069" y="265.374" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2014年 中游累计政策篇数：0</title></rect>
+<rect x="240.915" y="264.991" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2015年 中游累计政策篇数：3</title></rect>
+<rect x="304.762" y="264.736" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2016年 中游累计政策篇数：5</title></rect>
+<rect x="368.608" y="262.568" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2017年 中游累计政策篇数：22</title></rect>
+<rect x="432.454" y="256.448" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2018年 中游累计政策篇数：70</title></rect>
+<rect x="496.300" y="252.750" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2019年 中游累计政策篇数：99</title></rect>
+<rect x="560.146" y="247.139" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2020年 中游累计政策篇数：143</title></rect>
+<rect x="623.992" y="237.320" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2021年 中游累计政策篇数：220</title></rect>
+<rect x="687.838" y="229.032" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2022年 中游累计政策篇数：285</title></rect>
+<rect x="751.685" y="219.085" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2023年 中游累计政策篇数：363</title></rect>
+<rect x="815.531" y="194.602" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2024年 中游累计政策篇数：555</title></rect>
+<rect x="879.377" y="158.387" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2025年 中游累计政策篇数：839</title></rect>
+<polyline points="116.923,268.946 180.769,268.564 244.615,267.416 308.462,266.523 372.308,263.718 436.154,257.215 500.000,248.799 563.846,236.812 627.692,222.148 691.538,208.121 755.385,194.732 819.231,159.792 883.077,96.161" fill="none" stroke="#AE0D28" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M116.923 264.146 L112.423 272.646 L121.423 272.646 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2013年 下游累计政策篇数：1</title></path>
+<path d="M180.769 263.764 L176.269 272.264 L185.269 272.264 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2014年 下游累计政策篇数：4</title></path>
+<path d="M244.615 262.616 L240.115 271.116 L249.115 271.116 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2015年 下游累计政策篇数：13</title></path>
+<path d="M308.462 261.723 L303.962 270.223 L312.962 270.223 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2016年 下游累计政策篇数：20</title></path>
+<path d="M372.308 258.918 L367.808 267.418 L376.808 267.418 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2017年 下游累计政策篇数：42</title></path>
+<path d="M436.154 252.415 L431.654 260.915 L440.654 260.915 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2018年 下游累计政策篇数：93</title></path>
+<path d="M500.000 243.999 L495.500 252.499 L504.500 252.499 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2019年 下游累计政策篇数：159</title></path>
+<path d="M563.846 232.012 L559.346 240.512 L568.346 240.512 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2020年 下游累计政策篇数：253</title></path>
+<path d="M627.692 217.348 L623.192 225.848 L632.192 225.848 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2021年 下游累计政策篇数：368</title></path>
+<path d="M691.538 203.321 L687.038 211.821 L696.038 211.821 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2022年 下游累计政策篇数：478</title></path>
+<path d="M755.385 189.932 L750.885 198.432 L759.885 198.432 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2023年 下游累计政策篇数：583</title></path>
+<path d="M819.231 154.992 L814.731 163.492 L823.731 163.492 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2024年 下游累计政策篇数：857</title></path>
+<path d="M883.077 91.361 L878.577 99.861 L887.577 99.861 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2025年 下游累计政策篇数：1356</title></path>
+<text x="85.000" y="332.000" text-anchor="start" class="panel-title">(b)  分段关键词专利年度总量</text>
+<line x1="99.000" y1="362.000" x2="129.000" y2="362.000" stroke="#BD945F" stroke-width="2.8"/>
+<circle cx="114.000" cy="362.000" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"></circle>
+<text x="139.000" y="367.000" text-anchor="start" class="legend">上游</text>
+<line x1="269.000" y1="362.000" x2="299.000" y2="362.000" stroke="#607D91" stroke-width="2.8"/>
+<rect x="280.300" y="358.300" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"></rect>
+<text x="309.000" y="367.000" text-anchor="start" class="legend">中游</text>
+<line x1="439.000" y1="362.000" x2="469.000" y2="362.000" stroke="#AE0D28" stroke-width="2.8"/>
+<path d="M454.000 357.200 L449.500 365.700 L458.500 365.700 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"></path>
+<text x="479.000" y="367.000" text-anchor="start" class="legend">下游</text>
+<line x1="85.000" y1="579.310" x2="915.000" y2="579.310" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="579.310" x2="80.000" y2="579.310" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="584.310" text-anchor="end" class="tick" style="fill:#4B3842">0</text>
+<line x1="85.000" y1="540.690" x2="915.000" y2="540.690" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="540.690" x2="80.000" y2="540.690" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="545.690" text-anchor="end" class="tick" style="fill:#4B3842">2</text>
+<line x1="85.000" y1="502.069" x2="915.000" y2="502.069" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="502.069" x2="80.000" y2="502.069" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="507.069" text-anchor="end" class="tick" style="fill:#4B3842">4</text>
+<line x1="85.000" y1="463.448" x2="915.000" y2="463.448" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="463.448" x2="80.000" y2="463.448" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="468.448" text-anchor="end" class="tick" style="fill:#4B3842">6</text>
+<line x1="85.000" y1="424.828" x2="915.000" y2="424.828" stroke="#ECE4E7" stroke-width="1"/>
+<line x1="85.000" y1="424.828" x2="80.000" y2="424.828" stroke="#B8A4AD" stroke-width="1"/>
+<text x="73.000" y="429.828" text-anchor="end" class="tick" style="fill:#4B3842">8</text>
+<line x1="85.000" y1="392.000" x2="85.000" y2="588.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="85.000" y1="588.000" x2="915.000" y2="588.000" stroke="#B8A4AD" stroke-width="1.2"/>
+<line x1="116.923" y1="588.000" x2="116.923" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="116.923" y="614.000" text-anchor="middle" class="tick">2013</text>
+<line x1="180.769" y1="588.000" x2="180.769" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="180.769" y="614.000" text-anchor="middle" class="tick">2014</text>
+<line x1="244.615" y1="588.000" x2="244.615" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="244.615" y="614.000" text-anchor="middle" class="tick">2015</text>
+<line x1="308.462" y1="588.000" x2="308.462" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="308.462" y="614.000" text-anchor="middle" class="tick">2016</text>
+<line x1="372.308" y1="588.000" x2="372.308" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="372.308" y="614.000" text-anchor="middle" class="tick">2017</text>
+<line x1="436.154" y1="588.000" x2="436.154" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="436.154" y="614.000" text-anchor="middle" class="tick">2018</text>
+<line x1="500.000" y1="588.000" x2="500.000" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="500.000" y="614.000" text-anchor="middle" class="tick">2019</text>
+<line x1="563.846" y1="588.000" x2="563.846" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="563.846" y="614.000" text-anchor="middle" class="tick">2020</text>
+<line x1="627.692" y1="588.000" x2="627.692" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="627.692" y="614.000" text-anchor="middle" class="tick">2021</text>
+<line x1="691.538" y1="588.000" x2="691.538" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="691.538" y="614.000" text-anchor="middle" class="tick">2022</text>
+<line x1="755.385" y1="588.000" x2="755.385" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="755.385" y="614.000" text-anchor="middle" class="tick">2023</text>
+<line x1="819.231" y1="588.000" x2="819.231" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="819.231" y="614.000" text-anchor="middle" class="tick">2024</text>
+<line x1="883.077" y1="588.000" x2="883.077" y2="593.000" stroke="#B8A4AD" stroke-width="1"/>
+<text x="883.077" y="614.000" text-anchor="middle" class="tick">2025</text>
+<text x="24.000" y="490.000" text-anchor="middle" class="unit" style="fill:#4B3842" transform="rotate(-90 24.000 490.000)">ln(1 + 件数)</text>
+<polyline points="116.923,579.310 180.769,579.310 244.615,579.310 308.462,579.310 372.308,579.310 436.154,579.310 500.000,579.310 563.846,579.310 627.692,579.310 691.538,579.310 755.385,509.067 819.231,482.812 883.077,474.049" fill="none" stroke="#BD945F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="116.923" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2013年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="180.769" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2014年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="244.615" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2015年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="308.462" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2016年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="372.308" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2017年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="436.154" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2018年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="500.000" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2019年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="563.846" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2020年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="627.692" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2021年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="691.538" cy="579.310" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2022年 上游 ln(1+年度专利总件数)：0；原始值：0</title></circle>
+<circle cx="755.385" cy="509.067" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2023年 上游 ln(1+年度专利总件数)：3.63758615973；原始值：37</title></circle>
+<circle cx="819.231" cy="482.812" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2024年 上游 ln(1+年度专利总件数)：4.99721227376；原始值：147</title></circle>
+<circle cx="883.077" cy="474.049" r="3.8" fill="white" stroke="#BD945F" stroke-width="2.5"><title>2025年 上游 ln(1+年度专利总件数)：5.45103845357；原始值：232</title></circle>
+<polyline points="116.923,579.310 180.769,579.310 244.615,579.310 308.462,579.310 372.308,565.925 436.154,579.310 500.000,565.925 563.846,579.310 627.692,565.925 691.538,541.734 755.385,465.755 819.231,437.961 883.077,431.870" fill="none" stroke="#607D91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="113.223" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2013年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="177.069" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2014年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="240.915" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2015年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="304.762" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2016年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="368.608" y="562.225" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2017年 中游 ln(1+年度专利总件数)：0.69314718056；原始值：1</title></rect>
+<rect x="432.454" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2018年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="496.300" y="562.225" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2019年 中游 ln(1+年度专利总件数)：0.69314718056；原始值：1</title></rect>
+<rect x="560.146" y="575.610" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2020年 中游 ln(1+年度专利总件数)：0；原始值：0</title></rect>
+<rect x="623.992" y="562.225" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2021年 中游 ln(1+年度专利总件数)：0.69314718056；原始值：1</title></rect>
+<rect x="687.838" y="538.034" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2022年 中游 ln(1+年度专利总件数)：1.94591014906；原始值：6</title></rect>
+<rect x="751.685" y="462.055" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2023年 中游 ln(1+年度专利总件数)：5.8805329864；原始值：357</title></rect>
+<rect x="815.531" y="434.261" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2024年 中游 ln(1+年度专利总件数)：7.31986492981；原始值：1,509</title></rect>
+<rect x="879.377" y="428.170" width="7.4" height="7.4" fill="white" stroke="#607D91" stroke-width="2.5"><title>2025年 中游 ln(1+年度专利总件数)：7.63530388626；原始值：2,069</title></rect>
+<polyline points="116.923,558.096 180.769,552.541 244.615,552.541 308.462,565.925 372.308,544.711 436.154,544.711 500.000,548.232 563.846,565.925 627.692,534.847 691.538,524.600 755.385,434.092 819.231,408.860 883.077,401.033" fill="none" stroke="#AE0D28" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M116.923 553.296 L112.423 561.796 L121.423 561.796 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2013年 下游 ln(1+年度专利总件数)：1.09861228867；原始值：2</title></path>
+<path d="M180.769 547.741 L176.269 556.241 L185.269 556.241 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2014年 下游 ln(1+年度专利总件数)：1.38629436112；原始值：3</title></path>
+<path d="M244.615 547.741 L240.115 556.241 L249.115 556.241 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2015年 下游 ln(1+年度专利总件数)：1.38629436112；原始值：3</title></path>
+<path d="M308.462 561.125 L303.962 569.625 L312.962 569.625 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2016年 下游 ln(1+年度专利总件数)：0.69314718056；原始值：1</title></path>
+<path d="M372.308 539.911 L367.808 548.411 L376.808 548.411 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2017年 下游 ln(1+年度专利总件数)：1.79175946923；原始值：5</title></path>
+<path d="M436.154 539.911 L431.654 548.411 L440.654 548.411 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2018年 下游 ln(1+年度专利总件数)：1.79175946923；原始值：5</title></path>
+<path d="M500.000 543.432 L495.500 551.932 L504.500 551.932 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2019年 下游 ln(1+年度专利总件数)：1.60943791243；原始值：4</title></path>
+<path d="M563.846 561.125 L559.346 569.625 L568.346 569.625 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2020年 下游 ln(1+年度专利总件数)：0.69314718056；原始值：1</title></path>
+<path d="M627.692 530.047 L623.192 538.547 L632.192 538.547 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2021年 下游 ln(1+年度专利总件数)：2.30258509299；原始值：9</title></path>
+<path d="M691.538 519.800 L687.038 528.300 L696.038 528.300 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2022年 下游 ln(1+年度专利总件数)：2.83321334406；原始值：16</title></path>
+<path d="M755.385 429.292 L750.885 437.792 L759.885 437.792 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2023年 下游 ln(1+年度专利总件数)：7.52023455647；原始值：1,844</title></path>
+<path d="M819.231 404.060 L814.731 412.560 L823.731 412.560 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2024年 下游 ln(1+年度专利总件数)：8.82688134413；原始值：6,814</title></path>
+<path d="M883.077 396.233 L878.577 404.733 L887.577 404.733 Z" fill="white" stroke="#AE0D28" stroke-width="2.5"><title>2025年 下游 ln(1+年度专利总件数)：9.23219970633；原始值：10,220</title></path>
+</svg>

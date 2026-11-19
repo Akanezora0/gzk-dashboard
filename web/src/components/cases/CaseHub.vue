@@ -4,19 +4,20 @@ import {computed} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import PageHero from '../PageHero.vue'
 import IndustryCases from './IndustryCases.vue'
+import PolicyCases from './policy/PolicyCases.vue'
 import '../../chain-page.css'
 defineProps({data:Object})
 const route=useRoute(),router=useRouter()
 const hero={title:'从基金资助到经济社会价值的长链条案例',lead:'把创新链与产业链连成一条并纳入政策链，选取代表性企业与政策，完整呈现基础研究从基金资助到经济社会价值的路径。'}
 const topics=[
  {id:'industry',label:'企业案例',caption:'基金 → 论文 → 专利承接 → 产品 → 应用 → 经济社会价值'},
- {id:'policy',label:'政策案例',caption:'政策工具 → 技术定位 → 实施影响'}]
+ {id:'policy',label:'政策案例',caption:'政策文本采集与量化 → 因果分析建模 → 政策效应评估'}]
 const active=computed(()=>topics.find(t=>t.id===route.query.topic)||topics[0])
 function choose(id){router.replace({query:{...route.query,topic:id,case:undefined}})}
 const policyPlan=[
- {n:'01',t:'政策文本解构',d:'按层级、发布时间、地域与作用对象整理政策文本，识别支持、规范与限制类工具。'},
- {n:'02',t:'技术定位',d:'将政策条款对应到人工智能共同技术词表，观察政策关注的技术方向与变化。'},
- {n:'03',t:'实施影响',d:'结合基金布局、企业与产品数据，比较政策出台前后相关技术方向的投入与产出。'}]
+ {n:'01',t:'政策文本采集与量化',d:'自动化批量采集目标政策，按层级、发布时间、地域与主题等维度整理政策文本，利用大语言模型进行文本量化评分，识别政策的倾向性与可靠性。'},
+ {n:'02',t:'因果分析建模',d:'对应政策文本解构结果，配套完成被解释变量匹配、控制变量设计与采集，系统科学性构建因果分析模型。'},
+ {n:'03',t:'政策效应评估',d:'结合基金布局投入、企业运营、技术专利等数据，评价政策对经济效益与技术创新的影响效应。'}]
 </script>
 <template><div class="case-hub">
  <PageHero :title="hero.title" :lead="hero.lead">
@@ -29,11 +30,13 @@ const policyPlan=[
  </PageHero>
  <div :key="active.id" class="pane-swap">
   <IndustryCases v-if="active.id==='industry'"/>
-  <section v-else class="policy-plan">
-   <header><h3>政策案例</h3><p>以人工智能领域为示范，围绕政策工具、技术定位与实施影响组织政策长链条案例。</p></header>
-   <div class="pp-grid"><article v-for="p in policyPlan" :key="p.n"><b>{{p.n}}</b><h4>{{p.t}}</h4><p>{{p.d}}</p></article></div>
-   <div class="pp-foot"><span>政策文本已纳入数据底座，可在领域数据中按层级与时间检索。</span><router-link to="/data?type=policy&domain=ai">查看政策数据 →</router-link></div>
-  </section>
+  <template v-else>
+   <section class="policy-plan">
+    <header><h3>政策案例</h3><p>以人工智能和大模型领域为示范，围绕政策文本采集与量化、因果分析建模、政策效应评估组织政策长链条案例。</p></header>
+    <div class="pp-grid"><article v-for="p in policyPlan" :key="p.n"><b>{{p.n}}</b><h4>{{p.t}}</h4><p>{{p.d}}</p></article></div>
+   </section>
+   <PolicyCases class="policy-cases-wrap"/>
+  </template>
  </div>
 </div></template>
 <style scoped>
@@ -46,7 +49,6 @@ const policyPlan=[
 .pp-grid b{font-size:14px;font-weight:800;color:#a21535}
 .pp-grid h4{margin:8px 0;font-size:17px;font-weight:750}
 .pp-grid p{margin:0;font-size:13.5px;line-height:1.75;color:#6a6468}
-.pp-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:18px;padding:14px 18px;border-radius:4px;background:#fbf5f6;font-size:13.5px;color:#5d575b}
-.pp-foot a{font-weight:650;color:#a21535;text-decoration:none;white-space:nowrap}
-@media(max-width:760px){.pp-grid{grid-template-columns:1fr}.pp-foot{flex-direction:column;align-items:flex-start}.policy-plan{padding:20px 16px}}
+.policy-cases-wrap{display:block;margin-top:24px}
+@media(max-width:760px){.pp-grid{grid-template-columns:1fr}.policy-plan{padding:20px 16px}}
 </style>
