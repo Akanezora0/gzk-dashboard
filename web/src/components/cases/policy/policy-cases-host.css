@@ -1,5 +1,0 @@
-/* 政策案例接入 Dashboard：配色、字体与吸顶位置对齐站点 */
-.policy-case-host .policy-case-app{--pc-red:#a21535;--pc-red-dark:#7e0f28;--pc-ink:#232930;--pc-muted:#6a6468;--pc-line:#e6dfdb;--pc-soft:#fbf7f7;font-family:inherit}
-.policy-case-host .policy-case-app .pc-section-nav{top:var(--pc-sticky-top,0)}
-.policy-case-host .policy-case-app :is(section[id],nav[id]){scroll-margin-top:calc(var(--pc-sticky-top,0px) + 76px)}
-.policy-case-host .policy-case-app .pc-footer{margin-top:28px}
