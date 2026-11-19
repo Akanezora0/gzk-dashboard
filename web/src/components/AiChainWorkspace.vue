@@ -3,7 +3,7 @@ import {ref,computed,watch,nextTick,defineAsyncComponent} from 'vue'
 import {useRoute,useRouter} from 'vue-router'
 import EvidenceHub from './EvidenceHub.vue'
 import StrengthBase from './StrengthBase.vue'
-import IndustryChainPlan from './IndustryChainPlan.vue'
+import IndustryChain from './industry-chain/IndustryChain.vue'
 import '../strength.css'
 import StrengthTrend from './StrengthTrend.vue'
 import ResearchAtlas from './ResearchAtlas.vue'
@@ -49,7 +49,7 @@ watch(active,v=>{if(v!=='industry')load()},{immediate:true})
     </PageHero>
     <div :key="active" class="pane-swap">
     <EvidenceHub v-if="active==='evidence'" :data="data" :dataset="dataset"/>
-    <IndustryChainPlan v-else-if="active==='industry'"/>
+    <IndustryChain v-else-if="active==='industry'" :fund-ai="data?.currentInventory?.counts?.ai_funds"/>
     <template v-else>
       <div v-if="loadError" class="analysis-loading">{{loadError}} <button @click="load">重新读取</button></div>
       <div v-else-if="!dataset" class="analysis-loading">正在整理机构与成果脉络…</div>
